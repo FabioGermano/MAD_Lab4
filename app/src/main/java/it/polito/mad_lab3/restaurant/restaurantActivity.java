@@ -10,11 +10,13 @@ import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
 
 import it.polito.mad_lab3.R;
+import it.polito.mad_lab3.restaurant.foodPhoto.PhotoViewer;
 
 public class RestaurantActivity extends AppCompatActivity {
 
     Toolbar toolbar;
     CollapsingToolbarLayout collapsingToolbarLayout;
+    PhotoViewer photo, photo4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,5 +32,9 @@ public class RestaurantActivity extends AppCompatActivity {
 
         ((ImageView)findViewById(R.id.mapIcon)).setColorFilter(Color.BLACK);
         ((ImageView)findViewById(R.id.phoneIcon)).setColorFilter(Color.BLACK);
+
+        photo = (PhotoViewer)getSupportFragmentManager().findFragmentById(R.id.photo1);
+        photo4 = (PhotoViewer)getSupportFragmentManager().findFragmentById(R.id.photo4);
+
     }
 }

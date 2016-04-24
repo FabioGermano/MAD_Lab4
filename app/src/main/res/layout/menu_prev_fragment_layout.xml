@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     android:layout_width="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:padding="8dp"
+        android:textSize="18sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Menu"/>
+    <android.support.design.widget.TabLayout
+        android:id="@+id/menuPrevTabs"
+        app:tabMode="scrollable"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        app:tabTextColor="#4278c9"
+        app:tabTextAppearance="@android:style/TextAppearance.Medium"
+        app:tabGravity="center"
+        android:textAlignment="center"
+        app:tabSelectedTextColor="#4293c9"
+        app:tabIndicatorColor="#4278c9"
+        app:tabIndicatorHeight="5dp"
+        android:minHeight="?attr/actionBarSize"
+        android:fadingEdge="horizontal"
+        />
+    <android.support.v4.view.ViewPager
+        android:id="@+id/menuPrevPager"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:text="SHOW ALL MENU"
+        />
+</LinearLayout>
