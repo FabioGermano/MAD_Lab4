@@ -242,6 +242,34 @@
             </LinearLayout>
             <!-- End Menu -->
 
+            <!-- Offers -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <android.support.v7.widget.CardView
+                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    card_view:cardCornerRadius="4dp"
+                    android:padding="16dp"
+                    android:minHeight="64dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:padding="8dp"
+                            android:textSize="18sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Offers"/>
+                        <include  layout="@layout/offer_prev_view" />
+                    </LinearLayout>
+
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+            <!-- End Offers -->
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView >
