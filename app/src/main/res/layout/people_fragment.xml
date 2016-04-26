@@ -46,7 +46,7 @@
                     android:padding="20dp"
                     android:elevation="2dp"
                     android:background="@color/colorPrimary"
-                    android:drawableLeft="@drawable/lunchbag" />
+                    android:drawableLeft="@drawable/lunch" />
 
             </LinearLayout>
 
