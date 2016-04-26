@@ -1,3 +1,26 @@
 <resources>
     <string name="app_name">MAD_Lab3</string>
+    <string name="pick_date">Pick a date!</string>
+    <string name="pick_time">Pick a time!</string>
+    <string name="sunday">Sunday</string>
+    <string name="monday">Monday</string>
+    <string name="tuesday">Tuesday</string>
+    <string name="wednesday">Wednesday</string>
+    <string name="thursday">Thursday</string>
+    <string name="friday">Friday</string>
+    <string name="saturday">Saturday</string>
+    <string name="jenuary">Jenuary</string>
+    <string name="february">February</string>
+    <string name="march">March</string>
+    <string name="april">April</string>
+    <string name="may">May</string>
+    <string name="june">June</string>
+    <string name="july">July</string>
+    <string name="ausgust">August</string>
+    <string name="september">September</string>
+    <string name="october">October</string>
+    <string name="november">November</string>
+    <string name="december">December</string>
+    <string name="are_you_staying">Eat in or take-away?</string>
+    <string name="howmany">How many seats do you want to book?</string>
 </resources>

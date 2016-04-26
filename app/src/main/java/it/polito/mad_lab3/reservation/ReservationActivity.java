@@ -1,6 +1,7 @@
 package it.polito.mad_lab3.reservation;
 
 import android.content.DialogInterface;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -20,11 +21,14 @@ public class ReservationActivity extends progressMobileStepper {
         showCompletedDialog();
     }
 
+
+
     @Override
     public List<Class> init() {
 
         stepperFragmentList.add(CalendarFragment.class);
         stepperFragmentList.add(PeopleFragment.class);
+        stepperFragmentList.add(DishesFragment.class);
 
         return stepperFragmentList;
     }
