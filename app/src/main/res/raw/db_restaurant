@@ -1,0 +1,100 @@
+{
+   "restaurants":[
+      {
+         "basicInfo":null,
+         "dishes":[
+            {
+               "type":"Other",
+               "dishName":"kebab",
+               "largePath":null,
+               "thumbPath":null,
+               "price":2.5,
+               "numRanks":8,
+               "avgRank":4.0
+            },
+            {
+               "type":"Other",
+               "dishName":"pizza",
+               "largePath":null,
+               "thumbPath":null,
+               "price":1.5,
+               "numRanks":80,
+               "avgRank":3.0
+            },
+            {
+               "type":"Other",
+               "dishName":"panino",
+               "largePath":null,
+               "thumbPath":null,
+               "price":4.0,
+               "numRanks":18,
+               "avgRank":2.0
+            }
+         ],
+         "offers":[
+            {
+               "thumbPath":null,
+               "details":"details 1",
+               "largePath":null,
+               "offerName":"Offerta1",
+               "numRanks":10,
+               "price":8.0,
+               "avgRank":4.5
+            },
+            {
+               "thumbPath":null,
+               "details":"details 2",
+               "largePath":null,
+               "offerName":"Offerta2",
+               "numRanks":19,
+               "price":8.0,
+               "avgRank":2.5
+            },
+            {
+               "thumbPath":null,
+               "details":"details 3",
+               "largePath":null,
+               "offerName":"Offerta3",
+               "numRanks":15,
+               "price":10.0,
+               "avgRank":1.5
+            }
+         ],
+         "userPhotos":[
+
+         ],
+         "restaurantName":"Nome ristorante",
+         "reviews":[
+            {
+               "comment":"commento 1 sdkmsdfl fggmdf dgl fgmgdf gd fl",
+               "date":"2015-05-08",
+               "userName":"userName 1",
+               "thumbPath":null,
+               "rank":1.7
+            },
+            {
+               "comment":"commento 2 sdkmsdfl fggmdf dgl fgmgdf gd fl",
+               "date":"2015-05-10",
+               "userName":"userName 2",
+               "thumbPath":null,
+               "rank":3.7
+            },
+            {
+               "comment":"commento 3 sdkmsdfl fggmdf dgl fgmgdffg fgh fg hfh fg h gd fl",
+               "date":"2015-06-08",
+               "userName":"userName 3",
+               "thumbPath":null,
+               "rank":2.7
+            },
+            {
+               "comment":"commento 4 sdkmsdfl fggmdf dgl fgmgdf gd fl",
+               "date":"2016-05-08",
+               "userName":"userName 4",
+               "thumbPath":null,
+               "rank":4.7
+            }
+         ],
+         "restaurantId":1
+      }
+   ]
+}
