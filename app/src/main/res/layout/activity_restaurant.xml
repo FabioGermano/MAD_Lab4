@@ -153,68 +153,16 @@
                     android:minHeight="64dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
-                    <LinearLayout
+                    <fragment
+                        xmlns:custom="http://schemas.android.com/apk/res/it.polito.mad_lab3"
+                        android:id="@+id/UserPhotoFragment"
+                        android:name="it.polito.mad_lab3.restaurant.foodPhoto.ContainerUserPhotoFragment"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
-                        <TextView
-                            android:padding="8dp"
-                            android:textSize="18sp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="17 available photos"/>
-                        <HorizontalScrollView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
-                            <LinearLayout
-                                android:minHeight="64dp"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:gravity="center_horizontal|center_vertical"
-                                android:orientation="horizontal">
-                                <fragment
-                                    xmlns:custom="http://schemas.android.com/apk/res/it.polito.mad_lab3"
-                                    android:id="@+id/photo1"
-                                    android:name="it.polito.mad_lab3.restaurant.foodPhoto.PhotoViewer"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentTop="true"
-                                    android:layout_centerHorizontal="true"
-                                    android:layout_marginRight="2dp"
-                                    />
-                                <fragment
-                                    xmlns:custom="http://schemas.android.com/apk/res/it.polito.mad_lab3"
-                                    android:id="@+id/photo2"
-                                    android:name="it.polito.mad_lab3.restaurant.foodPhoto.PhotoViewer"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentTop="true"
-                                    android:layout_centerHorizontal="true"
-                                    android:layout_marginRight="2dp"
-                                    />
-                                <fragment
-                                    xmlns:custom="http://schemas.android.com/apk/res/it.polito.mad_lab3"
-                                    android:id="@+id/photo3"
-                                    android:name="it.polito.mad_lab3.restaurant.foodPhoto.PhotoViewer"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentTop="true"
-                                    android:layout_centerHorizontal="true"
-                                    android:layout_marginRight="2dp"
-                                    />
-                                <fragment
-                                    xmlns:custom="http://schemas.android.com/apk/res/it.polito.mad_lab3"
-                                    android:id="@+id/photo4"
-                                    android:name="it.polito.mad_lab3.restaurant.foodPhoto.PhotoViewer"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    custom:latest="true"
-                                    android:layout_alignParentTop="true"
-                                    android:layout_centerHorizontal="true"
-                                    />
-                            </LinearLayout>
-                        </HorizontalScrollView>
-                    </LinearLayout>
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginRight="2dp"
+                        />
                     </android.support.v7.widget.CardView>
             </LinearLayout>
             <!-- End Photo -->

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    tools:context="it.polito.mad_lab3.restaurant.ChoosePhotoActivity">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:background="@android:drawable/dialog_holo_light_frame">
+        <fragment
+            xmlns:custom="http://schemas.android.com/apk/res/it.polito.mad_lab3"
+            android:id="@+id/imageOffer_modifyOffer"
+            android:name="it.polito.mad_lab3.common.photo_viewer.PhotoViewer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            custom:isEditable="true"
+            custom:isLogo="false"
+            custom:heightInDP="200"
+            custom:widthInDP="200"
+            custom:initialBackground="@drawable/nothumb" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Description"/>
+        </LinearLayout>
+</RelativeLayout>

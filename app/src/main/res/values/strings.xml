@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">Visione Utente</string>
-
+    <string name="app_name">MAD_Lab3</string>
     <string name="pick_date">Pick a date!</string>
     <string name="pick_time">Pick a time!</string>
     <string name="sunday">Sunday</string>
@@ -24,6 +23,10 @@
     <string name="december">December</string>
     <string name="are_you_staying">Eat in or take-away?</string>
     <string name="howmany">How many seats do you want to book?</string>
+    <string name="take_photo">Take a photo</string>
+    <string name="chose_library">Choose from gallery</string>
+    <string name="remove_photo">Remove</string>
+    <string name="add_photo">Add a new photo</string>
 
     <!-- Pagina principale -->
     <string name="ricerca">research ...</string>

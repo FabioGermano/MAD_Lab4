@@ -18,13 +18,13 @@ import it.polito.mad_lab3.R;
 /**
  * Created by f.germano on 23/04/2016.
  */
-public class PhotoViewer extends Fragment {
+public class UserPhotoFragment extends Fragment {
     private ImageView foodIV;
     private TextView likesTV;
     private boolean isLatest;
     private RelativeLayout trasparentContainer;
 
-    public PhotoViewer(){}
+    public UserPhotoFragment(){}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -49,12 +49,12 @@ public class PhotoViewer extends Fragment {
     public void onInflate(Activity activity, AttributeSet attrs, Bundle savedInstanceState) {
         super.onInflate(activity, attrs, savedInstanceState);
 
-        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.PhotoViewer);
+        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.UserPhotoFragment);
         final int N = a.getIndexCount();
         for (int i = 0; i < N; ++i) {
             int attr = a.getIndex(i);
             switch (attr) {
-                case R.styleable.PhotoViewer_latest:
+                case R.styleable.UserPhotoFragment_latest:
                     this.isLatest = a.getBoolean(attr, false);
                     break;
             }

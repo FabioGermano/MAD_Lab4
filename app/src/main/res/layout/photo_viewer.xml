@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/epImgPhoto"
+        android:layout_width="200sp"
+        android:layout_height="200sp"/>
+
+    <ImageButton
+        android:id="@+id/epEditButton"
+        android:src="@android:drawable/ic_menu_edit"
+        android:background="?attr/selectableItemBackground"
+        android:layout_alignRight="@+id/epImgPhoto"
+        android:layout_alignBottom="@+id/epImgPhoto"
+        android:layout_margin="1dp"
+        android:layout_width="35sp"
+        android:layout_height="35sp"/>
+</RelativeLayout>

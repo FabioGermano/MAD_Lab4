@@ -18,6 +18,12 @@
         <activity
             android:name=".reservation.ReservationActivity"
             android:parentActivityName=".MainActivity"></activity>
+        <activity
+            android:name=".restaurant.RestaurantActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity android:name=".common.photo_viewer.PhotoViewActivity" />
+        <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
+        <activity android:name=".restaurant.ChoosePhotoActivity" android:theme="@style/Theme.Transparent"></activity>
     </application>
 
 </manifest>

@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="PhotoViewer">
+    <declare-styleable name="UserPhotoFragment">
         <attr name="latest" format="boolean" />
+    </declare-styleable>
+    <declare-styleable name="PhotoViewer">
+        <attr name="isLogo" format="boolean"/>
+        <attr name="initialBackground" format="reference"/>
+        <attr name="widthInDP" format="integer"/>
+        <attr name="heightInDP" format="integer"/>
+        <attr name="isEditable" format="boolean" />
+        <attr name="addImageMode" format="string" /> <!-- clickOnButton, clickOnImage -->
     </declare-styleable>
 </resources>
