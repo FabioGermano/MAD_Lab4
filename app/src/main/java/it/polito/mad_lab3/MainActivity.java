@@ -1,11 +1,10 @@
 package it.polito.mad_lab3;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.view.menu.ActionMenuItemView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -19,9 +18,8 @@ import it.polito.mad_lab3.data.restaurant.Restaurant;
 import it.polito.mad_lab3.data.restaurant.RestaurantEntity;
 import it.polito.mad_lab3.data.restaurant.Review;
 import it.polito.mad_lab3.reservation.ReservationActivity;
-import it.polito.mad_lab3.restaurant.RestaurantActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private Button restaurantBtn, reservationBtn;
 
@@ -31,9 +29,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         restaurantBtn = (Button) findViewById(R.id.restaurantBtn);
-        reservationBtn = (Button) findViewById(R.id.reservationBtn);
+        //reservationBtn = (Button) findViewById(R.id.reservationBtn);
 
-        restaurantBtn.setOnClickListener(new View.OnClickListener() {
+        /*restaurantBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getBaseContext(), RestaurantActivity.class);
@@ -47,13 +45,27 @@ public class MainActivity extends AppCompatActivity {
                 Intent i = new Intent(getBaseContext(), ReservationActivity.class);
                 startActivity(i);
             }
-        });
+        });*/
 
-
-        test();
+        // carico info dal server: quelle  necessarie per la ricerca, possiamo poi implementare una ricerca direttamente
+        // sul server che ci restituisce la lista dei risultati con informazioni riassuntive per visualizzare
+        // la lista dei locali cercati
+        caricaDati();
     }
 
-    private void test() {
+    @Override
+    protected void ModificaProfilo() {
+        Toast toast = Toast.makeText(getApplicationContext(), "Modifica profilo", Toast.LENGTH_SHORT);
+        toast.show();
+    }
+
+    @Override
+    protected void ShowPrenotazioni() {
+        Intent i = new Intent(getBaseContext(), ReservationActivity.class);
+        startActivity(i);
+    }
+
+    private void caricaDati() {
         Restaurant r = new Restaurant(1, "Nome ristorante");
         BasicInfo bi = new BasicInfo("Cia monginevro", "333-XXXXXXX");
         ArrayList<Dish> dishes = new ArrayList<Dish>();
@@ -91,5 +103,9 @@ public class MainActivity extends AppCompatActivity {
         Gson gson = new GsonBuilder().serializeNulls().create();
 
         String json = gson.toJson(re);
+    }
+
+    public void searchRestaurant(View view) {
+
     }
 }

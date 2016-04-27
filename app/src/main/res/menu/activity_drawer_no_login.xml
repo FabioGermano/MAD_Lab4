@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/esegui_login"
+            android:title="@string/esegui_login" />
+    </group>
+
+    <item android:title="Comunicazioni">
+        <menu>
+            <item
+                android:id="@+id/nav_contact_no_login"
+                android:title="@string/contattaci" />
+            <item
+                android:id="@+id/nav_bugs_no_login"
+                android:title="@string/segnala_problema" />
+        </menu>
+    </item>
+
+</menu>

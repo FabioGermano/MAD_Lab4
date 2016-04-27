@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/mod_profilo"
+            android:title="@string/modifica_profilo" />
+        <item
+            android:id="@+id/gest_prenotazioni"
+            android:title="@string/prenotazioni" />
+    </group>
+
+    <item android:title="Comunicazioni">
+        <menu>
+            <item
+                android:id="@+id/nav_contact"
+                android:title="@string/contattaci" />
+            <item
+                android:id="@+id/nav_bugs"
+                android:title="@string/segnala_problema" />
+        </menu>
+    </item>
+
+</menu>

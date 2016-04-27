@@ -7,4 +7,6 @@
     <color name="blackSemiTrasparent">#80FFFFFF</color>
     <color name="blackSemiTrasparent90">#50FFFFFF</color>
     <color name="colorBackground">#f4f1efef</color>
+
+    <color name="titoli">#0000FF</color>
 </resources>
