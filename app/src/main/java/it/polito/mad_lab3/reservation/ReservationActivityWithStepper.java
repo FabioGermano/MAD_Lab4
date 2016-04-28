@@ -23,7 +23,7 @@ public class ReservationActivityWithStepper extends progressMobileStepper {
     public List<Class> init() {
 
         stepperFragmentList.add(CalendarFragment.class);
-        stepperFragmentList.add(PeopleFragment.class);
+        stepperFragmentList.add(ChoiceFragment.class);
         stepperFragmentList.add(DishesFragment.class);
 
         return stepperFragmentList;

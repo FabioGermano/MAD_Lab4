@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_margin="10dp">
+
+       <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/text"
+            android:gravity="center"
+            android:textStyle="bold"
+           android:layout_marginBottom="10dp"
+            android:textColor="@android:color/holo_blue_light"
+            android:text="@string/are_you_staying"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal">
+
+                <ImageButton
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:background="@drawable/circular_background"
+                    android:src="@drawable/rest_table"
+                    android:id="@+id/eat_in"
+                    android:layout_marginRight="10dp" />
+                <ImageButton
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginLeft="10dp"
+                    android:id="@+id/takeaway"
+                    android:background="@drawable/circular_background"
+                    android:src="@drawable/lunch"/>
+
+            </LinearLayout>
+
+    <NumberPicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/numberPicker"
+        android:visibility="gone"
+        android:layout_gravity="center_horizontal"
+        android:scrollIndicators="none" />
+
+</LinearLayout>

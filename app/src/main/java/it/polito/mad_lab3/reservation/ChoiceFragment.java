@@ -2,39 +2,38 @@ package it.polito.mad_lab3.reservation;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.content.DialogInterface;
+import android.app.Activity;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.TranslateAnimation;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.NumberPicker;
-import android.widget.Toast;
-import android.widget.ViewSwitcher;
-
-import java.util.ArrayList;
 
 import it.polito.mad_lab3.R;
-import ivb.com.materialstepper.stepperFragment;
 
 /**
  * Created by Giovanna on 23/04/2016.
  */
-public class PeopleFragment extends Fragment {
+public class ChoiceFragment extends Fragment {
 
-    private Button eatin, takeaway;
+    private OnChoiceSelectedListener mCallback;
+    //private Button eatin, takeaway;
+    private ImageButton eatin, takeaway;
     private NumberPicker numberPicker;
     private boolean confirmed= false;
     private int seats;
+
+    public interface OnChoiceSelectedListener {
+
+        public void onSeatsNumberSelected( boolean eat_in, int number);
+
+    }
 
    /* @Override
     public boolean onNextButtonHandler() {
@@ -75,13 +74,29 @@ public class PeopleFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            mCallback = (OnChoiceSelectedListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnChoiceSelectedListener");
+        }
+    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView =  inflater.inflate(R.layout.people_fragment, container, false);
+        View rootView =  inflater.inflate(R.layout.choice_fragment, container, false);
 
-        eatin = (Button) rootView.findViewById(R.id.eat_in);
-        takeaway = (Button) rootView.findViewById(R.id.takeaway);
+        //eatin = (Button) rootView.findViewById(R.id.eat_in);
+        eatin = (ImageButton) rootView.findViewById(R.id.eat_in);
+        //takeaway = (Button) rootView.findViewById(R.id.takeaway);
+        takeaway = (ImageButton) rootView.findViewById(R.id.takeaway);
+
         numberPicker = (NumberPicker) rootView.findViewById(R.id.numberPicker);
 
         numberPicker.setMinValue(1);
@@ -92,14 +107,17 @@ public class PeopleFragment extends Fragment {
             public void onValueChange(NumberPicker picker, int oldVal, int newVal){
                 //Display the newly selected value from picker
                     seats= newVal;
+                    mCallback.onSeatsNumberSelected(true, seats);
             }
         });
 
        eatin.setOnClickListener(new OnClickListener() {
            @Override
            public void onClick(View v) {
-               eatin.setBackgroundColor(getActivity().getResources().getColor(R.color.colorAccent));
-               takeaway.setBackgroundColor(getActivity().getResources().getColor(R.color.colorPrimary));
+               //eatin.setBackgroundColor(getActivity().getResources().getColor(R.color.colorAccent));
+               //takeaway.setBackgroundColor(getActivity().getResources().getColor(R.color.themeColorLighter));
+               takeaway.getBackground().setColorFilter(getResources().getColor(R.color.themeColorLighter), PorterDuff.Mode.SRC_OVER);
+               eatin.getBackground().setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_OVER);
 
                numberPicker.animate()
                        .alpha(1.0f)
@@ -119,8 +137,10 @@ public class PeopleFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                takeaway.setBackgroundColor(getActivity().getResources().getColor(R.color.colorAccent));
-                eatin.setBackgroundColor(getActivity().getResources().getColor(R.color.colorPrimary));
+
+                //eatin.getBackground().setTint(getResources().getColor(R.color.themeColorLighter));
+                eatin.getBackground().setColorFilter(getResources().getColor(R.color.themeColorLighter), PorterDuff.Mode.SRC_OVER);
+                takeaway.getBackground().setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_OVER);
 
                 numberPicker.animate()
                         .alpha(0.0f)
@@ -130,6 +150,8 @@ public class PeopleFragment extends Fragment {
                             public void onAnimationEnd(Animator animation) {
                                 super.onAnimationEnd(animation);
                                 numberPicker.setVisibility(View.GONE);
+                                mCallback.onSeatsNumberSelected(false, 0);
+
                             }
                         });
             }

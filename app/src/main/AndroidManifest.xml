@@ -19,6 +19,9 @@
             android:name=".reservation.ReservationActivity"
             android:parentActivityName=".MainActivity"></activity>
         <activity
+            android:name=".reservation.CheckoutOrder"
+            android:parentActivityName=".reservation.ReservationActivity"></activity>
+        <activity
             android:name=".restaurant.RestaurantActivity"
             android:parentActivityName=".MainActivity" />
         <activity android:name=".common.photo_viewer.PhotoViewActivity" />

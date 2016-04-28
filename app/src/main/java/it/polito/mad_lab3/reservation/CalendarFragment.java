@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.NumberPicker;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -123,12 +124,13 @@ public class CalendarFragment extends Fragment {
             picker[i]= dates.get(i);
         }
         numberPicker = (NumberPicker) rootView.findViewById(R.id.numberPicker);
+
         numberPicker.setMinValue(0); //from array first value
         //Specify the maximum value/number of NumberPicker
         numberPicker.setMaxValue(dates.size()-1); //to array last value
-
         //Specify the NumberPicker data source as array elements
         numberPicker.setDisplayedValues(picker);
+
         numberPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
         //numberPicker.setWrapSelectorWheel(true);
         numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
@@ -139,7 +141,6 @@ public class CalendarFragment extends Fragment {
 
             }
         });
-
 
         return rootView;
     }
