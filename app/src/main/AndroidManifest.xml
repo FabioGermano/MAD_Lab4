@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="it.polito.mad_lab3">
 
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -11,22 +17,23 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".reservation.ReservationActivity"
-            android:parentActivityName=".MainActivity"></activity>
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".reservation.CheckoutOrder"
-            android:parentActivityName=".reservation.ReservationActivity"></activity>
+            android:parentActivityName=".reservation.ReservationActivity" />
         <activity
             android:name=".restaurant.RestaurantActivity"
             android:parentActivityName=".MainActivity" />
         <activity android:name=".common.photo_viewer.PhotoViewActivity" />
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
-        <activity android:name=".restaurant.ChoosePhotoActivity" android:theme="@style/Theme.Transparent"></activity>
+        <activity android:name=".restaurant.ChoosePhotoActivity" />
+        <activity android:name=".restaurant.gallery.PhotoGaleryActivity"></activity>
     </application>
 
 </manifest>

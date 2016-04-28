@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         >
 
-        <it.polito.mad_lab2.photo_viewer.TouchImageView
+        <it.polito.mad_lab3.common.photo_viewer.TouchImageView
             android:id="@+id/photoView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

@@ -39,14 +39,14 @@ public class MainActivity extends BaseActivity {
                 startActivity(i);
             }
         });
-
+/*
         reservationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getBaseContext(), ReservationActivity.class);
                 startActivity(i);
             }
-        });
+        });*/
 
         // carico info dal server: quelle  necessarie per la ricerca, possiamo poi implementare una ricerca direttamente
         // sul server che ci restituisce la lista dei risultati con informazioni riassuntive per visualizzare

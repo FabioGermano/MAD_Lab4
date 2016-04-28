@@ -455,4 +455,7 @@ public class PhotoViewer extends Fragment implements PhotoDialogListener {
         }
     }
 
+    public boolean isPhotoSetted(){
+        return this.isBitmapSetted;
+    }
 }

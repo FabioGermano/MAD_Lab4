@@ -104,7 +104,7 @@ public final class DBManager {
         return gson.fromJson(json, classOfT);
     }
 
-    public boolean serializeEntity(Context context, DB db, Object entity){
+    public static boolean serializeEntity(Context context, DB db, Object entity){
         Gson gson = new GsonBuilder().serializeNulls().create();
 
         String jsonReservations = gson.toJson(entity);

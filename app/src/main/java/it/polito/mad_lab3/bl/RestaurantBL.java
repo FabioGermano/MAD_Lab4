@@ -12,9 +12,11 @@ import it.polito.mad_lab3.data.restaurant.RestaurantEntity;
  */
 public class RestaurantBL {
 
+    private Context context;
     private RestaurantEntity restaurantEntity;
 
     public RestaurantBL(Context context){
+        this.context = context;
         restaurantEntity = DBManager.deserializeToEntity(context, DB.Restaurants, RestaurantEntity.class);
     }
 
@@ -26,5 +28,14 @@ public class RestaurantBL {
         }
 
         return null;
+    }
+
+    public int getNewUserPhotoId(Restaurant restaurant)
+    {
+        return restaurant.getUserPhotos().size()+1;
+    }
+
+    public void saveChanges(){
+        DBManager.serializeEntity(context, DB.Restaurants, restaurantEntity);
     }
 }

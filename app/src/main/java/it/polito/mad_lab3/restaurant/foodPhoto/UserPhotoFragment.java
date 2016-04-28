@@ -1,7 +1,9 @@
 package it.polito.mad_lab3.restaurant.foodPhoto;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.AttributeSet;
@@ -14,6 +16,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import it.polito.mad_lab3.R;
+import it.polito.mad_lab3.data.restaurant.Restaurant;
+import it.polito.mad_lab3.data.restaurant.UserPhoto;
+import it.polito.mad_lab3.restaurant.gallery.PhotoGaleryActivity;
 
 /**
  * Created by f.germano on 23/04/2016.
@@ -23,6 +28,8 @@ public class UserPhotoFragment extends Fragment {
     private TextView likesTV;
     private boolean isLatest;
     private RelativeLayout trasparentContainer;
+    private boolean photoSetted, openGalleryOnClick;
+    private Restaurant restaurant = null;
 
     public UserPhotoFragment(){}
 
@@ -39,7 +46,26 @@ public class UserPhotoFragment extends Fragment {
         this.likesTV.setVisibility(View.GONE);
         this.likesTV.setText("Still no likes");
 
+        if(this.isLatest){
+            this.foodIV.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onLatestClick();
+                }
+            });
+        }
+
         return rootView;
+    }
+
+    private void onLatestClick() {
+        if(this.openGalleryOnClick && this.restaurant != null){
+            Intent i = new Intent(getContext(), PhotoGaleryActivity.class);
+            Bundle b = new Bundle();
+            b.putSerializable("userPhotos", this.restaurant.getUserPhotos());
+            i.putExtras(b);
+            startActivity(i);
+        }
     }
 
     /**
@@ -61,10 +87,14 @@ public class UserPhotoFragment extends Fragment {
         }
     }
 
-    public void setImageByDrawable(int drawableId){
-        this.foodIV.setImageResource(drawableId);
-        this.likesTV.setVisibility(View.VISIBLE);
+    public void setImage(Bitmap bitmap){
+        this.foodIV.setImageBitmap(bitmap);
+        this.photoSetted = true;
 
+        this.likesTV.setVisibility(View.VISIBLE);
+    }
+
+    public void setLatestLabel(){
         if(this.isLatest){
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)trasparentContainer.getLayoutParams();
             params.height = params.width;
@@ -92,5 +122,17 @@ public class UserPhotoFragment extends Fragment {
         }
 
         this.likesTV.setText(String.valueOf(n) + " likes on this.");
+    }
+
+    public boolean isPhotoSetted(){
+        return this.photoSetted;
+    }
+
+    public void setOpenGalleryOnClick(boolean b) {
+        this.openGalleryOnClick = b;
+    }
+
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
     }
 }

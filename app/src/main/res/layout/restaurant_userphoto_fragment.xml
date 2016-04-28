@@ -7,11 +7,11 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
     <TextView
+        android:id="@+id/availablePhotosTV"
         android:padding="8dp"
         android:textSize="18sp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="16 available photos"/>
+        android:layout_height="wrap_content"/>
     <HorizontalScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
@@ -70,4 +70,11 @@
         android:background="?attr/selectableItemBackground"
         android:clickable="true"
         android:text="ADD A NEW PHOTO" />
+    <Button
+        android:id="@+id/testButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:text="TEST" />
 </LinearLayout>
