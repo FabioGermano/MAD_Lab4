@@ -18,6 +18,7 @@ import it.polito.mad_lab3.data.restaurant.Restaurant;
 import it.polito.mad_lab3.data.restaurant.RestaurantEntity;
 import it.polito.mad_lab3.data.restaurant.Review;
 import it.polito.mad_lab3.reservation.ReservationActivity;
+import it.polito.mad_lab3.restaurant.RestaurantActivity;
 
 public class MainActivity extends BaseActivity {
 
@@ -29,9 +30,9 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
 
         restaurantBtn = (Button) findViewById(R.id.restaurantBtn);
-        //reservationBtn = (Button) findViewById(R.id.reservationBtn);
+        reservationBtn = (Button) findViewById(R.id.reservationBtn);
 
-        /*restaurantBtn.setOnClickListener(new View.OnClickListener() {
+        restaurantBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getBaseContext(), RestaurantActivity.class);
@@ -45,7 +46,7 @@ public class MainActivity extends BaseActivity {
                 Intent i = new Intent(getBaseContext(), ReservationActivity.class);
                 startActivity(i);
             }
-        });*/
+        });
 
         // carico info dal server: quelle  necessarie per la ricerca, possiamo poi implementare una ricerca direttamente
         // sul server che ci restituisce la lista dei risultati con informazioni riassuntive per visualizzare

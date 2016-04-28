@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -28,14 +29,14 @@ import ivb.com.materialstepper.stepperFragment;
 /**
  * Created by Giovanna on 23/04/2016.
  */
-public class PeopleFragment extends stepperFragment {
+public class PeopleFragment extends Fragment {
 
     private Button eatin, takeaway;
     private NumberPicker numberPicker;
     private boolean confirmed= false;
     private int seats;
 
-    @Override
+   /* @Override
     public boolean onNextButtonHandler() {
 
 
@@ -68,7 +69,7 @@ public class PeopleFragment extends stepperFragment {
             if (!confirmed)
                 return false;
         return true;
-    }
+    }*/
 
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

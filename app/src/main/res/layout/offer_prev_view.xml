@@ -6,68 +6,103 @@
     <ImageView
         android:id="@+id/foodIV"
         android:layout_width="250dp"
-        android:src="@drawable/offer_nothumb"
+        android:src="@drawable/special_offer"
         android:scaleType="centerCrop"
         android:layout_height="150dp"
         android:adjustViewBounds="true" />
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="25dp"
-        android:background="@color/blackSemiTrasparent"
-        android:layout_marginTop="13dp"
+        android:layout_height="wrap_content"
         android:paddingLeft="8dp"
-        android:paddingRight="8dp"
         android:layout_alignParentTop="true"
         android:layout_alignRight="@+id/foodIV"
         android:layout_alignEnd="@+id/foodIV"
         android:gravity="center_vertical"
-        android:id="@+id/relativeLayout">
+        android:id="@+id/rl_name">
+        <ImageView
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginTop="2dp"
+            android:id="@+id/arrow"
+            android:src="@drawable/left_triangle"
+            />
         <TextView
             android:id="@+id/offerName"
             android:textStyle="bold"
+            android:layout_toRightOf="@+id/arrow"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_height="24dp"
+            android:paddingRight="5dp"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:textAlignment="center"
             android:text="Nome offerta"/>
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="25dp"
-        android:background="@color/blackSemiTrasparent"
-        android:layout_marginTop="46dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-10dp"
+        android:id="@+id/rl_price"
+        android:layout_below="@+id/rl_name"
         android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:layout_alignParentTop="true"
         android:layout_alignRight="@+id/foodIV"
         android:layout_alignEnd="@+id/foodIV"
         android:gravity="center_vertical">
+        <ImageView
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginTop="2dp"
+            android:id="@+id/arrow2"
+            android:src="@drawable/left_triangle"
+            />
         <TextView
             android:id="@+id/offerPrice"
             android:textStyle="bold"
+            android:layout_toRightOf="@+id/arrow2"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_height="24dp"
+            android:paddingRight="5dp"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:textAlignment="center"
             android:text="3.5€"/>
+
     </RelativeLayout>
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="25dp"
-        android:background="@color/blackSemiTrasparent"
-        android:layout_marginTop="79dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/rl_rating"
+        android:layout_below="@+id/rl_price"
+        android:layout_marginTop="-10dp"
         android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:layout_alignParentTop="true"
         android:layout_alignRight="@+id/foodIV"
         android:layout_alignEnd="@+id/foodIV"
         android:gravity="center_vertical">
+        <ImageView
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:layout_marginTop="2dp"
+            android:id="@+id/arrow3"
+            android:src="@drawable/left_triangle"
+            />
+
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
             android:gravity="center_vertical"
+            android:layout_toRightOf="@+id/arrow3"
+            android:layout_centerInParent="true"
+            android:layout_height="24dp"
+            android:paddingRight="5dp"
+            android:background="@color/colorPrimary"
             android:orientation="horizontal">
+
             <RatingBar
                 android:id="@+id/offerRatingProgress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:theme="@style/RatingBar"
+                android:theme="@style/RatingBarWhite"
                 style="?android:attr/ratingBarStyleSmall"
                 android:rating="3.5"/><!--android:scrollbarStyle="?android:attr/ratingBarStyleSmall"-->
             <TextView

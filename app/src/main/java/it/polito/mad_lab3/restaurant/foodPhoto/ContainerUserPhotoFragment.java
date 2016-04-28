@@ -27,7 +27,6 @@ import java.io.IOException;
 import it.polito.mad_lab3.R;
 import it.polito.mad_lab3.common.photo_viewer.PhotoDialog;
 import it.polito.mad_lab3.common.photo_viewer.PhotoDialogListener;
-import it.polito.mad_lab3.reservation.ReservationActivity;
 import it.polito.mad_lab3.restaurant.ChoosePhotoActivity;
 
 /**

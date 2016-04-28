@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
     <color name="test">#76213e</color>
     <color name="blackSemiTrasparent">#80FFFFFF</color>
     <color name="blackSemiTrasparent90">#50FFFFFF</color>
     <color name="colorBackground">#f4f1efef</color>
+
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#ff8400</color>
+    <color name="lightRed">#ffcccc</color>
+    <color name="primary_material_light">#fff5f5f5</color>
+
+    <color name="themeColor">#03A9F4</color>
+    <color name="themeColorLighter">#c3e4f2</color>
+    <color name="alertBgColor">#E603A9F4</color>
+    <color name="fab_pressed">#90CAF9</color>
+    <color name="blackSemitrasparent">#80000000</color>
+    <color name="secondary_text_default_material_dark">#b3ffffff</color>
+    <color name="lightGrey">#E6E6FA</color>
 
     <color name="titoli">#0000FF</color>
 </resources>

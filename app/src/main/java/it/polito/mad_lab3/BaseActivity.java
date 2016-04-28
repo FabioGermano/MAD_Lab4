@@ -22,8 +22,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     @Override
     public void setContentView(int layoutResID) {
         View view = getLayoutInflater().inflate(layoutResID, null);
-        super.setContentView(view);
         configureBarraLaterale(view);
+        super.setContentView(view);
 
     }
 
