@@ -43,6 +43,14 @@
     <string name="contattaci">Contattaci</string>
     <string name="segnala_problema">Segnala Problema</string>
     <string name="esegui_login">Esegui Login</string>
+    <string name="title_activity_scrolling">ScrollingActivity</string>
+
+    <!--  menu  strings -->
+    <string name="first">Main courses</string>
+    <string name="second">Second courses</string>
+    <string name="dessert">Dessert</string>
+    <string name="other">Other</string>
+    <string name="offers">Offers</string>
 
 
 </resources>

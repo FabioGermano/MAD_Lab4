@@ -1,25 +1,28 @@
 package it.polito.mad_lab3.reservation;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 
 import java.util.ArrayList;
 
+import it.polito.mad_lab3.BaseActivity;
 import it.polito.mad_lab3.R;
+import it.polito.mad_lab3.reservation.food_order.*;
+import it.polito.mad_lab3.restaurant.RestaurantActivity;
 
-public class ReservationActivity extends AppCompatActivity implements ChoiceFragment.OnChoiceSelectedListener,CalendarFragment.OnDateSelectedListener, TimeFragment.OnTimeSelectedListener{
+public class ReservationActivity extends BaseActivity implements ChoiceFragment.OnChoiceSelectedListener,CalendarFragment.OnDateSelectedListener, TimeFragment.OnTimeSelectedListener{
 
     private ChoiceFragment choiceFragment;
     private CalendarFragment calendarFragment;
     private TimeFragment timeFragment;
-    private DishesFragment dishesFragment;
     private String reservationDate;
     private String reservationTime;
     private int seats;
     private boolean eat_in;
+    private Button next;
     View p, c;
     ArrayList<String> timeTable =  new ArrayList<>();
 
@@ -28,6 +31,8 @@ public class ReservationActivity extends AppCompatActivity implements ChoiceFrag
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reservation_request);
+
+        setActivityTitle("Make a reservation");
 
         timeTable.add(0, "10:20 - 14:30");
         timeTable.add(1, "10:30 - 12:30");
@@ -38,9 +43,29 @@ public class ReservationActivity extends AppCompatActivity implements ChoiceFrag
         timeTable.add(6, "10:30 - 12:30");
 
         calendarFragment = (CalendarFragment) getSupportFragmentManager().findFragmentById(R.id.date_time);
+        next = (Button) findViewById(R.id.next);
+        next.setVisibility(View.INVISIBLE);
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getBaseContext(), FoodOrderActivity.class);
+                startActivity(i);
+            }
+        });
+
         c = (View) (findViewById(R.id.date_time));
         c.setVisibility(View.VISIBLE);
 
+
+    }
+
+    @Override
+    protected void ModificaProfilo() {
+
+    }
+
+    @Override
+    protected void ShowPrenotazioni() {
 
     }
 
@@ -118,37 +143,9 @@ public class ReservationActivity extends AppCompatActivity implements ChoiceFrag
         this.seats=number;
 
         if(eat_in){
-            android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(
-                    ReservationActivity.this);
-
-            // set title
-            alertDialogBuilder.setTitle("Faster lunch!");
-            alertDialogBuilder
-                    .setMessage("Do you wanto to order already now?")
-                    .setCancelable(true)
-                    .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dishesFragment= new DishesFragment();
-                            getSupportFragmentManager().beginTransaction().replace(R.id.menu_fragment_container, dishesFragment).commit();
-
-                        }
-                    }).setNegativeButton("No",new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            Intent i = new Intent(getBaseContext(), CheckoutOrder.class);
-                            startActivity(i);
-                            //TODO pass the checkout values (date, time, seats)
-                    }
-            });
-
-            // create alert dialog
-            android.support.v7.app.AlertDialog alertDialog = alertDialogBuilder.create();
-
-            // show it
-            alertDialog.show();
+            next.setVisibility(View.VISIBLE);
         }
         else{
-            dishesFragment= new DishesFragment();
-            getSupportFragmentManager().beginTransaction().replace(R.id.menu_fragment_container, dishesFragment).commit();
 
         }
 

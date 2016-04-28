@@ -9,7 +9,7 @@
         <item name="android:activatedBackgroundIndicator">@drawable/list_item_background</item>
     </style>
 
-    <style name="AppTheme" parent="ParentOfAppTheme" >
+    <style name="AppTheme" parent="ParentOfAppTheme">
         <!-- definitions for both v<21 and v>=21 -->
 
         <item name="android:windowBackground">@color/colorBackground</item>
@@ -38,6 +38,7 @@
         <item name="android:windowIsFloating">true</item>
         <item name="android:backgroundDimEnabled">false</item>
     </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
@@ -47,6 +48,7 @@
         <item name="android:textColorPrimary">@android:color/white</item>
         <item name="selectableItemBackground">?android:selectableItemBackground</item>
         <item name="selectableItemBackgroundBorderless">?android:selectableItemBackground</item>
+
 
     </style>
 
@@ -58,7 +60,7 @@
 
     <style name="ToolbarTheme.Transparent" parent="ToolbarTheme">
         <item name="android:background">@null</item>
-        <item name="background" >@null</item>
+        <item name="background">@null</item>
         <item name="android:windowActionBarOverlay">true</item>
     </style>
 

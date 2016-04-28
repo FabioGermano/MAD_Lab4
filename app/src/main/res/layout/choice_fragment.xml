@@ -2,49 +2,119 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:layout_margin="10dp">
+    android:layout_margin="10dp"
+    android:orientation="vertical">
 
-       <TextView
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:text="@string/are_you_staying"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@android:color/holo_blue_light"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/eat_in"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/circular_background"
+            android:src="@drawable/rest_table" />
+
+        <ImageButton
+            android:id="@+id/takeaway"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/circular_background"
+            android:src="@drawable/lunch" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/seats"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/text"
             android:gravity="center"
-            android:textStyle="bold"
-           android:layout_marginBottom="10dp"
-            android:textColor="@android:color/holo_blue_light"
-            android:text="@string/are_you_staying"
-            android:textAppearance="?android:attr/textAppearanceLarge"/>
+            android:layout_marginBottom="5dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/ic_people_outline_black_48dp"
+                android:tint="@android:color/holo_blue_dark"
+                android:layout_marginRight="5dp"
+                android:layout_gravity="center_vertical"
+                android:alpha="0.5" />
+
+            <TextView
+                android:id="@+id/text2"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_horizontal">
+                android:gravity="center"
+                android:text="@string/howmany"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@android:color/holo_blue_light"
+                android:textStyle="bold" />
+        </LinearLayout>
 
-                <ImageButton
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:background="@drawable/circular_background"
-                    android:src="@drawable/rest_table"
-                    android:id="@+id/eat_in"
-                    android:layout_marginRight="10dp" />
-                <ImageButton
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_marginLeft="10dp"
-                    android:id="@+id/takeaway"
-                    android:background="@drawable/circular_background"
-                    android:src="@drawable/lunch"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_margin="10dp"
+            android:orientation="horizontal"
 
-            </LinearLayout>
+            >
 
-    <NumberPicker
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/numberPicker"
-        android:visibility="gone"
-        android:layout_gravity="center_horizontal"
-        android:scrollIndicators="none" />
+            <ImageButton
+                android:id="@+id/minus"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@android:drawable/ic_media_play"
+                android:backgroundTint="@color/themeColorLighter"
+                android:rotation="180" />
+
+            <TextView
+                android:id="@+id/counter"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:text="1"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <ImageButton
+                android:id="@+id/plus"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@android:drawable/ic_media_play"
+                android:backgroundTint="@color/themeColorLighter" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- <NumberPicker
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:id="@+id/numberPicker"
+         android:visibility="gone"
+         android:layout_gravity="center_horizontal"
+         android:scrollIndicators="none" /> -->
 
 </LinearLayout>

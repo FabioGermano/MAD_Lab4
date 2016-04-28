@@ -1,11 +1,13 @@
 package it.polito.mad_lab3;
 
+import android.os.Build;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,6 +15,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public abstract class BaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    protected Toolbar toolbar;
+
+    private boolean hideToolbar=false, hideShadow=false, save_visibility=false,
+            calendar_visibility=false, alert_visibility = true, backbutton_visibility=true;
+    private TextView titleTextView, alertCountView;
+    String activityTitle =  "Titolo App";
+    private View toolbarShadow;
+    private boolean useToolbar=true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,8 +33,12 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     public void setContentView(int layoutResID) {
         View view = getLayoutInflater().inflate(layoutResID, null);
         configureBarraLaterale(view);
+        configureToolbar(view);
         super.setContentView(view);
 
+    }
+    protected boolean useToolbar(boolean useToolbar) {
+        return useToolbar;
     }
 
     private void configureBarraLaterale(View view) {
@@ -72,6 +86,46 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         }
     }
 
+    private void configureToolbar(View view) {
+        toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            if (useToolbar) {
+
+                setSupportActionBar(toolbar);
+                getSupportActionBar().setDisplayHomeAsUpEnabled(backbutton_visibility);
+                getSupportActionBar().setDisplayShowTitleEnabled(false);
+                titleTextView = (TextView) toolbar.findViewById(R.id.toolbar_title);
+                toolbarShadow = view.findViewById(R.id.shadow);
+
+                if(hideShadow  ){
+                        toolbarShadow.setVisibility(View.GONE);
+
+                }
+                if(hideToolbar) {
+                    //getSupportActionBar().hide();
+                    titleTextView.setVisibility(View.GONE);
+                    //toolbar.setBackgroundColor(Color.TRANSPARENT);
+                    toolbar.setBackgroundResource(R.drawable.shadow);
+                }
+                // Get access to the custom title view
+            }
+        }
+    }
+    protected void setBackButtonVisibility(boolean visible)
+    {
+        backbutton_visibility=visible;
+        getSupportActionBar().setDisplayHomeAsUpEnabled(backbutton_visibility);
+    }
+
+    protected void hideToolbarShadow(boolean bool){
+        toolbarShadow.setVisibility(View.GONE);
+
+    }
+
+    protected void setActivityTitle(String title){
+        if(title!=null)
+            titleTextView.setText(title);
+    }
     private boolean controlloLogin(){
         return true;
     }

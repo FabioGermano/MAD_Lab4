@@ -13,7 +13,9 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.NumberPicker;
+import android.widget.TextView;
 
 import it.polito.mad_lab3.R;
 
@@ -25,9 +27,13 @@ public class ChoiceFragment extends Fragment {
     private OnChoiceSelectedListener mCallback;
     //private Button eatin, takeaway;
     private ImageButton eatin, takeaway;
-    private NumberPicker numberPicker;
+    //private NumberPicker numberPicker;
+    private LinearLayout seats_layout;
     private boolean confirmed= false;
     private int seats;
+    private ImageButton plus, minus;
+    private TextView counter;
+    private int cnt;
 
     public interface OnChoiceSelectedListener {
 
@@ -72,6 +78,7 @@ public class ChoiceFragment extends Fragment {
 
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        cnt=1;
     }
 
     @Override
@@ -97,7 +104,36 @@ public class ChoiceFragment extends Fragment {
         //takeaway = (Button) rootView.findViewById(R.id.takeaway);
         takeaway = (ImageButton) rootView.findViewById(R.id.takeaway);
 
-        numberPicker = (NumberPicker) rootView.findViewById(R.id.numberPicker);
+        seats_layout = (LinearLayout) rootView.findViewById(R.id.seats);
+        seats_layout.setVisibility(View.GONE);
+
+        plus = (ImageButton) seats_layout.findViewById(R.id.plus);
+        minus = (ImageButton) seats_layout.findViewById(R.id.minus);
+        counter= (TextView) seats_layout.findViewById(R.id.counter);
+
+        //plus.setColorFilter(getResources().getColor(R.color.themeColorLighter));
+        //minus.setColorFilter(getResources().getColor(R.color.themeColorLighter));
+
+
+
+        plus.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cnt++;
+                counter.setText(String.valueOf(cnt));
+            }
+        });
+        minus.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (cnt>1)
+                    cnt--;
+                counter.setText(String.valueOf(cnt));
+            }
+        });
+
+
+        /*numberPicker = (NumberPicker) rootView.findViewById(R.id.numberPicker);
 
         numberPicker.setMinValue(1);
         numberPicker.setMaxValue(8);
@@ -110,6 +146,7 @@ public class ChoiceFragment extends Fragment {
                     mCallback.onSeatsNumberSelected(true, seats);
             }
         });
+        */
 
        eatin.setOnClickListener(new OnClickListener() {
            @Override
@@ -119,14 +156,15 @@ public class ChoiceFragment extends Fragment {
                takeaway.getBackground().setColorFilter(getResources().getColor(R.color.themeColorLighter), PorterDuff.Mode.SRC_OVER);
                eatin.getBackground().setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_OVER);
 
-               numberPicker.animate()
-                       .alpha(1.0f)
+               seats_layout.animate()
+                       .alpha(255)
                        .setDuration(300)
                        .setListener(new AnimatorListenerAdapter() {
                            @Override
                            public void onAnimationEnd(Animator animation) {
                                super.onAnimationEnd(animation);
-                               numberPicker.setVisibility(View.VISIBLE);
+                               seats_layout.setVisibility(View.VISIBLE);
+                               mCallback.onSeatsNumberSelected(true, cnt);
                            }
                        });
 
@@ -142,14 +180,14 @@ public class ChoiceFragment extends Fragment {
                 eatin.getBackground().setColorFilter(getResources().getColor(R.color.themeColorLighter), PorterDuff.Mode.SRC_OVER);
                 takeaway.getBackground().setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.SRC_OVER);
 
-                numberPicker.animate()
+                seats_layout.animate()
                         .alpha(0.0f)
                         .setDuration(300)
                         .setListener(new AnimatorListenerAdapter() {
                             @Override
                             public void onAnimationEnd(Animator animation) {
                                 super.onAnimationEnd(animation);
-                                numberPicker.setVisibility(View.GONE);
+                                seats_layout.setVisibility(View.GONE);
                                 mCallback.onSeatsNumberSelected(false, 0);
 
                             }

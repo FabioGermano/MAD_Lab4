@@ -9,15 +9,15 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import it.polito.mad_lab3.BaseActivity;
 import it.polito.mad_lab3.R;
 import it.polito.mad_lab3.bl.RestaurantBL;
 import it.polito.mad_lab3.data.restaurant.Restaurant;
 import it.polito.mad_lab3.restaurant.foodPhoto.ContainerUserPhotoFragment;
 import it.polito.mad_lab3.restaurant.foodPhoto.UserPhotoFragment;
 
-public class  RestaurantActivity extends AppCompatActivity {
+public class  RestaurantActivity extends BaseActivity {
 
-    Toolbar toolbar;
     CollapsingToolbarLayout collapsingToolbarLayout;
     ContainerUserPhotoFragment containerUserPhotoFragment;
     RestaurantBL restaurantBL;
@@ -28,12 +28,15 @@ public class  RestaurantActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
 
-        collapsingToolbarLayout.setTitle("Demo");
+        useToolbar(false);
 
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        collapsingToolbarLayout.setTitle("Demo");
+
 
         ((ImageView)findViewById(R.id.mapIcon)).setColorFilter(Color.BLACK);
         ((ImageView)findViewById(R.id.phoneIcon)).setColorFilter(Color.BLACK);
@@ -50,6 +53,16 @@ public class  RestaurantActivity extends AppCompatActivity {
         containerUserPhotoFragment = (ContainerUserPhotoFragment)getSupportFragmentManager().findFragmentById(R.id.UserPhotoFragment);
         containerUserPhotoFragment.setRestaurant(restaurant);
         containerUserPhotoFragment.setRestaurantBL(this.restaurantBL);
+    }
+
+    @Override
+    protected void ModificaProfilo() {
+
+    }
+
+    @Override
+    protected void ShowPrenotazioni() {
+
     }
 
 }

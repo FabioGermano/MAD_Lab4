@@ -17,16 +17,16 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".reservation.ReservationActivity"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".MainActivity"></activity>
         <activity
             android:name=".reservation.CheckoutOrder"
-            android:parentActivityName=".reservation.ReservationActivity" />
+            android:parentActivityName=".reservation.ReservationActivity"></activity>
         <activity
             android:name=".restaurant.RestaurantActivity"
             android:parentActivityName=".MainActivity" />
@@ -34,6 +34,17 @@
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
         <activity android:name=".restaurant.ChoosePhotoActivity" />
         <activity android:name=".restaurant.gallery.PhotoGaleryActivity"></activity>
+
+        <activity
+            android:name=".reservation.food_order.FoodOrderActivity"
+            android:parentActivityName=".reservation.ReservationActivity"
+           >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="it.polito.mad_lab3.reservation.ReservationActivity" />
+        </activity>
+
+
     </application>
 
 </manifest>

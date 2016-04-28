@@ -1,5 +1,6 @@
-package it.polito.mad_lab3.reservation;
+/*package it.polito.mad_lab3.reservation.food_order;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -11,29 +12,42 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import it.polito.mad_lab3.R;
-import it.polito.mad_lab3.restaurant.menu_prev.MenuListPrevFragment;
-import it.polito.mad_lab3.restaurant.menu_prev.MenuPrevFragment;
-import ivb.com.materialstepper.stepperFragment;
+import java.util.ArrayList;
 
-/**
- * Created by Giovanna on 23/04/2016.
- */
-public class DishesFragment extends stepperFragment {
+import it.polito.mad_lab3.R;
+import it.polito.mad_lab3.data.restaurant.Dish;
+
+
+public class DishesFragment extends Fragment {
 
     private ViewPager mViewPager;
     private SectionsPagerAdapter mSectionsPagerAdapter;
+    private ArrayList<ArrayList<Dish>> lists = new ArrayList<>();
 
     public DishesFragment(){
     }
 
-    @Override
-    public boolean onNextButtonHandler() {
-        return false;
-    }
-
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        ArrayList<Dish> offers = new ArrayList<>();
+        ArrayList<Dish> main = new ArrayList<>();
+        ArrayList<Dish> second = new ArrayList<>();
+        ArrayList<Dish> dessert = new ArrayList<>();
+        ArrayList<Dish> others = new ArrayList<>();
+
+        main.add(new Dish("Pizza", 0,0,5, null, null, null));
+        main.add(new Dish("Menu kebab", 0,0,6 ,null, null, null));
+
+        second.add(new Dish("Pollo", 0,0, 5,null, null, null));
+
+        lists.add(offers);
+        lists.add(main);
+        lists.add(second);
+        lists.add(dessert);
+        lists.add(others);
+
     }
 
     @Nullable
@@ -47,7 +61,7 @@ public class DishesFragment extends stepperFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager(), getContext());
         mViewPager = (ViewPager) view.findViewById(R.id.viewpager_menu);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
@@ -55,32 +69,46 @@ public class DishesFragment extends stepperFragment {
         tabLayout.setupWithViewPager(mViewPager);
     }
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
+        Context context;
 
         public SectionsPagerAdapter(FragmentManager fm) {
+
             super(fm);
+        }
+
+        public SectionsPagerAdapter(FragmentManager fm, Context context) {
+            super(fm);
+            this.context = context;
         }
 
         @Override
         public Fragment getItem(int position) {
-            return MenuListFragment.newInstance(position+1);
+
+            return ListOrderFragment.newInstance(position, context, lists.get(position));
         }
 
         @Override
         public int getCount() {
-            return 3;
+            return 5;
         }
+
 
         @Override
         public CharSequence getPageTitle(int position) {
+            // Generate title based on item position
             switch (position) {
                 case 0:
-                    return "uno";
+                    return getResources().getString(R.string.offers);
                 case 1:
-                    return "due";
+                    return getResources().getString(R.string.first);
                 case 2:
-                    return "tre";
+                    return getResources().getString(R.string.second);
+                case 3:
+                    return getResources().getString(R.string.dessert);
+                case 4:
+                    return getResources().getString(R.string.other);
             }
             return null;
         }
     }
-}
+}*/
