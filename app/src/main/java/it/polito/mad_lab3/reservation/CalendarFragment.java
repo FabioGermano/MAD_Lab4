@@ -6,16 +6,20 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
+import android.text.InputFilter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -31,10 +35,12 @@ public class CalendarFragment extends Fragment {
     private Button btt;
     private ListView listView;
     private NumberPicker numberPicker;
+    ArrayList<String> datesInDBFormat = new ArrayList<>();
 
     public interface OnDateSelectedListener {
 
         public void onDateSelected( String date);
+        public void initialValue(String date);
 
     }
 
@@ -52,37 +58,6 @@ public class CalendarFragment extends Fragment {
         }
     }
 
-    /*@Override
-    public boolean onNextButtonHandler() {
-
-        if(gridView.getCheckedItemPosition()==-1) {
-
-            android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(
-                    getActivity());
-
-            // set title
-            alertDialogBuilder.setTitle("Complete all fiealds");
-            alertDialogBuilder
-                    .setMessage("Pick a date and a time")
-                    .setCancelable(true)
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-
-                        }
-                    });
-
-            // create alert dialog
-            android.support.v7.app.AlertDialog alertDialog = alertDialogBuilder.create();
-
-            // show it
-            alertDialog.show();
-            return false;
-        }
-            //TODO update toolbar view with current info about reservation
-            return true;
-
-        }*/
-
 
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,7 +73,7 @@ public class CalendarFragment extends Fragment {
         int year , month, day , week_day;
 
         ArrayList<String> dates = new ArrayList<>();
-        final ArrayList<String> datesInDBFormat = new ArrayList<>();
+
 
         //TODO gestire i giorni in cui è chiuso, visualizzarlo o no?
 
@@ -112,11 +87,12 @@ public class CalendarFragment extends Fragment {
             String str = intToWeekString(week_day) + " " + day + " " + intToMonthString(month);// + " "+ year;
             dates.add(str);
             month++; //to start counting from 1=jan
-            //string in the db format with first character representing which day of the week is
+            //string in the db format with first character representing which day of the week (mon, tue...) is
             String wd = String.valueOf(week_day);
             datesInDBFormat.add(wd+year+"-"+month+"-"+day);
             c.add(Calendar.DATE, 1);
         }
+
         String[] picker;
         picker = new String[7];
 
@@ -131,8 +107,12 @@ public class CalendarFragment extends Fragment {
         //Specify the NumberPicker data source as array elements
         numberPicker.setDisplayedValues(picker);
 
+        numberPicker.setValue(0);
+
         numberPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
-        //numberPicker.setWrapSelectorWheel(true);
+
+
+        numberPicker.setWrapSelectorWheel(true);
         numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal){
@@ -143,6 +123,16 @@ public class CalendarFragment extends Fragment {
         });
 
         return rootView;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        int x= numberPicker.getValue();
+        Log.w("debug", datesInDBFormat.get(3));
+        mCallback.initialValue(datesInDBFormat.get(x));
+
+
     }
 
     private String intToWeekString (int weekday){

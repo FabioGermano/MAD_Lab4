@@ -3,6 +3,7 @@ package it.polito.mad_lab3.reservation;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,6 +19,7 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import it.polito.mad_lab3.R;
+import it.polito.mad_lab3.reservation.food_order.FoodOrderActivity;
 
 /**
  * Created by Giovanna on 23/04/2016.
@@ -32,53 +34,24 @@ public class ChoiceFragment extends Fragment {
     private boolean confirmed= false;
     private int seats;
     private ImageButton plus, minus;
+    private Button checkOut, orderNow;
     private TextView counter;
     private int cnt;
 
     public interface OnChoiceSelectedListener {
 
-        public void onSeatsNumberSelected( boolean eat_in, int number);
+        void updateSeatsNumber(int seats);
+        void onChoiceMade(boolean eat_in);
+        void onCheckOutChoiceMade(boolean checkoutNow);
+
 
     }
 
-   /* @Override
-    public boolean onNextButtonHandler() {
-
-
-        if(numberPicker.getVisibility() == View.VISIBLE){
-            android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(
-                    getActivity());
-
-            // set title
-            alertDialogBuilder.setTitle("Confirm the number of seats");
-            alertDialogBuilder
-                    .setMessage("You have selected "+seats+"seats.")
-                    .setCancelable(true)
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            confirmed=true;
-                        }
-                    })
-            .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                            confirmed=false;
-
-                }
-            });
-
-            // create alert dialog
-            android.support.v7.app.AlertDialog alertDialog = alertDialogBuilder.create();
-            // show it
-            alertDialog.show();
-        }
-            if (!confirmed)
-                return false;
-        return true;
-    }*/
 
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         cnt=1;
+        mCallback.updateSeatsNumber(cnt);
     }
 
     @Override
@@ -111,6 +84,28 @@ public class ChoiceFragment extends Fragment {
         minus = (ImageButton) seats_layout.findViewById(R.id.minus);
         counter= (TextView) seats_layout.findViewById(R.id.counter);
 
+        checkOut = (Button) rootView.findViewById(R.id.checkout);
+        orderNow = (Button) rootView.findViewById(R.id.order_food);
+
+        checkOut.setVisibility(View.INVISIBLE);
+        orderNow.setVisibility(View.INVISIBLE);
+
+
+        checkOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCallback.onCheckOutChoiceMade(true);
+
+            }
+        });
+        orderNow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCallback.onCheckOutChoiceMade(false);
+            }
+        });
+
+
         //plus.setColorFilter(getResources().getColor(R.color.themeColorLighter));
         //minus.setColorFilter(getResources().getColor(R.color.themeColorLighter));
 
@@ -121,6 +116,7 @@ public class ChoiceFragment extends Fragment {
             public void onClick(View v) {
                 cnt++;
                 counter.setText(String.valueOf(cnt));
+                mCallback.updateSeatsNumber(cnt);
             }
         });
         minus.setOnClickListener(new OnClickListener() {
@@ -129,24 +125,9 @@ public class ChoiceFragment extends Fragment {
                 if (cnt>1)
                     cnt--;
                 counter.setText(String.valueOf(cnt));
+                mCallback.updateSeatsNumber(cnt);
             }
         });
-
-
-        /*numberPicker = (NumberPicker) rootView.findViewById(R.id.numberPicker);
-
-        numberPicker.setMinValue(1);
-        numberPicker.setMaxValue(8);
-        numberPicker.setWrapSelectorWheel(true);
-        numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal){
-                //Display the newly selected value from picker
-                    seats= newVal;
-                    mCallback.onSeatsNumberSelected(true, seats);
-            }
-        });
-        */
 
        eatin.setOnClickListener(new OnClickListener() {
            @Override
@@ -164,7 +145,11 @@ public class ChoiceFragment extends Fragment {
                            public void onAnimationEnd(Animator animation) {
                                super.onAnimationEnd(animation);
                                seats_layout.setVisibility(View.VISIBLE);
-                               mCallback.onSeatsNumberSelected(true, cnt);
+                               mCallback.onChoiceMade(true);
+                               checkOut.setVisibility(View.VISIBLE);
+                               orderNow.setVisibility(View.VISIBLE);
+
+
                            }
                        });
 
@@ -188,7 +173,7 @@ public class ChoiceFragment extends Fragment {
                             public void onAnimationEnd(Animator animation) {
                                 super.onAnimationEnd(animation);
                                 seats_layout.setVisibility(View.GONE);
-                                mCallback.onSeatsNumberSelected(false, 0);
+                                mCallback.onChoiceMade(false);
 
                             }
                         });

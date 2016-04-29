@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import it.polito.mad_lab3.R;
+import it.polito.mad_lab3.common.ExpandableHeightGridView;
 import ivb.com.materialstepper.stepperFragment;
 
 /**
@@ -27,7 +28,7 @@ public class TimeFragment extends Fragment {
 
     OnTimeSelectedListener mCallback;
 
-    private GridView gridView;
+    private ExpandableHeightGridView gridView;
     private ArrayList<String> time;
 
     public interface OnTimeSelectedListener {
@@ -146,7 +147,11 @@ public class TimeFragment extends Fragment {
                 start.add(Calendar.MINUTE, 30);
             }
         }
-        gridView = (GridView) rootView.findViewById(R.id.gridView);
+
+
+
+        gridView = (ExpandableHeightGridView) rootView.findViewById(R.id.gridView);
+        gridView.setExpanded(true);
         gridView.setAdapter(new DatesAdapter(getContext(), time));
         gridView.setChoiceMode(GridView.CHOICE_MODE_SINGLE);
 

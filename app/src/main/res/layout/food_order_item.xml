@@ -44,7 +44,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:background="@android:drawable/ic_media_play"
-            android:backgroundTint="@color/colorPrimary"
+            android:backgroundTint="@color/themeColorLighter"
             android:rotation="180" />
 
         <TextView
@@ -60,7 +60,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:background="@android:drawable/ic_media_play"
-            android:backgroundTint="@color/colorPrimary" />
+            android:backgroundTint="@color/themeColorLighter" />
 
     </LinearLayout>
 </LinearLayout>

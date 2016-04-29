@@ -36,20 +36,13 @@
         <FrameLayout
             android:id="@+id/time_fragment_container"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_marginBottom="5dp"/>
+            android:layout_height="wrap_content"/>
 
         <FrameLayout
             android:id="@+id/choice_fragment_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="5dp"/>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/next"
-            android:text="Next"/>
 
     </LinearLayout>
 

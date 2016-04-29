@@ -11,8 +11,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import it.polito.mad_lab3.R;
-import it.polito.mad_lab3.data.reservation.ReservedDish;
-import it.polito.mad_lab3.data.restaurant.Dish;
+import it.polito.mad_lab3.data.reservation.Dish;
 
 /**
  * Created by Giovanna on 28/04/2016.
@@ -20,10 +19,12 @@ import it.polito.mad_lab3.data.restaurant.Dish;
 public class FoodOrderAdapter extends ArrayAdapter<Dish>{
 
     private ArrayList<Dish> data;
+    private int section;
 
-    public FoodOrderAdapter(Context context, ArrayList<Dish> objects) {
+    public FoodOrderAdapter(Context context, ArrayList<Dish> objects, int section) {
         super(context, 0, objects);
         this.data=objects;
+        this.section=section;
     }
 
     // View lookup cache
@@ -37,11 +38,10 @@ public class FoodOrderAdapter extends ArrayAdapter<Dish>{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
-        Dish dish = getItem(position);
-
+        final Dish dish = getItem(position);
 
         // Check if an existing view is being reused, otherwise inflate the view
-        ViewHolder viewHolder; // view lookup cache stored in tag
+        final ViewHolder viewHolder; // view lookup cache stored in tag
         if (convertView == null) {
             viewHolder = new ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
@@ -61,17 +61,22 @@ public class FoodOrderAdapter extends ArrayAdapter<Dish>{
         // Populate the data into the template view using the data object
         viewHolder.name.setText(dish.getDishName());
         viewHolder.price.setText(String.valueOf(dish.getPrice()));
-        viewHolder.quantity.setText("0");
+        viewHolder.quantity.setText(String.valueOf(dish.getQuantity()));
         viewHolder.minus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+               int cnt= dish.getQuantity();
+                cnt++;
+                viewHolder.quantity.setText(String.valueOf(dish.getQuantity()));
             }
         });
         viewHolder.plus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                int cnt= dish.getQuantity();
+                if(cnt>1){
+                cnt--;
+                viewHolder.quantity.setText(String.valueOf(dish.getQuantity()));}
             }
         });
 

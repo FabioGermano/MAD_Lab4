@@ -107,7 +107,25 @@
                 android:backgroundTint="@color/themeColorLighter" />
 
         </LinearLayout>
+
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/order_food"
+            android:text="Order now"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/checkout"
+            android:text="Finish"/>
+    </LinearLayout>
+
 
     <!-- <NumberPicker
          android:layout_width="wrap_content"
