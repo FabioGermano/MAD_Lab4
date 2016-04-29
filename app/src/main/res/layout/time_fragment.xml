@@ -33,7 +33,7 @@
             />
     </LinearLayout>
 
-    <com.example.ExpandableHeightGridView
+    <it.polito.mad_lab3.common.ExpandableHeightGridView
         android:id="@+id/gridView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
