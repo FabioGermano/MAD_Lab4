@@ -4,6 +4,7 @@ import android.os.Build;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,6 +25,9 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     private View toolbarShadow;
     private boolean useToolbar=true;
 
+    //per visualizzare o meno, e abilitare, l'icona nella toolbar
+    private boolean icona_toolbar = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,28 +36,38 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     @Override
     public void setContentView(int layoutResID) {
         View view = getLayoutInflater().inflate(layoutResID, null);
-        configureBarraLaterale(view);
         configureToolbar(view);
         super.setContentView(view);
+
+        configureBarraLaterale(view);
 
     }
     protected boolean useToolbar(boolean useToolbar) {
         return useToolbar;
     }
 
-    private void configureBarraLaterale(View view) {
+    protected  void setIconaToolbar(boolean flag){
+        this.icona_toolbar = flag;
+    }
+
+    protected void configureBarraLaterale(View view) {
+        System.out.println("Configuro barra laterale");
         View header = null;
         //inizializzo menu laterale
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) view.findViewById(R.id.drawer_layout);
 
         if(drawer != null) {
-            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                    this, drawer, null/*toolbar*/, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            // se sono nella pagina principale abilito il tasto nella toolbar per visualizzare il menu
+            // se no lascio il tasto indietro
+            if(icona_toolbar) {
+                ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                        this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 
-            drawer.setDrawerListener(toggle);
-            toggle.syncState();
+                drawer.setDrawerListener(toggle);
+                toggle.syncState();
+            }
 
-            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            NavigationView navigationView = (NavigationView) view.findViewById(R.id.nav_view);
 
             //controllo se l'utente è collegato e decido quale menu/header visualizzare
             boolean login = controlloLogin();
@@ -68,6 +82,9 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                     navigationView.setNavigationItemSelectedListener(this);
                     header = navigationView.getHeaderView(0);
                 }
+            } else {
+                System.out.println("navigationView == null");
+
             }
 
             //riempio l'header della barra laterale
@@ -83,7 +100,9 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                         restaurant_logo.setImageBitmap(logo);
                 }*/
             }
-        }
+        } else
+            System.out.println("barra laterale == null");
+
     }
 
     private void configureToolbar(View view) {
@@ -105,7 +124,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                     //getSupportActionBar().hide();
                     titleTextView.setVisibility(View.GONE);
                     //toolbar.setBackgroundColor(Color.TRANSPARENT);
-                    toolbar.setBackgroundResource(R.drawable.shadow);
+                    //toolbar.setBackgroundResource(R.drawable.shadow);
                 }
                 // Get access to the custom title view
             }
@@ -114,7 +133,9 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     protected void setBackButtonVisibility(boolean visible)
     {
         backbutton_visibility=visible;
-        getSupportActionBar().setDisplayHomeAsUpEnabled(backbutton_visibility);
+        ActionBar actionB = getSupportActionBar();
+        if(actionB != null)
+            actionB.setDisplayHomeAsUpEnabled(backbutton_visibility);
     }
 
     protected void hideToolbarShadow(boolean bool){
@@ -126,6 +147,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         if(title!=null)
             titleTextView.setText(title);
     }
+
     private boolean controlloLogin(){
         return true;
     }
@@ -134,13 +156,13 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.mod_profilo) {
+        if (id == R.id.mod_profilo_user) {
             ModificaProfilo();
-        } else if (id == R.id.gest_prenotazioni) {
+        } else if (id == R.id.prenotazioni_user) {
             ShowPrenotazioni();
-        } else if (id == R.id.nav_contact) {
+        } else if (id == R.id.nav_contact_user) {
             Contattaci();
-        } else if (id == R.id.nav_bugs) {
+        } else if (id == R.id.nav_bugs_user) {
             SegnalaBug();
         } else if(id == R.id.esegui_login) {
             Login();

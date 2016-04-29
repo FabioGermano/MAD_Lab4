@@ -17,6 +17,7 @@ import it.polito.mad_lab3.data.restaurant.Offer;
 import it.polito.mad_lab3.data.restaurant.Restaurant;
 import it.polito.mad_lab3.data.restaurant.RestaurantEntity;
 import it.polito.mad_lab3.data.restaurant.Review;
+import it.polito.mad_lab3.elaborazioneRicerche.elaborazioneRicerche;
 import it.polito.mad_lab3.reservation.ReservationActivity;
 import it.polito.mad_lab3.reservation.food_order.FoodOrderActivity;
 import it.polito.mad_lab3.restaurant.RestaurantActivity;
@@ -28,10 +29,12 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setBackButtonVisibility(false);
+        setIconaToolbar(true);
+
         setContentView(R.layout.activity_main);
 
-        setActivityTitle("Restaurant finder");
-        setBackButtonVisibility(false);
+        setActivityTitle(getResources().getString(R.string.titolo_main_activity));
 
         restaurantBtn = (Button) findViewById(R.id.restaurantBtn);
         reservationBtn = (Button) findViewById(R.id.reservationBtn);
@@ -111,6 +114,9 @@ public class MainActivity extends BaseActivity {
     }
 
     public void searchRestaurant(View view) {
-
+        Intent i = new Intent(getBaseContext(), elaborazioneRicerche.class);
+        //  eseguo qui la ricerca e passo la lista dei risultati da visualizzare,
+        // così se ho problemi di qualunque tipo li visualizzo in questa pagina
+        startActivity(i);
     }
 }

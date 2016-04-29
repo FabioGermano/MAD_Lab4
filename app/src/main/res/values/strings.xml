@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">MAD_Lab3</string>
+
     <string name="pick_date">Pick a date!</string>
     <string name="pick_time">Pick a time!</string>
     <string name="sunday">Sunday</string>
@@ -29,7 +30,8 @@
     <string name="add_photo">Add a new photo</string>
 
     <!-- Pagina principale -->
-    <string name="ricerca">research ...</string>
+    <!--<string name="ricerca">research ...</string>-->
+    <string name="titolo_main_activity">Restaurant finder</string>
     <string name="titolo_ricerca">Find your restaurant:</string>
     <string name="info_ricerca">(make searches by name of restaurant or by place)</string>
     <string name="titolo_offerte_vicine">Some offers near you ...</string>
@@ -44,6 +46,7 @@
     <string name="segnala_problema">Segnala Problema</string>
     <string name="esegui_login">Esegui Login</string>
     <string name="title_activity_scrolling">ScrollingActivity</string>
+    <string name="logout">Logout</string>
 
     <!--  menu  strings -->
     <string name="first">Main courses</string>
@@ -51,6 +54,16 @@
     <string name="dessert">Dessert</string>
     <string name="other">Other</string>
     <string name="offers">Offers</string>
+
+    <!-- Elaborazione Ricerche -->
+    <string name="titolo_elaborazioneRicerche">Restaurants found</string>
+    <string name="risultati_ricerca">Search results:</string>
+
+    <!-- Errori e messaggi di default -->
+    <string name="dataSaved">DATA SAVED</string>
+    <string name="error">Warning</string>
+    <string name="exceptionError">Sorry, an error occurred</string>
+    <string name="error_complete">Please, complete correctly all fields</string>
 
 
 </resources>
