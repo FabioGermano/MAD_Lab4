@@ -30,15 +30,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
-            android:paddingRight="10dp"
+            android:paddingRight="40dp"
             android:paddingTop="15dp"
             android:paddingBottom="15dp"
             android:textColor="@android:color/white" />
         <ImageButton
+            android:layout_centerVertical="true"
             android:id="@+id/likeButton"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_thumb_up_white_36dp"
+            android:layout_marginRight="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"/>
     </RelativeLayout>
-
+    <include layout="@layout/toolbar_view" android:layout_height="wrap_content" android:layout_width="match_parent"></include>
 </FrameLayout>

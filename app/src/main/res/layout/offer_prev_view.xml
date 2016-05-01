@@ -34,7 +34,7 @@
             android:layout_centerInParent="true"
             android:layout_height="24dp"
             android:paddingRight="5dp"
-            android:background="@color/colorPrimary"
+            android:background="@color/themeColor"
             android:gravity="center"
             android:textAlignment="center"
             android:text="Nome offerta"/>
@@ -64,7 +64,7 @@
             android:layout_centerInParent="true"
             android:layout_height="24dp"
             android:paddingRight="5dp"
-            android:background="@color/colorPrimary"
+            android:background="@color/themeColor"
             android:gravity="center"
             android:textAlignment="center"
             android:text="3.5€"/>
@@ -95,7 +95,7 @@
             android:layout_centerInParent="true"
             android:layout_height="24dp"
             android:paddingRight="5dp"
-            android:background="@color/colorPrimary"
+            android:background="@color/themeColor"
             android:orientation="horizontal">
 
             <RatingBar

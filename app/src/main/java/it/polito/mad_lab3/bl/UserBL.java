@@ -2,6 +2,8 @@ package it.polito.mad_lab3.bl;
 
 import android.content.Context;
 
+import java.util.Iterator;
+
 import it.polito.mad_lab3.dal.DB;
 import it.polito.mad_lab3.dal.DBManager;
 import it.polito.mad_lab3.data.user.User;
@@ -35,12 +37,7 @@ public class UserBL {
         return null;
     }
 
-    public static boolean checkUserPhotoLike(Context _context, User user, int restaurantId, int userPhotoId){
-
-        if(context == null){
-            init(_context);
-        }
-
+    public static boolean checkUserPhotoLike(User user, int restaurantId, int userPhotoId){
         for(UserPhotoLike upl : user.getUserPhotoLikes() ){
             if(upl.getRestaurantId() == restaurantId && upl.getUserPhotoId() == userPhotoId){
                 return true;
@@ -52,6 +49,15 @@ public class UserBL {
 
     public static void addUserPhotoLike(User user, int restaurantId, int userPhotoId){
         user.getUserPhotoLikes().add(new UserPhotoLike(restaurantId, userPhotoId));
+    }
+
+    public static void removeUserPhotoLike(User user, int restaurantId, int userPhotoId){
+        for (Iterator<UserPhotoLike> iterator = user.getUserPhotoLikes().iterator(); iterator.hasNext(); ) {
+            UserPhotoLike userPhotoLike = iterator.next();
+            if (userPhotoLike.getRestaurantId() == restaurantId && userPhotoLike.getUserPhotoId() == userPhotoId) {
+                iterator.remove();
+            }
+        }
     }
 
     public static void saveChanges(Context _context){

@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import java.io.Serializable;
 
+import it.polito.mad_lab3.BaseActivity;
 import it.polito.mad_lab3.R;
 import it.polito.mad_lab3.common.photo_manager.PhotoManager;
 import it.polito.mad_lab3.common.photo_manager.PhotoType;
@@ -21,7 +22,7 @@ import it.polito.mad_lab3.common.photo_viewer.PhotoViewer;
 import it.polito.mad_lab3.common.photo_viewer.PhotoViewerListener;
 import it.polito.mad_lab3.data.restaurant.UserPhoto;
 
-public class ChoosePhotoActivity extends AppCompatActivity implements PhotoViewerListener{
+public class ChoosePhotoActivity extends BaseActivity implements PhotoViewerListener{
 
     private String imageLarge = null;
     private String imageThumb = null;
@@ -37,6 +38,8 @@ public class ChoosePhotoActivity extends AppCompatActivity implements PhotoViewe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(  R.layout.activity_choose_photo);
+
+        setActivityTitle(getResources().getString(R.string.add_userphoto_activity_title));
 
         sendButton = (Button)findViewById(R.id.sendButton);
         sendButton.setOnClickListener(new View.OnClickListener() {
@@ -55,6 +58,16 @@ public class ChoosePhotoActivity extends AppCompatActivity implements PhotoViewe
         newPhotoId =  getIntent().getExtras().getInt("newPhotoId");
 
         ID = String.valueOf(restaurantId) + "_" + String.valueOf(newPhotoId);
+    }
+
+    @Override
+    protected void ModificaProfilo() {
+
+    }
+
+    @Override
+    protected void ShowPrenotazioni() {
+
     }
 
     private void sendButtonClicked() {
@@ -106,4 +119,6 @@ public class ChoosePhotoActivity extends AppCompatActivity implements PhotoViewe
         super.onDestroy();
         this.photoManager.destroy(ID);
     }
+
+
 }

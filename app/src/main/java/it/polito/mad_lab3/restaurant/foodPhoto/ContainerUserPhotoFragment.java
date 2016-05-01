@@ -134,7 +134,8 @@ public class ContainerUserPhotoFragment extends Fragment  {
 
         for(int i = 0; i<4; i++){
             if(i < n_photos){
-                userPhotoFragments[i].setImage(BitmapFactory.decodeFile(this.restaurant.getUserPhotos().get(i).getThumbPath()));
+                userPhotoFragments[i].setUserPhoto(this.restaurant.getUserPhotos().get(i));
+                userPhotoFragments[i].setImage();
             }
         }
 
@@ -142,4 +143,5 @@ public class ContainerUserPhotoFragment extends Fragment  {
             userPhotoFragments[3].setOpenGalleryOnClick(true);
         }
     }
+
 }

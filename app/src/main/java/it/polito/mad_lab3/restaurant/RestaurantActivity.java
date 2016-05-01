@@ -33,6 +33,8 @@ public class  RestaurantActivity extends BaseActivity {
 
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         collapsingToolbarLayout.setTitle("Demo");
+        collapsingToolbarLayout.setExpandedTitleColor(Color.WHITE);
+        collapsingToolbarLayout.setCollapsedTitleTextColor(Color.WHITE);
 
         ((ImageView)findViewById(R.id.mapIcon)).setColorFilter(Color.BLACK);
         ((ImageView)findViewById(R.id.phoneIcon)).setColorFilter(Color.BLACK);

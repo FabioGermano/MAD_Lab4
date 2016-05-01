@@ -5,14 +5,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.GridView;
 
+import it.polito.mad_lab3.BaseActivity;
 import it.polito.mad_lab3.R;
 import it.polito.mad_lab3.bl.RestaurantBL;
 import it.polito.mad_lab3.data.restaurant.Restaurant;
 import it.polito.mad_lab3.data.restaurant.UserPhoto;
 
-public class PhotoGaleryActivity extends AppCompatActivity implements PhotoGalleryListener{
+public class PhotoGaleryActivity extends BaseActivity implements PhotoGalleryListener{
 
-
+    private GridView gridView;
+    private PhotoGalleryAdapter adapter;
     private Restaurant restaurant;
 
     @Override
@@ -20,16 +22,28 @@ public class PhotoGaleryActivity extends AppCompatActivity implements PhotoGalle
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_galery);
 
+        setActivityTitle(getResources().getString(R.string.gallery_activity_title));
+
         this.restaurant = RestaurantBL.getRestaurantById(getBaseContext(), getIntent().getExtras().getInt("restaurantId"));
 
-        GridView gridView = (GridView)findViewById(R.id.galleryGridview);
+        gridView = (GridView)findViewById(R.id.galleryGridview);
 
-        PhotoGalleryAdapter adapter = new PhotoGalleryAdapter(this);
+        adapter = new PhotoGalleryAdapter(this);
         adapter.setListener(this);
 
         adapter.setUserPhotos(restaurant.getUserPhotos());
 
         gridView.setAdapter(adapter);
+    }
+
+    @Override
+    protected void ModificaProfilo() {
+
+    }
+
+    @Override
+    protected void ShowPrenotazioni() {
+
     }
 
     @Override
@@ -42,5 +56,13 @@ public class PhotoGaleryActivity extends AppCompatActivity implements PhotoGalle
 
         startActivity(intent);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        adapter.notifyDataSetChanged();
+        gridView.invalidateViews();
     }
 }

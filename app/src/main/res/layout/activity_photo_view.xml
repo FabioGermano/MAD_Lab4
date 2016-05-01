@@ -19,5 +19,5 @@
             android:layout_centerHorizontal="true"/>
 
     </RelativeLayout>
-
+    <include layout="@layout/toolbar_view" android:layout_height="wrap_content" android:layout_width="match_parent"></include>
 </FrameLayout>

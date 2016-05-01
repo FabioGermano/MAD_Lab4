@@ -58,7 +58,6 @@
                 android:name="it.polito.mad_lab3.restaurant.foodPhoto.UserPhotoFragment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                custom:latest="true"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 />

@@ -42,6 +42,15 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         configureBarraLaterale(view);
 
     }
+
+    protected void hideToolbar(boolean bool){
+        hideToolbar = bool;
+        titleTextView.setVisibility(View.GONE);
+        //toolbar.setBackgroundColor(Color.TRANSPARENT);
+        toolbar.setBackgroundResource(R.drawable.shadow);
+
+    }
+
     protected boolean useToolbar(boolean useToolbar) {
         return useToolbar;
     }
@@ -124,7 +133,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                     //getSupportActionBar().hide();
                     titleTextView.setVisibility(View.GONE);
                     //toolbar.setBackgroundColor(Color.TRANSPARENT);
-                    //toolbar.setBackgroundResource(R.drawable.shadow);
+                    toolbar.setBackgroundResource(R.drawable.shadow);
                 }
                 // Get access to the custom title view
             }
@@ -149,6 +158,20 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     }
 
     private boolean controlloLogin(){
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case android.R.id.home:
+                finish();
+                break;
+            default:
+                break;
+        }
+
         return true;
     }
 

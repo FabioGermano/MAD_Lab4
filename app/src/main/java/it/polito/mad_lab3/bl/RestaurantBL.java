@@ -3,6 +3,7 @@ package it.polito.mad_lab3.bl;
 import android.content.Context;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import it.polito.mad_lab3.common.photo_viewer.PhotoViewer;
 import it.polito.mad_lab3.dal.DB;
@@ -61,6 +62,14 @@ public class RestaurantBL {
         for(UserPhoto r : restaurant.getUserPhotos()){
             if(r.getId() == userPhotoId){
                 r.setLikes(r.getLikes()+1);
+            }
+        }
+    }
+
+    public static void removeLikeToUserPhoto(Restaurant restaurant, int userPhotoId){
+        for(UserPhoto r : restaurant.getUserPhotos()){
+            if(r.getId() == userPhotoId){
+                r.setLikes(r.getLikes()-1);
             }
         }
     }

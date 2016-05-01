@@ -64,6 +64,8 @@
     <string name="error">Warning</string>
     <string name="exceptionError">Sorry, an error occurred</string>
     <string name="error_complete">Please, complete correctly all fields</string>
+    <string name="gallery_activity_title">Gallery</string>
+    <string name="add_userphoto_activity_title">Add a new photo</string>
 
 
 </resources>

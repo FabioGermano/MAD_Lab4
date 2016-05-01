@@ -5,27 +5,50 @@
     android:layout_height="match_parent"
     tools:context="it.polito.mad_lab3.restaurant.ChoosePhotoActivity">
 
+    <include android:id="@+id/includedtoolbar" layout="@layout/toolbar_view" android:layout_height="wrap_content" android:layout_width="match_parent"></include>
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/includedtoolbar"
         android:orientation="vertical"
         android:paddingBottom="@dimen/activity_vertical_margin"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@android:drawable/dialog_holo_light_frame">
         <fragment
             xmlns:custom="http://schemas.android.com/apk/res/it.polito.mad_lab3"
             android:id="@+id/photoViewer"
             android:name="it.polito.mad_lab3.common.photo_viewer.PhotoViewer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_margin="2dp"
             custom:isEditable="true"
             custom:isLogo="false"
             custom:heightInDP="200"
             custom:widthInDP="200"
             custom:addImageMode="clickOnImage"
             custom:initialBackground="@drawable/nothumb" />
+        </RelativeLayout>
+
+        <android.support.v7.widget.CardView
+
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            card_view:cardUseCompatPadding="true"
+            card_view:cardCornerRadius="4dp"
+            android:minHeight="64dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:orientation="vertical">
         <TextView
             android:layout_marginTop="16dp"
             android:layout_width="wrap_content"
@@ -35,14 +58,29 @@
             android:id="@+id/descriptionET"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-    </LinearLayout>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
 
+
+    </LinearLayout>
+    <android.support.v7.widget.CardView
+
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        card_view:cardUseCompatPadding="true"
+        card_view:cardCornerRadius="4dp"
+        android:padding="16dp"
+        android:minHeight="64dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/view">
     <Button
         android:id="@+id/sendButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
+        android:background="?attr/selectableItemBackground"
         android:text="SEND IMAGE"
-        android:layout_alignParentBottom="true" />
+         />
+    </android.support.v7.widget.CardView>
 
 </RelativeLayout>

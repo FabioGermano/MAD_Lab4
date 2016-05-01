@@ -2,12 +2,15 @@ package it.polito.mad_lab3.restaurant.gallery;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import it.polito.mad_lab3.BaseActivity;
 import it.polito.mad_lab3.R;
 import it.polito.mad_lab3.bl.RestaurantBL;
 import it.polito.mad_lab3.bl.UserBL;
@@ -16,7 +19,7 @@ import it.polito.mad_lab3.data.restaurant.Restaurant;
 import it.polito.mad_lab3.data.restaurant.UserPhoto;
 import it.polito.mad_lab3.data.user.User;
 
-public class GalleryPhotoViewActivity extends AppCompatActivity {
+public class GalleryPhotoViewActivity extends BaseActivity {
 
     private Restaurant restaurant;
     private TouchImageView touchImageView;
@@ -31,10 +34,13 @@ public class GalleryPhotoViewActivity extends AppCompatActivity {
 
         user = UserBL.getUserById(getBaseContext(), 1);
 
-        if(!UserBL.checkUserPhotoLike(getBaseContext(), user, this.restaurant.getRestaurantId(), userPhoto.getId())){}
-            //this.likeButton.setBackground(getDrawable(R.drawable.cibo1));
-        else{}
-            //this.likeButton.setBackground(getDrawable(R.drawable.cibo2));
+        if(!UserBL.checkUserPhotoLike(user, this.restaurant.getRestaurantId(), userPhoto.getId())) {
+            this.likeButton.setColorFilter(Color.WHITE);
+        }
+        else
+        {
+            this.likeButton.setColorFilter(getResources().getColor(R.color.themeColor));
+        }
     }
 
     @Override
@@ -42,6 +48,8 @@ public class GalleryPhotoViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_gallery_photo_view);
+        hideToolbar(true);
+        hideToolbarShadow(true);
 
         getRestaurant(getIntent().getExtras());
 
@@ -61,12 +69,31 @@ public class GalleryPhotoViewActivity extends AppCompatActivity {
         getUserPhoto(getIntent().getExtras());
     }
 
-    private void likeButtonPressed() {
-        RestaurantBL.addNewLikeToUserPhoto(this.restaurant, this.userPhoto.getId());
-        UserBL.addUserPhotoLike(this.user, this.restaurant.getRestaurantId(), this.userPhoto.getId());
+    @Override
+    protected void ModificaProfilo() {
 
-        RestaurantBL.saveChanges(getBaseContext());
-        UserBL.saveChanges(getBaseContext());
+    }
+
+    @Override
+    protected void ShowPrenotazioni() {
+
+    }
+
+    private void likeButtonPressed() {
+        if(!UserBL.checkUserPhotoLike(this.user, this.restaurant.getRestaurantId(), this.userPhoto.getId())) {
+
+            RestaurantBL.addNewLikeToUserPhoto(this.restaurant, this.userPhoto.getId());
+            UserBL.addUserPhotoLike(this.user, this.restaurant.getRestaurantId(), this.userPhoto.getId());
+
+            this.likeButton.setColorFilter(getResources().getColor(R.color.themeColor));
+        }
+        else
+        {
+            RestaurantBL.removeLikeToUserPhoto(this.restaurant, this.userPhoto.getId());
+            UserBL.removeUserPhotoLike(this.user, this.restaurant.getRestaurantId(), this.userPhoto.getId());
+
+            this.likeButton.setColorFilter(Color.WHITE);
+        }
     }
 
     private void getRestaurant(Bundle extras) {
@@ -88,5 +115,13 @@ public class GalleryPhotoViewActivity extends AppCompatActivity {
             Bitmap bitmap = BitmapFactory.decodeFile(path, options);
             touchImageView.setImageBitmap(bitmap);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        RestaurantBL.saveChanges(getBaseContext());
+        UserBL.saveChanges(getBaseContext());
     }
 }

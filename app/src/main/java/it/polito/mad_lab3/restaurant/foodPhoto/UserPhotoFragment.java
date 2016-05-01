@@ -1,12 +1,15 @@
 package it.polito.mad_lab3.restaurant.foodPhoto;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +20,8 @@ import android.widget.TextView;
 
 import it.polito.mad_lab3.R;
 import it.polito.mad_lab3.data.restaurant.Restaurant;
+import it.polito.mad_lab3.data.restaurant.UserPhoto;
+import it.polito.mad_lab3.restaurant.gallery.GalleryPhotoViewActivity;
 import it.polito.mad_lab3.restaurant.gallery.PhotoGaleryActivity;
 
 /**
@@ -25,12 +30,14 @@ import it.polito.mad_lab3.restaurant.gallery.PhotoGaleryActivity;
 public class UserPhotoFragment extends Fragment {
     private ImageView foodIV;
     private TextView likesTV;
-    private boolean isLatest;
     private RelativeLayout trasparentContainer;
     private boolean photoSetted, openGalleryOnClick;
     private Restaurant restaurant = null;
+    private UserPhoto userPhoto;
+    private boolean latest;
 
     public UserPhotoFragment(){}
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,22 +52,32 @@ public class UserPhotoFragment extends Fragment {
         this.likesTV.setVisibility(View.GONE);
         this.likesTV.setText("Still no likes");
 
-        if(this.isLatest){
-            this.foodIV.setOnClickListener(new View.OnClickListener() {
+        this.foodIV.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onLatestClick();
+                    onPhotoClick();
                 }
             });
-        }
 
         return rootView;
     }
 
-    private void onLatestClick() {
-        if(this.openGalleryOnClick && this.restaurant != null){
+    private void onPhotoClick() {
+        if(this.openGalleryOnClick && this.restaurant != null){ // apro galleria
             Intent i = new Intent(getContext(), PhotoGaleryActivity.class);
+            Bundle b = new Bundle();
+            b.putInt("restaurantId", this.restaurant.getRestaurantId());
+            i.putExtras(b);
             startActivity(i);
+        }
+        else if(!this.openGalleryOnClick && this.restaurant != null && this.userPhoto != null){ // apro dettaglio photo
+            Intent intent = new Intent(getActivity().getBaseContext(), GalleryPhotoViewActivity.class);
+            intent.putExtra("photoPath", userPhoto.getLargePath());
+            intent.putExtra("isEditable", false);
+            intent.putExtra("userPhoto", userPhoto);
+            intent.putExtra("restaurantId", this.restaurant.getRestaurantId());
+
+            startActivity(intent);
         }
     }
 
@@ -71,7 +88,7 @@ public class UserPhotoFragment extends Fragment {
     public void onInflate(Activity activity, AttributeSet attrs, Bundle savedInstanceState) {
         super.onInflate(activity, attrs, savedInstanceState);
 
-        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.UserPhotoFragment);
+        /*TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.UserPhotoFragment);
         final int N = a.getIndexCount();
         for (int i = 0; i < N; ++i) {
             int attr = a.getIndex(i);
@@ -80,18 +97,20 @@ public class UserPhotoFragment extends Fragment {
                     this.isLatest = a.getBoolean(attr, false);
                     break;
             }
-        }
+        }*/
     }
 
-    public void setImage(Bitmap bitmap){
+    public void setImage(){
+        Bitmap bitmap = BitmapFactory.decodeFile(this.userPhoto.getThumbPath());
+
         this.foodIV.setImageBitmap(bitmap);
         this.photoSetted = true;
 
         this.likesTV.setVisibility(View.VISIBLE);
     }
 
+    @SuppressLint("NewApi") // to work on it
     public void setLatestLabel(){
-        if(this.isLatest){
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)trasparentContainer.getLayoutParams();
             params.height = params.width;
             params.addRule(RelativeLayout.ALIGN_TOP, R.id.foodIV);
@@ -101,23 +120,24 @@ public class UserPhotoFragment extends Fragment {
             trasparentContainer.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
 
             this.likesTV.setTextSize(40);
-        }
     }
 
     public void setRemainingNumber(int n) throws Exception {
-        if(!this.isLatest){
-            throw new Exception("The photo must be latest one.");
-        }
-
         this.likesTV.setText("+" + String.valueOf(n));
+        this.latest = true;
     }
 
     public void setLikes(int n) throws Exception {
-        if(this.isLatest){
-            throw new Exception("The photo must not be latest one.");
+        if(latest){
+            return;
         }
 
-        this.likesTV.setText(String.valueOf(n) + " likes on this.");
+        if(n == 0){
+            this.likesTV.setText("Still no likes");
+        }
+        else{
+            this.likesTV.setText(String.valueOf(n)+" likes");
+        }
     }
 
     public boolean isPhotoSetted(){
@@ -130,5 +150,27 @@ public class UserPhotoFragment extends Fragment {
 
     public void init(Restaurant restaurant) {
         this.restaurant = restaurant;
+    }
+
+    public void setUserPhoto(UserPhoto userPhoto) {
+        this.userPhoto = userPhoto;
+        try {
+            setLikes(userPhoto.getLikes());
+        } catch (Exception e) {
+            Log.d(e.getMessage(), e.getMessage());
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if(userPhoto != null){
+            try {
+                setLikes(userPhoto.getLikes());
+            } catch (Exception e) {
+                Log.d(e.getMessage(), e.getMessage());
+            }
+        }
     }
 }
