@@ -58,10 +58,12 @@ public class PhotoGalleryAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, ViewGroup parent) {
         View v = convertView;
         ImageView picture;
         TextView name;
+
+        final int _pos = position;
 
         if (v == null) {
             v = mInflater.inflate(R.layout.gallery_grid_item, parent, false);
@@ -69,7 +71,7 @@ public class PhotoGalleryAdapter extends BaseAdapter {
 
                 @Override
                 public void onClick(View v) {
-                    photoClick(getItem(position));
+                    photoClick(getItem(_pos));
                 }
             });
         }

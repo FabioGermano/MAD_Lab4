@@ -8,6 +8,8 @@ public final class DBToFilenameConverter {
         switch (db){
             case Restaurants:
                 return "db_restaurant";
+            case Users:
+                return "db_user";
             default:
                 return null;
         }

@@ -17,7 +17,6 @@ import android.widget.TextView;
 
 import it.polito.mad_lab3.R;
 import it.polito.mad_lab3.data.restaurant.Restaurant;
-import it.polito.mad_lab3.data.restaurant.UserPhoto;
 import it.polito.mad_lab3.restaurant.gallery.PhotoGaleryActivity;
 
 /**
@@ -61,9 +60,6 @@ public class UserPhotoFragment extends Fragment {
     private void onLatestClick() {
         if(this.openGalleryOnClick && this.restaurant != null){
             Intent i = new Intent(getContext(), PhotoGaleryActivity.class);
-            Bundle b = new Bundle();
-            b.putSerializable("userPhotos", this.restaurant.getUserPhotos());
-            i.putExtras(b);
             startActivity(i);
         }
     }
@@ -132,7 +128,7 @@ public class UserPhotoFragment extends Fragment {
         this.openGalleryOnClick = b;
     }
 
-    public void setRestaurant(Restaurant restaurant) {
+    public void init(Restaurant restaurant) {
         this.restaurant = restaurant;
     }
 }

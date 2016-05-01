@@ -1,21 +1,10 @@
 package it.polito.mad_lab3.restaurant.foodPhoto;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,19 +12,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.soundcloud.android.crop.Crop;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-
 import it.polito.mad_lab3.R;
 import it.polito.mad_lab3.bl.RestaurantBL;
-import it.polito.mad_lab3.common.photo_viewer.PhotoDialog;
-import it.polito.mad_lab3.common.photo_viewer.PhotoDialogListener;
 import it.polito.mad_lab3.data.restaurant.Restaurant;
 import it.polito.mad_lab3.data.restaurant.UserPhoto;
-import it.polito.mad_lab3.reservation.ReservationActivity;
 import it.polito.mad_lab3.restaurant.ChoosePhotoActivity;
 import it.polito.mad_lab3.restaurant.gallery.PhotoGaleryActivity;
 
@@ -51,8 +31,6 @@ public class ContainerUserPhotoFragment extends Fragment  {
 
     private Button addPhotoButton, testButton;
     private Restaurant restaurant;
-
-    private RestaurantBL restaurantBL;
 
     private TextView availablePhotosTV;
 
@@ -93,7 +71,7 @@ public class ContainerUserPhotoFragment extends Fragment  {
     private void testButtonClicked() {
         Intent i = new Intent(getContext(), PhotoGaleryActivity.class);
         Bundle b = new Bundle();
-        b.putSerializable("userPhotos", this.restaurant.getUserPhotos());
+        b.putInt("restaurantId", this.restaurant.getRestaurantId());
         i.putExtras(b);
         startActivity(i);
     }
@@ -102,15 +80,16 @@ public class ContainerUserPhotoFragment extends Fragment  {
         Intent i = new Intent(getContext(), ChoosePhotoActivity.class);
         Bundle b = new Bundle();
         b.putInt("restaurantId", this.restaurant.getRestaurantId());
-        b.putInt("newPhotoId", this.restaurantBL.getNewUserPhotoId(this.restaurant));
+        b.putInt("newPhotoId", RestaurantBL.getNewUserPhotoId(this.restaurant));
         i.putExtras(b);
         startActivityForResult(i, PHOTO_CHOOSE);
     }
 
-    public void setRestaurant(Restaurant restaurant) {
+    public void init(Restaurant restaurant) {
         this.restaurant = restaurant;
+
         for(int i =0; i<4; i++) {
-            userPhotoFragments[i].setRestaurant(restaurant);
+            userPhotoFragments[i].init(restaurant);
         }
 
         setPhotosNumber(restaurant);
@@ -135,7 +114,7 @@ public class ContainerUserPhotoFragment extends Fragment  {
                 this.restaurant.getUserPhotos().add(pu);
                 setPhotosNumber(this.restaurant);
                 manageUserPhotos();
-                this.restaurantBL.saveChanges();
+                RestaurantBL.saveChanges(getContext());
             }
         }
     }
@@ -162,9 +141,5 @@ public class ContainerUserPhotoFragment extends Fragment  {
         if(n_photos > 4){
             userPhotoFragments[3].setOpenGalleryOnClick(true);
         }
-    }
-
-    public void setRestaurantBL(RestaurantBL restaurantBL){
-        this.restaurantBL = restaurantBL;
     }
 }

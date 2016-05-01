@@ -1,0 +1,15 @@
+{
+   "users":[
+      {
+         "name":"Fabio Germano",
+         "phone":"346-6722606",
+         "reservations":[
+
+         ],
+         "userPhotoLikes":[
+
+         ],
+         "userId":1
+      }
+   ]
+}

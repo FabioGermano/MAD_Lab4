@@ -11,15 +11,16 @@ import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 
+import it.polito.mad_lab3.bl.UserBL;
 import it.polito.mad_lab3.data.restaurant.BasicInfo;
 import it.polito.mad_lab3.data.restaurant.Dish;
 import it.polito.mad_lab3.data.restaurant.Offer;
 import it.polito.mad_lab3.data.restaurant.Restaurant;
 import it.polito.mad_lab3.data.restaurant.RestaurantEntity;
 import it.polito.mad_lab3.data.restaurant.Review;
+import it.polito.mad_lab3.data.user.User;
 import it.polito.mad_lab3.elaborazioneRicerche.elaborazioneRicerche;
 import it.polito.mad_lab3.reservation.ReservationActivity;
-import it.polito.mad_lab3.reservation.food_order.FoodOrderActivity;
 import it.polito.mad_lab3.restaurant.RestaurantActivity;
 
 public class MainActivity extends BaseActivity {

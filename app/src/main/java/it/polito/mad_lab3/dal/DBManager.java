@@ -21,49 +21,58 @@ import it.polito.mad_lab3.R;
  * Created by f.germano on 26/04/2016.
  */
 public final class DBManager {
-    private static final String filename_restaurants = DBToFilenameConverter.convert(DB.Restaurants);
+    private static final String[] names = {
+            DBToFilenameConverter.convert(DB.Restaurants),
+            DBToFilenameConverter.convert(DB.Users)
+    };
+
+    private static final int[] raws = {
+            R.raw.db_restaurant,
+            R.raw.db_user
+    };
 
     private static boolean dbCreated;
 
     private static boolean createDB(Context context){
         int ch;
 
-        File file_restaurants = new File(context.getFilesDir(), filename_restaurants);
+        for(int i = 0; i<names.length; i++) {
 
-        try {
-            StringBuffer str;
-            InputStream dbFile;
-            FileOutputStream fos;
+            File file_restaurants = new File(context.getFilesDir(), names[i]);
 
-            if (!file_restaurants.exists()) {
-                str = new StringBuffer("");
-                dbFile = context.getResources().openRawResource(R.raw.db_restaurant);
-                fos = context.openFileOutput(filename_restaurants, Context.MODE_PRIVATE);
+            try {
+                StringBuffer str;
+                InputStream dbFile;
+                FileOutputStream fos;
 
-                while ((ch = dbFile.read()) != -1) {
-                    str.append((char) ch);
+                if (!file_restaurants.exists()) {
+                    str = new StringBuffer("");
+                    dbFile = context.getResources().openRawResource(raws[i]);
+                    fos = context.openFileOutput(names[i], Context.MODE_PRIVATE);
+
+                    while ((ch = dbFile.read()) != -1) {
+                        str.append((char) ch);
+                    }
+                    fos.write(str.toString().getBytes());
+                    fos.close();
+                    dbFile.close();
+                    Log.i("DB", "***** DB MENU CREATO *****");
+                } else {
+                    Log.i("DB", "***** DB MENU CREATO *****");
                 }
-                fos.write(str.toString().getBytes());
-                fos.close();
-                dbFile.close();
-                Log.i("DB", "***** DB MENU CREATO *****");
-            }
-            else {
-                Log.i("DB", "***** DB MENU CREATO *****");
-            }
 
-            dbCreated = true;
+            } catch (FileNotFoundException e) {
+                System.out.println("Eccezione: " + e.getMessage());
+                return false;
+            } catch (IOException e) {
+                System.out.println("Eccezione: " + e.getMessage());
+                return false;
+            }
+        }
 
-            return true;
-        }
-        catch (FileNotFoundException e) {
-            System.out.println("Eccezione: "+e.getMessage());
-            return false;
-        }
-        catch (IOException e){
-            System.out.println("Eccezione: "+e.getMessage());
-            return false;
-        }
+        dbCreated = true;
+
+        return true;
     }
 
     public static String readJSON(Context context, DB db){
