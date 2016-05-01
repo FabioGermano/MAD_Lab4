@@ -4,7 +4,9 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:minHeight="40dp"
+        android:measureWithLargestChild="true">
 
 
             <TextView
@@ -37,12 +39,13 @@
             android:textStyle="bold"
             android:textSize="18sp"
             android:layout_gravity="center_vertical"
-            android:text="3.5€"/>
+            android:text="3.5€"
+            android:paddingRight="5dp" />
 
         <ImageButton
             android:id="@+id/minus"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:background="@android:drawable/ic_media_play"
             android:backgroundTint="@color/themeColorLighter"
             android:rotation="180" />
@@ -53,14 +56,16 @@
             android:layout_height="30dp"
             android:gravity="center"
             android:text="0"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_gravity="center" />
 
         <ImageButton
             android:id="@+id/plus"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:background="@android:drawable/ic_media_play"
-            android:backgroundTint="@color/themeColorLighter" />
+            android:backgroundTint="@color/themeColorLighter"
+            />
 
     </LinearLayout>
 </LinearLayout>

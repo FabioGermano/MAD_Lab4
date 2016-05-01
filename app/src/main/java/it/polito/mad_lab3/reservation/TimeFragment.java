@@ -1,6 +1,7 @@
 package it.polito.mad_lab3.reservation;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -24,18 +25,36 @@ import ivb.com.materialstepper.stepperFragment;
 /**
  * Created by Giovanna on 23/04/2016.
  */
-public class TimeFragment extends Fragment {
+public class TimeFragment extends Fragment implements DatesAdapter.AdapterInterface {
 
     OnTimeSelectedListener mCallback;
 
     private ExpandableHeightGridView gridView;
+    private DatesAdapter datesAdapter;
     private ArrayList<String> time;
+    private int time_position=-1;
+
+
 
     public interface OnTimeSelectedListener {
 
-        public void onTimeSelected(String time);
+        void onTimeSelected(String time);
 
     }
+
+
+    public void onCreate( Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if(savedInstanceState == null){
+            time_position=-1;
+        }
+        else
+        {
+            time_position= savedInstanceState.getInt("time_selection");
+        }
+
+    }
+
 
     @Override
     public void onAttach(Activity activity) {
@@ -56,12 +75,10 @@ public class TimeFragment extends Fragment {
         View rootView = inflater.inflate(
                 R.layout.time_fragment, container, false);
 
-        //TODO Get the day of the week in order to update the available time slots
-        // ...getArguments()...
+        //get the time range of the chosen day  from the arguments
         String tmp = getArguments().getString("timeRange", null);
 
         //extract slots from time range
-        Log.w("time", tmp);
 
         int[] orario = new int[4];
         int n1  = tmp.indexOf(":");
@@ -152,16 +169,48 @@ public class TimeFragment extends Fragment {
 
         gridView = (ExpandableHeightGridView) rootView.findViewById(R.id.gridView);
         gridView.setExpanded(true);
-        gridView.setAdapter(new DatesAdapter(getContext(), time));
+        gridView.setSelector(R.drawable.selected_background);
+        datesAdapter= new DatesAdapter(getContext(), time, gridView, this);
+        gridView.setAdapter(datesAdapter);
         gridView.setChoiceMode(GridView.CHOICE_MODE_SINGLE);
 
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+        /*gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
+                time_position=position;
                 mCallback.onTimeSelected(time.get(position));
             }
-        });
-
+        });*/
         return rootView;
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        //time_position=1;
+        if(time_position!=-1){
+            gridView.setItemChecked(time_position, true);
+            //datesAdapter.notifyDataSetChanged();
+        }
+            //gridView.setSelection(1);
+            //x = gridView.getSelectedItemPosition();
+        //gridView.performItemClick(gridView.getAdapter().getView(time_position, null, null),time_position,gridView.getAdapter().getItemId(time_position));
+
+
+    }
+
+    @Override
+    public void timeSelected() {
+        mCallback.onTimeSelected(time.get(gridView.getCheckedItemPosition()));
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        time_position= gridView.getCheckedItemPosition();
+        outState.putInt("time_selection",time_position  );
+
     }
 }

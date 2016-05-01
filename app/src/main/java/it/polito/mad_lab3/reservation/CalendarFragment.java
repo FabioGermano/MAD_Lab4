@@ -34,6 +34,7 @@ public class CalendarFragment extends Fragment {
     SharedPreferences sp;
     private Button btt;
     private ListView listView;
+    private int selection=0;
     private NumberPicker numberPicker;
     ArrayList<String> datesInDBFormat = new ArrayList<>();
 
@@ -59,14 +60,20 @@ public class CalendarFragment extends Fragment {
     }
 
 
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(savedInstanceState == null){
+            selection=0;
+        }
+        else
+        {
+            selection= savedInstanceState.getInt("date_selection");
+        }
 
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(
                 R.layout.calendar_fragment, container, false);
         final Calendar c = Calendar.getInstance();
@@ -107,8 +114,6 @@ public class CalendarFragment extends Fragment {
         //Specify the NumberPicker data source as array elements
         numberPicker.setDisplayedValues(picker);
 
-        numberPicker.setValue(0);
-
         numberPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
 
 
@@ -128,10 +133,16 @@ public class CalendarFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        int x= numberPicker.getValue();
-        Log.w("debug", datesInDBFormat.get(3));
-        mCallback.initialValue(datesInDBFormat.get(x));
+         numberPicker.setValue(selection);
+        //mCallback.onDateSelected(datesInDBFormat.get(selection));
 
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("date_selection", numberPicker.getValue());
 
     }
 

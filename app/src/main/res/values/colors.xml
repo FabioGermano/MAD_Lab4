@@ -7,11 +7,12 @@
 
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#0026ff</color>
+    <color name="colorAccent">@color/tabIndicator</color>
     <color name="lightRed">#ffcccc</color>
     <color name="primary_material_light">#fff5f5f5</color>
 
     <color name="themeColor">#03A9F4</color>
+    <color name="tabIndicator">#4278c9</color>
     <color name="themeColorLighter">#c3e4f2</color>
     <color name="alertBgColor">#E603A9F4</color>
     <color name="fab_pressed">#90CAF9</color>

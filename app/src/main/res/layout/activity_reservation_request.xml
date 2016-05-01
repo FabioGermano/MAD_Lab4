@@ -16,8 +16,42 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".reservation.ReservationActivity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <include layout="@layout/toolbar_view" android:layout_height="wrap_content" android:layout_width="match_parent"/>
+
+        <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/restaurant_test"/>
+        <include layout="@layout/toolbar_view" android:layout_height="wrap_content" android:layout_width="match_parent" android:layout_alignParentTop="true"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Alma Latina"
+            android:layout_alignParentTop="true"
+            android:textColor="@android:color/white"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:singleLine="false"
+            android:password="false" />
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/shadow">
+
+        <View android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@drawable/toolbar_shadow"/>
+
+    </FrameLayout>
 
 <android.support.v4.widget.NestedScrollView
 
@@ -61,13 +95,5 @@
 
 </LinearLayout>
 
-
-    <android.support.design.widget.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header" />
 
 </android.support.v4.widget.DrawerLayout>

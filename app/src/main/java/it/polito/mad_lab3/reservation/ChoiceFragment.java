@@ -67,9 +67,9 @@ public class ChoiceFragment extends Fragment {
                     + " must implement OnChoiceSelectedListener");
         }
     }
-    @Nullable
+
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView =  inflater.inflate(R.layout.choice_fragment, container, false);
 
         //eatin = (Button) rootView.findViewById(R.id.eat_in);
@@ -87,8 +87,8 @@ public class ChoiceFragment extends Fragment {
         checkOut = (Button) rootView.findViewById(R.id.checkout);
         orderNow = (Button) rootView.findViewById(R.id.order_food);
 
-        checkOut.setVisibility(View.INVISIBLE);
-        orderNow.setVisibility(View.INVISIBLE);
+        checkOut.setVisibility(View.GONE);
+        orderNow.setVisibility(View.GONE);
 
 
         checkOut.setOnClickListener(new View.OnClickListener() {
@@ -173,6 +173,8 @@ public class ChoiceFragment extends Fragment {
                             public void onAnimationEnd(Animator animation) {
                                 super.onAnimationEnd(animation);
                                 seats_layout.setVisibility(View.GONE);
+                                checkOut.setVisibility(View.GONE);
+                                orderNow.setVisibility(View.GONE);
                                 mCallback.onChoiceMade(false);
 
                             }

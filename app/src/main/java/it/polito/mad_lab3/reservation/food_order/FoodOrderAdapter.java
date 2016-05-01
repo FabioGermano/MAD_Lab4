@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -19,6 +20,8 @@ import it.polito.mad_lab3.data.reservation.Dish;
 public class FoodOrderAdapter extends ArrayAdapter<Dish>{
 
     private ArrayList<Dish> data;
+
+    ListView listView;
     private int section;
 
     public FoodOrderAdapter(Context context, ArrayList<Dish> objects, int section) {
@@ -29,6 +32,7 @@ public class FoodOrderAdapter extends ArrayAdapter<Dish>{
 
     // View lookup cache
     private static class ViewHolder {
+        int counter;
         TextView name;
         TextView price;
         TextView quantity;
@@ -52,7 +56,28 @@ public class FoodOrderAdapter extends ArrayAdapter<Dish>{
             viewHolder.quantity = (TextView) convertView.findViewById(R.id.dish_quantity);
             viewHolder.minus = (ImageButton) convertView.findViewById(R.id.minus);
             viewHolder.plus = (ImageButton) convertView.findViewById(R.id.plus);
+            viewHolder.minus.setTag(position);
+            viewHolder.plus.setTag(position);
+            viewHolder.plus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
+                    viewHolder.counter++;
+                    viewHolder.quantity.setText(String.valueOf(viewHolder.counter));
+
+                }
+            });
+
+            viewHolder.minus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(viewHolder.counter>0) {
+                        viewHolder.counter--;
+                        viewHolder.quantity.setText(String.valueOf(viewHolder.counter));
+                    }
+
+                }
+            });
 
             convertView.setTag(viewHolder);
         } else {
@@ -60,28 +85,13 @@ public class FoodOrderAdapter extends ArrayAdapter<Dish>{
         }
         // Populate the data into the template view using the data object
         viewHolder.name.setText(dish.getDishName());
-        viewHolder.price.setText(String.valueOf(dish.getPrice()));
+        viewHolder.price.setText(String.valueOf(dish.getPrice())+" €");
         viewHolder.quantity.setText(String.valueOf(dish.getQuantity()));
-        viewHolder.minus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               int cnt= dish.getQuantity();
-                cnt++;
-                viewHolder.quantity.setText(String.valueOf(dish.getQuantity()));
-            }
-        });
-        viewHolder.plus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int cnt= dish.getQuantity();
-                if(cnt>1){
-                cnt--;
-                viewHolder.quantity.setText(String.valueOf(dish.getQuantity()));}
-            }
-        });
+        viewHolder.counter=dish.getQuantity();
 
         // Return the completed view to render on screen
         return convertView;
     }
+
 }
 

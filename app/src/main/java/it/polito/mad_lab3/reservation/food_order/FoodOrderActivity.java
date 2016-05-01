@@ -1,6 +1,7 @@
 package it.polito.mad_lab3.reservation.food_order;
 
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
@@ -28,7 +29,7 @@ public class FoodOrderActivity extends BaseActivity {
     private String date, time, weekday;
     private int seatsNumber;
 
-    CollapsingToolbarLayout collapsingToolbarLayout;
+    //CollapsingToolbarLayout collapsingToolbarLayout;
 
 
 
@@ -37,9 +38,17 @@ public class FoodOrderActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_order);
 
-        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        collapsingToolbarLayout.setTitle("Order now");
-        collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.Toolbar_TitleText);
+        if (isLargeDevice(getBaseContext())) {
+            this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+        } else {
+            this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+
+        hideToolbar(true);
+        hideToolbarShadow(true);
+        //collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+        //collapsingToolbarLayout.setTitle("Order now");
+        //collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.Toolbar_TitleText);
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
@@ -71,12 +80,12 @@ public class FoodOrderActivity extends BaseActivity {
             timeTextView.setText(time);
         }
         if(seatsNumber!=0){
-            seatsTextView.setText(String.valueOf(seatsNumber));
-            collapsingToolbarLayout.setTitle("Order for eating in");
+            seatsTextView.setText(String.valueOf(seatsNumber)+" "+getResources().getString(R.string.seats_string));
+            //collapsingToolbarLayout.setTitle("Order for eating in");
         }
         else {
             seatsTextView.setVisibility(View.GONE);
-            collapsingToolbarLayout.setTitle("Order for take-away");
+            //collapsingToolbarLayout.setTitle("Order for take-away");
         }
         useToolbar(false);
 
@@ -98,8 +107,8 @@ public class FoodOrderActivity extends BaseActivity {
         lists.add(dessert);
         lists.add(others);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
 
         mSectionsPagerAdapter = new SectionsPagerAdapter( getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.viewpager_menu);

@@ -2,6 +2,7 @@ package it.polito.mad_lab3.reservation;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -22,9 +23,11 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
     private String reservationTime;
     private String reservationDayOfWeek;
     private int seats;
+    private boolean choice_made;
     private boolean eat_in;
     private boolean completed=false;
     private ArrayList<String> currentDates;
+    private String restaurantName;
     View p, c;
     ArrayList<String> timeTable =  new ArrayList<>();
 
@@ -35,7 +38,15 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reservation_request);
 
-        setActivityTitle("Make a reservation");
+        if (isLargeDevice(getBaseContext())) {
+            this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+        } else {
+            this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+
+        hideToolbar(true);
+        hideToolbarShadow(true);
+
 
         timeTable.add(0, "10:20 - 14:30");
         timeTable.add(1, "10:30 - 12:30");
@@ -85,19 +96,20 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
         View t = (View) (findViewById(R.id.time_fragment_container));
 
         if(choiceFragment != null) {
+            this.choice_made=false;
             getSupportFragmentManager().beginTransaction().remove(choiceFragment).commit();
-            completed=false;
+
         }
         if(reservationTime!=null) {
             this.reservationTime = null;
-            completed=false;
         }
 
     }
 
     @Override
     public void initialValue(String date) {
-        onDateSelected(date);
+        if(reservationDate==null)
+            onDateSelected(date);
     }
 
 
@@ -107,11 +119,13 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
         //set reservation time
         this.reservationTime = time;
 
+        if(!choice_made){
+
         choiceFragment = new ChoiceFragment();
 
         getSupportFragmentManager().beginTransaction().replace(R.id.choice_fragment_container, choiceFragment).commit();
         View cc = (View) (findViewById(R.id.choice_fragment_container));
-        cc.requestFocus();
+        cc.requestFocus();}
 
     }
 
@@ -154,7 +168,7 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
     public void onChoiceMade(boolean eat_in) {
         //set choice and number of seats
         this.eat_in=eat_in;
-
+        this.choice_made=true;
         if(!this.eat_in){
             goToFoodOrderAsTakeaway();
         }
