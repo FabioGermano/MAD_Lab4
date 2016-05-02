@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import it.polito.mad_lab3.R;
+import it.polito.mad_lab3.data.restaurant.DishTypeConverter;
 
 /**
  * Created by f.germano on 24/04/2016.
@@ -19,6 +20,7 @@ public class MenuPrevFragment extends Fragment {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
+    private int restaurantId;
 
     public MenuPrevFragment(){
 
@@ -45,6 +47,10 @@ public class MenuPrevFragment extends Fragment {
         tabLayout.setupWithViewPager(mViewPager);
     }
 
+    public void setRestaurantId(int restaurantId) {
+        this.restaurantId = restaurantId;
+    }
+
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
@@ -53,25 +59,17 @@ public class MenuPrevFragment extends Fragment {
 
         @Override
         public Fragment getItem(int position) {
-            return MenuListPrevFragment.newInstance(position+1);
+            return MenuListPrevFragment.newInstance(position, restaurantId );
         }
 
         @Override
         public int getCount() {
-            return 3;
+            return 4;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return "uno";
-                case 1:
-                    return "due";
-                case 2:
-                    return "tre";
-            }
-            return null;
+            return DishTypeConverter.fromEnumToString(DishTypeConverter.fromIndexToEnum(position));
         }
     }
 }

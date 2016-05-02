@@ -49,6 +49,15 @@
                "type":"Other"
             },
             {
+                "avgRank":4.5,
+                "dishName":"hot dog",
+                "largePath":null,
+                "numRanks":18,
+                "price":3.0,
+                "thumbPath":null,
+                "type":"Other"
+            },
+            {
                "avgRank":4.0,
                "dishName":"pasta",
                "largePath":null,

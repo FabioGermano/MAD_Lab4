@@ -54,6 +54,7 @@
     <string name="dessert">Dessert</string>
     <string name="other">Other</string>
     <string name="offers">Offers</string>
+    <string name="otherDishesAvailable">(other dishes are available)</string>
 
     <!-- Elaborazione Ricerche -->
     <string name="titolo_elaborazioneRicerche">Restaurants found</string>

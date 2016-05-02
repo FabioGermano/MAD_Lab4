@@ -34,4 +34,19 @@ public class DishTypeConverter {
                 return null;
         }
     }
+
+    public static DishType fromIndexToEnum(int index){
+        switch (index){
+            case 2:
+                return DishType.Dessert;
+            case 0:
+                return DishType.MainCourses;
+            case 1:
+                return DishType.SecondCourses;
+            case 3:
+                return DishType.Other;
+            default:
+                return null;
+        }
+    }
 }

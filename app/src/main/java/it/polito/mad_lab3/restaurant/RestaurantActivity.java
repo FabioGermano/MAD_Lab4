@@ -13,12 +13,15 @@ import it.polito.mad_lab3.bl.RestaurantBL;
 import it.polito.mad_lab3.data.restaurant.Restaurant;
 import it.polito.mad_lab3.data.user.User;
 import it.polito.mad_lab3.restaurant.foodPhoto.ContainerUserPhotoFragment;
+import it.polito.mad_lab3.restaurant.menu_prev.MenuListPrevFragment;
+import it.polito.mad_lab3.restaurant.menu_prev.MenuPrevFragment;
 
 public class  RestaurantActivity extends BaseActivity {
 
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private ContainerUserPhotoFragment containerUserPhotoFragment;
     private Restaurant restaurant;
+    private MenuPrevFragment menuPrevFragment;
     private User user;
 
     @Override
@@ -49,6 +52,9 @@ public class  RestaurantActivity extends BaseActivity {
 
         containerUserPhotoFragment = (ContainerUserPhotoFragment)getSupportFragmentManager().findFragmentById(R.id.UserPhotoFragment);
         containerUserPhotoFragment.init(restaurant);
+
+        menuPrevFragment = (MenuPrevFragment)getSupportFragmentManager().findFragmentById(R.id.menuPrevFragment);
+        menuPrevFragment.setRestaurantId(restaurant.getRestaurantId());
     }
 
 
