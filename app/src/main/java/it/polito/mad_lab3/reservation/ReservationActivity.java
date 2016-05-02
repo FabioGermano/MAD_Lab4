@@ -109,13 +109,6 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
     }
 
     @Override
-    public void initialValue(String date) {
-        if(reservationDate==null)
-            onDateSelected(date);
-    }
-
-
-    @Override
     public void onTimeSelected(String time) {
 
         //set reservation time

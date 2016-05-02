@@ -1,6 +1,7 @@
 package it.polito.mad_lab3.reservation;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -24,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import it.polito.mad_lab3.R;
+import it.polito.mad_lab3.common.Helper;
+
 /**
  * Created by Giovanna on 23/04/2016.
  */
@@ -36,12 +39,12 @@ public class CalendarFragment extends Fragment {
     private ListView listView;
     private int selection=0;
     private NumberPicker numberPicker;
+    private Context context;
     ArrayList<String> datesInDBFormat = new ArrayList<>();
 
     public interface OnDateSelectedListener {
 
         public void onDateSelected( String date);
-        public void initialValue(String date);
 
     }
 
@@ -62,6 +65,7 @@ public class CalendarFragment extends Fragment {
 
     public void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.context=getContext();
         if(savedInstanceState == null){
             selection=0;
         }
@@ -91,7 +95,7 @@ public class CalendarFragment extends Fragment {
             week_day = c.get(Calendar.DAY_OF_WEEK);
 
             //String for the layout
-            String str = intToWeekString(week_day) + " " + day + " " + intToMonthString(month);// + " "+ year;
+            String str = Helper.intToWeekString(context, week_day) + " " + day + " " + Helper.intToMonthString(context,month+1);// + " "+ year;
             dates.add(str);
             month++; //to start counting from 1=jan
             //string in the db format with first character representing which day of the week (mon, tue...) is
@@ -134,84 +138,12 @@ public class CalendarFragment extends Fragment {
     public void onStart() {
         super.onStart();
          numberPicker.setValue(selection);
-        //mCallback.onDateSelected(datesInDBFormat.get(selection));
-
-
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("date_selection", numberPicker.getValue());
-
     }
 
-    private String intToWeekString (int weekday){
-        switch (weekday){
-            case 1:
-                return getResources().getString(R.string.sunday);
-
-            case 2:
-                return getResources().getString(R.string.monday);
-
-            case 3:
-                return getResources().getString(R.string.tuesday);
-
-            case 4:
-                return getResources().getString(R.string.wednesday);
-
-            case 5:
-                return getResources().getString(R.string.thursday);
-
-            case 6:
-                return getResources().getString(R.string.friday);
-
-            case 7:
-                return getResources().getString(R.string.saturday);
-            default:
-                return null;
-        }
-    }
-
-    private String intToMonthString (int month){
-        switch (month){
-            case 0:
-                return getResources().getString(R.string.jenuary);
-
-            case 1:
-                return getResources().getString(R.string.february);
-
-            case 2:
-                return getResources().getString(R.string.march);
-
-            case 3:
-                return getResources().getString(R.string.april);
-
-            case 4:
-                return getResources().getString(R.string.may);
-
-            case 5:
-                return getResources().getString(R.string.june);
-
-            case 6:
-                return getResources().getString(R.string.july);
-
-            case 7:
-                return getResources().getString(R.string.ausgust);
-
-            case 8:
-                return getResources().getString(R.string.september);
-
-            case 9:
-                return getResources().getString(R.string.october);
-
-            case 10:
-                return getResources().getString(R.string.november);
-
-            case 11:
-                return getResources().getString(R.string.december);
-            default:
-                return null;
-        }
-    }
 }

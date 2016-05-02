@@ -59,8 +59,7 @@ public class FoodOrderAdapter extends ArrayAdapter<Dish>{
             viewHolder.minus = (ImageButton) convertView.findViewById(R.id.minus);
             viewHolder.plus = (ImageButton) convertView.findViewById(R.id.plus);
             viewHolder.position= position;
-            //viewHolder.minus.setTag(position);
-            //viewHolder.plus.setTag(position);
+
             viewHolder.plus.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -23,7 +23,10 @@ import java.util.ArrayList;
 
 import it.polito.mad_lab3.BaseActivity;
 import it.polito.mad_lab3.R;
+import it.polito.mad_lab3.bl.RestaurantBL;
+import it.polito.mad_lab3.common.Helper;
 import it.polito.mad_lab3.data.reservation.Dish;
+import it.polito.mad_lab3.data.restaurant.Restaurant;
 import it.polito.mad_lab3.reservation.CheckoutOrder;
 
 public class FoodOrderActivity extends BaseActivity {
@@ -36,6 +39,7 @@ public class FoodOrderActivity extends BaseActivity {
     private int seatsNumber;
     private FloatingActionButton doneFab;
     private int restaurantID=-1;
+    private Restaurant restaurant;
     //CollapsingToolbarLayout collapsingToolbarLayout;
 
 
@@ -44,6 +48,8 @@ public class FoodOrderActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_order);
+
+        restaurant = RestaurantBL.getRestaurantById(getApplicationContext(), 1);
 
         if (isLargeDevice(getBaseContext())) {
             this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
@@ -88,7 +94,7 @@ public class FoodOrderActivity extends BaseActivity {
         seatsTextView = (TextView) findViewById(R.id.seats) ;
 
         if(date!=null && time!=null){
-            dateTextView.setText(formatDate(weekday, date));
+            dateTextView.setText(Helper.formatDate(getBaseContext(),weekday, date));
             timeTextView.setText(time);
         }
         if(seatsNumber!=0){
@@ -133,7 +139,6 @@ public class FoodOrderActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getBaseContext(), CheckoutOrder.class);
-
                 i.putParcelableArrayListExtra("offers", (ArrayList<? extends Parcelable>) lists.get(0));
                 i.putParcelableArrayListExtra("main", (ArrayList<? extends Parcelable>) lists.get(1));
                 i.putParcelableArrayListExtra("second", (ArrayList<? extends Parcelable>) lists.get(2));
@@ -205,56 +210,6 @@ public class FoodOrderActivity extends BaseActivity {
             return null;
         }
     }
-    public String formatDate(String weekday, String date){
-        String str = new String();
-        int yearEnd = date.indexOf("-");
-        int monthEnd = date.indexOf("-", yearEnd+1);
-        String month= date.substring(yearEnd+1, monthEnd);
-        month = intToMonthString(Integer.parseInt(month));
 
-        str = weekday+" "+date.substring(monthEnd+1,date.length())+" "+month;
-        return str;
-    }
 
-    private String intToMonthString (int month){
-        switch (month){
-            case 1:
-                return getResources().getString(R.string.jenuary);
-
-            case 2:
-                return getResources().getString(R.string.february);
-
-            case 3:
-                return getResources().getString(R.string.march);
-
-            case 4:
-                return getResources().getString(R.string.april);
-
-            case 5:
-                return getResources().getString(R.string.may);
-
-            case 6:
-                return getResources().getString(R.string.june);
-
-            case 7:
-                return getResources().getString(R.string.july);
-
-            case 8:
-                return getResources().getString(R.string.ausgust);
-
-            case 9:
-                return getResources().getString(R.string.september);
-
-            case 10:
-                return getResources().getString(R.string.october);
-
-            case 11:
-                return getResources().getString(R.string.november);
-
-            case 12:
-                return getResources().getString(R.string.december);
-            default:
-                return null;
-        }
-    }
 }

@@ -11,9 +11,7 @@ public class Dish implements Parcelable {
     private String dishName;
     private int quantity;
     private float price;
-    private String type; // primi, secondi...
-
-
+    private String type;
     private boolean isOffer;
 
     public Dish(String dishName, int quantity, float price, String type, boolean isOffer) {

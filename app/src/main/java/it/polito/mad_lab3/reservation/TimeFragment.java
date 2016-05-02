@@ -80,13 +80,12 @@ public class TimeFragment extends Fragment implements DatesAdapter.AdapterInterf
 
         //extract slots from time range
 
+        time = new ArrayList<String>();
+
         int[] orario = new int[4];
         int n1  = tmp.indexOf(":");
         int n2 = tmp.indexOf(" - ");
         int n3 = tmp.indexOf(":", n2);
-
-
-        time = new ArrayList<String>();
 
         orario[0] = Integer.parseInt(tmp.substring(0, n1));
         orario[1] = Integer.parseInt(tmp.substring(n1+1, n2));

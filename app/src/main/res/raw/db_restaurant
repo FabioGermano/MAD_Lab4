@@ -1,100 +1,154 @@
 {
    "restaurants":[
       {
-         "basicInfo":null,
+         "basicInfo":{
+            "address":"Via Monginevro, 12",
+            "covers":[
+
+            ],
+            "description":"Descrizione locale",
+            "email":"restaurant@email.com",
+            "logoThumb":null,
+            "phone":"333-2535312",
+            "timeTable":[
+               "10:20 - 14:30",
+               "10:30 - 12:30",
+               "10:45 - 12:30",
+               "10:30 - 12:45",
+               "10:30 - 12:30",
+               "10:30 - 12:30",
+               "10:30 - 12:30"
+            ]
+         },
          "dishes":[
             {
-               "type":"Other",
+               "avgRank":4.0,
                "dishName":"kebab",
                "largePath":null,
-               "thumbPath":null,
-               "price":2.5,
                "numRanks":8,
-               "avgRank":4.0
+               "price":2.5,
+               "thumbPath":null,
+               "type":"Other"
             },
             {
-               "type":"Other",
+               "avgRank":3.0,
                "dishName":"pizza",
                "largePath":null,
-               "thumbPath":null,
-               "price":1.5,
                "numRanks":80,
-               "avgRank":3.0
+               "price":1.5,
+               "thumbPath":null,
+               "type":"Other"
             },
             {
-               "type":"Other",
+               "avgRank":2.0,
                "dishName":"panino",
                "largePath":null,
-               "thumbPath":null,
-               "price":4.0,
                "numRanks":18,
-               "avgRank":2.0
+               "price":4.0,
+               "thumbPath":null,
+               "type":"Other"
+            },
+            {
+               "avgRank":4.0,
+               "dishName":"pasta",
+               "largePath":null,
+               "numRanks":8,
+               "price":2.5,
+               "thumbPath":null,
+               "type":"Main courses"
+            },
+            {
+               "avgRank":3.0,
+               "dishName":"pizza",
+               "largePath":null,
+               "numRanks":80,
+               "price":1.5,
+               "thumbPath":null,
+               "type":"Main courses"
+            },
+            {
+               "avgRank":2.0,
+               "dishName":"panino",
+               "largePath":null,
+               "numRanks":18,
+               "price":4.0,
+               "thumbPath":null,
+               "type":"Second courses"
+            },
+            {
+               "avgRank":3.0,
+               "dishName":"cassata",
+               "largePath":null,
+               "numRanks":18,
+               "price":3.0,
+               "thumbPath":null,
+               "type":"Dessert"
             }
          ],
          "offers":[
             {
-               "thumbPath":null,
+               "avgRank":4.5,
                "details":"details 1",
                "largePath":null,
-               "offerName":"Offerta1",
                "numRanks":10,
+               "offerName":"Offerta1",
                "price":8.0,
-               "avgRank":4.5
+               "thumbPath":null
             },
             {
-               "thumbPath":null,
+               "avgRank":2.5,
                "details":"details 2",
                "largePath":null,
-               "offerName":"Offerta2",
                "numRanks":19,
+               "offerName":"Offerta2",
                "price":8.0,
-               "avgRank":2.5
+               "thumbPath":null
             },
             {
-               "thumbPath":null,
+               "avgRank":1.5,
                "details":"details 3",
                "largePath":null,
-               "offerName":"Offerta3",
                "numRanks":15,
+               "offerName":"Offerta3",
                "price":10.0,
-               "avgRank":1.5
+               "thumbPath":null
             }
          ],
-         "userPhotos":[
-
-         ],
+         "restaurantId":1,
          "restaurantName":"Nome ristorante",
          "reviews":[
             {
                "comment":"commento 1 sdkmsdfl fggmdf dgl fgmgdf gd fl",
                "date":"2015-05-08",
-               "userName":"userName 1",
+               "rank":1.7,
                "thumbPath":null,
-               "rank":1.7
+               "userName":"userName 1"
             },
             {
                "comment":"commento 2 sdkmsdfl fggmdf dgl fgmgdf gd fl",
                "date":"2015-05-10",
-               "userName":"userName 2",
+               "rank":3.7,
                "thumbPath":null,
-               "rank":3.7
+               "userName":"userName 2"
             },
             {
                "comment":"commento 3 sdkmsdfl fggmdf dgl fgmgdffg fgh fg hfh fg h gd fl",
                "date":"2015-06-08",
-               "userName":"userName 3",
+               "rank":2.7,
                "thumbPath":null,
-               "rank":2.7
+               "userName":"userName 3"
             },
             {
                "comment":"commento 4 sdkmsdfl fggmdf dgl fgmgdf gd fl",
                "date":"2016-05-08",
-               "userName":"userName 4",
+               "rank":4.7,
                "thumbPath":null,
-               "rank":4.7
+               "userName":"userName 4"
             }
          ],
-         "restaurantId":1
+         "userPhotos":[
+
+         ]
       }
    ]
 }
