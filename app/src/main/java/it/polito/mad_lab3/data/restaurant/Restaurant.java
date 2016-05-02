@@ -100,4 +100,15 @@ public class Restaurant {
     public void setRestaurantName(String restaurantName) {
         this.restaurantName = restaurantName;
     }
+
+    public ArrayList<Dish> getDishesOfCategory(DishType dishType){
+        ArrayList<Dish> filtered = new ArrayList<Dish>();
+        for(Dish d : this.dishes){
+            if(d.getEnumType() == dishType){
+                filtered.add(d);
+            }
+        }
+
+        return filtered;
+    }
 }

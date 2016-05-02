@@ -76,4 +76,8 @@ public class Dish {
     public void setType(String type) {
         this.type = type;
     }
+
+    public DishType getEnumType(){
+        return DishTypeConverter.fromStringToEnum(this.type);
+    }
 }

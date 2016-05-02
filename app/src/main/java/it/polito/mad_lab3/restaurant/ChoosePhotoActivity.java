@@ -52,7 +52,7 @@ public class ChoosePhotoActivity extends BaseActivity implements PhotoViewerList
         descriptionET = (EditText)findViewById(R.id.descriptionET);
 
         photoViewer = (PhotoViewer)getSupportFragmentManager().findFragmentById(R.id.photoViewer);
-        photoManager = new PhotoManager(getApplicationContext(), PhotoType.TEST, this.imageThumb, this.imageLarge);
+        photoManager = new PhotoManager(getApplicationContext(), PhotoType.USERPHOTOS, this.imageThumb, this.imageLarge);
 
         restaurantId =  getIntent().getExtras().getInt("restaurantId");
         newPhotoId =  getIntent().getExtras().getInt("newPhotoId");

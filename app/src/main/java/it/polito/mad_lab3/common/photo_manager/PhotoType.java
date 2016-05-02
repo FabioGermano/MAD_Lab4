@@ -7,5 +7,6 @@ public enum PhotoType {
     PROFILE, // logo or cover
     MENU,
     OFFER,
+    USERPHOTOS,
     TEST
 }

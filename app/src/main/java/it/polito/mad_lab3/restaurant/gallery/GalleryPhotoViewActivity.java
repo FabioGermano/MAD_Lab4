@@ -32,7 +32,7 @@ public class GalleryPhotoViewActivity extends BaseActivity {
         userPhoto = (UserPhoto)extras.getSerializable("userPhoto");
         galleryPhotoText.setText(userPhoto.getDescription());
 
-        user = UserBL.getUserById(getBaseContext(), 1);
+        user = UserBL.getUserById(getBaseContext(), UserBL.getCurrentUserId());
 
         if(!UserBL.checkUserPhotoLike(user, this.restaurant.getRestaurantId(), userPhoto.getId())) {
             this.likeButton.setColorFilter(Color.WHITE);

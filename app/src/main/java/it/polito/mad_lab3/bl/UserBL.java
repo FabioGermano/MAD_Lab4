@@ -63,4 +63,8 @@ public class UserBL {
     public static void saveChanges(Context _context){
         DBManager.serializeEntity(_context, DB.Users, userEntity);
     }
+
+    public static int getCurrentUserId() {
+        return 1;
+    }
 }

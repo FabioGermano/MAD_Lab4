@@ -20,6 +20,9 @@ public final class PhotoTypeConverter
         {
             return "test";
         }
+        else if(photoType == PhotoType.USERPHOTOS){
+            return "user_photos";
+        }
 
         return null;
     }
