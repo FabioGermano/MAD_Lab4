@@ -31,15 +31,14 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/restaurant_name"
             android:text="Alma Latina"
             android:layout_alignParentTop="true"
             android:textColor="@android:color/white"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:layout_marginTop="20dp"
             android:layout_centerHorizontal="true"
-            android:gravity="center"
-            android:singleLine="false"
-            android:password="false" />
+            android:gravity="center" />
     </RelativeLayout>
 
     <FrameLayout

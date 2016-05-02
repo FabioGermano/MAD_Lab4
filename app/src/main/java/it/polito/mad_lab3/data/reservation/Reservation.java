@@ -10,6 +10,7 @@ import it.polito.mad_lab3.data.user.User;
 public class Reservation {
 
     private int reservationId;
+    private int restaurantId;
     private User user;
     private String date;
     private String time;
@@ -155,5 +156,13 @@ public class Reservation {
 
     public void setTotalIncome(float totalIncome) {
         this.totalIncome = totalIncome;
+    }
+
+    public int getRestaurantId() {
+        return restaurantId;
+    }
+
+    public void setRestaurantId(int restaurantId) {
+        this.restaurantId = restaurantId;
     }
 }

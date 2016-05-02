@@ -47,10 +47,6 @@
         <activity
             android:name=".elaborazioneRicerche.elaborazioneRicerche"
             android:parentActivityName=".MainActivity" />
-        <activity
-            android:name=".reservation.ScrollingActivity"
-            android:label="@string/title_activity_scrolling"
-            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

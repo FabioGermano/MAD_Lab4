@@ -25,7 +25,10 @@ import it.polito.mad_lab3.BaseActivity;
 import it.polito.mad_lab3.R;
 import it.polito.mad_lab3.bl.RestaurantBL;
 import it.polito.mad_lab3.common.Helper;
-import it.polito.mad_lab3.data.reservation.Dish;
+import it.polito.mad_lab3.data.reservation.ReservedDish;
+import it.polito.mad_lab3.data.restaurant.Dish;
+import it.polito.mad_lab3.data.restaurant.DishType;
+import it.polito.mad_lab3.data.restaurant.Offer;
 import it.polito.mad_lab3.data.restaurant.Restaurant;
 import it.polito.mad_lab3.reservation.CheckoutOrder;
 
@@ -33,14 +36,14 @@ public class FoodOrderActivity extends BaseActivity {
 
     private ViewPager mViewPager;
     private SectionsPagerAdapter mSectionsPagerAdapter;
-    private ArrayList<ArrayList<Dish>> lists = new ArrayList<>();
+    private ArrayList<ArrayList<ReservedDish>> lists; //order: offer, main, second, dessert , other
     private TextView dateTextView, timeTextView, seatsTextView, totTextView;
-    private String date, time, weekday;
+    private String date, time, weekday, restaurantName;
     private int seatsNumber;
     private FloatingActionButton doneFab;
     private int restaurantID=-1;
     private Restaurant restaurant;
-    //CollapsingToolbarLayout collapsingToolbarLayout;
+
 
 
 
@@ -49,7 +52,7 @@ public class FoodOrderActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_order);
 
-        restaurant = RestaurantBL.getRestaurantById(getApplicationContext(), 1);
+
 
         if (isLargeDevice(getBaseContext())) {
             this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
@@ -59,9 +62,6 @@ public class FoodOrderActivity extends BaseActivity {
 
         hideToolbar(true);
         hideToolbarShadow(true);
-        //collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        //collapsingToolbarLayout.setTitle("Order now");
-        //collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.Toolbar_TitleText);
 
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
@@ -72,19 +72,15 @@ public class FoodOrderActivity extends BaseActivity {
                 restaurantID=-1;
                 seatsNumber=0;
 
+
             } else {
                 date= extras.getString("date");
                 time= extras.getString("time");
                 weekday= extras.getString("weekday");
+                restaurantName= extras.getString("restaurantName");
                 seatsNumber= extras.getInt("seats");
-                restaurantID= extras.getInt("restaurant");
+                restaurantID= extras.getInt("restaurantId");
             }
-        } else {
-            date= (String) savedInstanceState.getSerializable("date");
-            time= (String) savedInstanceState.getSerializable("time");
-            weekday= (String) savedInstanceState.getSerializable("weekday");
-            seatsNumber= (Integer) savedInstanceState.getSerializable("seats");
-
         }
 
 
@@ -92,10 +88,12 @@ public class FoodOrderActivity extends BaseActivity {
         dateTextView = (TextView) findViewById(R.id.date) ;
         timeTextView = (TextView) findViewById(R.id.time) ;
         seatsTextView = (TextView) findViewById(R.id.seats) ;
+        TextView name= (TextView) findViewById(R.id.restaurant_name);
 
-        if(date!=null && time!=null){
+        if(date!=null && time!=null && restaurantName!=null){
             dateTextView.setText(Helper.formatDate(getBaseContext(),weekday, date));
             timeTextView.setText(time);
+            name.setText(restaurantName);
         }
         if(seatsNumber!=0){
             seatsTextView.setText(String.valueOf(seatsNumber)+" "+getResources().getString(R.string.seats_string));
@@ -107,26 +105,49 @@ public class FoodOrderActivity extends BaseActivity {
         }
         useToolbar(false);
 
-        ArrayList<Dish> offers = new ArrayList<>();
-        ArrayList<Dish> main = new ArrayList<>();
-        ArrayList<Dish> second = new ArrayList<>();
-        ArrayList<Dish> dessert = new ArrayList<>();
-        ArrayList<Dish> others = new ArrayList<>();
+        restaurant = RestaurantBL.getRestaurantById(getApplicationContext(), restaurantID);
+        lists = new ArrayList<ArrayList<ReservedDish>>();
+        lists.add(new ArrayList<ReservedDish>());
+        lists.add(new ArrayList<ReservedDish>());
+        lists.add(new ArrayList<ReservedDish>());
+        lists.add(new ArrayList<ReservedDish>());
+        lists.add(new ArrayList<ReservedDish>());
 
 
-        //Dish(String dishName, int quantity, float price, String type, boolean isOffer)
-        main.add(new Dish("Pizza", 0 , 5, "main", false));
-        main.add(new Dish("Pasta", 0 , 8, "main", false));
-        second.add(new Dish("Pollo", 0 , 8.5f , "second", false));
+        //retrieve all dishes
+        ArrayList<Dish> main = restaurant.getDishesOfCategory(DishType.MainCourses);
+        ArrayList<Dish> second = restaurant.getDishesOfCategory(DishType.SecondCourses);
+        ArrayList<Dish> dessert = restaurant.getDishesOfCategory(DishType.Dessert);
+        ArrayList<Dish> other = restaurant.getDishesOfCategory(DishType.Other);
 
-        lists.add(offers);
-        lists.add(main);
-        lists.add(second);
-        lists.add(dessert);
-        lists.add(others);
+        //retrieve all offers
+        ArrayList<Offer> offers = restaurant.getOffers();
 
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
+        //Conversion from Offer to ReservedDish
+        for(Offer offer : offers){
+            lists.get(0).add(new ReservedDish(offer.getOfferName(), true, 0,offer.getPrice()));
+        }
+
+        //Conversion from Dish to ReservedDish
+        for(Dish dish : main){
+            lists.get(1).add(new ReservedDish(dish.getDishName(), false, 0,dish.getPrice()));
+        }
+        for(Dish dish : second){
+            lists.get(2).add(new ReservedDish(dish.getDishName(), false, 0,dish.getPrice()));
+        }
+        for(Dish dish : dessert){
+            lists.get(3).add(new ReservedDish(dish.getDishName(), false, 0,dish.getPrice()));
+        }
+        for(Dish dish : other){
+            lists.get(4).add(new ReservedDish(dish.getDishName(), false, 0,dish.getPrice()));
+        }
+
+
+
+
+
+
+
 
         mSectionsPagerAdapter = new SectionsPagerAdapter( getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.viewpager_menu);
@@ -139,11 +160,11 @@ public class FoodOrderActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getBaseContext(), CheckoutOrder.class);
-                i.putParcelableArrayListExtra("offers", (ArrayList<? extends Parcelable>) lists.get(0));
-                i.putParcelableArrayListExtra("main", (ArrayList<? extends Parcelable>) lists.get(1));
-                i.putParcelableArrayListExtra("second", (ArrayList<? extends Parcelable>) lists.get(2));
-                i.putParcelableArrayListExtra("dessert", (ArrayList<? extends Parcelable>) lists.get(3));
-                i.putParcelableArrayListExtra("other", (ArrayList<? extends Parcelable>) lists.get(4));
+                i.putParcelableArrayListExtra("offers", lists.get(0) );
+                i.putParcelableArrayListExtra("main",lists.get(1) );
+                i.putParcelableArrayListExtra("second", lists.get(2));
+                i.putParcelableArrayListExtra("dessert", lists.get(3) );
+                i.putParcelableArrayListExtra("other",lists.get(4) );
                 i.putExtra("date", date);
                 i.putExtra("weekday", weekday);
                 i.putExtra("time", time);

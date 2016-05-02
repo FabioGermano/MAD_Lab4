@@ -1,17 +1,17 @@
 package it.polito.mad_lab3.reservation;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import it.polito.mad_lab3.BaseActivity;
 import it.polito.mad_lab3.R;
+import it.polito.mad_lab3.bl.RestaurantBL;
+import it.polito.mad_lab3.data.restaurant.Restaurant;
 import it.polito.mad_lab3.reservation.food_order.*;
 
 public class ReservationActivity extends BaseActivity implements ChoiceFragment.OnChoiceSelectedListener,CalendarFragment.OnDateSelectedListener, TimeFragment.OnTimeSelectedListener{
@@ -22,13 +22,14 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
     private String reservationDate;
     private String reservationTime;
     private String reservationDayOfWeek;
+    private String restaurantName;
     private int seats;
     private boolean choice_made;
     private boolean eat_in;
     private boolean completed=false;
     private ArrayList<String> currentDates;
-    private String restaurantName;
-    private int restaurantID = 4329;
+    private int restaurantID = -1;
+    private Restaurant restaurant;
     View p, c;
     ArrayList<String> timeTable =  new ArrayList<>();
 
@@ -39,6 +40,7 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reservation_request);
 
+
         if (isLargeDevice(getBaseContext())) {
             this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
         } else {
@@ -47,20 +49,15 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
 
         hideToolbar(true);
         hideToolbarShadow(true);
-
-
-        timeTable.add(0, "10:20 - 14:30");
-        timeTable.add(1, "10:30 - 12:30");
-        timeTable.add(2, "10:45 - 12:30");
-        timeTable.add(3, "10:30 - 12:45");
-        timeTable.add(4, "10:30 - 12:30");
-        timeTable.add(5, "10:30 - 12:30");
-        timeTable.add(6, "10:30 - 12:30");
-
         calendarFragment = (CalendarFragment) getSupportFragmentManager().findFragmentById(R.id.date_time);
+        TextView name= (TextView) findViewById(R.id.restaurant_name);
 
-        c = (View) (findViewById(R.id.date_time));
-        c.setVisibility(View.VISIBLE);
+
+        restaurantID=1;
+        restaurant = RestaurantBL.getRestaurantById(getApplicationContext(), restaurantID);
+        this.timeTable= restaurant.getBasicInfo().getTimeTable();
+        this.restaurantName= restaurant.getRestaurantName();
+        name.setText(restaurantName);
 
 
     }
@@ -77,7 +74,7 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
 
 
     @Override
-    public void onDateSelected(String date) {
+    public void onDateSelected(String date, boolean b) {
 
         //TODO update the right view of time according to the day of the week and show the next step
         //extract the day of the week
@@ -90,6 +87,7 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
         timeFragment= new TimeFragment();
 
         Bundle args = new Bundle();
+        args.putBoolean("isToday", b);
         args.putString("timeRange", timeTable.get(convertWeekDay(dayOfTheweek)));
         timeFragment.setArguments(args);
 
@@ -137,7 +135,8 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
         i.putExtra("weekday", reservationDayOfWeek);
         i.putExtra("time", reservationTime);
         i.putExtra("seats", seats);
-        i.putExtra("restaurant", restaurantID);
+        i.putExtra("restaurantId", restaurantID);
+        i.putExtra("restaurantName", restaurantName);
         startActivity(i);
     }
 
@@ -146,7 +145,8 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
         i.putExtra("date", reservationDate);
         i.putExtra("weekday", reservationDayOfWeek);
         i.putExtra("time", reservationTime);
-        i.putExtra("restaurant", restaurantID);
+        i.putExtra("restaurantId", restaurantID);
+        i.putExtra("restaurantName", restaurantName);
         startActivity(i);
     }
 
@@ -156,7 +156,8 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
         i.putExtra("weekday", reservationDayOfWeek);
         i.putExtra("time", reservationTime);
         i.putExtra("seats", seats);
-        i.putExtra("restaurant", restaurantID);
+        i.putExtra("restaurantId", restaurantID);
+        i.putExtra("restaurantName", restaurantName);
         startActivity(i);
 
     }

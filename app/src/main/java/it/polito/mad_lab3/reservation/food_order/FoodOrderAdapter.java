@@ -13,18 +13,19 @@ import java.util.ArrayList;
 
 import it.polito.mad_lab3.R;
 import it.polito.mad_lab3.data.reservation.Dish;
+import it.polito.mad_lab3.data.reservation.ReservedDish;
 
 /**
  * Created by Giovanna on 28/04/2016.
  */
-public class FoodOrderAdapter extends ArrayAdapter<Dish>{
+public class FoodOrderAdapter extends ArrayAdapter<ReservedDish>{
 
-    private ArrayList<Dish> data;
+    private ArrayList<ReservedDish> data;
 
     ListView listView;
     private int section;
 
-    public FoodOrderAdapter(Context context, ArrayList<Dish> objects, int section) {
+    public FoodOrderAdapter(Context context, ArrayList<ReservedDish> objects, int section) {
         super(context, 0, objects);
         this.data=objects;
         this.section=section;
@@ -44,7 +45,7 @@ public class FoodOrderAdapter extends ArrayAdapter<Dish>{
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
-        final Dish dish = getItem(position);
+        final ReservedDish dish = getItem(position);
 
         // Check if an existing view is being reused, otherwise inflate the view
         final ViewHolder viewHolder; // view lookup cache stored in tag
@@ -88,7 +89,7 @@ public class FoodOrderAdapter extends ArrayAdapter<Dish>{
             viewHolder = (ViewHolder) convertView.getTag();
         }
         // Populate the data into the template view using the data object
-        viewHolder.name.setText(dish.getDishName());
+        viewHolder.name.setText(dish.getName());
         viewHolder.price.setText(String.valueOf(dish.getPrice())+" €");
         viewHolder.quantity.setText(String.valueOf(dish.getQuantity()));
         viewHolder.counter=dish.getQuantity();

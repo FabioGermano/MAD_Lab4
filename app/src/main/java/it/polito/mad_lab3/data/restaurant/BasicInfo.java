@@ -10,7 +10,7 @@ public class BasicInfo {
 
     private String address;
     private String phone;
-    private ArrayList<String> timeTable;
+    private ArrayList<String> timeTable; // string "CLOSED" if the restaurant is closed on that day; index -> day of week
     private String email;
     private String description;
     private String logoThumb;

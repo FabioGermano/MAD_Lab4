@@ -11,7 +11,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 import it.polito.mad_lab3.R;
-import it.polito.mad_lab3.data.reservation.Dish;
+import it.polito.mad_lab3.data.reservation.ReservedDish;
 
 /**
  * Created by Giovanna on 25/04/2016.
@@ -21,7 +21,7 @@ public class ListOrderFragment extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
 
     private ListView listView;
-    private ArrayList<Dish> data;
+    private ArrayList<ReservedDish> data;
     private Context context;
     private int position;
 
@@ -31,7 +31,7 @@ public class ListOrderFragment extends Fragment {
 
 
 
-    public static ListOrderFragment newInstance(int sectionNumber, Context context, ArrayList<Dish> data) {
+    public static ListOrderFragment newInstance(int sectionNumber, Context context, ArrayList<ReservedDish> data) {
         ListOrderFragment fragment = new ListOrderFragment();
         fragment.setData(data);
         fragment.setPosition(sectionNumber);
@@ -55,11 +55,11 @@ public class ListOrderFragment extends Fragment {
         return rootView;
     }
 
-    public ArrayList<Dish> getData() {
+    public ArrayList<ReservedDish> getData() {
         return data;
     }
 
-    public void setData(ArrayList<Dish> data) {
+    public void setData(ArrayList<ReservedDish> data) {
         this.data = data;
     }
 

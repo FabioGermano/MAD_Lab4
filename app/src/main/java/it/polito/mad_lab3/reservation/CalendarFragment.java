@@ -33,10 +33,6 @@ import it.polito.mad_lab3.common.Helper;
 public class CalendarFragment extends Fragment {
 
     OnDateSelectedListener mCallback;
-
-    SharedPreferences sp;
-    private Button btt;
-    private ListView listView;
     private int selection=0;
     private NumberPicker numberPicker;
     private Context context;
@@ -44,7 +40,7 @@ public class CalendarFragment extends Fragment {
 
     public interface OnDateSelectedListener {
 
-        public void onDateSelected( String date);
+        public void onDateSelected(String date, boolean b);
 
     }
 
@@ -80,6 +76,7 @@ public class CalendarFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(
                 R.layout.calendar_fragment, container, false);
+
         final Calendar c = Calendar.getInstance();
         int year , month, day , week_day;
 
@@ -104,29 +101,36 @@ public class CalendarFragment extends Fragment {
             c.add(Calendar.DATE, 1);
         }
 
+
+
+        //creates the values for the number picker
         String[] picker;
         picker = new String[7];
+        picker[0]= getResources().getString(R.string.today);
+        picker[1]= getResources().getString(R.string.tomorrow);
 
-        for(int i =0; i<dates.size();i++){
+        for(int i=2; i<dates.size();i++){
             picker[i]= dates.get(i);
         }
-        numberPicker = (NumberPicker) rootView.findViewById(R.id.numberPicker);
 
+        numberPicker = (NumberPicker) rootView.findViewById(R.id.numberPicker);
         numberPicker.setMinValue(0); //from array first value
         //Specify the maximum value/number of NumberPicker
         numberPicker.setMaxValue(dates.size()-1); //to array last value
+
         //Specify the NumberPicker data source as array elements
         numberPicker.setDisplayedValues(picker);
 
+        //make the numberpicker not editable
         numberPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
-
-
         numberPicker.setWrapSelectorWheel(true);
+
         numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal){
                 //pass  to the activity the date in the db format + day of the week
-                mCallback.onDateSelected(datesInDBFormat.get(newVal));
+                boolean b = (newVal==0);
+                mCallback.onDateSelected(datesInDBFormat.get(newVal), b);
 
             }
         });
