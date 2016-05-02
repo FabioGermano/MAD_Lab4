@@ -30,7 +30,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:nextFocusDown="@id/seats">
 
         <ImageButton
             android:id="@+id/eat_in"
@@ -52,6 +53,8 @@
 
     <LinearLayout
         android:id="@+id/seats"
+        android:focusableInTouchMode="true"
+        android:focusable="true"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -144,15 +147,6 @@
             style="@style/Widget.AppCompat.Button.Colored"
             android:text="Check Out"/>
     </LinearLayout>
-
-
-    <!-- <NumberPicker
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:id="@+id/numberPicker"
-         android:visibility="gone"
-         android:layout_gravity="center_horizontal"
-         android:scrollIndicators="none" /> -->
 
 </LinearLayout>
 

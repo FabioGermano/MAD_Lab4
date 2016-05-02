@@ -43,6 +43,7 @@
     </LinearLayout>
 
     <it.polito.mad_lab3.common.ExpandableHeightGridView
+        android:focusable="true"
         android:id="@+id/gridView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -53,6 +54,8 @@
         android:listSelector="@drawable/selected_background"
         android:stretchMode="columnWidth"
         android:verticalSpacing="20dp" />
+
+    <requestFocus />
 
 
     <!--

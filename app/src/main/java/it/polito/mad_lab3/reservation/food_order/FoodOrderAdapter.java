@@ -32,6 +32,7 @@ public class FoodOrderAdapter extends ArrayAdapter<Dish>{
 
     // View lookup cache
     private static class ViewHolder {
+        int position;
         int counter;
         TextView name;
         TextView price;
@@ -39,8 +40,9 @@ public class FoodOrderAdapter extends ArrayAdapter<Dish>{
         ImageButton plus;
         ImageButton minus;
     }
+
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
         final Dish dish = getItem(position);
 
@@ -56,14 +58,16 @@ public class FoodOrderAdapter extends ArrayAdapter<Dish>{
             viewHolder.quantity = (TextView) convertView.findViewById(R.id.dish_quantity);
             viewHolder.minus = (ImageButton) convertView.findViewById(R.id.minus);
             viewHolder.plus = (ImageButton) convertView.findViewById(R.id.plus);
-            viewHolder.minus.setTag(position);
-            viewHolder.plus.setTag(position);
+            viewHolder.position= position;
+            //viewHolder.minus.setTag(position);
+            //viewHolder.plus.setTag(position);
             viewHolder.plus.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 
                     viewHolder.counter++;
                     viewHolder.quantity.setText(String.valueOf(viewHolder.counter));
+                    data.get(position).setQuantity(viewHolder.counter);
 
                 }
             });
@@ -74,6 +78,7 @@ public class FoodOrderAdapter extends ArrayAdapter<Dish>{
                     if(viewHolder.counter>0) {
                         viewHolder.counter--;
                         viewHolder.quantity.setText(String.valueOf(viewHolder.counter));
+                        data.get(position).setQuantity(viewHolder.counter);
                     }
 
                 }

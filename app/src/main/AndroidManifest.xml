@@ -33,8 +33,10 @@
         <activity android:name=".common.photo_viewer.PhotoViewActivity" />
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
         <activity android:name=".restaurant.ChoosePhotoActivity" />
-        <activity android:name=".restaurant.gallery.GalleryPhotoViewActivity"  />
-        <activity android:name=".restaurant.gallery.PhotoGaleryActivity" android:parentActivityName=".restaurant.RestaurantActivity" />
+        <activity android:name=".restaurant.gallery.GalleryPhotoViewActivity" />
+        <activity
+            android:name=".restaurant.gallery.PhotoGaleryActivity"
+            android:parentActivityName=".restaurant.RestaurantActivity" />
         <activity
             android:name=".reservation.food_order.FoodOrderActivity"
             android:parentActivityName=".reservation.ReservationActivity">
@@ -42,8 +44,13 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="it.polito.mad_lab3.reservation.ReservationActivity" />
         </activity>
-        <activity android:name=".elaborazioneRicerche.elaborazioneRicerche"
-            android:parentActivityName=".MainActivity"></activity>
+        <activity
+            android:name=".elaborazioneRicerche.elaborazioneRicerche"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".reservation.ScrollingActivity"
+            android:label="@string/title_activity_scrolling"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

@@ -1,9 +1,13 @@
 package it.polito.mad_lab3.reservation.food_order;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,6 +15,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -19,16 +24,18 @@ import java.util.ArrayList;
 import it.polito.mad_lab3.BaseActivity;
 import it.polito.mad_lab3.R;
 import it.polito.mad_lab3.data.reservation.Dish;
+import it.polito.mad_lab3.reservation.CheckoutOrder;
 
 public class FoodOrderActivity extends BaseActivity {
 
     private ViewPager mViewPager;
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ArrayList<ArrayList<Dish>> lists = new ArrayList<>();
-    private TextView dateTextView, timeTextView, seatsTextView;
+    private TextView dateTextView, timeTextView, seatsTextView, totTextView;
     private String date, time, weekday;
     private int seatsNumber;
-
+    private FloatingActionButton doneFab;
+    private int restaurantID=-1;
     //CollapsingToolbarLayout collapsingToolbarLayout;
 
 
@@ -56,6 +63,7 @@ public class FoodOrderActivity extends BaseActivity {
                 date= null;
                 time=null;
                 weekday=null;
+                restaurantID=-1;
                 seatsNumber=0;
 
             } else {
@@ -63,6 +71,7 @@ public class FoodOrderActivity extends BaseActivity {
                 time= extras.getString("time");
                 weekday= extras.getString("weekday");
                 seatsNumber= extras.getInt("seats");
+                restaurantID= extras.getInt("restaurant");
             }
         } else {
             date= (String) savedInstanceState.getSerializable("date");
@@ -71,6 +80,9 @@ public class FoodOrderActivity extends BaseActivity {
             seatsNumber= (Integer) savedInstanceState.getSerializable("seats");
 
         }
+
+
+        totTextView = (TextView) findViewById(R.id.totale) ;
         dateTextView = (TextView) findViewById(R.id.date) ;
         timeTextView = (TextView) findViewById(R.id.time) ;
         seatsTextView = (TextView) findViewById(R.id.seats) ;
@@ -116,7 +128,31 @@ public class FoodOrderActivity extends BaseActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout_menu);
         tabLayout.setupWithViewPager(mViewPager);
+        doneFab = (FloatingActionButton) findViewById(R.id.done);
+        doneFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getBaseContext(), CheckoutOrder.class);
 
+                i.putParcelableArrayListExtra("offers", (ArrayList<? extends Parcelable>) lists.get(0));
+                i.putParcelableArrayListExtra("main", (ArrayList<? extends Parcelable>) lists.get(1));
+                i.putParcelableArrayListExtra("second", (ArrayList<? extends Parcelable>) lists.get(2));
+                i.putParcelableArrayListExtra("dessert", (ArrayList<? extends Parcelable>) lists.get(3));
+                i.putParcelableArrayListExtra("other", (ArrayList<? extends Parcelable>) lists.get(4));
+                i.putExtra("date", date);
+                i.putExtra("weekday", weekday);
+                i.putExtra("time", time);
+                i.putExtra("seats", seatsNumber);
+                i.putExtra("restaurant", restaurantID);
+                startActivity(i);
+
+                /*for(ArrayList<Dish> list : lists){
+                    for(Dish d : list){
+                        Log.w("debug", d.getDishName()+" "+d.getType()+" "+d.getPrice()+" q: "+d.getQuantity());
+                    }
+                }*/
+            }
+        });
 
     }
 

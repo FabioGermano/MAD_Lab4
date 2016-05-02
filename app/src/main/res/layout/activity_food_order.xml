@@ -49,6 +49,10 @@
                     android:textAppearance="?android:attr/textAppearanceLarge"/>
                     />
 
+                <requestFocus
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -133,8 +137,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             />
-    </RelativeLayout>
 
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/done"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_done_white_48dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="32dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="32dp" />
+    </RelativeLayout>
 
 
 </android.support.design.widget.CoordinatorLayout>

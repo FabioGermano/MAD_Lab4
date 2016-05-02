@@ -182,6 +182,7 @@ public class TimeFragment extends Fragment implements DatesAdapter.AdapterInterf
                 mCallback.onTimeSelected(time.get(position));
             }
         });*/
+        gridView.requestFocus(View.FOCUS_FORWARD);
         return rootView;
     }
 
@@ -192,6 +193,7 @@ public class TimeFragment extends Fragment implements DatesAdapter.AdapterInterf
         //time_position=1;
         if(time_position!=-1){
             gridView.setItemChecked(time_position, true);
+
             //datesAdapter.notifyDataSetChanged();
         }
             //gridView.setSelection(1);

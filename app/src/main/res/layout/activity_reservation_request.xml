@@ -66,7 +66,9 @@
     <LinearLayout
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
 
 
         <fragment
@@ -80,13 +82,17 @@
         <FrameLayout
             android:id="@+id/time_fragment_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:focusableInTouchMode="true"
+            android:focusable="true"/>
 
         <FrameLayout
             android:id="@+id/choice_fragment_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"/>
+            android:layout_marginBottom="5dp"
+            android:focusableInTouchMode="true"
+            android:focusable="true"/>
 
     </LinearLayout>
 

@@ -52,7 +52,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/numberPicker"
-
+            android:divider="@color/tabIndicator"
+            android:showDividers="beginning"
             android:layout_gravity="center_horizontal" />
 
 

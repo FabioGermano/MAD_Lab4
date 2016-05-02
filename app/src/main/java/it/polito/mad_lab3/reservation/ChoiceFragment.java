@@ -2,6 +2,7 @@ package it.polito.mad_lab3.reservation;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.animation.TimeInterpolator;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.PorterDuff;

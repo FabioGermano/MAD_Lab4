@@ -28,6 +28,7 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
     private boolean completed=false;
     private ArrayList<String> currentDates;
     private String restaurantName;
+    private int restaurantID = 4329;
     View p, c;
     ArrayList<String> timeTable =  new ArrayList<>();
 
@@ -94,6 +95,7 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
 
         getSupportFragmentManager().beginTransaction().replace(R.id.time_fragment_container, timeFragment).commit();
         View t = (View) (findViewById(R.id.time_fragment_container));
+        t.requestFocus();
 
         if(choiceFragment != null) {
             this.choice_made=false;
@@ -142,6 +144,7 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
         i.putExtra("weekday", reservationDayOfWeek);
         i.putExtra("time", reservationTime);
         i.putExtra("seats", seats);
+        i.putExtra("restaurant", restaurantID);
         startActivity(i);
     }
 
@@ -150,6 +153,7 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
         i.putExtra("date", reservationDate);
         i.putExtra("weekday", reservationDayOfWeek);
         i.putExtra("time", reservationTime);
+        i.putExtra("restaurant", restaurantID);
         startActivity(i);
     }
 
@@ -159,6 +163,7 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
         i.putExtra("weekday", reservationDayOfWeek);
         i.putExtra("time", reservationTime);
         i.putExtra("seats", seats);
+        i.putExtra("restaurant", restaurantID);
         startActivity(i);
 
     }
