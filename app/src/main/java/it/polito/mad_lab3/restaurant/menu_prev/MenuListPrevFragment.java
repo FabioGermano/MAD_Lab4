@@ -74,9 +74,9 @@ public class MenuListPrevFragment extends Fragment {
             }
             else
             {
-                TextView other = new TextView(getContext());
-                other.setText(getResources().getString(R.string.otherDishesAvailable));
-                parentLinearLayout.addView(other);
+                //TextView other = new TextView(getContext());
+                //other.setText(getResources().getString(R.string.otherDishesAvailable));
+                //parentLinearLayout.addView(other);
 
                 /*
                 View viewToAdd = LayoutInflater.from(getContext()).inflate(R.layout.menu_list_prev_detail, null);

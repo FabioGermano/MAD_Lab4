@@ -7,6 +7,9 @@
 
     <include layout="@layout/toolbar_view" android:layout_height="wrap_content" android:layout_width="match_parent"></include>
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <GridView
         android:id="@+id/galleryGridview"
         android:layout_width="match_parent"
@@ -15,5 +18,8 @@
         android:horizontalSpacing="2dp"
         android:stretchMode="columnWidth"
         android:numColumns="2"/>
-
+        <View android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@drawable/toolbar_shadow"/>
+    </FrameLayout>
 </LinearLayout>

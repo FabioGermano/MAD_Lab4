@@ -47,6 +47,7 @@
         <activity
             android:name=".elaborazioneRicerche.elaborazioneRicerche"
             android:parentActivityName=".MainActivity" />
+        <activity android:name=".restaurant.menu.MenuActivity"></activity>
     </application>
 
 </manifest>

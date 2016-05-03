@@ -30,8 +30,9 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/menuPrevPager"
         android:layout_width="match_parent"
-        android:layout_height="192dp"/>
+        android:layout_height="172dp"/>
     <Button
+        android:id="@+id/showAllMenuButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
