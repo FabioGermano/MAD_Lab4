@@ -75,6 +75,9 @@
     <string name="today">Today</string>
     <string name="tomorrow">Tomorrow</string>
     <string name="closed_restaurant">Sorry, the restaurant is closed! </string>
+    <string name="your_reservation">Your reservation</string>
+    <string name="total">Total :</string>
+    <string name="notes">Notes for the restaurant:</string>
 
 
 </resources>

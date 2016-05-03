@@ -37,7 +37,7 @@ public class FoodOrderActivity extends BaseActivity {
     private ViewPager mViewPager;
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ArrayList<ArrayList<ReservedDish>> lists; //order: offer, main, second, dessert , other
-    private TextView dateTextView, timeTextView, seatsTextView, totTextView;
+    private TextView dateTextView, timeTextView, seatsTextView, nameTextView;
     private String date, time, weekday, restaurantName;
     private int seatsNumber;
     private FloatingActionButton doneFab;
@@ -69,6 +69,7 @@ public class FoodOrderActivity extends BaseActivity {
                 date= null;
                 time=null;
                 weekday=null;
+                restaurantName=null;
                 restaurantID=-1;
                 seatsNumber=0;
 
@@ -83,35 +84,31 @@ public class FoodOrderActivity extends BaseActivity {
             }
         }
 
-
-        totTextView = (TextView) findViewById(R.id.totale) ;
         dateTextView = (TextView) findViewById(R.id.date) ;
         timeTextView = (TextView) findViewById(R.id.time) ;
         seatsTextView = (TextView) findViewById(R.id.seats) ;
-        TextView name= (TextView) findViewById(R.id.restaurant_name);
+        nameTextView = (TextView) findViewById(R.id.restaurant_name);
 
         if(date!=null && time!=null && restaurantName!=null){
             dateTextView.setText(Helper.formatDate(getBaseContext(),weekday, date));
             timeTextView.setText(time);
-            name.setText(restaurantName);
+            nameTextView.setText(restaurantName);
         }
         if(seatsNumber!=0){
             seatsTextView.setText(String.valueOf(seatsNumber)+" "+getResources().getString(R.string.seats_string));
-            //collapsingToolbarLayout.setTitle("Order for eating in");
         }
         else {
             seatsTextView.setVisibility(View.GONE);
-            //collapsingToolbarLayout.setTitle("Order for take-away");
         }
+
         useToolbar(false);
 
         restaurant = RestaurantBL.getRestaurantById(getApplicationContext(), restaurantID);
+
+        //initialize the lists
         lists = new ArrayList<ArrayList<ReservedDish>>();
-        lists.add(new ArrayList<ReservedDish>());
-        lists.add(new ArrayList<ReservedDish>());
-        lists.add(new ArrayList<ReservedDish>());
-        lists.add(new ArrayList<ReservedDish>());
-        lists.add(new ArrayList<ReservedDish>());
+        for(int i=0;i<5;i++)
+            lists.add(new ArrayList<ReservedDish>());
 
 
         //retrieve all dishes
@@ -142,13 +139,6 @@ public class FoodOrderActivity extends BaseActivity {
             lists.get(4).add(new ReservedDish(dish.getDishName(), false, 0,dish.getPrice()));
         }
 
-
-
-
-
-
-
-
         mSectionsPagerAdapter = new SectionsPagerAdapter( getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.viewpager_menu);
         mViewPager.setAdapter(mSectionsPagerAdapter);
@@ -169,14 +159,10 @@ public class FoodOrderActivity extends BaseActivity {
                 i.putExtra("weekday", weekday);
                 i.putExtra("time", time);
                 i.putExtra("seats", seatsNumber);
+                i.putExtra("restaurantName", restaurantName);
                 i.putExtra("restaurant", restaurantID);
                 startActivity(i);
 
-                /*for(ArrayList<Dish> list : lists){
-                    for(Dish d : list){
-                        Log.w("debug", d.getDishName()+" "+d.getType()+" "+d.getPrice()+" q: "+d.getQuantity());
-                    }
-                }*/
             }
         });
 
@@ -196,8 +182,8 @@ public class FoodOrderActivity extends BaseActivity {
         Context context;
 
         public SectionsPagerAdapter(FragmentManager fm) {
-
             super(fm);
+
         }
 
 
