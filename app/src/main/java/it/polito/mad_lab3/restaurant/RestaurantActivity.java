@@ -1,5 +1,6 @@
 package it.polito.mad_lab3.restaurant;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
@@ -46,6 +47,15 @@ public class  RestaurantActivity extends BaseActivity {
         View child = getLayoutInflater().inflate(R.layout.offer_prev_view, null);
         llOffers.addView(child);
         child = getLayoutInflater().inflate(R.layout.offer_prev_view, null);
+        //test
+        child.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getBaseContext(), ShowOfferActivity.class);
+                startActivity(i);
+
+            }
+        });
         llOffers.addView(child);
 
         restaurant = RestaurantBL.getRestaurantById(getBaseContext(), 1);

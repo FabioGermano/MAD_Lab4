@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -47,8 +48,19 @@ public class ListOrderFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.list_order_fragment, container, false);
+        View header = inflater.inflate(R.layout.food_order_header, null);
+        TextView headerTextViewL = (TextView) header.findViewById(R.id.dish);
+        TextView headerTextViewR = (TextView) header.findViewById(R.id.quantity);
+        if(position==0) {
+            headerTextViewL.setText(getResources().getString(R.string.offer));
+        }
+        else
+            headerTextViewL.setText(getResources().getString(R.string.dish));
+
+        headerTextViewR.setText(getResources().getString(R.string.quantity));
 
         listView = (ListView) rootView.findViewById(R.id.listView);
+        listView.addHeaderView(header);
         listView.setAdapter(new FoodOrderAdapter(getContext(),data, position));
 
 

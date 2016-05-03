@@ -150,11 +150,20 @@ public class FoodOrderActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getBaseContext(), CheckoutOrder.class);
-                i.putParcelableArrayListExtra("offers", lists.get(0) );
+                ArrayList<ReservedDish> reservedDishes= new ArrayList<ReservedDish>();
+                for(int j=0;j<5;j++) {
+                    for(ReservedDish rd : lists.get(j)){
+                        if(rd.getQuantity()>0){
+                            reservedDishes.add(rd);
+                        }
+                    }
+                }
+                i.putParcelableArrayListExtra("reservedDishes", reservedDishes );
+                /*i.putParcelableArrayListExtra("offers", lists.get(0) );
                 i.putParcelableArrayListExtra("main",lists.get(1) );
                 i.putParcelableArrayListExtra("second", lists.get(2));
                 i.putParcelableArrayListExtra("dessert", lists.get(3) );
-                i.putParcelableArrayListExtra("other",lists.get(4) );
+                i.putParcelableArrayListExtra("other",lists.get(4) );*/
                 i.putExtra("date", date);
                 i.putExtra("weekday", weekday);
                 i.putExtra("time", time);

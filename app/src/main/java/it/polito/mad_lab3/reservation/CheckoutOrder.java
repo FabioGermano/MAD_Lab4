@@ -16,21 +16,25 @@ import java.util.ArrayList;
 
 import it.polito.mad_lab3.BaseActivity;
 import it.polito.mad_lab3.R;
+import it.polito.mad_lab3.bl.UserBL;
 import it.polito.mad_lab3.common.Helper;
+import it.polito.mad_lab3.data.reservation.Reservation;
 import it.polito.mad_lab3.data.reservation.ReservedDish;
+import it.polito.mad_lab3.data.user.User;
 
 /**
  * Created by Giovanna on 28/04/2016.
  */
 public class CheckoutOrder extends BaseActivity {
 
-    private ArrayList<ReservedDish> offers, main, second, dessert, other;
+    //private ArrayList<ReservedDish> offers, main, second, dessert, other;
+    private ArrayList<ReservedDish> reservedDishes;
     private TextView dateTextView, timeTextView, seatsTextView, nameTextView, totalTextView;
     private EditText notesTextView;
     private String date, time, weekday,restaurantName;
     private int seatsNumber;
     private int restaurantID = -1;
-    private FloatingActionButton confirm;
+    private FloatingActionButton confirmFab;
     private LinearLayout orderLayout;
     private float total=0;
 
@@ -58,12 +62,13 @@ public class CheckoutOrder extends BaseActivity {
             restaurantName= extras.getString("restaurantName");
             restaurantID = extras.getInt("restaurant");
         }
-
+        /*
         offers = getIntent().getParcelableArrayListExtra("offers");
         main = getIntent().getParcelableArrayListExtra("main");
         second = getIntent().getParcelableArrayListExtra("second");
-        dessert = getIntent().getParcelableArrayListExtra("dessert");
-        other = getIntent().getParcelableArrayListExtra("other");
+        dessert = getIntent().getParcelableArrayListExtra("dessert");*/
+
+        reservedDishes = getIntent().getParcelableArrayListExtra("reservedDishes");
 
         orderLayout = (LinearLayout) findViewById(R.id.order);
         dateTextView = (TextView) findViewById(R.id.reservation_date);
@@ -73,11 +78,24 @@ public class CheckoutOrder extends BaseActivity {
         totalTextView = (TextView) findViewById(R.id.total);
         notesTextView = (EditText) findViewById(R.id.notes);
 
-        confirm = (FloatingActionButton) findViewById(R.id.confirm_order);
-        confirm.setOnClickListener(new View.OnClickListener() {
+        confirmFab = (FloatingActionButton) findViewById(R.id.confirm_order);
+        confirmFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO Add the pending reservation to the db
+
+                User user = UserBL.getUserById(getBaseContext(), UserBL.getCurrentUserId());
+                Reservation r = new Reservation();
+                r.setReservationId(25);
+                r.setReservedDishes(reservedDishes);
+                r.setDate(date);
+                r.setTime(time);
+                r.setPlaces(String.valueOf(seatsNumber));
+                r.setRestaurantId(restaurantID);
+                r.setNoteByUser(notesTextView.getText().toString());
+                r.setTotalIncome(total);
+                user.getReservations().add(r);
+
+
             }
         });
 
@@ -91,12 +109,8 @@ public class CheckoutOrder extends BaseActivity {
         } else {
             seatsTextView.setVisibility(View.GONE);
         }
-        if(offers!= null && main!=null && second != null && dessert!=null && other!=null) {
-            fillLayout(main);
-            fillLayout(second);
-            fillLayout(dessert);
-            fillLayout(other);
-            fillLayout(offers);
+        if(reservedDishes!=null){
+            fillLayout(reservedDishes);
             totalTextView.setText(getResources().getString(R.string.total)+" "+ String.valueOf(total)+" €");
         }
         else{

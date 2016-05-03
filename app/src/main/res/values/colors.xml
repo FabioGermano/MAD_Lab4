@@ -3,7 +3,7 @@
     <color name="test">#76213e</color>
     <color name="blackSemiTrasparent">#80FFFFFF</color>
     <color name="blackSemiTrasparent90">#50FFFFFF</color>
-    <color name="colorBackground">#f4f1efef</color>
+    <color name="colorBackground">#f4f2fffe</color>
 
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>

@@ -42,7 +42,7 @@
             android:textSize="18sp"
             android:layout_gravity="center_vertical"
             android:text="3.5€"
-            android:layout_marginRight="10dp"/>
+            android:layout_marginRight="30dp"/>
 
         <ImageButton
             android:id="@+id/minus"
