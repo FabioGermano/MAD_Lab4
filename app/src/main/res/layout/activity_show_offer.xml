@@ -6,68 +6,224 @@
     tools:context="it.polito.mad_lab3.restaurant.ShowOfferActivity">
 
     <include android:id="@+id/includedtoolbar" layout="@layout/toolbar_view" android:layout_height="wrap_content" android:layout_width="match_parent"></include>
-
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_below="@id/includedtoolbar"
-        android:orientation="vertical"
+        android:layout_height="wrap_content"
         android:paddingBottom="@dimen/activity_vertical_margin"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin">
-        <RelativeLayout
-            android:layout_width="wrap_content"
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:background="@android:drawable/dialog_holo_light_frame">
-            <fragment
-                xmlns:custom="http://schemas.android.com/apk/res/it.polito.mad_lab3"
-                android:id="@+id/photoViewer"
-                android:name="it.polito.mad_lab3.common.photo_viewer.PhotoViewer"
+            android:orientation="vertical">
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="2dp"
-                custom:isEditable="false"
-                custom:isLogo="false"
-                custom:heightInDP="200"
-                custom:widthInDP="200"
-                custom:initialBackground="@drawable/special_offer" />
-
-
-
-        </RelativeLayout>
-
-        <android.support.v7.widget.CardView
-
-            xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            card_view:cardUseCompatPadding="true"
-            card_view:cardCornerRadius="4dp"
-            android:minHeight="64dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:orientation="vertical">
-                <!--
-                private String offerName;
-                private float avgRank;
-                private int numRanks;
-                private float price;
-                private String thumbPath, largePath;
-                private String details;
-                -->
-                <TextView
+                android:layout_gravity="center_horizontal"
+                android:background="@android:drawable/dialog_holo_light_frame"
+                android:layout_marginBottom="16dp">
+                <fragment
+                    xmlns:custom="http://schemas.android.com/apk/res/it.polito.mad_lab3"
+                    android:id="@+id/photoViewer"
+                    android:name="it.polito.mad_lab3.common.photo_viewer.PhotoViewer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/offer_name"
+                    android:layout_margin="2dp"
+                    custom:isEditable="false"
+                    custom:isLogo="false"
+                    custom:heightInDP="200"
+                    custom:widthInDP="200"
+                    custom:initialBackground="@drawable/special_offer" />
+
+
+
+            </RelativeLayout>
+
+            <android.support.v7.widget.CardView
+
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                card_view:cardUseCompatPadding="true"
+                card_view:cardCornerRadius="4dp"
+                android:minHeight="64dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:layout_marginTop="5dp"
+                    android:height="32dp"
+                    android:textStyle="italic"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:textColor="@android:color/holo_green_dark"
+                    android:background="@drawable/green_gradiente_inverted"
+                    android:text="Today available!"
                     />
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:padding="10dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/name"
+                            android:text="Menu studenti "
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textStyle="bold"
+                            android:id="@+id/price"
+                            android:text="4,50 €"
+                            />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_marginBottom="16dp">
+                    <RatingBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:isIndicator="true"
+                        android:rating="2"
+                        style="?android:attr/ratingBarStyleIndicator"
+                        android:id="@+id/rating" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:id="@+id/ratings_number"
+                            android:layout_marginLeft="10dp"
+                            android:textSize="18sp"
+                            android:text="(50)"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/details"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/details"
+                        android:text=""
+                        android:layout_marginBottom="16dp"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/available_on"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <ToggleButton
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_margin="5dp"
+                            android:text="New ToggleButton"
+                            android:clickable="false"
+                            android:checked="false"
+                            android:textOn="Mo"
+                            android:textOff="Mo"
+                            android:background="@drawable/toggle_selector"
+                            android:id="@+id/monday" />
+                        <ToggleButton
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_margin="5dp"
+                            android:text="New ToggleButton"
+                            android:clickable="false"
+                            android:checked="false"
+                            android:textOn="Tu"
+                            android:textOff="Tu"
+                            android:background="@drawable/toggle_selector"
+                            android:id="@+id/tuesday" />
+                        <ToggleButton
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_margin="5dp"
+                            android:text="New ToggleButton"
+                            android:clickable="false"
+                            android:checked="false"
+                            android:textOn="We"
+                            android:textOff="We"
+                            android:background="@drawable/toggle_selector"
+                            android:id="@+id/wedenesday" />
+                        <ToggleButton
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_margin="5dp"
+                            android:text="New ToggleButton"
+                            android:clickable="false"
+                            android:checked="false"
+                            android:textOn="Th"
+                            android:textOff="Th"
+                            android:background="@drawable/toggle_selector"
+                            android:id="@+id/thursday" />
+                        <ToggleButton
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_margin="5dp"
+                            android:text="New ToggleButton"
+                            android:clickable="false"
+                            android:checked="false"
+                            android:textOn="Fr"
+                            android:textOff="Fr"
+                            android:background="@drawable/toggle_selector"
+                            android:id="@+id/friday" />
+                        <ToggleButton
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_margin="5dp"
+                            android:text="New ToggleButton"
+                            android:clickable="false"
+                            android:checked="false"
+                            android:textOn="Sa"
+                            android:textOff="Sa"
+                            android:background="@drawable/toggle_selector"
+                            android:id="@+id/saturday" />
+                        <ToggleButton
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:layout_margin="5dp"
+                            android:text="New ToggleButton"
+                            android:clickable="false"
+                            android:checked="false"
+                            android:textOn="Su"
+                            android:textOff="Su"
+                            android:background="@drawable/toggle_selector"
+                            android:id="@+id/sunday" />
 
 
-    </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
 
+
+        </LinearLayout>
+    </ScrollView>
 </RelativeLayout>
