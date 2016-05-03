@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -13,7 +14,9 @@ import it.polito.mad_lab3.R;
 import it.polito.mad_lab3.bl.RestaurantBL;
 import it.polito.mad_lab3.data.restaurant.Restaurant;
 import it.polito.mad_lab3.data.user.User;
+import it.polito.mad_lab3.reservation.ReservationActivity;
 import it.polito.mad_lab3.restaurant.foodPhoto.ContainerUserPhotoFragment;
+import it.polito.mad_lab3.restaurant.menu.MenuActivity;
 import it.polito.mad_lab3.restaurant.menu_prev.MenuListPrevFragment;
 import it.polito.mad_lab3.restaurant.menu_prev.MenuPrevFragment;
 
@@ -24,6 +27,7 @@ public class  RestaurantActivity extends BaseActivity {
     private Restaurant restaurant;
     private MenuPrevFragment menuPrevFragment;
     private User user;
+    private Button showAllMenuButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +69,21 @@ public class  RestaurantActivity extends BaseActivity {
 
         menuPrevFragment = (MenuPrevFragment)getSupportFragmentManager().findFragmentById(R.id.menuPrevFragment);
         menuPrevFragment.setRestaurantId(restaurant.getRestaurantId());
+
+        showAllMenuButton = (Button)findViewById(R.id.showAllMenuButton);
+        showAllMenuButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAllMenuButtonPressed();
+            }
+        });
+
+    }
+
+    private void showAllMenuButtonPressed() {
+        Intent i = new Intent(getBaseContext(), MenuActivity.class);
+        i.putExtra("restaurantId", this.restaurant.getRestaurantId());
+        startActivity(i);
     }
 
 

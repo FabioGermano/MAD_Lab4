@@ -22,6 +22,7 @@ public class PhotoGaleryActivity extends BaseActivity implements PhotoGalleryLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_galery);
 
+        hideToolbarShadow(true);
         setActivityTitle(getResources().getString(R.string.gallery_activity_title));
 
         this.restaurant = RestaurantBL.getRestaurantById(getBaseContext(), getIntent().getExtras().getInt("restaurantId"));
