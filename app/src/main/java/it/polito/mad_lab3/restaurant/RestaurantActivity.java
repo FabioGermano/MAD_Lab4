@@ -47,7 +47,7 @@ public class  RestaurantActivity extends BaseActivity {
         ((ImageView)findViewById(R.id.mapIcon)).setColorFilter(Color.BLACK);
         ((ImageView)findViewById(R.id.phoneIcon)).setColorFilter(Color.BLACK);
 
-        LinearLayout llOffers = (LinearLayout)findViewById(R.id.LLOffersPrev);
+  /*      LinearLayout llOffers = (LinearLayout)findViewById(R.id.LLOffersPrev);
         View child = getLayoutInflater().inflate(R.layout.offer_prev_view, null);
         llOffers.addView(child);
         child = getLayoutInflater().inflate(R.layout.offer_prev_view, null);
@@ -63,7 +63,7 @@ public class  RestaurantActivity extends BaseActivity {
             }
         });
         llOffers.addView(child);
-
+*/
         restaurant = RestaurantBL.getRestaurantById(getBaseContext(), 1);
 
         containerUserPhotoFragment = (ContainerUserPhotoFragment)getSupportFragmentManager().findFragmentById(R.id.UserPhotoFragment);

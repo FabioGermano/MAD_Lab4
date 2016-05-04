@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_centerHorizontal="true"
     android:layout_height="wrap_content">
     <ImageView
+        android:layout_centerHorizontal="true"
         android:id="@+id/foodIV"
-        android:layout_width="250dp"
+        android:layout_width="match_parent"
         android:src="@drawable/special_offer"
         android:scaleType="centerCrop"
         android:layout_height="150dp"
@@ -114,8 +116,9 @@
         </LinearLayout>
     </RelativeLayout>
     <RelativeLayout
+        android:layout_centerHorizontal="true"
         android:id="@+id/trasparentContainer"
-        android:layout_width="250dp"
+        android:layout_width="match_parent"
         android:layout_height="35dp"
         android:background="@color/blackSemiTrasparent"
         android:layout_alignBottom="@id/foodIV"
@@ -128,7 +131,7 @@
             android:textSize="12sp"
             android:textStyle="italic"
             android:text="sdf dfg sdfsdf f  fggdf dfg gfd  gfd  fgd  gfd  gdf gfd d fgdfg dfg"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </RelativeLayout>
     <ImageView

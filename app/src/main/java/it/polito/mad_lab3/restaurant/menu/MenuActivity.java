@@ -10,6 +10,7 @@ import android.os.Bundle;
 
 import it.polito.mad_lab3.BaseActivity;
 import it.polito.mad_lab3.R;
+import it.polito.mad_lab3.common.Helper;
 import it.polito.mad_lab3.data.restaurant.DishTypeConverter;
 import it.polito.mad_lab3.restaurant.menu_prev.MenuListPrevFragment;
 
@@ -32,6 +33,8 @@ public class MenuActivity extends BaseActivity {
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.menuViewPager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+        //mViewPager.setClipToPadding(false);
+        //mViewPager.setPadding(Helper.dpToPx(getBaseContext(), 15), 0, Helper.dpToPx(getBaseContext(), 15), 0);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout_menu);
         tabLayout.setupWithViewPager(mViewPager);

@@ -1,30 +1,39 @@
-package it.polito.mad_lab3.restaurant.menu_prev;
+package it.polito.mad_lab3.restaurant.offer_prev;
 
+import android.graphics.Point;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
 import it.polito.mad_lab3.R;
+import it.polito.mad_lab3.bl.RestaurantBL;
 import it.polito.mad_lab3.common.Helper;
+import it.polito.mad_lab3.common.HorizontalListView;
 import it.polito.mad_lab3.data.restaurant.DishTypeConverter;
+import it.polito.mad_lab3.data.restaurant.Offer;
+import it.polito.mad_lab3.restaurant.menu.MenuListAdapter;
+import it.polito.mad_lab3.restaurant.menu_prev.MenuListPrevFragment;
 
 /**
- * Created by f.germano on 24/04/2016.
+ * Created by f.germano on 04/05/2016.
  */
-public class MenuPrevFragment extends Fragment {
+public class OfferPrevFragment extends Fragment {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
-    private ViewPager mViewPager;
     private int restaurantId;
+    private ViewPager viewPager;
 
-    public MenuPrevFragment(){
+    public OfferPrevFragment(){
 
     }
 
@@ -32,7 +41,14 @@ public class MenuPrevFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.menu_prev_fragment_layout, container, false);
+        View rootView = inflater.inflate(R.layout.offer_prev_fragment_layout, container, false);
+
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
+        viewPager = (ViewPager) rootView.findViewById(R.id.offersPrevPager);
+        viewPager.setAdapter(mSectionsPagerAdapter);
+        viewPager.setClipToPadding(false);
+        viewPager.setPageMargin(Helper.dpToPx(getContext(), 15));
+        viewPager.setPadding(Helper.dpToPx(getContext(), 35), 0, Helper.dpToPx(getContext(), 35), 0);
 
         return rootView;
     }
@@ -41,14 +57,7 @@ public class MenuPrevFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
-        mViewPager = (ViewPager) view.findViewById(R.id.menuPrevPager);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-        //mViewPager.setClipToPadding(false);
-        //mViewPager.setPadding(Helper.dpToPx(getContext(), 10), 0, Helper.dpToPx(getContext(), 10), 0);
 
-        TabLayout tabLayout = (TabLayout) view.findViewById(R.id.menuPrevTabs);
-        tabLayout.setupWithViewPager(mViewPager);
     }
 
     public void setRestaurantId(int restaurantId) {
@@ -63,7 +72,7 @@ public class MenuPrevFragment extends Fragment {
 
         @Override
         public Fragment getItem(int position) {
-            MenuListPrevFragment f = MenuListPrevFragment.newInstance(position, restaurantId );
+            OfferItemPrevFragment f = OfferItemPrevFragment.newInstance(position, restaurantId );
             return f;
         }
 
@@ -71,10 +80,6 @@ public class MenuPrevFragment extends Fragment {
         public int getCount() {
             return 4;
         }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return DishTypeConverter.fromEnumToString(DishTypeConverter.fromIndexToEnum(position));
-        }
     }
+
 }

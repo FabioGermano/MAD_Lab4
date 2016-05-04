@@ -71,7 +71,6 @@ public class MenuListAdapter extends ArrayAdapter<Dish>  {
 
         // prova
         viewHolder.dishPhotoIV.setImageResource(R.drawable.cibo1);
-
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
