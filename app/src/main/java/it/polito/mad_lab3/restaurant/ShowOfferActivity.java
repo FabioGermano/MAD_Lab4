@@ -31,6 +31,7 @@ public class ShowOfferActivity extends BaseActivity implements PhotoViewerListen
     private TextView nameTextView, detailsTextView,priceTextView, ratingsNumberTextView;
     private Offer offer;
     private RatingBar rb;
+    private int offerId=-1;
     private ToggleButton mo, tu, we, th, fr, sa, su;
 
     @Override
@@ -39,6 +40,8 @@ public class ShowOfferActivity extends BaseActivity implements PhotoViewerListen
         setContentView(R.layout.activity_show_offer);
 
         setActivityTitle("Offer name");
+
+
         offer = new Offer("Menu kebab", (float) 2.67,25, (float) 4.50, null, null, "Pizza kebab +" +
                 " Bibita + patatatine (a scelta salsa fra maionese ketchup e salsa barbecue)" );
 

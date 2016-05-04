@@ -56,6 +56,8 @@ public class  RestaurantActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getBaseContext(), ShowOfferActivity.class);
+                int offerId=1;
+                i.putExtra("offerId", offerId);
                 startActivity(i);
 
             }
