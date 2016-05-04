@@ -1,6 +1,7 @@
 package it.polito.mad_lab3.restaurant.menu;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import it.polito.mad_lab3.R;
 import it.polito.mad_lab3.data.reservation.ReservedDish;
 import it.polito.mad_lab3.data.restaurant.Dish;
+import it.polito.mad_lab3.reservation.ReservationActivity;
 
 /**
  * Created by f.germano on 03/05/2016.
@@ -66,7 +68,18 @@ public class MenuListAdapter extends ArrayAdapter<Dish>  {
         viewHolder.ratingBar.setRating(this.dishes.get(position).getAvgRank());
         viewHolder.numRanksTV.setText("("+String.valueOf(this.dishes.get(position).getNumRanks())+")");
         viewHolder.dishPriceTV.setText(String.valueOf(this.dishes.get(position).getPrice())+"€");
+
+        // prova
         viewHolder.dishPhotoIV.setImageResource(R.drawable.cibo1);
+
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getContext(), MenuPhotoViewActivity.class);
+                i.putExtra("dish", dishes.get(position));
+                getContext().startActivity(i);
+            }
+        });
 
         if(this.dishes.get(position).getThumbPath() != null){
             //viewHolder.dishPhotoIV.setImageBitmap(BitmapFactory.decodeFile(this.dishes.get(position).getThumbPath()));

@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Parcelable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -28,7 +30,7 @@ public class ChoosePhotoActivity extends BaseActivity implements PhotoViewerList
     private String imageThumb = null;
     private PhotoManager photoManager;
     private PhotoViewer photoViewer;
-    private Button sendButton;
+    private FloatingActionButton sendButton;
     private EditText descriptionET;
 
     private int restaurantId, newPhotoId;
@@ -41,7 +43,7 @@ public class ChoosePhotoActivity extends BaseActivity implements PhotoViewerList
 
         setActivityTitle(getResources().getString(R.string.add_userphoto_activity_title));
 
-        sendButton = (Button)findViewById(R.id.sendButton);
+        sendButton = (FloatingActionButton)findViewById(R.id.sendButton);
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,6 +60,7 @@ public class ChoosePhotoActivity extends BaseActivity implements PhotoViewerList
         newPhotoId =  getIntent().getExtras().getInt("newPhotoId");
 
         ID = String.valueOf(restaurantId) + "_" + String.valueOf(newPhotoId);
+
     }
 
     @Override
@@ -82,6 +85,8 @@ public class ChoosePhotoActivity extends BaseActivity implements PhotoViewerList
         Intent returnIntent = new Intent();
         returnIntent.putExtra("UserPhoto",(Serializable) up);
         setResult(Activity.RESULT_OK, returnIntent);
+
+        Toast.makeText(getBaseContext(), "Your selected photo has been sent.", Toast.LENGTH_SHORT).show();
 
         finish();
     }

@@ -1,9 +1,11 @@
 package it.polito.mad_lab3.data.restaurant;
 
+import java.io.Serializable;
+
 /**
  * Created by f.germano on 25/04/2016.
  */
-public class Dish {
+public class Dish implements Serializable {
     private String dishName;
     private float avgRank;
     private int numRanks;

@@ -1,6 +1,9 @@
 package it.polito.mad_lab3;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +15,8 @@ import com.google.gson.GsonBuilder;
 import java.util.ArrayList;
 
 import it.polito.mad_lab3.bl.UserBL;
+import it.polito.mad_lab3.common.photo_viewer.PhotoViewer;
+import it.polito.mad_lab3.common.photo_viewer.PhotoViewerListener;
 import it.polito.mad_lab3.data.restaurant.BasicInfo;
 import it.polito.mad_lab3.data.restaurant.Dish;
 import it.polito.mad_lab3.data.restaurant.Offer;

@@ -211,12 +211,22 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
-                        <TextView
-                            android:padding="8dp"
-                            android:textSize="18sp"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Offers"/>
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+                            <ImageView
+                                android:layout_width="32dp"
+                                android:layout_height="32dp"
+                                android:background="@drawable/ic_local_offer_black_48dp"/>
+                            <TextView
+                                android:padding="8dp"
+                                android:textSize="18sp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Offers"/>
+                        </LinearLayout>
                         <HorizontalScrollView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -252,12 +262,22 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-                    <TextView
-                        android:padding="8dp"
-                        android:textSize="18sp"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="41 reviews"/>
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:background="@drawable/ic_comment_star_black_48dp"/>
+                        <TextView
+                            android:padding="8dp"
+                            android:textSize="18sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="41 reviews"/>
+                    </LinearLayout>
                     <RatingBar
                         android:layout_marginTop="8dp"
                         android:layout_gravity="center_horizontal"

@@ -17,6 +17,7 @@
         android:orientation="vertical"
         tools:context="it.polito.mad_lab3.MainActivity">
 
+
         <!-- Import the our toolbar -->
         <include layout="@layout/toolbar_view" android:layout_height="wrap_content" android:layout_width="match_parent"/>
 
