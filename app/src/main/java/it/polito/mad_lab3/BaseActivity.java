@@ -234,9 +234,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         return true;
     }
 
-    private void filterButton() {
-        Toast.makeText(getApplicationContext(), "Ricerca aggiuntiva", Toast.LENGTH_SHORT).show();
-    }
+    //serve solo nel menù ricerca per eseguire una ricerca aggiuntiva, lasciatelo quindi pure vuoto
+    protected abstract void filterButton();
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -252,6 +251,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
             SegnalaBug();
         } else if(id == R.id.esegui_login) {
             Login();
+        } else if(id == R.id.logout_user){
+            Logout();
         } else if(id == R.id.nav_contact_no_login){
             Contattaci();
         } else if(id == R.id.nav_bugs_no_login){
@@ -286,6 +287,13 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         Toast toast = Toast.makeText(getApplicationContext(), "Esegui login", Toast.LENGTH_SHORT);
         toast.show();
         /*Intent i = new Intent(getBaseContext(), EseguiLogin.class);
+        startActivity(i);*/
+    }
+
+    private void Logout(){
+        Toast toast = Toast.makeText(getApplicationContext(), "Logout", Toast.LENGTH_SHORT);
+        toast.show();
+        /*Intent i = new Intent(getBaseContext(), EseguiLogout.class);
         startActivity(i);*/
     }
 

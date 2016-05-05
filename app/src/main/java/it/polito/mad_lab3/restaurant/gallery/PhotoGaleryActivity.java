@@ -38,6 +38,11 @@ public class PhotoGaleryActivity extends BaseActivity implements PhotoGalleryLis
     }
 
     @Override
+    protected void filterButton() {
+
+    }
+
+    @Override
     protected void ModificaProfilo() {
 
     }

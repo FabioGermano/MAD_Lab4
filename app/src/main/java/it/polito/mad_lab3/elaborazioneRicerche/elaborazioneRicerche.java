@@ -7,6 +7,8 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.accessibility.AccessibilityManager;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -15,8 +17,11 @@ import it.polito.mad_lab3.BaseActivity;
 import it.polito.mad_lab3.MainActivity;
 import it.polito.mad_lab3.R;
 
-public class elaborazioneRicerche extends BaseActivity {
+public class elaborazioneRicerche extends BaseActivity implements fragment_ricercaAvanzata.OnButtonPressedListener{
     private ArrayList<Oggetto_risultatoRicerca> lista_risultati = null;
+    private fragment_ricercaAvanzata fragmentRicerca;
+    private  boolean finderOpen = false;
+    private FrameLayout la;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,23 +40,29 @@ public class elaborazioneRicerche extends BaseActivity {
 
             } else {
                 ///SEI NELLA MERDA!!!
+                stampaMessaggioErrore();
             }
 
-            /*lista_risultati = new ArrayList<>();
-            lista_risultati.add(new Oggetto_risultatoRicerca("DaGianni", "corso Duca degli Abruzzi 15", null, "10-20 euro", 5, Oggetto_risultatoRicerca.type.RISTORANTE));
-            lista_risultati.add(new Oggetto_risultatoRicerca("Pizza&Pasta", "via ...", null, "5-20 euro", 3, Oggetto_risultatoRicerca.type.RISTORANTE));
-            lista_risultati.add(new Oggetto_risultatoRicerca("Bar Ambrogio", "corso Peschiera 44", null, "4-11 euro", 1.5F , Oggetto_risultatoRicerca.type.RISTORANTE));
-            lista_risultati.add(new Oggetto_risultatoRicerca("Bar Fuori dal Poli", "via hhhhhh", null, "5-10 euro", 1, Oggetto_risultatoRicerca.type.RISTORANTE));
-            lista_risultati.add(new Oggetto_risultatoRicerca("McDonald's", "corso Stati Uniti 34", null, "5-10 euro", 1.4F, Oggetto_risultatoRicerca.type.RISTORANTE));
-            lista_risultati.get(0).setDescrizione("Ottimi panini e kebab");*/
-
-            //imposto la lista delle varie ricerche
+            fragmentRicerca = (fragment_ricercaAvanzata) getSupportFragmentManager().findFragmentById(R.id.ricerca_avanzata);
 
             setUpRecyclerView();
         } catch (Exception e){
             stampaMessaggioErrore();
         }
 
+    }
+
+    @Override
+    protected void filterButton() {
+        if(!finderOpen){
+            //apro il fragment
+            fragmentRicerca.setFragment();
+            finderOpen = true;
+        } else {
+            //chiudo il fragment
+            fragmentRicerca.closeFragment();
+            finderOpen = false;
+        }
     }
 
     private void stampaMessaggioErrore(){
@@ -87,7 +98,10 @@ public class elaborazioneRicerche extends BaseActivity {
         }
     }
 
-
-    public void searchRestaurant(View view) {
+    @Override
+    public void onButtonPressed() {
+        Toast t = Toast.makeText(getApplicationContext(), "Bottone premuto", Toast.LENGTH_SHORT);
+        t.show();
+        //leggo tutte le info che mi passa il fragment ed eseguo la ricerca più approfondita
     }
 }

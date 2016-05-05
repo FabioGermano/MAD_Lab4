@@ -64,6 +64,11 @@ public class ChoosePhotoActivity extends BaseActivity implements PhotoViewerList
     }
 
     @Override
+    protected void filterButton() {
+
+    }
+
+    @Override
     protected void ModificaProfilo() {
 
     }

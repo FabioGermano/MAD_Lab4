@@ -41,6 +41,11 @@ public class MenuActivity extends BaseActivity {
     }
 
     @Override
+    protected void filterButton() {
+
+    }
+
+    @Override
     protected void ModificaProfilo() {
 
     }

@@ -33,6 +33,11 @@ public class MenuPhotoViewActivity extends BaseActivity {
         getDish(getIntent().getExtras());
     }
 
+    @Override
+    protected void filterButton() {
+
+    }
+
     private void getDish(Bundle extras) {
         this.dish = (Dish)extras.getSerializable("dish");
 

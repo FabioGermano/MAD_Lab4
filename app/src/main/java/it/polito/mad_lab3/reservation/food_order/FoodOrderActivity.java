@@ -178,6 +178,11 @@ public class FoodOrderActivity extends BaseActivity {
     }
 
     @Override
+    protected void filterButton() {
+
+    }
+
+    @Override
     protected void ModificaProfilo() {
 
     }

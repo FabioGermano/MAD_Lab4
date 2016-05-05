@@ -5,10 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="it.polito.mad_lab3.MainActivity">
+    tools:context="it.polito.mad_lab3.elaborazioneRicerche.elaborazioneRicerche">
 
     <!-- Import the our toolbar -->
     <include layout="@layout/toolbar_view" android:layout_height="wrap_content" android:layout_width="match_parent"/>
+
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/ricerca_avanzata"
+        class="it.polito.mad_lab3.elaborazioneRicerche.fragment_ricercaAvanzata"
+        />
     <!--
     <View
         android:layout_width="match_parent"

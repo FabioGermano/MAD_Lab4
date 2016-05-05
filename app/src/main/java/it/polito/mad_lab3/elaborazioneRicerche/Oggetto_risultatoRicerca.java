@@ -71,15 +71,15 @@ public class Oggetto_risultatoRicerca implements Serializable {
             if(this.cost < 5)
                 return "€";
             if (this.cost >= 5 && this.cost < 10)
-                return "€€";
+                return "€";
             if (this.cost >= 10 && this.cost < 15)
-                return "€€€";
+                return "€€";
             if (this.cost >= 15 && this.cost < 20)
-                return "€€€€";
+                return "€€";
             if (this.cost >= 20 && this.cost < 25)
-                return "€€€€€";
+                return "€€€";
         }
-        return "";
+        return "€€€";
     }
 
     public int getId(){

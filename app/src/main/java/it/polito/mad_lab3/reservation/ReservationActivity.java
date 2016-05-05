@@ -63,6 +63,11 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
     }
 
     @Override
+    protected void filterButton() {
+
+    }
+
+    @Override
     protected void ModificaProfilo() {
 
     }

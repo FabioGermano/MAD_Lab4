@@ -70,6 +70,11 @@ public class GalleryPhotoViewActivity extends BaseActivity {
     }
 
     @Override
+    protected void filterButton() {
+
+    }
+
+    @Override
     protected void ModificaProfilo() {
 
     }

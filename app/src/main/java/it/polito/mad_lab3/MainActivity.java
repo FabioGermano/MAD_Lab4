@@ -72,6 +72,11 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
+    protected void filterButton() {
+
+    }
+
+    @Override
     protected void ModificaProfilo() {
         Toast toast = Toast.makeText(getApplicationContext(), "Modifica profilo", Toast.LENGTH_SHORT);
         toast.show();
@@ -104,8 +109,12 @@ public class MainActivity extends BaseActivity {
             Oggetto_risultatoRicerca obj = new Oggetto_risultatoRicerca(r.getRestaurantId(), r.getRestaurantName(), r.getBasicInfo().getAddress(), r.getBasicInfo().getLogoThumb(), r.getAvgPrice(), r.getAvgReview(), Oggetto_risultatoRicerca.type.RISTORANTE);
             listaRicerca.add(obj);
         }
+        if(listaRicerca.size() == 0){
+            Toast toast = Toast.makeText(getApplicationContext(), "Nessun Ristorante Trovato", Toast.LENGTH_SHORT);
+            toast.show();
+            return;
+        }
 
-        System.out.println("passo la lista di elementi " + listaRicerca.size());
         Bundle b = new Bundle();
         b.putSerializable("results", listaRicerca);
 

@@ -102,6 +102,11 @@ public class  RestaurantActivity extends BaseActivity {
 
     }
 
+    @Override
+    protected void filterButton() {
+
+    }
+
     private void showAllMenuButtonPressed() {
         Intent i = new Intent(getBaseContext(), MenuActivity.class);
         i.putExtra("restaurantId", this.restaurant.getRestaurantId());

@@ -122,6 +122,11 @@ public class CheckoutOrder extends BaseActivity {
     }
 
     @Override
+    protected void filterButton() {
+
+    }
+
+    @Override
     protected void ModificaProfilo() {
 
     }

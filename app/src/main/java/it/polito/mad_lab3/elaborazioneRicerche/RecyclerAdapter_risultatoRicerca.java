@@ -137,10 +137,12 @@ public class RecyclerAdapter_risultatoRicerca extends RecyclerView.Adapter<Recyc
                     }
                 }
             }
+            //debug da cancellare
             if(position%2 == 0){
                 if( imgView != null)
                     imgView.setImageResource(R.drawable.img2_logo_prova);
             }
+            //////
         }
 
         private void cancellaBitmap(){
@@ -149,7 +151,6 @@ public class RecyclerAdapter_risultatoRicerca extends RecyclerView.Adapter<Recyc
         }
 
         private void visualizzaRistorante(){
-            System.out.println("Visualizzo ristorante: " + current.getName() +" con id: " + current.getId());
             Bundle b = new Bundle();
             b.putInt("idRestaurant", current.getId());
             Intent intent = new Intent(context, RestaurantActivity.class);
