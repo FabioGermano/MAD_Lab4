@@ -9,6 +9,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -69,6 +70,7 @@ public class RecyclerAdapter_risultatoRicerca extends RecyclerView.Adapter<Recyc
 
         private TextView nome;
         private TextView descrizione;
+        private TextView place;
         private TextView costo;
         private RatingBar valutazione;
         private ImageView imgView;
@@ -90,6 +92,7 @@ public class RecyclerAdapter_risultatoRicerca extends RecyclerView.Adapter<Recyc
             costo = (TextView) itemView.findViewById(R.id.cost_ricerca);
             valutazione = (RatingBar) itemView.findViewById(R.id.rating_ricerca);
             imgView = (ImageView) itemView.findViewById(R.id.img_ricerca);
+            place = (TextView) itemView.findViewById(R.id.place_ricerca);
         }
 
         public void setData(Oggetto_risultatoRicerca currentObj, int position) {
@@ -98,11 +101,14 @@ public class RecyclerAdapter_risultatoRicerca extends RecyclerView.Adapter<Recyc
             if(nome != null){
                 nome.setText(currentObj.getName());
             }
-            if(descrizione != null){
+            if(place != null){
+                place.setText(currentObj.getPlace());
+            }
+            if(descrizione != null && currentObj.getDescrizione() != null){
                 descrizione.setText(currentObj.getDescrizione());
             }
             if(costo != null){
-                costo.setText("Prezzo: " + currentObj.getCost());
+                costo.setText(currentObj.getFasciaPrezzo());
             }
             if(valutazione != null){
                 float val = currentObj.getValutazione();
@@ -143,7 +149,11 @@ public class RecyclerAdapter_risultatoRicerca extends RecyclerView.Adapter<Recyc
         }
 
         private void visualizzaRistorante(){
+            System.out.println("Visualizzo ristorante: " + current.getName() +" con id: " + current.getId());
+            Bundle b = new Bundle();
+            b.putInt("idRestaurant", current.getId());
             Intent intent = new Intent(context, RestaurantActivity.class);
+            intent.putExtras(b);
             context.startActivity(intent);
         }
 

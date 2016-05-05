@@ -8,12 +8,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 import it.polito.mad_lab3.BaseActivity;
+import it.polito.mad_lab3.MainActivity;
 import it.polito.mad_lab3.R;
 import it.polito.mad_lab3.bl.RestaurantBL;
 import it.polito.mad_lab3.data.restaurant.Restaurant;
 import it.polito.mad_lab3.data.user.User;
+import it.polito.mad_lab3.elaborazioneRicerche.Oggetto_risultatoRicerca;
 import it.polito.mad_lab3.reservation.ReservationActivity;
 import it.polito.mad_lab3.restaurant.foodPhoto.ContainerUserPhotoFragment;
 import it.polito.mad_lab3.restaurant.menu.MenuActivity;
@@ -63,8 +68,23 @@ public class  RestaurantActivity extends BaseActivity {
             }
         });
         llOffers.addView(child);
+
 */
-        restaurant = RestaurantBL.getRestaurantById(getBaseContext(), 1);
+        Bundle extras = getIntent().getExtras();
+        int id = -1;
+        if (extras != null) {
+            id = (int) extras.getInt("idRestaurant");
+            extras.clear();
+        }
+        if(id == -1){
+            Toast toast = Toast.makeText(getApplicationContext(), "Errore", Toast.LENGTH_SHORT);
+            toast.show();
+            Intent i = new Intent(getBaseContext(), MainActivity.class);
+            startActivity(i);
+        }
+        System.out.println("Id ricevuto: " + id);
+        restaurant = RestaurantBL.getRestaurantById(getBaseContext(), id);
+        System.out.println("Ristorante: " + restaurant.getRestaurantName());
 
         containerUserPhotoFragment = (ContainerUserPhotoFragment)getSupportFragmentManager().findFragmentById(R.id.UserPhotoFragment);
         containerUserPhotoFragment.init(restaurant);

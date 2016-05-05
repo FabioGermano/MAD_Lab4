@@ -11,9 +11,12 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,7 +24,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     protected Toolbar toolbar;
 
     private boolean hideToolbar=false, hideShadow=false, save_visibility=false,
-            calendar_visibility=false, alert_visibility = true, backbutton_visibility=true;
+            calendar_visibility=false, alert_visibility = true, backbutton_visibility=true, filter_visibility=false;
     private TextView titleTextView, alertCountView;
     String activityTitle =  "Titolo App";
     private View toolbarShadow;
@@ -82,8 +85,11 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         this.icona_toolbar = flag;
     }
 
+    protected void setVisibilityFilter(){
+        this.filter_visibility = true;
+    }
+
     protected void configureBarraLaterale(View view) {
-        System.out.println("Configuro barra laterale");
         View header = null;
         //inizializzo menu laterale
         DrawerLayout drawer = (DrawerLayout) view.findViewById(R.id.drawer_layout);
@@ -105,7 +111,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
             boolean login = controlloLogin();
 
             if(navigationView != null) {
-                if(login){
+                if (login) {
                     navigationView.inflateMenu(R.menu.activity_drawer_login);
                     navigationView.setNavigationItemSelectedListener(this);
                     header = navigationView.getHeaderView(0);
@@ -114,27 +120,23 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                     navigationView.setNavigationItemSelectedListener(this);
                     header = navigationView.getHeaderView(0);
                 }
-            } else {
-                System.out.println("navigationView == null");
 
-            }
 
-            //riempio l'header della barra laterale
-            if(header != null && login){
-                ImageView user_logo = (ImageView) header.findViewById(R.id.nav_drawer_logo);
-                TextView user_name = (TextView) header.findViewById(R.id.nav_drawer_name);
+                //riempio l'header della barra laterale
+                if (header != null && login) {
+                    ImageView user_logo = (ImageView) header.findViewById(R.id.nav_drawer_logo);
+                    TextView user_name = (TextView) header.findViewById(R.id.nav_drawer_name);
 
-                user_name.setText("Nome dell'utente");
+                    user_name.setText("Nome dell'utente");
                 /*if (restaurant_name != null && restaurant_logo != null) {
                     if (name != null && name.compareTo("") != 0)
                         restaurant_name.setText(name);
                     if (logo != null)
                         restaurant_logo.setImageBitmap(logo);
                 }*/
+                }
             }
-        } else
-            System.out.println("barra laterale == null");
-
+        }
     }
 
     private void configureToolbar(View view) {
@@ -170,6 +172,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
             actionB.setDisplayHomeAsUpEnabled(backbutton_visibility);
     }
 
+
+
     protected void hideToolbarShadow(boolean bool){
         toolbarShadow.setVisibility(View.GONE);
 
@@ -185,17 +189,53 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        toolbar.inflateMenu(R.menu.filter_button_toolbar);
+        final MenuItem filter = menu.findItem(R.id.menu_find);
+        filter.setVisible(filter_visibility);
+        /*if(filter_visibility){
+
+            RelativeLayout notificationLayout = (RelativeLayout) notification.getActionView();
+            alertButton = (ImageButton) notificationLayout.findViewById(R.id.alertButton);
+            alertCountView = (TextView) notificationLayout.findViewById(R.id.alertCountView);
+            View.OnClickListener listener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onOptionsItemSelected(notification);
+                }
+            };
+            alertButton.setOnClickListener(listener);
+            notificationLayout.setOnClickListener(listener);
+            SetAlertCount(4);
+            if(alertCount==0){
+                alertButton.setImageResource(R.drawable.ic_bell_white_48dp);
+            }
+
+
+        }*/
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
             case android.R.id.home:
                 finish();
                 break;
+            case R.id.menu_find:
+                filterButton();
+                break;
             default:
                 break;
         }
 
         return true;
+    }
+
+    private void filterButton() {
+        Toast.makeText(getApplicationContext(), "Ricerca aggiuntiva", Toast.LENGTH_SHORT).show();
     }
 
     @Override

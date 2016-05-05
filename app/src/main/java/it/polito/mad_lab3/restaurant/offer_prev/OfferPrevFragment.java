@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import it.polito.mad_lab3.R;
 import it.polito.mad_lab3.bl.RestaurantBL;
 import it.polito.mad_lab3.common.Helper;
-import it.polito.mad_lab3.common.HorizontalListView;
+//import it.polito.mad_lab3.common.HorizontalListView;
 import it.polito.mad_lab3.data.restaurant.DishTypeConverter;
 import it.polito.mad_lab3.data.restaurant.Offer;
 import it.polito.mad_lab3.restaurant.menu.MenuListAdapter;

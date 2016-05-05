@@ -21,20 +21,32 @@ public class elaborazioneRicerche extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setVisibilityFilter();
         setContentView(R.layout.activity_elaborazione_ricerche);
 
         setActivityTitle(getResources().getString(R.string.titolo_elaborazioneRicerche));
-
         try {
             //ottengo i risultati della ricerca
-            lista_risultati = new ArrayList<>();
-            lista_risultati.add(new Oggetto_risultatoRicerca("DaGianni", "Ottimo ristorante italiano", null, "10-20 euro", 5, Oggetto_risultatoRicerca.type.RISTORANTE));
-            lista_risultati.add(new Oggetto_risultatoRicerca("Pizza&Pasta", "Ottimo ristorante sul mare", null, "5-20 euro", 3, Oggetto_risultatoRicerca.type.RISTORANTE));
-            lista_risultati.add(new Oggetto_risultatoRicerca("Bar Ambrogio", "Panini, pizza e bar", null, "4-11 euro", 1.5F , Oggetto_risultatoRicerca.type.RISTORANTE));
-            lista_risultati.add(new Oggetto_risultatoRicerca("Bar Fuori dal Poli", "Ottimi panini e kebab", null, "5-10 euro", 1, Oggetto_risultatoRicerca.type.RISTORANTE));
-            lista_risultati.add(new Oggetto_risultatoRicerca("McDonald's", "", null, "5-10 euro", 1.4F, Oggetto_risultatoRicerca.type.RISTORANTE));
+
+            Bundle extras = getIntent().getExtras();
+            if (extras != null) {
+                lista_risultati = (ArrayList<Oggetto_risultatoRicerca>) extras.getSerializable("results");
+                extras.clear();
+
+            } else {
+                ///SEI NELLA MERDA!!!
+            }
+
+            /*lista_risultati = new ArrayList<>();
+            lista_risultati.add(new Oggetto_risultatoRicerca("DaGianni", "corso Duca degli Abruzzi 15", null, "10-20 euro", 5, Oggetto_risultatoRicerca.type.RISTORANTE));
+            lista_risultati.add(new Oggetto_risultatoRicerca("Pizza&Pasta", "via ...", null, "5-20 euro", 3, Oggetto_risultatoRicerca.type.RISTORANTE));
+            lista_risultati.add(new Oggetto_risultatoRicerca("Bar Ambrogio", "corso Peschiera 44", null, "4-11 euro", 1.5F , Oggetto_risultatoRicerca.type.RISTORANTE));
+            lista_risultati.add(new Oggetto_risultatoRicerca("Bar Fuori dal Poli", "via hhhhhh", null, "5-10 euro", 1, Oggetto_risultatoRicerca.type.RISTORANTE));
+            lista_risultati.add(new Oggetto_risultatoRicerca("McDonald's", "corso Stati Uniti 34", null, "5-10 euro", 1.4F, Oggetto_risultatoRicerca.type.RISTORANTE));
+            lista_risultati.get(0).setDescrizione("Ottimi panini e kebab");*/
 
             //imposto la lista delle varie ricerche
+
             setUpRecyclerView();
         } catch (Exception e){
             stampaMessaggioErrore();

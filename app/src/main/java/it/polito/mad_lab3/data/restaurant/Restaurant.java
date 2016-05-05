@@ -111,4 +111,24 @@ public class Restaurant {
 
         return filtered;
     }
+
+    public int getAvgPrice(){
+        int totPrice = 0;
+
+        for(Dish d: this.dishes){
+            totPrice += d.getPrice();
+        }
+
+        return totPrice / dishes.size();
+    }
+
+    public float getAvgReview(){
+        float totReview = 0;
+
+        for (Review r: this.reviews){
+            totReview += r.getRank();
+        }
+
+        return totReview / reviews.size();
+    }
 }

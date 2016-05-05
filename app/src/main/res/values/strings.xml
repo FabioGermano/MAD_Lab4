@@ -59,6 +59,7 @@
     <!-- Elaborazione Ricerche -->
     <string name="titolo_elaborazioneRicerche">Restaurants found</string>
     <string name="risultati_ricerca">Search results:</string>
+    <string name="find">Find</string>
 
     <!-- Errori e messaggi di default -->
     <string name="dataSaved">DATA SAVED</string>
