@@ -14,6 +14,7 @@ import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 
+import it.polito.mad_lab3.bl.RestaurantBL;
 import it.polito.mad_lab3.bl.UserBL;
 import it.polito.mad_lab3.common.photo_viewer.PhotoViewer;
 import it.polito.mad_lab3.common.photo_viewer.PhotoViewerListener;
@@ -34,7 +35,7 @@ import it.polito.mad_lab3.restaurant.RestaurantActivity;
 public class MainActivity extends BaseActivity {
 
     private Button restaurantBtn, reservationBtn, testBtn;
-    private RestaurantEntity re;
+    private ArrayList<Restaurant> listaRistoranti;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,22 +91,19 @@ public class MainActivity extends BaseActivity {
 
     private void caricaDati() {
 
-        Gson gson = new GsonBuilder().serializeNulls().create();
-
-        String restaurants = DBManager.readJSON(this, DB.Restaurants);
-
-        re = gson.fromJson(restaurants, RestaurantEntity.class);
-
+       // Gson gson = new GsonBuilder().serializeNulls().create();
+        //String restaurants = DBManager.readJSON(this, DB.Restaurants);
+        //re = gson.fromJson(restaurants, RestaurantEntity.class);
         /*String json = gson.toJson(re);
         System.out.println(re.getRestaurants().size() + " \n" +json);*/
+
+        //f.germano mod. Ci sono appositi metodi del bl:
+        this.listaRistoranti = RestaurantBL.getAllRestaurants(getBaseContext());
     }
 
     public void searchRestaurant(View view) {
-        ArrayList<Restaurant> listaRistoranti = re.getRestaurants();
-
-
         ArrayList<Oggetto_risultatoRicerca> listaRicerca = new ArrayList<>();
-        for(Restaurant r : listaRistoranti){
+        for(Restaurant r : this.listaRistoranti){
             Oggetto_risultatoRicerca obj = new Oggetto_risultatoRicerca(r.getRestaurantId(), r.getRestaurantName(), r.getBasicInfo().getAddress(), r.getBasicInfo().getLogoThumb(), r.getAvgPrice(), r.getAvgReview(), Oggetto_risultatoRicerca.type.RISTORANTE);
             listaRicerca.add(obj);
         }
