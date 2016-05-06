@@ -31,6 +31,8 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:orientation="horizontal"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:nextFocusDown="@id/seats">
 
         <ImageButton
@@ -95,14 +97,13 @@
             android:orientation="horizontal"
 
             >
-
             <ImageButton
                 android:id="@+id/minus"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@android:drawable/ic_media_play"
-                android:backgroundTint="@color/themeColorLighter"
-                android:rotation="180" />
+                android:layout_gravity="center"
+                android:background="@drawable/ic_remove_blue"
+                 />
 
             <TextView
                 android:id="@+id/counter"
@@ -110,14 +111,17 @@
                 android:layout_height="50dp"
                 android:gravity="center"
                 android:text="1"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_gravity="center" />
 
             <ImageButton
                 android:id="@+id/plus"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@android:drawable/ic_media_play"
-                android:backgroundTint="@color/themeColorLighter" />
+                android:layout_gravity="center"
+                android:background="@drawable/ic_add_blue"
+                />
+
 
         </LinearLayout>
 

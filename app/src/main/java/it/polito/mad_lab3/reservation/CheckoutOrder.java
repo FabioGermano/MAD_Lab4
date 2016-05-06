@@ -1,5 +1,6 @@
 package it.polito.mad_lab3.reservation;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +16,7 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 
 import it.polito.mad_lab3.BaseActivity;
+import it.polito.mad_lab3.MainActivity;
 import it.polito.mad_lab3.R;
 import it.polito.mad_lab3.bl.UserBL;
 import it.polito.mad_lab3.common.Helper;
@@ -85,7 +87,7 @@ public class CheckoutOrder extends BaseActivity {
 
                 User user = UserBL.getUserById(getBaseContext(), UserBL.getCurrentUserId());
                 Reservation r = new Reservation();
-                r.setReservationId(25);
+                r.setReservationId(35);
                 r.setReservedDishes(reservedDishes);
                 r.setDate(date);
                 r.setTime(time);
@@ -94,7 +96,10 @@ public class CheckoutOrder extends BaseActivity {
                 r.setNoteByUser(notesTextView.getText().toString());
                 r.setTotalIncome(total);
                 user.getReservations().add(r);
-
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
 
             }
         });

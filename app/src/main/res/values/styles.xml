@@ -69,9 +69,4 @@
         <item name="android:windowActionBarOverlay">true</item>
     </style>
 
-    <style name="MyGreenButton">
-        <item name="colorButtonNormal">#009900</item>
-    </style>
-
-
 </resources>

@@ -18,6 +18,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -143,13 +144,14 @@ public class FoodOrderActivity extends BaseActivity {
         mViewPager = (ViewPager) findViewById(R.id.viewpager_menu);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
+
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout_menu);
         tabLayout.setupWithViewPager(mViewPager);
         doneFab = (FloatingActionButton) findViewById(R.id.done);
         doneFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getBaseContext(), CheckoutOrder.class);
+
                 ArrayList<ReservedDish> reservedDishes= new ArrayList<ReservedDish>();
                 for(int j=0;j<5;j++) {
                     for(ReservedDish rd : lists.get(j)){
@@ -158,19 +160,25 @@ public class FoodOrderActivity extends BaseActivity {
                         }
                     }
                 }
-                i.putParcelableArrayListExtra("reservedDishes", reservedDishes );
-                /*i.putParcelableArrayListExtra("offers", lists.get(0) );
-                i.putParcelableArrayListExtra("main",lists.get(1) );
-                i.putParcelableArrayListExtra("second", lists.get(2));
-                i.putParcelableArrayListExtra("dessert", lists.get(3) );
-                i.putParcelableArrayListExtra("other",lists.get(4) );*/
-                i.putExtra("date", date);
-                i.putExtra("weekday", weekday);
-                i.putExtra("time", time);
-                i.putExtra("seats", seatsNumber);
-                i.putExtra("restaurantName", restaurantName);
-                i.putExtra("restaurant", restaurantID);
-                startActivity(i);
+                if(reservedDishes.isEmpty()){
+                    Toast.makeText(FoodOrderActivity.this, getResources().getString(R.string.no_item_in_order), Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Intent i = new Intent(getBaseContext(), CheckoutOrder.class);
+                    i.putParcelableArrayListExtra("reservedDishes", reservedDishes );
+                    /*i.putParcelableArrayListExtra("offers", lists.get(0) );
+                    i.putParcelableArrayListExtra("main",lists.get(1) );
+                    i.putParcelableArrayListExtra("second", lists.get(2));
+                    i.putParcelableArrayListExtra("dessert", lists.get(3) );
+                    i.putParcelableArrayListExtra("other",lists.get(4) );*/
+                    i.putExtra("date", date);
+                    i.putExtra("weekday", weekday);
+                    i.putExtra("time", time);
+                    i.putExtra("seats", seatsNumber);
+                    i.putExtra("restaurantName", restaurantName);
+                    i.putExtra("restaurant", restaurantID);
+                    startActivity(i);
+                }
 
             }
         });

@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:gravity="right"
         android:textStyle="bold"
-        android:layout_marginRight="5dp"
+        android:layout_marginRight="25dp"
         android:text="Quantity"
         android:textAppearance="?android:attr/textAppearanceMedium"
         />

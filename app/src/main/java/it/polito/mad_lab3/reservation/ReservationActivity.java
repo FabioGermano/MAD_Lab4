@@ -3,10 +3,12 @@ package it.polito.mad_lab3.reservation;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import it.polito.mad_lab3.BaseActivity;
 import it.polito.mad_lab3.R;
@@ -59,6 +61,18 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
         this.restaurantName= restaurant.getRestaurantName();
         name.setText(restaurantName);
 
+        if(reservationDate==null) {
+            final Calendar c = Calendar.getInstance();
+            int year, month, day, week_day;
+            year = c.get(Calendar.YEAR);
+            month = c.get(Calendar.MONTH);
+            day = c.get(Calendar.DAY_OF_MONTH);
+            week_day = c.get(Calendar.DAY_OF_WEEK);
+            String wd = String.valueOf(week_day);
+            String first_date = wd + year + "-" + month + "-" + day;
+            onDateSelected(first_date, true);
+        }
+
 
     }
 
@@ -96,9 +110,9 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
         args.putString("timeRange", timeTable.get(convertWeekDay(dayOfTheweek)));
         timeFragment.setArguments(args);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.time_fragment_container, timeFragment).commit();
+        getSupportFragmentManager().beginTransaction().setCustomAnimations(0, 0).replace(R.id.time_fragment_container, timeFragment).commit();
         View t = (View) (findViewById(R.id.time_fragment_container));
-        t.requestFocus();
+        //t.requestFocus();
 
         if(choiceFragment != null) {
             this.choice_made=false;
@@ -123,7 +137,7 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
 
         getSupportFragmentManager().beginTransaction().replace(R.id.choice_fragment_container, choiceFragment).commit();
         View cc = (View) (findViewById(R.id.choice_fragment_container));
-        cc.requestFocus();}
+        }
 
     }
 

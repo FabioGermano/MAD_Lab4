@@ -85,6 +85,7 @@
     <string name="offer_name">Offer name:</string>
     <string name="details">Details:</string>
     <string name="available_on">Available on:</string>
+    <string name="no_item_in_order">Please, select a dish</string>
 
 
 </resources>
