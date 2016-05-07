@@ -1,6 +1,7 @@
 package it.polito.mad_lab3.restaurant;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 
 import it.polito.mad_lab3.BaseActivity;
 import it.polito.mad_lab3.R;
+import it.polito.mad_lab3.common.Helper;
 import it.polito.mad_lab3.common.photo_manager.PhotoManager;
 import it.polito.mad_lab3.common.photo_manager.PhotoType;
 import it.polito.mad_lab3.common.photo_viewer.PhotoViewer;
@@ -42,13 +44,17 @@ public class ShowOfferActivity extends BaseActivity implements PhotoViewerListen
         setActivityTitle("Offer name");
 
 
-        offer = new Offer("Menu kebab", (float) 2.67,25, (float) 4.50, null, null, "Pizza kebab +" +
-                " Bibita + patatatine (a scelta salsa fra maionese ketchup e salsa barbecue)" );
+        //offer = new Offer("Menu kebab", (float) 2.67,25, (float) 4.50, null, null, "Pizza kebab +" +
+        //        " Bibita + patatatine (a scelta salsa fra maionese ketchup e salsa barbecue)" );
+
+        offer = (Offer)getIntent().getExtras().getSerializable("offer");
 
         photoViewer = (PhotoViewer)getSupportFragmentManager().findFragmentById(R.id.photoViewer);
         photoManager = new PhotoManager(getApplicationContext(), PhotoType.OFFER, this.imageThumb, this.imageLarge);
 
-
+        if(offer.getResPhoto() != null){
+            this.photoViewer.setThumbBitmap(BitmapFactory.decodeResource(getResources(), Helper.getResourceByName(getApplicationContext(), offer.getResPhoto(), "drawable")));
+        }
 
         nameTextView = (TextView) findViewById(R.id.name);
         detailsTextView = (TextView) findViewById(R.id.details);
@@ -111,7 +117,13 @@ public class ShowOfferActivity extends BaseActivity implements PhotoViewerListen
 
     @Override
     public Bitmap OnPhotoViewerActivityStarting(int fragmentId) {
-        return null;
+        if(offer.getLargePath() != null){
+            return BitmapFactory.decodeFile(offer.getLargePath());
+        }
+        else {
+            return BitmapFactory.decodeResource(getResources(),
+                    Helper.getResourceByName(getApplicationContext(), offer.getResPhoto(), "drawable"));
+        }
     }
 
     @Override

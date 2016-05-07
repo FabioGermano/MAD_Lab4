@@ -1,15 +1,27 @@
 package it.polito.mad_lab3.data.restaurant;
 
+import java.io.Serializable;
+
 /**
  * Created by f.germano on 25/04/2016.
  */
-public class Offer {
+public class Offer implements Serializable{
 
     private String offerName;
     private float avgRank;
     private int numRanks;
     private float price;
     private String thumbPath, largePath;
+
+    public String getResPhoto() {
+        return resPhoto;
+    }
+
+    public void setResPhoto(String resPhoto) {
+        this.resPhoto = resPhoto;
+    }
+
+    private String resPhoto; // only in this prototic version of the app
     private String details;
 
     public Offer(String offerName, float avgRank, int numRanks, float price, String thumbPath, String largePath, String details) {

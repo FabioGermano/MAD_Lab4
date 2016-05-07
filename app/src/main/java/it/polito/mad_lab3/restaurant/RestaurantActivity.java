@@ -24,6 +24,7 @@ import it.polito.mad_lab3.restaurant.foodPhoto.ContainerUserPhotoFragment;
 import it.polito.mad_lab3.restaurant.menu.MenuActivity;
 import it.polito.mad_lab3.restaurant.menu_prev.MenuListPrevFragment;
 import it.polito.mad_lab3.restaurant.menu_prev.MenuPrevFragment;
+import it.polito.mad_lab3.restaurant.offer_prev.OfferPrevFragment;
 
 public class  RestaurantActivity extends BaseActivity {
 
@@ -31,6 +32,7 @@ public class  RestaurantActivity extends BaseActivity {
     private ContainerUserPhotoFragment containerUserPhotoFragment;
     private Restaurant restaurant;
     private MenuPrevFragment menuPrevFragment;
+    private OfferPrevFragment offerPrevFragment;
     private User user;
     private Button showAllMenuButton;
 
@@ -91,6 +93,9 @@ public class  RestaurantActivity extends BaseActivity {
 
         menuPrevFragment = (MenuPrevFragment)getSupportFragmentManager().findFragmentById(R.id.menuPrevFragment);
         menuPrevFragment.setRestaurantId(restaurant.getRestaurantId());
+
+        offerPrevFragment = (OfferPrevFragment)getSupportFragmentManager().findFragmentById(R.id.offersPrevFragment);
+        offerPrevFragment.init(restaurant.getRestaurantId());
 
         showAllMenuButton = (Button)findViewById(R.id.showAllMenuButton);
         showAllMenuButton.setOnClickListener(new View.OnClickListener() {

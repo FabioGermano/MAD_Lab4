@@ -10,6 +10,11 @@ import it.polito.mad_lab3.R;
  */
 public class Helper {
 
+    public static int getResourceByName(Context context, String aString, String type) {
+        String packageName = context.getPackageName();
+        int resId = context.getResources().getIdentifier(aString, type, packageName);
+        return resId;
+    }
 
     public static String formatDate(Context context, String weekday, String date){
 

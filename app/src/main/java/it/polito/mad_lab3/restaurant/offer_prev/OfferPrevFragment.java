@@ -34,7 +34,6 @@ public class OfferPrevFragment extends Fragment {
     private ViewPager viewPager;
 
     public OfferPrevFragment(){
-
     }
 
     @Override
@@ -45,10 +44,6 @@ public class OfferPrevFragment extends Fragment {
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
         viewPager = (ViewPager) rootView.findViewById(R.id.offersPrevPager);
-        viewPager.setAdapter(mSectionsPagerAdapter);
-        viewPager.setClipToPadding(false);
-        viewPager.setPageMargin(Helper.dpToPx(getContext(), 15));
-        viewPager.setPadding(Helper.dpToPx(getContext(), 35), 0, Helper.dpToPx(getContext(), 35), 0);
 
         return rootView;
     }
@@ -62,6 +57,16 @@ public class OfferPrevFragment extends Fragment {
 
     public void setRestaurantId(int restaurantId) {
         this.restaurantId = restaurantId;
+    }
+
+    public void init(int restaurantId){
+        setRestaurantId(restaurantId);
+
+        viewPager.setAdapter(mSectionsPagerAdapter);
+        viewPager.setClipToPadding(false);
+        viewPager.setPageMargin(Helper.dpToPx(getContext(), 15));
+        viewPager.setPadding(Helper.dpToPx(getContext(), 35), 0, Helper.dpToPx(getContext(), 35), 0);
+
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
@@ -78,7 +83,7 @@ public class OfferPrevFragment extends Fragment {
 
         @Override
         public int getCount() {
-            return 4;
+            return RestaurantBL.getRestaurantById(getContext(), restaurantId).getOffers().size();
         }
     }
 
