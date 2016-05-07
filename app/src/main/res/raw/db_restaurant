@@ -105,6 +105,7 @@
          "offers":[
             {
                "avgRank":4.5,
+               "availableOn":[true, false, true, false, false, true, true],
                "details":"details 1",
                "largePath":null,
                "numRanks":10,
@@ -116,6 +117,7 @@
             {
                "avgRank":2.5,
                "details":"details 2",
+               "availableOn":[true, false, true, false, false, false, false],
                "largePath":null,
                "numRanks":19,
                "offerName":"Offerta2",
@@ -126,6 +128,7 @@
             {
                "avgRank":1.5,
                "details":"details 3",
+               "availableOn":[true, false, true, false, false, true, true],
                "largePath":null,
                "numRanks":15,
                "offerName":"Offerta3",
@@ -274,6 +277,7 @@
               {
                  "avgRank":4.5,
                  "details":"details 1",
+                 "availableOn":[true, false, true, false, false, false, false],
                  "largePath":null,
                  "numRanks":10,
                  "offerName":"Offerta1",
@@ -284,6 +288,7 @@
               {
                  "avgRank":2.5,
                  "details":"details 2",
+                 "availableOn":[true, false, true, false, false, false, false],
                  "largePath":null,
                  "numRanks":19,
                  "offerName":"Offerta2",
@@ -294,6 +299,7 @@
               {
                  "avgRank":1.5,
                  "details":"details 3",
+                 "availableOn":[true, false, true, false, false, false, false],
                  "largePath":null,
                  "numRanks":15,
                  "offerName":"Offerta3",

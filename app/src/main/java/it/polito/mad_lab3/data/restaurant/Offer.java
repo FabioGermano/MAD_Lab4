@@ -1,6 +1,7 @@
 package it.polito.mad_lab3.data.restaurant;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by f.germano on 25/04/2016.
@@ -12,6 +13,8 @@ public class Offer implements Serializable{
     private int numRanks;
     private float price;
     private String thumbPath, largePath;
+
+    private ArrayList<Boolean> availableOn;
 
     public String getResPhoto() {
         return resPhoto;
@@ -32,7 +35,19 @@ public class Offer implements Serializable{
         this.thumbPath = thumbPath;
         this.largePath = largePath;
         this.details = details;
+        this.availableOn= new ArrayList<>();
+        for(int i=0; i<7; i++)
+            this.availableOn.add(false);
     }
+
+    public ArrayList<Boolean> getAvailableOn() {
+        return availableOn;
+    }
+
+    public void setAvailableOn(ArrayList<Boolean> availableOn) {
+        this.availableOn = availableOn;
+    }
+
 
     public String getOfferName() {
         return offerName;

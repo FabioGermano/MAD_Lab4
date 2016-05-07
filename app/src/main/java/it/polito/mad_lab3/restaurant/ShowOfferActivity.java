@@ -3,11 +3,13 @@ package it.polito.mad_lab3.restaurant;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import it.polito.mad_lab3.BaseActivity;
 import it.polito.mad_lab3.R;
@@ -30,7 +32,7 @@ public class ShowOfferActivity extends BaseActivity implements PhotoViewerListen
     private String offerName, offerDetails, offerPrice;
     private float rating;
     private int ratingsNumber;
-    private TextView nameTextView, detailsTextView,priceTextView, ratingsNumberTextView;
+    private TextView nameTextView, detailsTextView,priceTextView, ratingsNumberTextView, availableTextView, notAvailableTextView;
     private Offer offer;
     private RatingBar rb;
     private int offerId=-1;
@@ -41,11 +43,6 @@ public class ShowOfferActivity extends BaseActivity implements PhotoViewerListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_offer);
 
-        setActivityTitle("Offer name");
-
-
-        //offer = new Offer("Menu kebab", (float) 2.67,25, (float) 4.50, null, null, "Pizza kebab +" +
-        //        " Bibita + patatatine (a scelta salsa fra maionese ketchup e salsa barbecue)" );
 
         offer = (Offer)getIntent().getExtras().getSerializable("offer");
 
@@ -56,7 +53,10 @@ public class ShowOfferActivity extends BaseActivity implements PhotoViewerListen
             this.photoViewer.setThumbBitmap(BitmapFactory.decodeResource(getResources(), Helper.getResourceByName(getApplicationContext(), offer.getResPhoto(), "drawable")));
         }
 
+
         nameTextView = (TextView) findViewById(R.id.name);
+        availableTextView = (TextView) findViewById(R.id.today_available);
+        notAvailableTextView = (TextView) findViewById(R.id.today_not_available);
         detailsTextView = (TextView) findViewById(R.id.details);
         priceTextView = (TextView) findViewById(R.id.price);
         ratingsNumberTextView = (TextView) findViewById(R.id.ratings_number);
@@ -69,29 +69,34 @@ public class ShowOfferActivity extends BaseActivity implements PhotoViewerListen
         sa = (ToggleButton) findViewById(R.id.saturday);
         su = (ToggleButton) findViewById(R.id.sunday);
 
-        ArrayList<Boolean> available = new ArrayList<>();
-        available.add(true);
-        available.add(true);
-        available.add(true);
-        available.add(true);
-        available.add(true);
-        available.add(false);
-        available.add(false);
 
+        setActivityTitle(offer.getOfferName());
         nameTextView.setText(offer.getOfferName());
         detailsTextView.setText(offer.getDetails());
         priceTextView.setText(String.valueOf(offer.getPrice())+" €");
         ratingsNumberTextView.setText(String.valueOf("("+offer.getNumRanks())+")");
         rb.setRating(offer.getAvgRank());
 
-        mo.setChecked(available.get(0));
-        tu.setChecked(available.get(1));
-        we.setChecked(available.get(2));
-        th.setChecked(available.get(3));
-        fr.setChecked(available.get(4));
-        sa.setChecked(available.get(5));
-        su.setChecked(available.get(6));
+        ArrayList<Boolean> availableOn = offer.getAvailableOn();
+        mo.setChecked(availableOn.get(0));
+        tu.setChecked(availableOn.get(1));
+        we.setChecked(availableOn.get(2));
+        th.setChecked(availableOn.get(3));
+        fr.setChecked(availableOn.get(4));
+        sa.setChecked(availableOn.get(5));
+        su.setChecked(availableOn.get(6));
 
+        Calendar today = Calendar.getInstance();
+        int week_day = today.get(Calendar.DAY_OF_WEEK);
+        //day of week starts from sunday to saturday (1-7)
+        if(availableOn.get(Helper.fromCalendarOrderToMyOrder(week_day))) {
+            availableTextView.setVisibility(View.VISIBLE);
+            notAvailableTextView.setVisibility(View.GONE);
+        }
+        else{
+            availableTextView.setVisibility(View.GONE);
+            notAvailableTextView.setVisibility(View.VISIBLE);
+        }
 
     }
 

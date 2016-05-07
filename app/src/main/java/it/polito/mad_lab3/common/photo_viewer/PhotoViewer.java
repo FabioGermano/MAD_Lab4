@@ -205,6 +205,13 @@ public class PhotoViewer extends Fragment implements PhotoDialogListener {
 
             String path = Environment.getExternalStorageDirectory().toString();
             OutputStream fOut = null;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                checkStoragePermission();
+            else
+                storageAllowed = true;
+
+            if (!storageAllowed)
+                return;
             File file = new File(path, "image-tran.jpg");
             try {
                 fOut = new FileOutputStream(file);
