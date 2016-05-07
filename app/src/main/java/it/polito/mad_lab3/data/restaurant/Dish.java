@@ -12,6 +12,7 @@ public class Dish implements Serializable {
     private float price;
     private String thumbPath, largePath;
     private String type; // primi, secondi...
+    private String resPhoto; // only in this prototic version of the app
 
     public Dish(String dishName, float avgRank, int numRanks, float price, String thumbPath, String largePath, String type) {
         this.dishName = dishName;
@@ -21,6 +22,10 @@ public class Dish implements Serializable {
         this.thumbPath = thumbPath;
         this.largePath = largePath;
         this.type = type;
+    }
+
+    public void setResPhoto(String resPhoto) {
+        this.resPhoto = resPhoto;
     }
 
     public String getDishName() {
