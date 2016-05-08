@@ -2,9 +2,12 @@ package it.polito.mad_lab3.common;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.widget.RatingBar;
 import android.widget.Toast;
 
 import java.text.DateFormat;
@@ -16,6 +19,22 @@ import it.polito.mad_lab3.R;
  * Created by Giovanna on 02/05/2016.
  */
 public class Helper {
+
+    public static void setRatingBarColor(Context context, RatingBar ratingBar, float rank){
+
+        LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
+
+        if(rank <= 1.5){
+            stars.getDrawable(2).setColorFilter(context.getResources().getColor(R.color.bad),
+                    PorterDuff.Mode.SRC_ATOP);
+        } else if(rank <= 3.5){
+            stars.getDrawable(2).setColorFilter(context.getResources().getColor(R.color.medium),
+                    PorterDuff.Mode.SRC_ATOP);
+        } else {
+            stars.getDrawable(2).setColorFilter(context.getResources().getColor(R.color.good),
+                    PorterDuff.Mode.SRC_ATOP);
+        }
+    }
 
     public static String fromBoolToString(Context context, boolean b){
         if (b)

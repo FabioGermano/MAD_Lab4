@@ -121,6 +121,7 @@
     <string name="long_text">
 </string>
     <string name="review">Review:</string>
+    <string name="reviewsStrPrev">% reviews</string>
 
 
 </resources>

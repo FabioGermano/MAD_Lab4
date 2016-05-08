@@ -56,6 +56,10 @@ public class MenuPhotoViewActivity extends BaseActivity {
         dishNameText.setText(dish.getDishName());
         ratingBar.setRating(dish.getAvgRank());
         priceTV.setText(dish.getPrice()+"€");
+
+        Helper.setRatingBarColor(getApplicationContext(),
+                ratingBar,
+                dish.getAvgRank());
     }
 
     @Override

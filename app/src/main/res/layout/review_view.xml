@@ -11,14 +11,14 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/userPhoto"
+            android:id="@+id/offDetUserPhoto"
             android:layout_margin="4dp"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:src="@drawable/nothumb"/>
 
         <LinearLayout
-            android:layout_toRightOf="@id/userPhoto"
+            android:layout_toRightOf="@id/offDetUserPhoto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
@@ -27,6 +27,7 @@
             android:id="@+id/reviewLayout">
 
             <TextView
+                android:id="@+id/offDetUserName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Nome dell'utente"
@@ -37,6 +38,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <RatingBar
+                    android:id="@+id/offDetRatingBar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:theme="@style/RatingBar"
@@ -47,11 +49,12 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="8dp"
                     android:textSize="13sp"
+                    android:id="@+id/offDetDate"
                     android:text="2016/04/16"/>
             </LinearLayout>
 
             <TextView
-                android:id="@+id/review"
+                android:id="@+id/offDetReview"
                 android:layout_marginTop="12dp"
                 android:layout_marginRight="8dp"
                 android:layout_width="wrap_content"

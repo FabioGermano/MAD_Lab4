@@ -70,6 +70,10 @@ public class MenuListAdapter extends ArrayAdapter<Dish>  {
         viewHolder.numRanksTV.setText("("+String.valueOf(this.dishes.get(position).getNumRanks())+")");
         viewHolder.dishPriceTV.setText(String.valueOf(this.dishes.get(position).getPrice())+"€");
 
+        Helper.setRatingBarColor(getContext(),
+                viewHolder.ratingBar,
+                this.dishes.get(position).getAvgRank());
+
         boolean clickable = false;
         if(this.dishes.get(position).getThumbPath() != null) {
             viewHolder.dishPhotoIV.setImageBitmap(BitmapFactory.decodeFile(this.dishes.get(position).getThumbPath()));

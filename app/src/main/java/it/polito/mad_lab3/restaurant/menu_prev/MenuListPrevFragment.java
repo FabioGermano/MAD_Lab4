@@ -78,6 +78,10 @@ public class MenuListPrevFragment extends Fragment {
                     }
                 }
 
+                Helper.setRatingBarColor(getContext(),
+                        (RatingBar)viewToAdd.findViewById(R.id.ratingBar),
+                        d.getAvgRank());
+
                 parentLinearLayout.addView(viewToAdd);
             }
             else

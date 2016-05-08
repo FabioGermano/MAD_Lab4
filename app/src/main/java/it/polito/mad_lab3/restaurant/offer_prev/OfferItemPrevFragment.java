@@ -73,6 +73,10 @@ public class OfferItemPrevFragment extends Fragment {
         offerNumRatings.setText("("+offers.get(this.sectionNumber).getNumRanks()+")");
         offerDetails.setText(offers.get(this.sectionNumber).getDetails());
 
+        Helper.setRatingBarColor(getContext(),
+                offerRatingProgress,
+                offers.get(this.sectionNumber).getAvgRank());
+
         rootView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

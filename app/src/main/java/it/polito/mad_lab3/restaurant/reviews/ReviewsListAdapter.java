@@ -74,6 +74,10 @@ public class ReviewsListAdapter extends ArrayAdapter<Review>  {
         viewHolder.offDetUserName.setText(review.getUserName());
         viewHolder.offDetDate.setText(review.getDate());
 
+        Helper.setRatingBarColor(getContext(),
+                viewHolder.offDetRatingBar,
+                review.getRank());
+
         // Return the completed view to render on screen
         return convertView;
     }

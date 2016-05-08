@@ -18,6 +18,7 @@ import java.util.Comparator;
 import it.polito.mad_lab3.BaseActivity;
 import it.polito.mad_lab3.R;
 import it.polito.mad_lab3.bl.RestaurantBL;
+import it.polito.mad_lab3.common.Helper;
 import it.polito.mad_lab3.data.restaurant.Restaurant;
 import it.polito.mad_lab3.data.restaurant.Review;
 import it.polito.mad_lab3.restaurant.menu.MenuListAdapter;
@@ -50,6 +51,10 @@ public class ReviewsActivity extends BaseActivity {
         String strNumReviews = getResources().getString(R.string.numReviewsText);
         strNumReviews = strNumReviews.replace("%", String.valueOf(this.restaurant.getNumReviews()));
         ((TextView)findViewById(R.id.numReviews)).setText(strNumReviews);
+
+        Helper.setRatingBarColor(getApplicationContext(),
+                (RatingBar)findViewById(R.id.restaurantAvgRank),
+                restaurant.getAvgReview());
 
         this.adapter = new ReviewsListAdapter(getApplicationContext(), this.reviews);
         reviewsListView.setAdapter(adapter);

@@ -1,0 +1,46 @@
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/ic_comment_star_black_48dp"/>
+        <TextView
+            android:id="@+id/numReviewsInPrev"
+            android:padding="8dp"
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="25 reviews"/>
+    </LinearLayout>
+    <RatingBar
+        android:id="@+id/ratingBarInPrevReviews"
+        android:layout_marginTop="8dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:isIndicator="true"
+        android:theme="@style/RatingBar"
+        style="?android:attr/ratingBarStyle"
+        android:rating="3.5"/>
+    <LinearLayout
+        android:id="@+id/containerLayoutReviews"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <!-- max 3 reviews inserted programmatically in this point -->
+    </LinearLayout>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:id="@+id/showAllReviewsButton"
+        android:text="SHOW ALL" />
+</LinearLayout>

@@ -20,6 +20,7 @@ import it.polito.mad_lab3.restaurant.menu.MenuActivity;
 import it.polito.mad_lab3.restaurant.menu_prev.MenuPrevFragment;
 import it.polito.mad_lab3.restaurant.offer_prev.OfferPrevFragment;
 import it.polito.mad_lab3.restaurant.reviews.ReviewsActivity;
+import it.polito.mad_lab3.restaurant.reviews_prev.ReviewsPrevFragment;
 
 public class  RestaurantActivity extends BaseActivity {
 
@@ -31,6 +32,7 @@ public class  RestaurantActivity extends BaseActivity {
     private OfferPrevFragment offerPrevFragment;
     private User user;
     private Button showAllMenuButton, showAllReviewsButton;
+    private ReviewsPrevFragment reviewsPrevFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +78,9 @@ public class  RestaurantActivity extends BaseActivity {
 
         offerPrevFragment = (OfferPrevFragment)getSupportFragmentManager().findFragmentById(R.id.offersPrevFragment);
         offerPrevFragment.init(restaurant.getRestaurantId());
+
+        reviewsPrevFragment = (ReviewsPrevFragment)getSupportFragmentManager().findFragmentById(R.id.reviewsPrevFragment);
+        reviewsPrevFragment.init(restaurant.getRestaurantId());
 
         showAllMenuButton = (Button)findViewById(R.id.showAllMenuButton);
         showAllMenuButton.setOnClickListener(new View.OnClickListener() {

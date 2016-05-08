@@ -98,6 +98,10 @@ public class ShowOfferActivity extends BaseActivity implements PhotoViewerListen
             notAvailableTextView.setVisibility(View.VISIBLE);
         }
 
+        Helper.setRatingBarColor(getApplicationContext(),
+                rb,
+                offer.getAvgRank());
+
     }
 
     @Override
