@@ -1,7 +1,11 @@
 package it.polito.mad_lab3.common;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.util.DisplayMetrics;
+import android.util.Log;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -18,6 +22,20 @@ public class Helper {
             return context.getResources().getString(R.string.yes);
         else
             return context.getResources().getString(R.string.no);
+    }
+
+    public static void dialNumber (Context context, String number){
+        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", number, null));
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
+
+
+    public static void findOnGoogleMaps(Context context, String address, String city) {
+        String map = "http://maps.google.co.in/maps?q=" + address+","+ city;
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(map));
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
     }
 
     public static int getResourceByName(Context context, String aString, String type) {

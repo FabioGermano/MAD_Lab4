@@ -2,6 +2,7 @@ package it.polito.mad_lab3.restaurant;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.io.Serializable;
@@ -34,6 +36,7 @@ public class BasicInfoFragment extends Fragment {
     private BasicInfo basicInfo;
     private Button showMore;
     private String restaurantName;
+    private LinearLayout call, location;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,6 +71,22 @@ public class BasicInfoFragment extends Fragment {
 
         ((ImageView)rootView.findViewById(R.id.mapIcon)).setColorFilter(Color.BLACK);
         ((ImageView)rootView.findViewById(R.id.phoneIcon)).setColorFilter(Color.BLACK);
+
+        call = (LinearLayout) rootView.findViewById(R.id.telIconLL);
+
+        call.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Helper.dialNumber(getContext(), basicInfo.getPhone());
+            }
+        });
+        location = (LinearLayout) rootView.findViewById(R.id.mapIconLL);
+        location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Helper.findOnGoogleMaps(getContext(),basicInfo.getAddress(), basicInfo.getCity());
+            }
+        });
 
                 return rootView;
     }

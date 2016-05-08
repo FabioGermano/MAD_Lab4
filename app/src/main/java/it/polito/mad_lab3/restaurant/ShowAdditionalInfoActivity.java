@@ -1,6 +1,7 @@
 package it.polito.mad_lab3.restaurant;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -50,18 +51,14 @@ public class ShowAdditionalInfoActivity extends BaseActivity{
         call.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", basicInfo.getPhone(), null));
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+                Helper.dialNumber(getBaseContext(), basicInfo.getPhone());
             }
         });
         location = (LinearLayout) findViewById(R.id.location);
         location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String map = "http://maps.google.co.in/maps?q=" + basicInfo.getAddress()+","+basicInfo.getCity();
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(map));
-                startActivity(intent);
+                Helper.findOnGoogleMaps(getBaseContext(), basicInfo.getAddress(), basicInfo.getCity());
             }
         });
 
@@ -73,6 +70,9 @@ public class ShowAdditionalInfoActivity extends BaseActivity{
             }
         });
 
+        ((ImageView)findViewById(R.id.mapIcon)).setColorFilter(Color.BLACK);
+        ((ImageView)findViewById(R.id.phoneIcon)).setColorFilter(Color.BLACK);
+        ((ImageView)findViewById(R.id.emailIcon)).setColorFilter(Color.BLACK);
 
 
 
