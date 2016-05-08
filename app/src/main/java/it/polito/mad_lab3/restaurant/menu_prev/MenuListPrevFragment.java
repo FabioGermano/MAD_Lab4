@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import it.polito.mad_lab3.R;
 import it.polito.mad_lab3.bl.RestaurantBL;
+import it.polito.mad_lab3.common.Helper;
 import it.polito.mad_lab3.data.restaurant.Dish;
 import it.polito.mad_lab3.data.restaurant.DishType;
 import it.polito.mad_lab3.data.restaurant.DishTypeConverter;
@@ -66,8 +67,15 @@ public class MenuListPrevFragment extends Fragment {
                 ((RatingBar)viewToAdd.findViewById(R.id.ratingBar)).setRating(d.getAvgRank());
                 ((TextView)viewToAdd.findViewById(R.id.numRanksTV)).setText("(" + String.valueOf(d.getNumRanks()) + ")");
                 ((TextView)viewToAdd.findViewById(R.id.dishPriceTV)).setText(String.valueOf(d.getPrice())+"€");
-                if(d.getThumbPath() != null){
+
+                if(d.getThumbPath() != null) {
                     ((ImageView)viewToAdd.findViewById(R.id.dishPhotoIV)).setImageBitmap(BitmapFactory.decodeFile(d.getThumbPath()));
+                }
+                else if(d.getResPhoto() != null) {
+                    int imgRes = Helper.getResourceByName(getContext(), d.getResPhoto(), "drawable");
+                    if (imgRes != 0) {
+                        ((ImageView)viewToAdd.findViewById(R.id.dishPhotoIV)).setImageResource(imgRes);
+                    }
                 }
 
                 parentLinearLayout.addView(viewToAdd);

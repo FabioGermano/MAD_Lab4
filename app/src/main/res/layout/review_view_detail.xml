@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    card_view:cardCornerRadius="4dp"
+    android:padding="16dp"
+    android:minHeight="64dp"
+    card_view:cardUseCompatPadding="true"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/offDetUserPhoto"
+                android:layout_margin="4dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/nothumb"/>
+
+            <LinearLayout
+                android:layout_toRightOf="@id/offDetUserPhoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="12dp"
+                android:orientation="vertical"
+                android:id="@+id/reviewLayout">
+
+                <TextView
+                    android:id="@+id/offDetUserName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nome dell'utente"
+                    android:textColor="@android:color/tab_indicator_text"
+                    android:textStyle="bold"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <RatingBar
+                        android:id="@+id/offDetRatingBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:theme="@style/RatingBar"
+                        style="?android:attr/ratingBarStyleSmall"
+                        android:rating="3.5"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="8dp"
+                        android:id="@+id/offDetDate"
+                        android:textColor="@android:color/tab_indicator_text"
+                        android:textSize="13sp"
+                        android:text="2016/04/16"/>
+                </LinearLayout>
+
+                <TextView
+                    android:textColor="@android:color/tab_indicator_text"
+                    android:id="@+id/offDetReview"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="asdas7  hh gj j h jh jh jk hjh g ukg jkh kh kljh g hklj njkl g gjf hk jkl hk gk ul jl jkl g gjkl n l"/>
+
+            </LinearLayout>
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            android:background="@android:color/transparent"/>
+
+    </LinearLayout>
+</android.support.v7.widget.CardView>

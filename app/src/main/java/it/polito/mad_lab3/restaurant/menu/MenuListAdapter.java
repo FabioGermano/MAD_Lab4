@@ -15,6 +15,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import it.polito.mad_lab3.R;
+import it.polito.mad_lab3.common.Helper;
 import it.polito.mad_lab3.data.reservation.ReservedDish;
 import it.polito.mad_lab3.data.restaurant.Dish;
 import it.polito.mad_lab3.reservation.ReservationActivity;
@@ -69,20 +70,28 @@ public class MenuListAdapter extends ArrayAdapter<Dish>  {
         viewHolder.numRanksTV.setText("("+String.valueOf(this.dishes.get(position).getNumRanks())+")");
         viewHolder.dishPriceTV.setText(String.valueOf(this.dishes.get(position).getPrice())+"€");
 
-        // prova
-        viewHolder.dishPhotoIV.setImageResource(R.drawable.cibo1);
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getContext(), MenuPhotoViewActivity.class);
-                i.putExtra("dish", dishes.get(position));
-                getContext().startActivity(i);
+        boolean clickable = false;
+        if(this.dishes.get(position).getThumbPath() != null) {
+            viewHolder.dishPhotoIV.setImageBitmap(BitmapFactory.decodeFile(this.dishes.get(position).getThumbPath()));
+            clickable = true;
+        }
+        else if(this.dishes.get(position).getResPhoto() != null) {
+            int imgRes = Helper.getResourceByName(getContext(), this.dishes.get(position).getResPhoto(), "drawable");
+            if (imgRes != 0) {
+                viewHolder.dishPhotoIV.setImageResource(imgRes);
+                clickable = true;
             }
-        });
+        }
 
-        if(this.dishes.get(position).getThumbPath() != null){
-            //viewHolder.dishPhotoIV.setImageBitmap(BitmapFactory.decodeFile(this.dishes.get(position).getThumbPath()));
-            viewHolder.dishPhotoIV.setImageBitmap(BitmapFactory.decodeFile(getContext().getResources().getResourceName(R.drawable.cibo1)));
+        if(clickable) {
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(getContext(), MenuPhotoViewActivity.class);
+                    i.putExtra("dish", dishes.get(position));
+                    getContext().startActivity(i);
+                }
+            });
         }
 
         // Return the completed view to render on screen

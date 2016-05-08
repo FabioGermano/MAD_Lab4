@@ -30,6 +30,12 @@ public class Restaurant {
 
     private String restaurantName;
 
+    public void setNumReviews(int numReviews) {
+        this.numReviews = numReviews;
+    }
+
+    private int numReviews;
+
     public void addUserPhoto(UserPhoto userPhoto) {
         this.userPhotos.add(userPhoto);
     }
@@ -130,5 +136,9 @@ public class Restaurant {
         }
 
         return totReview / reviews.size();
+    }
+
+    public int getNumReviews() {
+        return this.numReviews;
     }
 }

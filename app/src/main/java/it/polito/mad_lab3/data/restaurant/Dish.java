@@ -24,6 +24,10 @@ public class Dish implements Serializable {
         this.type = type;
     }
 
+    public String getResPhoto() {
+        return this.resPhoto;
+    }
+
     public void setResPhoto(String resPhoto) {
         this.resPhoto = resPhoto;
     }

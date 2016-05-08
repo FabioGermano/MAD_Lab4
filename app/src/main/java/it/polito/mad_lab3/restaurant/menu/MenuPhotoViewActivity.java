@@ -1,11 +1,13 @@
 package it.polito.mad_lab3.restaurant.menu;
 
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import it.polito.mad_lab3.BaseActivity;
 import it.polito.mad_lab3.R;
+import it.polito.mad_lab3.common.Helper;
 import it.polito.mad_lab3.common.photo_viewer.TouchImageView;
 import it.polito.mad_lab3.data.restaurant.Dish;
 
@@ -41,7 +43,16 @@ public class MenuPhotoViewActivity extends BaseActivity {
     private void getDish(Bundle extras) {
         this.dish = (Dish)extras.getSerializable("dish");
 
-        touchImageView.setImageDrawable(getResources().getDrawable(R.drawable.cibo4));
+        if(dish.getLargePath() != null) {
+            touchImageView.setImageBitmap(BitmapFactory.decodeFile(dish.getThumbPath()));
+        }
+        else if(dish.getResPhoto() != null) {
+            int imgRes = Helper.getResourceByName(getApplicationContext(), dish.getResPhoto(), "drawable");
+            if (imgRes != 0) {
+                touchImageView.setImageResource(imgRes);
+            }
+        }
+
         dishNameText.setText(dish.getDishName());
         ratingBar.setRating(dish.getAvgRank());
         priceTV.setText(dish.getPrice()+"€");

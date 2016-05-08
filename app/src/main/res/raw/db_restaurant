@@ -36,7 +36,7 @@
                "numRanks":8,
                "price":2.5,
                "thumbPath":null,
-               "resPhoto":null,
+               "resPhoto":"cibo2",
                "type":"Other"
             },
             {
@@ -145,6 +145,7 @@
                "thumbPath":null
             }
          ],
+         "numReviews":4,
          "restaurantId":1,
          "restaurantName":"Bar Ambrogio",
          "reviews":[
@@ -327,7 +328,22 @@
            ],
            "restaurantId":2,
            "restaurantName":"da Carlo",
+           "numReviews":6,
            "reviews":[
+              {
+                 "comment":"jhkjhlkhl 1 sdkmsdfl fggmdf dgl fgmgdf gd fl",
+                 "date":"2015-05-18",
+                 "rank":4.0,
+                 "thumbPath":null,
+                 "userName":"userName 1"
+              },
+              {
+                 "comment":"ljkòjkà 2 sdkmsdfl fggmdf dgl fgmgdf gd fl",
+                 "date":"2015-04-10",
+                 "rank":3.5,
+                 "thumbPath":null,
+                 "userName":"userName 2"
+              },
               {
                  "comment":"commento 1 sdkmsdfl fggmdf dgl fgmgdf gd fl",
                  "date":"2015-05-08",

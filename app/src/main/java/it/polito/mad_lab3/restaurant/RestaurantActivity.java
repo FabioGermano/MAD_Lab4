@@ -7,10 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
-
-import java.util.ArrayList;
 
 import it.polito.mad_lab3.BaseActivity;
 import it.polito.mad_lab3.MainActivity;
@@ -18,13 +15,11 @@ import it.polito.mad_lab3.R;
 import it.polito.mad_lab3.bl.RestaurantBL;
 import it.polito.mad_lab3.data.restaurant.Restaurant;
 import it.polito.mad_lab3.data.user.User;
-import it.polito.mad_lab3.elaborazioneRicerche.Oggetto_risultatoRicerca;
-import it.polito.mad_lab3.reservation.ReservationActivity;
 import it.polito.mad_lab3.restaurant.foodPhoto.ContainerUserPhotoFragment;
 import it.polito.mad_lab3.restaurant.menu.MenuActivity;
-import it.polito.mad_lab3.restaurant.menu_prev.MenuListPrevFragment;
 import it.polito.mad_lab3.restaurant.menu_prev.MenuPrevFragment;
 import it.polito.mad_lab3.restaurant.offer_prev.OfferPrevFragment;
+import it.polito.mad_lab3.restaurant.reviews.ReviewsActivity;
 
 public class  RestaurantActivity extends BaseActivity {
 
@@ -35,7 +30,7 @@ public class  RestaurantActivity extends BaseActivity {
     private MenuPrevFragment menuPrevFragment;
     private OfferPrevFragment offerPrevFragment;
     private User user;
-    private Button showAllMenuButton;
+    private Button showAllMenuButton, showAllReviewsButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,24 +48,6 @@ public class  RestaurantActivity extends BaseActivity {
         collapsingToolbarLayout.setCollapsedTitleTextColor(Color.WHITE);
 
 
-  /*      LinearLayout llOffers = (LinearLayout)findViewById(R.id.LLOffersPrev);
-        View child = getLayoutInflater().inflate(R.layout.offer_prev_view, null);
-        llOffers.addView(child);
-        child = getLayoutInflater().inflate(R.layout.offer_prev_view, null);
-        //test
-        child.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getBaseContext(), ShowOfferActivity.class);
-                int offerId=1;
-                i.putExtra("offerId", offerId);
-                startActivity(i);
-
-            }
-        });
-        llOffers.addView(child);
-
-*/
         Bundle extras = getIntent().getExtras();
         int id = -1;
         if (extras != null) {
@@ -83,9 +60,9 @@ public class  RestaurantActivity extends BaseActivity {
             Intent i = new Intent(getBaseContext(), MainActivity.class);
             startActivity(i);
         }
-        System.out.println("Id ricevuto: " + id);
+        //System.out.println("Id ricevuto: " + id);
         restaurant = RestaurantBL.getRestaurantById(getBaseContext(), id);
-        System.out.println("Ristorante: " + restaurant.getRestaurantName());
+        //System.out.println("Ristorante: " + restaurant.getRestaurantName());
 
         containerUserPhotoFragment = (ContainerUserPhotoFragment)getSupportFragmentManager().findFragmentById(R.id.UserPhotoFragment);
         containerUserPhotoFragment.init(restaurant);
@@ -108,11 +85,25 @@ public class  RestaurantActivity extends BaseActivity {
             }
         });
 
+        showAllReviewsButton = (Button)findViewById(R.id.showAllReviewsButton);
+        showAllReviewsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAllReviewsButtonPressed();
+            }
+        });
+
     }
 
     @Override
     protected void filterButton() {
 
+    }
+
+    private void showAllReviewsButtonPressed() {
+        Intent i = new Intent(getBaseContext(), ReviewsActivity.class);
+        i.putExtra("restaurantId", this.restaurant.getRestaurantId());
+        startActivity(i);
     }
 
     private void showAllMenuButtonPressed() {
