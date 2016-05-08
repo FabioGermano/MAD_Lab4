@@ -3,10 +3,12 @@ package it.polito.mad_lab3.restaurant;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import it.polito.mad_lab3.BaseActivity;
 import it.polito.mad_lab3.R;
@@ -25,6 +27,7 @@ public class ShowAdditionalInfoActivity extends BaseActivity{
     private TextView wifi, reservations, seatsOutside, parking, music, creditCard, bancomat;
     private ImageView logo;
     private String restaurantName;
+    private LinearLayout send_email, call, location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +45,8 @@ public class ShowAdditionalInfoActivity extends BaseActivity{
         phoneNumber = (TextView) findViewById(R.id.phoneNumber);
         email = (TextView) findViewById(R.id.email);
         description = (TextView) findViewById(R.id.description);
-        LinearLayout call = (LinearLayout) findViewById(R.id.call);
+        call = (LinearLayout) findViewById(R.id.call);
+
         call.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -51,6 +55,26 @@ public class ShowAdditionalInfoActivity extends BaseActivity{
                 startActivity(intent);
             }
         });
+        location = (LinearLayout) findViewById(R.id.location);
+        location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String map = "http://maps.google.co.in/maps?q=" + basicInfo.getAddress()+","+basicInfo.getCity();
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(map));
+                startActivity(intent);
+            }
+        });
+
+        send_email = (LinearLayout) findViewById(R.id.send_email);
+        send_email.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendEmail(basicInfo.getEmail());
+            }
+        });
+
+
+
 
 
         mon = (TextView) findViewById(R.id.monday);
@@ -70,7 +94,7 @@ public class ShowAdditionalInfoActivity extends BaseActivity{
         seatsOutside = (TextView) findViewById(R.id.seats_outside);
 
         restaurantNameTextView.setText(restaurantName);
-        address.setText(basicInfo.getAddress());
+        address.setText(basicInfo.getAddress()+ ", "+basicInfo.getCity());
         phoneNumber.setText(basicInfo.getPhone());
         email.setText(basicInfo.getEmail());
         description.setText(basicInfo.getDescription());
@@ -106,6 +130,27 @@ public class ShowAdditionalInfoActivity extends BaseActivity{
     @Override
     protected void ShowPrenotazioni() {
 
+    }
+
+    public void sendEmail(String contact) {
+        Log.i("Send email", "");
+        String[] TO = {contact};
+        String[] CC = {""};
+        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+
+        emailIntent.setData(Uri.parse("mailto:"));
+        emailIntent.setType("text/plain");
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
+        emailIntent.putExtra(Intent.EXTRA_CC, CC);
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "");
+        emailIntent.putExtra(Intent.EXTRA_TEXT, "");
+
+        try {
+            startActivity(Intent.createChooser(emailIntent, getResources().getString(R.string.send_mail)));
+        }
+        catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(ShowAdditionalInfoActivity.this, getResources().getString(R.string.no_email_client), Toast.LENGTH_SHORT).show();
+        }
     }
 
 }

@@ -10,6 +10,7 @@ public class BasicInfo implements Serializable{
 
 
     private String address;
+    private String city;
     private String phone;
     private ArrayList<String> timeTable; // eg item "11:30 - 15:30" ; string "CLOSED" if the restaurant is closed on that day; index -> day of week
     private String email;
@@ -18,8 +19,9 @@ public class BasicInfo implements Serializable{
     private ArrayList<Cover> covers;
     private boolean wifi, reservations, seatsOutside, parking, music, creditCard, bancomat;
 
-    public BasicInfo(String address, String phone,String email, String description, String logoThumb,  ArrayList<String> timeTable){
+    public BasicInfo(String address,String city, String phone,String email, String description, String logoThumb,  ArrayList<String> timeTable){
         this.address = address;
+        this.city=city;
         this.phone = phone;
         this.email = email;
         this.description = description;
@@ -146,5 +148,13 @@ public class BasicInfo implements Serializable{
 
     public void setBancomat(boolean bancomat) {
         this.bancomat = bancomat;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 }

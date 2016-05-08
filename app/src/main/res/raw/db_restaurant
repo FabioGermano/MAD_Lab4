@@ -9,6 +9,7 @@
             "music":false,
             "creditCard":false,
             "bancomat":true,
+            "city":"Torino",
             "address":"Via Monginevro, 12",
             "covers":[
 
@@ -180,6 +181,8 @@
       },
       {
        "basicInfo":{
+
+          "city":"Torino",
           "address":"Corso Duca degli Abruzzi, 245",
           "covers":[
 
