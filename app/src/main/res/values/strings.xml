@@ -87,6 +87,20 @@
     <string name="available_on">Available on:</string>
     <string name="no_item_in_order">Please, select a dish</string>
     <string name="today_not_available">The offer is not available today</string>
+    <string name="open_restaurant">Now the restaurant is open!</string>
+    <string name="additional_info">Additional Info</string>
+
+    <!-- Basic info strings -->
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="features">Features:</string>
+    <string name="wifi">WiFi</string>
+    <string name="creditcard">Creditcard payment</string>
+    <string name="reservation">Reservations</string>
+    <string name="parking">Parking</string>
+    <string name="bancomat">Bancomat</string>
+    <string name="seatsoutside">Seats outside</string>
+    <string name="music">Music</string>
 
 
 </resources>

@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="it.polito.mad_lab3.restaurant.ShowOfferActivity">
+
+    <include android:id="@+id/includedtoolbar" layout="@layout/toolbar_view" android:layout_height="wrap_content" android:layout_width="match_parent"></include>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_below="@id/includedtoolbar"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <android.support.v7.widget.CardView
+
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                card_view:cardUseCompatPadding="true"
+                card_view:cardCornerRadius="4dp"
+                android:minHeight="64dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:padding="8dp"
+                    android:orientation="vertical">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:layout_gravity="center_horizontal"
+                        android:padding="@dimen/activity_horizontal_margin">
+
+                        <ImageView
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:id="@+id/logo"
+                            android:src="@drawable/img1_logo_prova"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:text="Restaurant name"
+                            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                            android:id="@+id/restaurant_name"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:orientation="horizontal"
+                        android:gravity="center"
+                        android:padding="@dimen/activity_horizontal_margin">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:backgroundTint="@color/black"
+                            android:background="@android:drawable/ic_dialog_map"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="Address"
+                            android:id="@+id/address" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:orientation="horizontal"
+                        android:id="@+id/call"
+                        android:clickable="true"
+                        android:gravity="center"
+                        android:padding="@dimen/activity_horizontal_margin">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:backgroundTint="@color/black"
+                            android:background="@android:drawable/ic_menu_call"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="0953533353"
+                            android:id="@+id/phoneNumber" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:id="@+id/send_email"
+                        android:clickable="true"
+                        android:background="?attr/selectableItemBackground"
+                        android:gravity="center"
+                        android:padding="@dimen/activity_horizontal_margin">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:backgroundTint="@color/black"
+                            android:background="@android:drawable/ic_dialog_email"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="Email@example.com"
+                            android:id="@+id/email" />
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Description"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:id="@+id/description"
+                        android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                        android:text="Beautiful restaurant s,fnds,ndslkfnlkdsfdslkfj fdkjsfdskjfhldsfjdlfjsdnm  fdskjfndsfndskjfdskjfndf" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Time table:"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="8dp"/>
+
+                    <TableLayout
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/activity_horizontal_margin"
+                        android:stretchColumns="1">
+
+                        <TableRow >
+                            <TextView
+                                android:layout_column="1"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="Mon:"
+                                android:layout_marginBottom="3dp" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="10:30 - 14:30"
+                                android:layout_marginBottom="3dp"
+                                android:id="@+id/monday" />
+
+                        </TableRow>
+                        <TableRow >
+                            <TextView
+                                android:layout_column="1"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="Tue:"
+                                android:layout_marginBottom="3dp"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="10:30 - 14:30"
+                                android:layout_marginBottom="3dp"
+                                android:id="@+id/tuesday" />
+
+                        </TableRow>
+                        <TableRow >
+                            <TextView
+                                android:layout_column="1"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="Wed:"
+                                android:layout_marginBottom="3dp" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="10:30 - 14:30"
+                                android:layout_marginBottom="3dp"
+                                android:id="@+id/wedenesday" />
+
+                        </TableRow>
+                        <TableRow >
+                            <TextView
+                                android:layout_column="1"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="Thu:"
+                                android:layout_marginBottom="3dp" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="10:30 - 14:30"
+                                android:layout_marginBottom="3dp"
+                                android:id="@+id/thursday" />
+
+                        </TableRow><TableRow >
+                        <TextView
+                            android:layout_column="1"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="Fri:"
+                            android:layout_marginBottom="3dp" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="3dp"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:text="10:30 - 14:30"
+                            android:id="@+id/friday" />
+                    </TableRow>
+                        <TableRow >
+                            <TextView
+                                android:layout_column="1"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="Sat:"
+                                android:layout_marginBottom="3dp" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="3dp"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="10:30 - 14:30"
+                                android:id="@+id/saturday" />
+
+                        </TableRow>
+                        <TableRow >
+                            <TextView
+                                android:layout_column="1"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="Sun:"
+                                android:layout_marginBottom="3dp"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="3dp"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="10:30 - 14:30"
+                                android:id="@+id/sunday" />
+
+                        </TableRow>
+
+
+
+                    </TableLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="@string/features"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="8dp" />
+
+                    <TableLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:stretchColumns="1" >
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:layout_column="1"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="@string/wifi"
+                                android:layout_marginBottom="3dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="yes"
+                                android:layout_marginBottom="3dp"
+                                android:id="@+id/wifi" />
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:layout_column="1"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="@string/reservation"
+                                android:layout_marginBottom="3dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="@string/yes"
+                                android:layout_marginBottom="3dp"
+                                android:id="@+id/reservations" />
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:layout_column="1"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="@string/creditcard"
+                                android:layout_marginBottom="3dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="@string/no"
+                                android:layout_marginBottom="3dp"
+                                android:id="@+id/creditcard" />
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:layout_column="1"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="@string/bancomat"
+                                android:layout_marginBottom="3dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="@string/no"
+                                android:layout_marginBottom="3dp"
+                                android:id="@+id/bancomat" />
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:layout_column="1"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="@string/seatsoutside"
+                                android:layout_marginBottom="3dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="3dp"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="@string/yes"
+                                android:id="@+id/seats_outside" />
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:layout_column="1"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="@string/parking"
+                                android:layout_marginBottom="3dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="3dp"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="@string/no"
+                                android:id="@+id/parking" />
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:layout_column="1"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="@string/music"
+                                android:layout_marginBottom="3dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="3dp"
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:text="@string/yes"
+                                android:id="@+id/music" />
+                        </TableRow>
+                    </TableLayout>
+
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="16dp"></RelativeLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

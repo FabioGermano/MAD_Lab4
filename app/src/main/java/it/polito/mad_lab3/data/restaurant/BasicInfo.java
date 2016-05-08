@@ -1,21 +1,22 @@
 package it.polito.mad_lab3.data.restaurant;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by f.germano on 25/04/2016.
  */
-public class BasicInfo {
+public class BasicInfo implements Serializable{
 
 
     private String address;
     private String phone;
-    private ArrayList<String> timeTable; // string "CLOSED" if the restaurant is closed on that day; index -> day of week
+    private ArrayList<String> timeTable; // eg item "11:30 - 15:30" ; string "CLOSED" if the restaurant is closed on that day; index -> day of week
     private String email;
     private String description;
     private String logoThumb;
     private ArrayList<Cover> covers;
-
+    private boolean wifi, reservations, seatsOutside, parking, music, creditCard, bancomat;
 
     public BasicInfo(String address, String phone,String email, String description, String logoThumb,  ArrayList<String> timeTable){
         this.address = address;
@@ -25,9 +26,15 @@ public class BasicInfo {
         this.logoThumb = logoThumb;
         this.timeTable=timeTable;
         this.covers = new ArrayList<Cover>();
+        this.wifi = false;
+        this.reservations = false;
+        this.seatsOutside = false;
+        this.parking = false;
+        this.music = false;
+        this.creditCard = false;
+        this.bancomat = false;
 
     }
-
 
     public String getAddress() {
         return address;
@@ -83,5 +90,61 @@ public class BasicInfo {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public boolean isWifi() {
+        return wifi;
+    }
+
+    public void setWifi(boolean wifi) {
+        this.wifi = wifi;
+    }
+
+    public boolean isReservations() {
+        return reservations;
+    }
+
+    public void setReservations(boolean reservations) {
+        this.reservations = reservations;
+    }
+
+    public boolean isSeatsOutside() {
+        return seatsOutside;
+    }
+
+    public void setSeatsOutside(boolean seatsOutside) {
+        this.seatsOutside = seatsOutside;
+    }
+
+    public boolean isParking() {
+        return parking;
+    }
+
+    public void setParking(boolean parking) {
+        this.parking = parking;
+    }
+
+    public boolean isMusic() {
+        return music;
+    }
+
+    public void setMusic(boolean music) {
+        this.music = music;
+    }
+
+    public boolean isCreditCard() {
+        return creditCard;
+    }
+
+    public void setCreditCard(boolean creditCard) {
+        this.creditCard = creditCard;
+    }
+
+    public boolean isBancomat() {
+        return bancomat;
+    }
+
+    public void setBancomat(boolean bancomat) {
+        this.bancomat = bancomat;
     }
 }

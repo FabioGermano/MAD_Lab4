@@ -31,6 +31,7 @@ public class  RestaurantActivity extends BaseActivity {
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private ContainerUserPhotoFragment containerUserPhotoFragment;
     private Restaurant restaurant;
+    private BasicInfoFragment basicInfoFragment;
     private MenuPrevFragment menuPrevFragment;
     private OfferPrevFragment offerPrevFragment;
     private User user;
@@ -51,8 +52,6 @@ public class  RestaurantActivity extends BaseActivity {
         collapsingToolbarLayout.setExpandedTitleColor(Color.WHITE);
         collapsingToolbarLayout.setCollapsedTitleTextColor(Color.WHITE);
 
-        ((ImageView)findViewById(R.id.mapIcon)).setColorFilter(Color.BLACK);
-        ((ImageView)findViewById(R.id.phoneIcon)).setColorFilter(Color.BLACK);
 
   /*      LinearLayout llOffers = (LinearLayout)findViewById(R.id.LLOffersPrev);
         View child = getLayoutInflater().inflate(R.layout.offer_prev_view, null);
@@ -90,6 +89,10 @@ public class  RestaurantActivity extends BaseActivity {
 
         containerUserPhotoFragment = (ContainerUserPhotoFragment)getSupportFragmentManager().findFragmentById(R.id.UserPhotoFragment);
         containerUserPhotoFragment.init(restaurant);
+
+        basicInfoFragment = (BasicInfoFragment) getSupportFragmentManager().findFragmentById(R.id.basicinfo_fragment);
+        basicInfoFragment.setRestaurantId(restaurant.getRestaurantId());
+
 
         menuPrevFragment = (MenuPrevFragment)getSupportFragmentManager().findFragmentById(R.id.menuPrevFragment);
         menuPrevFragment.setRestaurantId(restaurant.getRestaurantId());

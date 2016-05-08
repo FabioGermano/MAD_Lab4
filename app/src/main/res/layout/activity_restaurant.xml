@@ -58,90 +58,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+        <!-- info -->
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
+            <fragment
+                android:id="@+id/basicinfo_fragment"
+                android:name="it.polito.mad_lab3.restaurant.BasicInfoFragment"
                 android:layout_marginBottom="@dimen/activity_vertical_margin"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:layout_marginTop="@dimen/activity_vertical_margin"
-                android:background="@android:drawable/dialog_holo_light_frame">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
 
-                <LinearLayout
-                    android:id="@+id/mapIconLL"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="@dimen/activity_horizontal_margin"
-                    android:background="?attr/selectableItemBackground"
-                    android:clickable="true"
-                    android:orientation="horizontal">
-                    <ImageView
-                        android:id="@+id/mapIcon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@android:drawable/ic_dialog_map" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        android:textSize="14sp"
-                        android:layout_gravity="center_vertical"
-                        android:text="Via Germanasca, 5"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/telIconLL"
-                    android:layout_below="@id/mapIconLL"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="?attr/selectableItemBackground"
-                    android:clickable="true"
-                    android:padding="@dimen/activity_horizontal_margin"
-                    android:orientation="horizontal">
-                    <ImageView
-                        android:id="@+id/phoneIcon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@android:drawable/stat_sys_phone_call" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                        android:textSize="14sp"
-                        android:layout_gravity="center_vertical"
-                        android:text="346-6722606"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true" >
-
-                    <Button
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:text="SHOW OTHER..."
-                        />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="14sp"
-                        android:height="32dp"
-                        android:textStyle="italic"
-                        android:gravity="center_vertical|center_horizontal"
-                        android:textColor="@android:color/holo_green_dark"
-                        android:background="@drawable/green_gradient"
-                        android:text="Now opened, from 11:30 to 14:30"
-                        />
-                </LinearLayout>
-            </LinearLayout>
 
             <!-- Photo -->
             <LinearLayout

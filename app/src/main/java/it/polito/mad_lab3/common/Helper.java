@@ -3,12 +3,22 @@ package it.polito.mad_lab3.common;
 import android.content.Context;
 import android.util.DisplayMetrics;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 import it.polito.mad_lab3.R;
 
 /**
  * Created by Giovanna on 02/05/2016.
  */
 public class Helper {
+
+    public static String fromBoolToString(Context context, boolean b){
+        if (b)
+            return context.getResources().getString(R.string.yes);
+        else
+            return context.getResources().getString(R.string.no);
+    }
 
     public static int getResourceByName(Context context, String aString, String type) {
         String packageName = context.getPackageName();
@@ -73,6 +83,25 @@ public class Helper {
             default:
                 return null;
         }
+    }
+
+    public static int[] formatRange(String tmp){
+
+        if(tmp == "" || tmp.toLowerCase().equals("closed")){
+            return null;
+        }
+
+        int[] orario = new int[4];
+        int n1  = tmp.indexOf(":");
+        int n2 = tmp.indexOf(" - ");
+        int n3 = tmp.indexOf(":", n2);
+
+        orario[0] = Integer.parseInt(tmp.substring(0, n1)); // opening hour
+        orario[1] = Integer.parseInt(tmp.substring(n1+1, n2)); // opening minutes
+        orario[2] = Integer.parseInt(tmp.substring(n2+3, n3)); //closing hour
+        orario[3] = Integer.parseInt(tmp.substring(n3+1, tmp.length())); //closing minutes
+
+        return orario;
     }
     public static String intToMonthString (Context context, int month){
         switch (month){

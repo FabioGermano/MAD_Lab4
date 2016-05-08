@@ -169,6 +169,8 @@ public class TimeFragment extends Fragment implements DatesAdapter.AdapterInterf
 
             if (nowHour > end.get(Calendar.HOUR_OF_DAY)) //restaurant already closed
                 return time;
+            if(nowHour == end.get(Calendar.HOUR_OF_DAY) && nowMinutes > end.get(Calendar.MINUTE))
+                return time;
 
             if (nowHour == orario[0] && nowMinutes > orario[1]) {
                 //if the hour is the same as opening but the minutes are greater

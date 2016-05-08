@@ -2,6 +2,13 @@
    "restaurants":[
       {
          "basicInfo":{
+            "wifi":true,
+            "reservations":false,
+            "seatsOutside":true,
+            "parking":false,
+            "music":false,
+            "creditCard":false,
+            "bancomat":true,
             "address":"Via Monginevro, 12",
             "covers":[
 
@@ -177,6 +184,13 @@
           "covers":[
 
           ],
+          "wifi":true,
+          "reservations":true,
+          "seatsOutside":true,
+          "parking":false,
+          "music":false,
+          "creditCard":true,
+          "bancomat":true,
           "description":"Descrizione locale",
           "email":"restaurant@email.com",
           "logoThumb":null,
