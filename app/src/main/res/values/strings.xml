@@ -56,10 +56,18 @@
     <string name="offers">Offers</string>
     <string name="otherDishesAvailable">(other dishes are available)</string>
 
-    <!-- Elaborazione Ricerche -->
+    <!-- Ricerche ed Elaborazione Ricerche -->
     <string name="titolo_elaborazioneRicerche">Restaurants found</string>
     <string name="risultati_ricerca">Search results:</string>
-    <string name="find">Find</string>
+    <string name="search">Search</string>
+    <string name="titoloLocaleDefault">Nome Locale Non Disponibile</string>
+    <string name="tipoLocaleFinder">-Type of local:</string>
+    <string name="costoFinder">-Cost:</string>
+    <string name="valutazioneFinder">-Rating:</string>
+    <string name="ricercaAvanzata">Advanced Search:</string>
+    <string name="takeAway">Take Away</string>
+    <string name="restaurant">Restaurant</string>
+    <string name="reset">Reset</string>
 
     <!-- Errori e messaggi di default -->
     <string name="dataSaved">DATA SAVED</string>

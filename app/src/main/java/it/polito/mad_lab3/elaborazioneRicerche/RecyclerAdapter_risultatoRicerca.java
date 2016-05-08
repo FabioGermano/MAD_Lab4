@@ -40,6 +40,10 @@ public class RecyclerAdapter_risultatoRicerca extends RecyclerView.Adapter<Recyc
         this.myInflater = LayoutInflater.from(context);
     }
 
+    public void setNewArray(ArrayList<Oggetto_risultatoRicerca> listObj){
+        this.risultati_ricerca = listObj;
+    }
+
     @Override
     public MyViewHolder_risultatoRicerca onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = myInflater.inflate(R.layout.riga_lista_ricerche, parent, false);
@@ -107,7 +111,7 @@ public class RecyclerAdapter_risultatoRicerca extends RecyclerView.Adapter<Recyc
             if(descrizione != null && currentObj.getDescrizione() != null){
                 descrizione.setText(currentObj.getDescrizione());
             }
-            if(costo != null){
+            if(costo != null && currentObj.getFasciaPrezzo() != null){
                 costo.setText(currentObj.getFasciaPrezzo());
             }
             if(valutazione != null){

@@ -7,7 +7,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.Spinner;
 
 import it.polito.mad_lab3.R;
 
@@ -17,7 +19,15 @@ import it.polito.mad_lab3.R;
 public class fragment_ricercaAvanzata extends Fragment {
     private Context context;
     private View rootView;
+    private Button buttonR;
     private OnButtonPressedListener mCallback;
+    private String selezioneTipoLocale = null;
+    private String selezioneCostoLocale = null;
+    private String selezioneValutazioneLocale = null;
+
+    private Spinner valutazioneLocale;
+    private Spinner tipoLocale;
+    private Spinner costoLocale;
 
     public void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,7 +36,9 @@ public class fragment_ricercaAvanzata extends Fragment {
 
     public interface OnButtonPressedListener {
 
-        public void onButtonPressed();
+        public void onButtonPressed(String type, String cost, String rating);
+
+        public void onResetPressed();
 
     }
 
@@ -48,16 +60,75 @@ public class fragment_ricercaAvanzata extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_ricerca_avanzata, container, false);
         rootView.setVisibility(View.GONE);
-        Button button = (Button) rootView.findViewById(R.id.button_finder);
-        button.setOnClickListener(new View.OnClickListener() {
+
+        Button buttonS = (Button) rootView.findViewById(R.id.search_finder);
+        buttonS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ricercaAvanzata();
             }
         });
 
+        buttonR = (Button) rootView.findViewById(R.id.reset_finder);
+        buttonR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resetRicercaAvanzata();
+            }
+        });
+        buttonR.setVisibility(View.INVISIBLE);
+
+        tipoLocale = (Spinner) rootView.findViewById(R.id.spinner_tipo_finder);
+        if(tipoLocale != null) {
+            tipoLocale.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                public void onItemSelected(AdapterView<?> adapter, View view, int pos, long id) {
+                    selezioneTipoLocale = (String) adapter.getItemAtPosition(pos);
+                    if (selezioneTipoLocale.compareTo("-") == 0)
+                        selezioneTipoLocale = null;
+                    else if(selezioneTipoLocale.compareTo("Take Away")== 0)
+                        selezioneTipoLocale = "TA";
+                    else if(selezioneTipoLocale.compareTo("Restaurant") == 0)
+                        selezioneTipoLocale = "R";
+                    else
+                        selezioneTipoLocale = "ALL";
+                }
+
+                public void onNothingSelected(AdapterView<?> arg0) {
+                }
+            });
+        }
+
+        costoLocale = (Spinner) rootView.findViewById(R.id.spinner_costo_finder);
+        if(costoLocale != null) {
+            costoLocale.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                public void onItemSelected(AdapterView<?> adapter, View view, int pos, long id) {
+                    selezioneCostoLocale = (String) adapter.getItemAtPosition(pos);
+                    if (selezioneCostoLocale.compareTo("-") == 0)
+                        selezioneCostoLocale = null;
+                }
+
+                public void onNothingSelected(AdapterView<?> arg0) {
+                }
+            });
+        }
+
+        valutazioneLocale = (Spinner) rootView.findViewById(R.id.spinner_valutazione_finder);
+        if(valutazioneLocale != null) {
+            valutazioneLocale.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                public void onItemSelected(AdapterView<?> adapter, View view, int pos, long id) {
+                    selezioneValutazioneLocale = (String) adapter.getItemAtPosition(pos);
+                    if (selezioneValutazioneLocale.compareTo("-") == 0)
+                        selezioneValutazioneLocale = null;
+                }
+
+                public void onNothingSelected(AdapterView<?> arg0) {
+                }
+            });
+        }
+
         return rootView;
     }
+
 
     public void setFragment(){
         rootView.setVisibility(View.VISIBLE);
@@ -71,6 +142,35 @@ public class fragment_ricercaAvanzata extends Fragment {
 
     private void ricercaAvanzata(){
         //leggo i vari parametri dei filtri e li passo alla funzione, deve essere definita in modo opportuno la funzione
-        mCallback.onButtonPressed();
+        mCallback.onButtonPressed(selezioneTipoLocale, selezioneCostoLocale, selezioneValutazioneLocale);
+
+        //resetto i valori dei campi dello spinner
+        //imposto lo spinner al valore corretto del piatto
+        if (valutazioneLocale != null)
+            valutazioneLocale.setSelection(0);
+        if (tipoLocale != null)
+            tipoLocale.setSelection(0);
+        if (costoLocale != null)
+            costoLocale.setSelection(0);
     }
+
+    public void setResetButton(){
+        buttonR.setVisibility(View.VISIBLE);
+    }
+
+    private void resetRicercaAvanzata() {
+        mCallback.onResetPressed();
+
+        //resetto i valori dei campi dello spinner
+        //imposto lo spinner al valore corretto del piatto
+        if (valutazioneLocale != null)
+            valutazioneLocale.setSelection(0);
+        if (tipoLocale != null)
+            tipoLocale.setSelection(0);
+        if (costoLocale != null)
+            costoLocale.setSelection(0);
+
+        buttonR.setVisibility(View.INVISIBLE);
+    }
+
 }

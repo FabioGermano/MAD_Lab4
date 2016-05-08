@@ -4,10 +4,7 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/card_risultati_verticale"
     android:layout_marginBottom="@dimen/card_risultati_verticale"
-    android:layout_marginLeft="@dimen/card_risultati_orizzontale"
-    android:layout_marginRight="@dimen/card_risultati_orizzontale"
     card_view:cardBackgroundColor="@color/lightGrey"
     card_view:cardCornerRadius="5dp"
     android:clickable="true"
@@ -18,56 +15,128 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:layout_marginTop="2sp"
+            android:textColor="@color/titoli"
+            android:fontFamily="sans-serif"
+            android:text="@string/ricercaAvanzata"
+            android:layout_gravity="center"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/costo_lay">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:textColor="@color/titoli"
+                    android:fontFamily="sans-serif"
+                    android:text="@string/tipoLocaleFinder"
+                    android:layout_gravity="center_vertical"/>
+
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/spinner_tipo_finder"
+                    android:layout_marginLeft="1sp"
+                    android:entries="@array/tipoLocaleArray"
+                    android:popupBackground="@color/lightGrey">
+                </Spinner>
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+               <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:layout_marginLeft="5sp"
+                    android:textColor="@color/titoli"
+                    android:fontFamily="sans-serif"
+                    android:text="@string/costoFinder"
+                    android:layout_gravity="center_vertical"/>
+
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/spinner_costo_finder"
+                    android:layout_marginLeft="1sp"
+                    android:entries="@array/costoArray"
+                    android:popupBackground="@color/lightGrey">
+
+                </Spinner>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
-                android:textSize="18sp"
-                android:layout_marginTop="4sp"
-                android:layout_gravity="center_horizontal"
                 android:layout_height="wrap_content"
+                android:textSize="14sp"
                 android:textColor="@color/titoli"
                 android:fontFamily="sans-serif"
-                android:text="Questa è una prova"/>
-        <TextView
+                android:text="@string/valutazioneFinder"
+                android:layout_gravity="center_vertical"/>
+
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/spinner_valutazione_finder"
+                android:layout_marginLeft="1sp"
+                android:entries="@array/valutazioneArray"
+                android:popupBackground="@color/lightGrey">
+
+            </Spinner>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:textSize="18sp"
-            android:layout_marginTop="4sp"
-            android:layout_gravity="center_horizontal"
             android:layout_height="wrap_content"
-            android:textColor="@color/titoli"
-            android:fontFamily="sans-serif"
-            android:text="Questa è una prova"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:textSize="18sp"
-            android:layout_marginTop="4sp"
-            android:layout_gravity="center_horizontal"
-            android:layout_height="wrap_content"
-            android:textColor="@color/titoli"
-            android:fontFamily="sans-serif"
-            android:text="Questa è una prova"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:textSize="18sp"
-            android:layout_marginTop="4sp"
-            android:layout_gravity="center_horizontal"
-            android:layout_height="wrap_content"
-            android:textColor="@color/titoli"
-            android:fontFamily="sans-serif"
-            android:text="Questa è una prova"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:id="@+id/name_ricerca"
-            android:textSize="18sp"
-            android:layout_marginTop="4sp"
-            android:layout_gravity="center_horizontal"
-            android:layout_height="wrap_content"
-            android:textColor="@color/titoli"
-            android:fontFamily="sans-serif"
-            android:text="Questa è una prova"/>
-        <Button android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/button_finder"
-            android:text="OK"/>
+            android:orientation="horizontal"
+            android:layout_gravity="end">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="30sp"
+                android:id="@+id/reset_finder"
+                android:text="@string/reset"
+                android:layout_gravity="end"
+                android:background="#00FA9A"
+                android:textSize="14sp"
+                android:layout_marginRight="2sp"
+                />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="30sp"
+                android:id="@+id/search_finder"
+                android:text="@string/search"
+                android:layout_gravity="end"
+                android:background="#00FA9A"
+                android:textSize="14sp"
+                />
+        </LinearLayout>
 
     </LinearLayout>
 

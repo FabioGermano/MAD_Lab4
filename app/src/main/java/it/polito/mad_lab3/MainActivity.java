@@ -85,8 +85,6 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void ShowPrenotazioni() {
-        Intent i = new Intent(getBaseContext(), ReservationActivity.class);
-        startActivity(i);
     }
 
     private void caricaDati() {
@@ -104,7 +102,7 @@ public class MainActivity extends BaseActivity {
     public void searchRestaurant(View view) {
         ArrayList<Oggetto_risultatoRicerca> listaRicerca = new ArrayList<>();
         for(Restaurant r : this.listaRistoranti){
-            Oggetto_risultatoRicerca obj = new Oggetto_risultatoRicerca(r.getRestaurantId(), r.getRestaurantName(), r.getBasicInfo().getAddress(), r.getBasicInfo().getLogoThumb(), r.getAvgPrice(), r.getAvgReview(), Oggetto_risultatoRicerca.type.RISTORANTE);
+            Oggetto_risultatoRicerca obj = new Oggetto_risultatoRicerca(r.getRestaurantId(), r.getRestaurantName(), r.getBasicInfo().getAddress(), r.getBasicInfo().getLogoThumb(), r.getAvgPrice(), r.getAvgReview(), Oggetto_risultatoRicerca.type.RISTORANTE, r.getBasicInfo().getTypesOfServices());
             listaRicerca.add(obj);
         }
         if(listaRicerca.size() == 0){

@@ -1,0 +1,24 @@
+<resources>
+
+    <string-array name="tipoLocaleArray">
+        <item>-</item>
+        <item>@string/takeAway</item>
+        <item>@string/restaurant</item>
+        <item>All</item>
+    </string-array>
+
+    <string-array name="costoArray">
+        <item>-</item>
+        <item>€</item>
+        <item>€€</item>
+        <item>€€€</item>
+    </string-array>
+
+    <string-array name="valutazioneArray">
+        <item>-</item>
+        <item>*</item>
+        <item>**</item>
+        <item>***</item>
+    </string-array>
+
+</resources>

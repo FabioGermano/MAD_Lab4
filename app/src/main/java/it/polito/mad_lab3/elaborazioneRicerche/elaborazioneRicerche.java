@@ -19,9 +19,10 @@ import it.polito.mad_lab3.R;
 
 public class elaborazioneRicerche extends BaseActivity implements fragment_ricercaAvanzata.OnButtonPressedListener{
     private ArrayList<Oggetto_risultatoRicerca> lista_risultati = null;
+    private ArrayList<Oggetto_risultatoRicerca> lista_risultati_base = null;
     private fragment_ricercaAvanzata fragmentRicerca;
     private  boolean finderOpen = false;
-    private FrameLayout la;
+    private RecyclerAdapter_risultatoRicerca myAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,9 @@ public class elaborazioneRicerche extends BaseActivity implements fragment_ricer
             Bundle extras = getIntent().getExtras();
             if (extras != null) {
                 lista_risultati = (ArrayList<Oggetto_risultatoRicerca>) extras.getSerializable("results");
+                //importante tengo una copia per quando eseguo una ricerca avanzata, così posso sempre tornare alla
+                //ricerca iniziale senza doverla rifare ogni volta da capo
+                lista_risultati_base = lista_risultati;
                 extras.clear();
 
             } else {
@@ -86,7 +90,7 @@ public class elaborazioneRicerche extends BaseActivity implements fragment_ricer
     private void setUpRecyclerView(){
         RecyclerView rView = (RecyclerView) findViewById(R.id.recyclerView_ricerca);
 
-        RecyclerAdapter_risultatoRicerca myAdapter = new RecyclerAdapter_risultatoRicerca(this, lista_risultati);
+        myAdapter = new RecyclerAdapter_risultatoRicerca(this, lista_risultati);
         if(rView != null) {
             rView.setAdapter(myAdapter);
 
@@ -99,9 +103,90 @@ public class elaborazioneRicerche extends BaseActivity implements fragment_ricer
     }
 
     @Override
-    public void onButtonPressed() {
-        Toast t = Toast.makeText(getApplicationContext(), "Bottone premuto", Toast.LENGTH_SHORT);
-        t.show();
+    public void onButtonPressed(String type, String cost, String rating) {
         //leggo tutte le info che mi passa il fragment ed eseguo la ricerca più approfondita
+        boolean change = false;
+        ArrayList<Oggetto_risultatoRicerca> newList = new ArrayList<>();
+        //modifico la lista dei risultati in modo da filtrarla opportunamente
+
+        if(type != null) {
+            change = true;
+            //filtro per tipo
+            for(Oggetto_risultatoRicerca obj : lista_risultati){
+                if(type.compareTo("ALL") == 0){
+                    if(obj.getTypesOfservices().size() == 2){
+                        if((obj.getTypesOfservices().get(0).compareTo("R") == 0 || obj.getTypesOfservices().get(0).compareTo("TA")==0) &&
+                                (obj.getTypesOfservices().get(1).compareTo("R") == 0 || obj.getTypesOfservices().get(1).compareTo("TA")==0)){
+                            newList.add(obj);
+                        }
+                    }
+                } else {
+                    for(String s : obj.getTypesOfservices()){
+                        if(s.compareTo(type) == 0){
+                            newList.add(obj);
+                            break;
+                        }
+                    }
+                }
+            }
+            lista_risultati = newList;
+            newList = new ArrayList<>();
+        }
+
+        if(cost != null) {
+            change = true;
+            //filtro per costo
+            for(Oggetto_risultatoRicerca obj : lista_risultati){
+                if(obj.getFasciaPrezzo().compareTo(cost) == 0){
+                    newList.add(obj);
+                }
+            }
+            lista_risultati = newList;
+            newList = new ArrayList<>();
+        }
+
+        if(rating != null){
+            change = true;
+            //filtro per valutazione
+            String val = null;
+            for(Oggetto_risultatoRicerca obj : lista_risultati){
+                if(obj.getValutazione() <= 1.5 )
+                    val = "*";
+                else if(obj.getValutazione() <= 3.5)
+                    val = "**";
+                else
+                    val = "***";
+
+                if(val.compareTo(rating) == 0){
+                    newList.add(obj);
+                }
+
+            }
+            lista_risultati = newList;
+        }
+
+        if(change) {
+            if(lista_risultati.isEmpty()){
+                lista_risultati = lista_risultati_base;
+
+                Toast toast = Toast.makeText(getApplicationContext(), "Nessun Ristorante Trovato", Toast.LENGTH_SHORT);
+                toast.show();
+            } else {
+                myAdapter.setNewArray(lista_risultati);
+                myAdapter.notifyDataSetChanged();
+                fragmentRicerca.setResetButton();
+            }
+        } else {
+            Toast toast = Toast.makeText(getApplicationContext(), "Nessun Ristorante Trovato", Toast.LENGTH_SHORT);
+            toast.show();
+        }
+
+    }
+
+    @Override
+    public void onResetPressed() {
+        lista_risultati = lista_risultati_base;
+        myAdapter.setNewArray(lista_risultati);
+        myAdapter.notifyDataSetChanged();
     }
 }

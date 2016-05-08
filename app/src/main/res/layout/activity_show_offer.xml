@@ -30,12 +30,13 @@
                     android:name="it.polito.mad_lab3.common.photo_viewer.PhotoViewer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="2dp"
-                    custom:isEditable="false"
+                    android:layout_margin="2dp"/>
+                    <!--custom:isEditable="false"
                     custom:isLogo="false"
                     custom:heightInDP="200"
                     custom:widthInDP="200"
                     custom:initialBackground="@drawable/special_offer_transparentbg" />
+                    -->
 
 
 

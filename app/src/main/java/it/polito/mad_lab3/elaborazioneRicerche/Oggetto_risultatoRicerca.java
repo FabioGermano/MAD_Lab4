@@ -1,6 +1,7 @@
 package it.polito.mad_lab3.elaborazioneRicerche;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by Euge on 29/04/2016.
@@ -14,13 +15,14 @@ public class Oggetto_risultatoRicerca implements Serializable {
     private float valutazione;
     private type type;
     private int id;
+    private ArrayList<String> typesOfservices;
 
     public enum type{
         RISTORANTE,
         PATTO
     }
 
-    public Oggetto_risultatoRicerca(int id, String name, String via, String path, int costo, float valutazione, type type){
+    public Oggetto_risultatoRicerca(int id, String name, String via, String path, int costo, float valutazione, type type, ArrayList<String> typesOfservices){
         this.name = name;
         this.place = via;
         this.image_path=path;
@@ -28,6 +30,11 @@ public class Oggetto_risultatoRicerca implements Serializable {
         this.valutazione = valutazione;
         this.type = type;
         this.id = id;
+        this.typesOfservices = typesOfservices;
+    }
+
+    public ArrayList<String> getTypesOfservices(){
+        return this.typesOfservices;
     }
 
     public String getName(){
@@ -68,18 +75,14 @@ public class Oggetto_risultatoRicerca implements Serializable {
 
     public String getFasciaPrezzo(){
         if(this.cost != -1){
-            if(this.cost < 5)
+            if(this.cost < 10)
                 return "€";
-            if (this.cost >= 5 && this.cost < 10)
-                return "€";
-            if (this.cost >= 10 && this.cost < 15)
+            if (this.cost >= 10 && this.cost < 20)
                 return "€€";
-            if (this.cost >= 15 && this.cost < 20)
-                return "€€";
-            if (this.cost >= 20 && this.cost < 25)
+            else
                 return "€€€";
         }
-        return "€€€";
+        return null;
     }
 
     public int getId(){
