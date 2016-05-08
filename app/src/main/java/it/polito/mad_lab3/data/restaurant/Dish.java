@@ -7,16 +7,16 @@ import java.io.Serializable;
  */
 public class Dish implements Serializable {
     private String dishName;
-    private float avgRank;
+    private float sumRank;
     private int numRanks;
     private float price;
     private String thumbPath, largePath;
     private String type; // primi, secondi...
     private String resPhoto; // only in this prototic version of the app
 
-    public Dish(String dishName, float avgRank, int numRanks, float price, String thumbPath, String largePath, String type) {
+    public Dish(String dishName, float sumRank, int numRanks, float price, String thumbPath, String largePath, String type) {
         this.dishName = dishName;
-        this.avgRank = avgRank;
+        this.sumRank = sumRank;
         this.numRanks = numRanks;
         this.price = price;
         this.thumbPath = thumbPath;
@@ -41,12 +41,9 @@ public class Dish implements Serializable {
     }
 
     public float getAvgRank() {
-        return avgRank;
+        return sumRank/numRanks;
     }
 
-    public void setAvgRank(float avgRank) {
-        this.avgRank = avgRank;
-    }
 
     public int getNumRanks() {
         return numRanks;

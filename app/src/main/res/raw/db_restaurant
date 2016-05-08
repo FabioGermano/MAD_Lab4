@@ -34,7 +34,7 @@
          },
          "dishes":[
             {
-               "avgRank":4.0,
+               "sumRank":24.0,
                "dishName":"kebab",
                "largePath":null,
                "numRanks":8,
@@ -44,7 +44,7 @@
                "type":"Other"
             },
             {
-               "avgRank":3.0,
+               "sumRank":400.0,
                "dishName":"pizza",
                "largePath":null,
                "numRanks":80,
@@ -54,27 +54,7 @@
                "type":"Other"
             },
             {
-               "avgRank":2.0,
-               "dishName":"panino",
-               "largePath":null,
-               "numRanks":18,
-               "price":4.0,
-               "thumbPath":null,
-               "resPhoto":null,
-               "type":"Other"
-            },
-            {
-                "avgRank":4.5,
-                "dishName":"hot dog",
-                "largePath":null,
-                "numRanks":18,
-                "price":3.0,
-                "thumbPath":null,
-                "resPhoto":null,
-                "type":"Other"
-            },
-            {
-               "avgRank":4.0,
+               "sumRank":20.0,
                "dishName":"pasta",
                "largePath":null,
                "numRanks":8,
@@ -84,7 +64,7 @@
                "type":"Main courses"
             },
             {
-               "avgRank":3.0,
+               "sumRank":200.0,
                "dishName":"pizza",
                "largePath":null,
                "numRanks":80,
@@ -94,7 +74,7 @@
                "type":"Main courses"
             },
             {
-               "avgRank":2.0,
+               "sumRank":60.0,
                "dishName":"panino",
                "largePath":null,
                "numRanks":18,
@@ -104,7 +84,7 @@
                "type":"Second courses"
             },
             {
-               "avgRank":3.0,
+               "sumRank":60.0,
                "dishName":"cassata",
                "largePath":null,
                "numRanks":18,
@@ -116,7 +96,7 @@
          ],
          "offers":[
             {
-               "avgRank":4.5,
+               "sumRank":24.0,
                "availableOn":[true, false, true, false, false, true, true],
                "details":"details 1",
                "largePath":null,
@@ -127,7 +107,7 @@
                "thumbPath":null
             },
             {
-               "avgRank":2.5,
+               "sumRank":68.0,
                "details":"details 2",
                "availableOn":[true, false, true, false, false, false, false],
                "largePath":null,
@@ -138,7 +118,7 @@
                "thumbPath":null
             },
             {
-               "avgRank":1.5,
+               "sumRank":70.0,
                "details":"details 3",
                "availableOn":[true, false, true, false, false, true, true],
                "largePath":null,
@@ -218,7 +198,7 @@
        },
            "dishes":[
               {
-                 "avgRank":4.0,
+                 "sumRank":24.0,
                  "dishName":"fries",
                  "largePath":null,
                  "numRanks":8,
@@ -228,7 +208,7 @@
                  "type":"Other"
               },
               {
-                 "avgRank":3.0,
+                 "sumRank":24.0,
                  "dishName":"puccia",
                  "largePath":null,
                  "numRanks":80,
@@ -238,7 +218,7 @@
                  "type":"Other"
               },
               {
-                 "avgRank":2.0,
+                 "sumRank":50.0,
                  "dishName":"hamburger",
                  "largePath":null,
                  "numRanks":18,
@@ -248,7 +228,7 @@
                  "type":"Other"
               },
               {
-                  "avgRank":4.5,
+                  "sumRank":56.0,
                   "dishName":"hot dog",
                   "largePath":null,
                   "numRanks":18,
@@ -258,7 +238,7 @@
                   "type":"Other"
               },
               {
-                 "avgRank":4.0,
+                 "sumRank":20.0,
                  "dishName":"pasta",
                  "largePath":null,
                  "numRanks":8,
@@ -268,7 +248,7 @@
                  "type":"Main courses"
               },
               {
-                 "avgRank":3.0,
+                 "sumRank":200.0,
                  "dishName":"pizza",
                  "largePath":null,
                  "numRanks":80,
@@ -278,7 +258,7 @@
                  "type":"Main courses"
               },
               {
-                 "avgRank":2.0,
+                 "sumRank":50.0,
                  "dishName":"panino",
                  "largePath":null,
                  "numRanks":18,
@@ -288,7 +268,7 @@
                  "type":"Second courses"
               },
               {
-                 "avgRank":3.0,
+                 "sumRank":50.0,
                  "dishName":"cassata",
                  "largePath":null,
                  "numRanks":18,
@@ -300,7 +280,7 @@
            ],
            "offers":[
               {
-                 "avgRank":4.5,
+                 "sumRank":24.0,
                  "details":"details 1",
                  "availableOn":[true, false, true, false, false, false, false],
                  "largePath":null,
@@ -311,7 +291,7 @@
                  "thumbPath":null
               },
               {
-                 "avgRank":2.5,
+                 "sumRank":68.0,
                  "details":"details 2",
                  "availableOn":[true, false, true, false, false, false, false],
                  "largePath":null,
@@ -322,7 +302,7 @@
                  "thumbPath":null
               },
               {
-                 "avgRank":1.5,
+                 "sumRank":68.0,
                  "details":"details 3",
                  "availableOn":[true, false, true, false, false, false, false],
                  "largePath":null,

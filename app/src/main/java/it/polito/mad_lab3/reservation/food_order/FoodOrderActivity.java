@@ -4,18 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,7 +25,7 @@ import it.polito.mad_lab3.data.restaurant.Dish;
 import it.polito.mad_lab3.data.restaurant.DishType;
 import it.polito.mad_lab3.data.restaurant.Offer;
 import it.polito.mad_lab3.data.restaurant.Restaurant;
-import it.polito.mad_lab3.reservation.CheckoutOrder;
+import it.polito.mad_lab3.reservation.CheckoutOrderActivity;
 
 public class FoodOrderActivity extends BaseActivity {
 
@@ -164,7 +158,7 @@ public class FoodOrderActivity extends BaseActivity {
                     Toast.makeText(FoodOrderActivity.this, getResources().getString(R.string.no_item_in_order), Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    Intent i = new Intent(getBaseContext(), CheckoutOrder.class);
+                    Intent i = new Intent(getBaseContext(), CheckoutOrderActivity.class);
                     i.putParcelableArrayListExtra("reservedDishes", reservedDishes );
                     /*i.putParcelableArrayListExtra("offers", lists.get(0) );
                     i.putParcelableArrayListExtra("main",lists.get(1) );

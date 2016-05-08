@@ -29,7 +29,7 @@
             android:windowSoftInputMode="stateAlwaysHidden"
             android:parentActivityName=".MainActivity" />
         <activity
-            android:name=".reservation.CheckoutOrder"
+            android:name=".reservation.CheckoutOrderActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:parentActivityName=".reservation.ReservationActivity" />

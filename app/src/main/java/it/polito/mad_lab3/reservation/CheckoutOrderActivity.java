@@ -27,7 +27,7 @@ import it.polito.mad_lab3.data.user.User;
 /**
  * Created by Giovanna on 28/04/2016.
  */
-public class CheckoutOrder extends BaseActivity {
+public class CheckoutOrderActivity extends BaseActivity {
 
     //private ArrayList<ReservedDish> offers, main, second, dessert, other;
     private ArrayList<ReservedDish> reservedDishes;

@@ -3,7 +3,6 @@ package it.polito.mad_lab3.reservation;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.TextView;
 
@@ -170,7 +169,7 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
     }
 
     public void goToCheckOutAsEatin(){
-        Intent i = new Intent(getBaseContext(), CheckoutOrder.class);
+        Intent i = new Intent(getBaseContext(), CheckoutOrderActivity.class);
         i.putExtra("date", reservationDate);
         i.putExtra("weekday", reservationDayOfWeek);
         i.putExtra("time", reservationTime);

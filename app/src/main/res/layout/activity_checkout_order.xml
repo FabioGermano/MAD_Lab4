@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".reservation.CheckoutOrder">
+    tools:context=".reservation.CheckoutOrderActivity">
 
     <include android:id="@+id/tb" layout="@layout/toolbar_view" android:layout_height="wrap_content" android:layout_width="match_parent" android:layout_alignParentTop="true"/>
 <RelativeLayout

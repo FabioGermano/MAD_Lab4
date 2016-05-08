@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class Offer implements Serializable{
 
     private String offerName;
-    private float avgRank;
+    private float sumRank;
     private int numRanks;
     private float price;
     private String thumbPath, largePath;
@@ -27,9 +27,9 @@ public class Offer implements Serializable{
     private String resPhoto; // only in this prototic version of the app
     private String details;
 
-    public Offer(String offerName, float avgRank, int numRanks, float price, String thumbPath, String largePath, String details) {
+    public Offer(String offerName, float sumRank, int numRanks, float price, String thumbPath, String largePath, String details) {
         this.offerName = offerName;
-        this.avgRank = avgRank;
+        this.sumRank = sumRank;
         this.numRanks = numRanks;
         this.price = price;
         this.thumbPath = thumbPath;
@@ -58,12 +58,9 @@ public class Offer implements Serializable{
     }
 
     public float getAvgRank() {
-        return avgRank;
+        return sumRank/numRanks;
     }
 
-    public void setAvgRank(float avgRank) {
-        this.avgRank = avgRank;
-    }
 
     public int getNumRanks() {
         return numRanks;
