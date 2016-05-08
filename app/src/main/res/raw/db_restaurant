@@ -2,6 +2,10 @@
    "restaurants":[
       {
          "basicInfo":{
+         "typesOfServices":[
+                        "TA",
+                        "R"
+                     ],
             "wifi":true,
             "reservations":false,
             "seatsOutside":true,
@@ -26,10 +30,6 @@
                "10:30 - 12:30",
                "10:30 - 12:30",
                "10:30 - 12:30"
-            ],
-            "typesOfServices":[
-               "TA",
-               "R"
             ]
          },
          "dishes":[
@@ -192,6 +192,9 @@
           "covers":[
 
           ],
+          "typesOfServices":[
+                         "TA"
+                      ],
           "wifi":true,
           "reservations":true,
           "seatsOutside":true,
@@ -211,9 +214,6 @@
              "10:30 - 12:30",
              "10:30 - 12:30",
              "10:30 - 12:30"
-          ],
-          "typesOfServices":[
-             "TA"
           ]
        },
            "dishes":[
