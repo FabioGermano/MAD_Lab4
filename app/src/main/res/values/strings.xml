@@ -122,6 +122,13 @@
 </string>
     <string name="review">Review:</string>
     <string name="reviewsStrPrev">% reviews</string>
+    <string name="click_stars">Touch the stars to rate this restaurant</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="would_you_rate_dishes">Would you like to rate a dish?</string>
+    <string name="rate_dishes_message">If you say YES you can assign a rate to any dish or offer of this restaurant, otherwise only your review will be published</string>
+    <string name="review_published">Your review has been published, thank you!</string>
+    <string name="insert_review">Fill in your review, please</string>
 
 
 </resources>

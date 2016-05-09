@@ -83,6 +83,12 @@
         <activity android:name=".restaurant.reviews.ReviewsActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
             android:windowSoftInputMode="stateAlwaysHidden" ></activity>
+        <activity android:name=".restaurant.reviews.add_review.AddReviewActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
+            android:windowSoftInputMode="stateAlwaysHidden" ></activity>
+        <activity android:name=".restaurant.reviews.add_review.RateDishesActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
+            android:windowSoftInputMode="stateAlwaysHidden" ></activity>
     </application>
 
 </manifest>

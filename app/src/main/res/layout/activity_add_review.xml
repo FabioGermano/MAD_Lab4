@@ -6,7 +6,7 @@
     android:focusableInTouchMode="true"
     android:focusable="true"
     android:orientation="vertical"
-    tools:context=".restaurant.reviews.AddReviewActivity">
+    tools:context=".restaurant.reviews.add_review.AddReviewActivity">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -73,22 +73,24 @@
                     android:padding="8dp"
                     android:orientation="vertical">
 
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/themeColor"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="@string/click_stars"
+                        android:gravity="center"
+                        android:id="@+id/ratingText"/>
+
                     <RatingBar
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         style="@style/RatingBar"
-                        android:rating="3"
-                        android:id="@+id/rating" />
+                        android:rating="0"
+                        android:id="@+id/rating"
+                        android:layout_marginBottom="@dimen/activity_horizontal_margin" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="Buono"
-                        android:gravity="center"
-                        android:id="@+id/ratingText"
-                        android:layout_marginBottom="@dimen/activity_horizontal_margin"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -106,6 +108,65 @@
                         android:layout_gravity="center_horizontal" />
                 </LinearLayout>
             </android.support.v7.widget.CardView>
+            <!--
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:background="@android:drawable/dialog_holo_light_frame"
+                android:layout_marginBottom="16dp">
+                <fragment
+                    xmlns:custom="http://schemas.android.com/apk/res/it.polito.mad_lab3"
+                    android:id="@+id/photoViewer1"
+                    android:name="it.polito.mad_lab3.common.photo_viewer.PhotoViewer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    custom:isEditable="true"
+                    custom:isLogo="false"
+                    custom:heightInDP="100"
+                    custom:widthInDP="100"
+                    custom:initialBackground="@drawable/nothumb" />
+                <fragment
+                    xmlns:custom="http://schemas.android.com/apk/res/it.polito.mad_lab3"
+                    android:id="@+id/photoViewer2"
+                    android:name="it.polito.mad_lab3.common.photo_viewer.PhotoViewer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    custom:isEditable="true"
+                    custom:isLogo="false"
+                    custom:heightInDP="100"
+                    custom:widthInDP="100"
+                    custom:initialBackground="@drawable/nothumb" />
+                <fragment
+                    xmlns:custom="http://schemas.android.com/apk/res/it.polito.mad_la
+                    b3"
+                    android:id="@+id/photoViewer3"
+                    android:name="it.polito.mad_lab3.common.photo_viewer.PhotoViewer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    custom:isEditable="true"
+                    custom:isLogo="false"
+                    custom:heightInDP="100"
+                    custom:widthInDP="100"
+                    custom:initialBackground="@drawable/nothumb" />
+
+            </LinearLayout> -->
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Add review"
+                android:id="@+id/add"
+                style="@style/Base.Widget.AppCompat.Button.Colored"
+                android:layout_gravity="center_horizontal" />
+
         </LinearLayout>
+
     </android.support.v4.widget.NestedScrollView>
+
 </LinearLayout>

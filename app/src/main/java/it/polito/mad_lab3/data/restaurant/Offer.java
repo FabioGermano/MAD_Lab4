@@ -9,12 +9,26 @@ import java.util.ArrayList;
 public class Offer implements Serializable{
 
     private String offerName;
+    private int offerId;
     private float sumRank;
     private int numRanks;
     private float price;
     private String thumbPath, largePath;
 
     private ArrayList<Boolean> availableOn;
+
+    public Offer(String offerName, int offerId, float sumRank, int numRanks, float price, String thumbPath, String largePath, ArrayList<Boolean> availableOn, String resPhoto, String details) {
+        this.offerName = offerName;
+        this.offerId = offerId;
+        this.sumRank = sumRank;
+        this.numRanks = numRanks;
+        this.price = price;
+        this.thumbPath = thumbPath;
+        this.largePath = largePath;
+        this.availableOn = availableOn;
+        this.resPhoto = resPhoto;
+        this.details = details;
+    }
 
     public String getResPhoto() {
         return resPhoto;
@@ -27,18 +41,6 @@ public class Offer implements Serializable{
     private String resPhoto; // only in this prototic version of the app
     private String details;
 
-    public Offer(String offerName, float sumRank, int numRanks, float price, String thumbPath, String largePath, String details) {
-        this.offerName = offerName;
-        this.sumRank = sumRank;
-        this.numRanks = numRanks;
-        this.price = price;
-        this.thumbPath = thumbPath;
-        this.largePath = largePath;
-        this.details = details;
-        this.availableOn= new ArrayList<>();
-        for(int i=0; i<7; i++)
-            this.availableOn.add(false);
-    }
 
     public ArrayList<Boolean> getAvailableOn() {
         return availableOn;
@@ -61,6 +63,14 @@ public class Offer implements Serializable{
         return sumRank/numRanks;
     }
 
+
+    public float getSumRank() {
+        return sumRank;
+    }
+
+    public void setSumRank(float sumRank) {
+        this.sumRank = sumRank;
+    }
 
     public int getNumRanks() {
         return numRanks;
@@ -100,5 +110,13 @@ public class Offer implements Serializable{
 
     public void setDetails(String details) {
         this.details = details;
+    }
+
+    public int getOfferId() {
+        return offerId;
+    }
+
+    public void setOfferId(int offerId) {
+        this.offerId = offerId;
     }
 }

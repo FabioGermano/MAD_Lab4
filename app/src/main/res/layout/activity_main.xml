@@ -95,15 +95,10 @@
 
         <Button
             android:layout_marginTop="50sp"
-            android:id="@+id/restaurantBtn"
+            android:id="@+id/addReview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Restaurant" />
-        <Button
-            android:id="@+id/reservationBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Reservation"/>
+            android:text="Add Review" />
 
     </LinearLayout>
     <android.support.design.widget.NavigationView

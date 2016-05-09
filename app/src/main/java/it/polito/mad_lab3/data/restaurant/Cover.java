@@ -1,9 +1,11 @@
 package it.polito.mad_lab3.data.restaurant;
 
+import java.io.Serializable;
+
 /**
  * Created by Giovanna on 02/05/2016.
  */
-public class Cover {
+public class Cover implements Serializable{
 
     private String largePath;
     private String thumbPath;

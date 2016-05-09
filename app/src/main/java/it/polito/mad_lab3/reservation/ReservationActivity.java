@@ -12,6 +12,7 @@ import java.util.Calendar;
 import it.polito.mad_lab3.BaseActivity;
 import it.polito.mad_lab3.R;
 import it.polito.mad_lab3.bl.RestaurantBL;
+import it.polito.mad_lab3.common.Helper;
 import it.polito.mad_lab3.data.restaurant.Restaurant;
 import it.polito.mad_lab3.reservation.food_order.*;
 
@@ -103,7 +104,7 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
         //extract the day of the week
         int dayOfTheweek = Integer.parseInt(date.substring(0,1));
 
-        this.reservationDayOfWeek= intToWeekString(dayOfTheweek);
+        this.reservationDayOfWeek= Helper.intToWeekString(getBaseContext(), dayOfTheweek);
         //extract and set the reservation date
         this.reservationDate = date.substring(1,date.length());
 
@@ -111,7 +112,7 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
 
         Bundle args = new Bundle();
         args.putBoolean("isToday", b);
-        args.putString("timeRange", timeTable.get(convertWeekDay(dayOfTheweek)));
+        args.putString("timeRange", timeTable.get(Helper.fromCalendarOrderToMyOrder(dayOfTheweek)));
         timeFragment.setArguments(args);
 
         getSupportFragmentManager().beginTransaction().setCustomAnimations(0, 0).replace(R.id.time_fragment_container, timeFragment).commit();
@@ -241,60 +242,5 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
             goToCheckOutAsEatin();
         else
             goToFoodOrderAsEatin();
-    }
-
-    public int convertWeekDay(int wd){
-        switch (wd){
-            case 1:
-                return 6;
-
-            case 2:
-                return 0;
-
-            case 3:
-                return 1;
-
-            case 4:
-                return 2;
-
-            case 5:
-                return 3;
-
-            case 6:
-                return 4;
-
-            case 7:
-                return 5;
-
-            default:
-                return 0;
-        }
-
-    }
-    private String intToWeekString (int weekday){
-        switch (weekday){
-            case 1:
-                return getResources().getString(R.string.sunday);
-
-            case 2:
-                return getResources().getString(R.string.monday);
-
-            case 3:
-                return getResources().getString(R.string.tuesday);
-
-            case 4:
-                return getResources().getString(R.string.wednesday);
-
-            case 5:
-                return getResources().getString(R.string.thursday);
-
-            case 6:
-                return getResources().getString(R.string.friday);
-
-            case 7:
-                return getResources().getString(R.string.saturday);
-            default:
-                return null;
-        }
     }
 }
