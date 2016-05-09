@@ -361,6 +361,204 @@
               }
            ],
            "userPhotos":[ ]
-       }
-   ]
+       },
+   {
+          "basicInfo":{
+
+             "city":"Torino",
+             "address":"Corso Duca degli Abruzzi, 245",
+             "covers":[
+
+             ],
+             "typesOfServices":[
+                            "R"
+                         ],
+             "wifi":true,
+             "reservations":true,
+             "seatsOutside":true,
+             "parking":false,
+             "music":false,
+             "creditCard":true,
+             "bancomat":true,
+             "description":"Descrizione locale",
+             "email":"restaurant@email.com",
+             "logoThumb":null,
+             "phone":"111-2222557",
+             "timeTable":[
+                "10:20 - 14:30",
+                "10:30 - 12:30",
+                "10:45 - 12:30",
+                "10:30 - 12:45",
+                "10:30 - 12:30",
+                "10:30 - 12:30",
+                "10:30 - 12:30"
+             ]
+          },
+              "dishes":[
+                 {
+                    "sumRank":24.0,
+                    "dishName":"fries",
+                    "largePath":null,
+                    "numRanks":8,
+                    "price":2.5,
+                    "thumbPath":null,
+                    "resPhoto":null,
+                    "type":"Other"
+                 },
+                 {
+                    "sumRank":24.0,
+                    "dishName":"puccia",
+                    "largePath":null,
+                    "numRanks":80,
+                    "price":1.5,
+                    "thumbPath":null,
+                    "resPhoto":null,
+                    "type":"Other"
+                 },
+                 {
+                    "sumRank":50.0,
+                    "dishName":"hamburger",
+                    "largePath":null,
+                    "numRanks":18,
+                    "price":4.0,
+                    "thumbPath":null,
+                    "resPhoto":null,
+                    "type":"Other"
+                 },
+                 {
+                     "sumRank":56.0,
+                     "dishName":"hot dog",
+                     "largePath":null,
+                     "numRanks":18,
+                     "price":3.0,
+                     "thumbPath":null,
+                     "resPhoto":null,
+                     "type":"Other"
+                 },
+                 {
+                    "sumRank":20.0,
+                    "dishName":"pasta",
+                    "largePath":null,
+                    "numRanks":8,
+                    "price":2.5,
+                    "thumbPath":null,
+                    "resPhoto":null,
+                    "type":"Main courses"
+                 },
+                 {
+                    "sumRank":200.0,
+                    "dishName":"pizza",
+                    "largePath":null,
+                    "numRanks":80,
+                    "price":1.5,
+                    "thumbPath":null,
+                    "resPhoto":null,
+                    "type":"Main courses"
+                 },
+                 {
+                    "sumRank":50.0,
+                    "dishName":"panino",
+                    "largePath":null,
+                    "numRanks":18,
+                    "price":4.0,
+                    "thumbPath":null,
+                    "resPhoto":null,
+                    "type":"Second courses"
+                 },
+                 {
+                    "sumRank":50.0,
+                    "dishName":"cassata",
+                    "largePath":null,
+                    "numRanks":18,
+                    "price":3.0,
+                    "thumbPath":null,
+                    "resPhoto":null,
+                    "type":"Dessert"
+                 }
+              ],
+              "offers":[
+                 {
+                    "sumRank":24.0,
+                    "details":"details 1",
+                    "availableOn":[true, false, true, false, false, false, false],
+                    "largePath":null,
+                    "numRanks":10,
+                    "offerName":"Offerta1",
+                    "price":8.0,
+                    "resPhoto":null,
+                    "thumbPath":null
+                 },
+                 {
+                    "sumRank":68.0,
+                    "details":"details 2",
+                    "availableOn":[true, false, true, false, false, false, false],
+                    "largePath":null,
+                    "numRanks":19,
+                    "offerName":"Offerta2",
+                    "price":8.0,
+                    "resPhoto":null,
+                    "thumbPath":null
+                 },
+                 {
+                    "sumRank":68.0,
+                    "details":"details 3",
+                    "availableOn":[true, false, true, false, false, false, false],
+                    "largePath":null,
+                    "numRanks":15,
+                    "offerName":"Offerta3",
+                    "price":10.0,
+                    "resPhoto":null,
+                    "thumbPath":null
+                 }
+              ],
+              "restaurantId":3,
+              "restaurantName":"da Pippo",
+              "numReviews":6,
+              "reviews":[
+                 {
+                    "comment":"jhkjhlkhl 1 sdkmsdfl fggmdf dgl fgmgdf gd fl",
+                    "date":"2015-05-18",
+                    "rank":4.0,
+                    "thumbPath":null,
+                    "userName":"userName 1"
+                 },
+                 {
+                    "comment":"ljkòjkà 2 sdkmsdfl fggmdf dgl fgmgdf gd fl",
+                    "date":"2015-04-10",
+                    "rank":3.5,
+                    "thumbPath":null,
+                    "userName":"userName 2"
+                 },
+                 {
+                    "comment":"commento 1 sdkmsdfl fggmdf dgl fgmgdf gd fl",
+                    "date":"2015-05-08",
+                    "rank":0.7,
+                    "thumbPath":null,
+                    "userName":"userName 1"
+                 },
+                 {
+                    "comment":"commento 2 sdkmsdfl fggmdf dgl fgmgdf gd fl",
+                    "date":"2015-05-10",
+                    "rank":1.7,
+                    "thumbPath":null,
+                    "userName":"userName 2"
+                 },
+                 {
+                    "comment":"commento 3 sdkmsdfl fggmdf dgl fgmgdffg fgh fg hfh fg h gd fl",
+                    "date":"2015-06-08",
+                    "rank":0.7,
+                    "thumbPath":null,
+                    "userName":"userName 3"
+                 },
+                 {
+                    "comment":"commento 4 sdkmsdfl fggmdf dgl fgmgdf gd fl",
+                    "date":"2016-05-08",
+                    "rank":1.7,
+                    "thumbPath":null,
+                    "userName":"userName 4"
+                 }
+              ],
+              "userPhotos":[ ]
+          }
+      ]
 }

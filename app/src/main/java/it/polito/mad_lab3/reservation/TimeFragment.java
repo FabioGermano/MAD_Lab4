@@ -165,7 +165,7 @@ public class TimeFragment extends Fragment implements DatesAdapter.AdapterInterf
 
             Calendar now = Calendar.getInstance();
             int nowHour = now.get(Calendar.HOUR_OF_DAY);
-            int nowMinutes = now.get(Calendar.HOUR_OF_DAY);
+            int nowMinutes = now.get(Calendar.MINUTE);
 
             if (nowHour > end.get(Calendar.HOUR_OF_DAY)) //restaurant already closed
                 return time;
@@ -177,11 +177,14 @@ public class TimeFragment extends Fragment implements DatesAdapter.AdapterInterf
                 //show from nowMinutes on
                 orario[1] = nowMinutes;
             }
-
-            if (nowHour > orario[0] && nowHour <= end.get(Calendar.HOUR_OF_DAY) && nowMinutes < end.get(Calendar.HOUR_OF_DAY)) {
+            //if after the opening hour but before the closure
+            if (nowHour > orario[0] && nowHour <= end.get(Calendar.HOUR_OF_DAY)) {
                 orario[0] = nowHour;
                 orario[1] = nowMinutes;
             }
+            if(nowHour == end.get(Calendar.HOUR_OF_DAY) && nowMinutes < end.get(Calendar.MINUTE)){
+                orario[0] = nowHour;
+                orario[1] = nowMinutes;}
         }
         // split normally
         if (orario[1] > 30) //eg 11:45-14:00

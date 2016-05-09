@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -15,12 +16,13 @@ import it.polito.mad_lab3.R;
 import it.polito.mad_lab3.bl.RestaurantBL;
 import it.polito.mad_lab3.data.restaurant.Restaurant;
 import it.polito.mad_lab3.data.user.User;
+import it.polito.mad_lab3.reservation.ReservationActivity;
 import it.polito.mad_lab3.restaurant.foodPhoto.ContainerUserPhotoFragment;
 import it.polito.mad_lab3.restaurant.menu.MenuActivity;
 import it.polito.mad_lab3.restaurant.menu_prev.MenuPrevFragment;
 import it.polito.mad_lab3.restaurant.offer_prev.OfferPrevFragment;
 import it.polito.mad_lab3.restaurant.reviews.ReviewsActivity;
-import it.polito.mad_lab3.restaurant.reviews_prev.ReviewsPrevFragment;
+//import it.polito.mad_lab3.restaurant.reviews_prev.ReviewsPrevFragment;
 
 public class  RestaurantActivity extends BaseActivity {
 
@@ -32,7 +34,7 @@ public class  RestaurantActivity extends BaseActivity {
     private OfferPrevFragment offerPrevFragment;
     private User user;
     private Button showAllMenuButton, showAllReviewsButton;
-    private ReviewsPrevFragment reviewsPrevFragment;
+    //private ReviewsPrevFragment reviewsPrevFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,7 @@ public class  RestaurantActivity extends BaseActivity {
         collapsingToolbarLayout.setTitle("Demo");
         collapsingToolbarLayout.setExpandedTitleColor(Color.WHITE);
         collapsingToolbarLayout.setCollapsedTitleTextColor(Color.WHITE);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.reservation);
 
 
         Bundle extras = getIntent().getExtras();
@@ -79,8 +82,8 @@ public class  RestaurantActivity extends BaseActivity {
         offerPrevFragment = (OfferPrevFragment)getSupportFragmentManager().findFragmentById(R.id.offersPrevFragment);
         offerPrevFragment.init(restaurant.getRestaurantId());
 
-        reviewsPrevFragment = (ReviewsPrevFragment)getSupportFragmentManager().findFragmentById(R.id.reviewsPrevFragment);
-        reviewsPrevFragment.init(restaurant.getRestaurantId());
+        //reviewsPrevFragment = (ReviewsPrevFragment)getSupportFragmentManager().findFragmentById(R.id.reviewsPrevFragment);
+        //reviewsPrevFragment.init(restaurant.getRestaurantId());
 
         showAllMenuButton = (Button)findViewById(R.id.showAllMenuButton);
         showAllMenuButton.setOnClickListener(new View.OnClickListener() {
@@ -90,11 +93,18 @@ public class  RestaurantActivity extends BaseActivity {
             }
         });
 
-        showAllReviewsButton = (Button)findViewById(R.id.showAllReviewsButton);
+        /*showAllReviewsButton = (Button)findViewById(R.id.showAllReviewsButton);
         showAllReviewsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showAllReviewsButtonPressed();
+            }
+        });*/
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                newReservation();
             }
         });
 
@@ -113,6 +123,12 @@ public class  RestaurantActivity extends BaseActivity {
 
     private void showAllMenuButtonPressed() {
         Intent i = new Intent(getBaseContext(), MenuActivity.class);
+        i.putExtra("restaurantId", this.restaurant.getRestaurantId());
+        startActivity(i);
+    }
+
+    private void newReservation() {
+        Intent i = new Intent(getBaseContext(), ReservationActivity.class);
         i.putExtra("restaurantId", this.restaurant.getRestaurantId());
         startActivity(i);
     }

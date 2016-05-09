@@ -19,6 +19,8 @@ import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import it.polito.mad_lab3.R;
 import it.polito.mad_lab3.reservation.food_order.FoodOrderActivity;
 
@@ -38,6 +40,7 @@ public class ChoiceFragment extends Fragment {
     private Button checkOut, orderNow;
     private TextView counter;
     private int cnt;
+    private boolean onlyTakeaway, onlySeats;
 
     public interface OnChoiceSelectedListener {
 
@@ -73,14 +76,14 @@ public class ChoiceFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView =  inflater.inflate(R.layout.choice_fragment, container, false);
 
+        LinearLayout choice_layout = (LinearLayout) rootView.findViewById(R.id.choice_layout);
         //eatin = (Button) rootView.findViewById(R.id.eat_in);
         eatin = (ImageButton) rootView.findViewById(R.id.eat_in);
         //takeaway = (Button) rootView.findViewById(R.id.takeaway);
         takeaway = (ImageButton) rootView.findViewById(R.id.takeaway);
 
-        seats_layout = (LinearLayout) rootView.findViewById(R.id.seats);
-        seats_layout.setVisibility(View.GONE);
 
+        seats_layout = (LinearLayout) rootView.findViewById(R.id.seats);
         plus = (ImageButton) seats_layout.findViewById(R.id.plus);
         minus = (ImageButton) seats_layout.findViewById(R.id.minus);
         counter= (TextView) seats_layout.findViewById(R.id.counter);
@@ -88,9 +91,24 @@ public class ChoiceFragment extends Fragment {
         checkOut = (Button) rootView.findViewById(R.id.checkout);
         orderNow = (Button) rootView.findViewById(R.id.order_food);
 
-        checkOut.setVisibility(View.GONE);
-        orderNow.setVisibility(View.GONE);
 
+        if(!getArguments().isEmpty()){
+            onlySeats = getArguments().getBoolean("onlySeats");
+            if(onlySeats) {
+                choice_layout.setVisibility(View.GONE);
+                seats_layout.setVisibility(View.VISIBLE);
+                checkOut.setVisibility(View.VISIBLE);
+                orderNow.setVisibility(View.GONE);
+            }
+
+        }
+
+
+        else {
+            seats_layout.setVisibility(View.GONE);
+            checkOut.setVisibility(View.GONE);
+            orderNow.setVisibility(View.GONE);
+        }
 
         checkOut.setOnClickListener(new View.OnClickListener() {
             @Override

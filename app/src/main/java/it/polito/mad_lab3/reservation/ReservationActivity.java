@@ -41,7 +41,7 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reservation_request);
 
-
+        this.restaurantID = getIntent().getExtras().getInt("restaurantId");
         if (isLargeDevice(getBaseContext())) {
             this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
         } else {
@@ -54,7 +54,7 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
         TextView name= (TextView) findViewById(R.id.restaurant_name);
 
 
-        restaurantID=1;
+        //restaurantID=3;
         restaurant = RestaurantBL.getRestaurantById(getApplicationContext(), restaurantID);
         this.timeTable= restaurant.getBasicInfo().getTimeTable();
         this.restaurantName= restaurant.getRestaurantName();
@@ -130,12 +130,51 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
         //set reservation time
         this.reservationTime = time;
 
+        boolean onlyTakeaway = false, onlySeats= false;
+        ArrayList<String> reservationType = restaurant.getBasicInfo().getTypesOfServices();
+        // TA : only takeaway
+        // R : only seats
+        // TA, R: both
+        // empty - if empty he shouldn't access this activity (shouldn't be able to make a reservation)
+
+        if(reservationType.isEmpty()){
+            throw new RuntimeException();
+        }
+        if(reservationType.size()<2) {
+            if (reservationType.get(0).toLowerCase().equals("ta")) {
+                onlyTakeaway = true;
+                onlySeats = false;
+            } else {
+                onlyTakeaway = false;
+                onlySeats = true;
+            }
+        }
+
+        //cases :
+        // onlyTakeaway true onlySeats false  -> vai direttamente ad ordinare cibo
+        // onlySeats true onlyTakeaway fakse -> scegli il numero di posti e non puoi ordinare cibo
+        // entrambi false comportamento standard
+
+        Bundle b = new Bundle();
+
+        //if only takeaway go directly to the foodorder activity
+        if(onlyTakeaway && !onlySeats){
+            this.choice_made=true;
+            this.eat_in= false;
+            goToFoodOrderAsTakeaway();
+
+        }
+        //if only seats let them choose how many seats
+        else if (!onlyTakeaway && onlySeats ){
+            this.eat_in= true;
+            b.putBoolean("onlySeats", onlySeats);
+        }
+
         if(!choice_made){
-
-        choiceFragment = new ChoiceFragment();
-
-        getSupportFragmentManager().beginTransaction().replace(R.id.choice_fragment_container, choiceFragment).commit();
-        View cc = (View) (findViewById(R.id.choice_fragment_container));
+            choiceFragment = new ChoiceFragment();
+            choiceFragment.setArguments(b);
+            getSupportFragmentManager().beginTransaction().replace(R.id.choice_fragment_container, choiceFragment).commit();
+            View cc = (View) (findViewById(R.id.choice_fragment_container));
         }
 
     }

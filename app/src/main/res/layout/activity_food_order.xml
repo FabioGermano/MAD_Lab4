@@ -1,34 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context=".reservation.food_order.FoodOrderActivity">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/app_bar"
+    <!--cover and info -->
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:fitsSystemWindows="true">
+        android:layout_height="wrap_content">
 
-        <RelativeLayout
+        <ImageView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/restaurant_test"/>
-
-            <include layout="@layout/toolbar_view" android:layout_height="wrap_content" android:layout_width="match_parent"/>
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/restaurant_test"/>
+        <include layout="@layout/toolbar_view" android:layout_height="wrap_content" android:layout_width="match_parent" android:layout_alignParentTop="true"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:fitsSystemWindows="true"
                 android:scaleType="fitStart"
                 android:id="@+id/info"
@@ -49,9 +43,6 @@
                     android:textAppearance="?android:attr/textAppearanceLarge"/>
                     />
 
-                <requestFocus
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -102,13 +93,11 @@
             </LinearLayout>
         </RelativeLayout>
 
-
-    </android.support.design.widget.AppBarLayout>
+    <!--- view pager-->
 
     <RelativeLayout
         android:layout_width="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <android.support.design.widget.TabLayout
             android:id="@+id/tab_layout_menu"
@@ -138,18 +127,19 @@
             android:layout_height="wrap_content"
             />
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/done"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_done_white_48dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginRight="5dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginBottom="5dp" />
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/done"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_done_white_48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp" />
     </RelativeLayout>
 
-
-</android.support.design.widget.CoordinatorLayout>
+    </LinearLayout>
