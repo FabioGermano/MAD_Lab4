@@ -1,48 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:minHeight="40dp"
-        android:measureWithLargestChild="true">
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/dish_name"
-                android:textStyle="italic"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:gravity="center"
-                android:layout_marginLeft="5dp"
-                android:layout_gravity="center"
-                android:textSize="18sp"
-                android:text="Nome piatto"/>
-
-
-
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:minHeight="40dp"
+    android:measureWithLargestChild="true">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="end"
-        android:layout_marginRight="5dp"
-        android:layout_gravity="center"
+        android:id="@+id/info"
+        android:layout_marginLeft="5dp"
         android:orientation="horizontal"
-
         >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:id="@+id/dish_price"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:layout_gravity="center_vertical"
-            android:text="3.5€"
-            android:layout_marginRight="30dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/dish_name"
+        android:textStyle="italic"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="18sp"
+        android:text="Nome piatto"/>
+
+
+
+</LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:id="@+id/dish_price"
+        android:layout_marginRight="20dp"
+        android:layout_toLeftOf="@+id/quantity"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:layout_gravity="center_vertical"
+        android:text="3.5€"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/quantity"
+        android:layout_marginRight="5dp"
+        android:orientation="horizontal">
 
         <ImageButton
             android:id="@+id/minus"
@@ -72,4 +78,4 @@
             />
 
     </LinearLayout>
-</LinearLayout>
+</RelativeLayout>
