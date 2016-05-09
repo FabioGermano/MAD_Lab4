@@ -39,7 +39,10 @@ public class FoodOrderActivity extends BaseActivity {
     private int restaurantID=-1;
     private Restaurant restaurant;
 
-
+    @Override
+    protected boolean controlloLogin() {
+        return false;
+    }
 
 
     @Override

@@ -44,6 +44,11 @@ public class PhotoViewActivity  extends BaseActivity {
     }
 
     @Override
+    protected boolean controlloLogin() {
+        return false;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {

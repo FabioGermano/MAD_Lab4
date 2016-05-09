@@ -8,6 +8,32 @@ import it.polito.mad_lab3.data.reservation.Reservation;
  * Created by f.germano on 12/04/2016.
  */
 public class User {
+    private ArrayList<Reservation> reservations;
+    private String name;
+    private String phone;
+    private int userId;
+    private ArrayList<UserPhotoLike> userPhotoLikes;
+
+    private UserLoginInformation userLoginInfo;
+
+    public User(String name, String phone, int userId)
+    {
+        this.name = name;
+        this.phone = phone;
+        this.userId = userId;
+        this.reservations = new ArrayList<Reservation>();
+        this.userPhotoLikes = new ArrayList<UserPhotoLike>();
+        userLoginInfo = new UserLoginInformation();
+    }
+
+    public void setUserLoginInfo(UserLoginInformation loginInfo){
+        this.userLoginInfo = loginInfo;
+    }
+
+    public UserLoginInformation getUserLoginInfo(){
+        return this.userLoginInfo;
+    }
+
     public String getName() {
         return name;
     }
@@ -24,11 +50,6 @@ public class User {
         this.phone = phone;
     }
 
-    private ArrayList<Reservation> reservations;
-    private String name;
-    private String phone;
-    private int userId;
-
     public ArrayList<UserPhotoLike> getUserPhotoLikes() {
         return userPhotoLikes;
     }
@@ -43,17 +64,6 @@ public class User {
 
     public void setReservations(ArrayList<Reservation> reservations) {
         this.reservations = reservations;
-    }
-
-    private ArrayList<UserPhotoLike> userPhotoLikes;
-
-    public User(String name, String phone, int userId)
-    {
-        this.name = name;
-        this.phone = phone;
-        this.userId = userId;
-        this.reservations = new ArrayList<Reservation>();
-        this.userPhotoLikes = new ArrayList<UserPhotoLike>();
     }
 
     public int getUserId() {

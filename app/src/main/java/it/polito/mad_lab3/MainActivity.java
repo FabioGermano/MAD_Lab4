@@ -27,6 +27,7 @@ import it.polito.mad_lab3.data.restaurant.Restaurant;
 import it.polito.mad_lab3.data.restaurant.RestaurantEntity;
 import it.polito.mad_lab3.data.restaurant.Review;
 import it.polito.mad_lab3.data.user.User;
+import it.polito.mad_lab3.data.user.UserLoginInformation;
 import it.polito.mad_lab3.elaborazioneRicerche.Oggetto_risultatoRicerca;
 import it.polito.mad_lab3.elaborazioneRicerche.elaborazioneRicerche;
 import it.polito.mad_lab3.reservation.ReservationActivity;
@@ -36,12 +37,32 @@ public class MainActivity extends BaseActivity {
 
     private Button restaurantBtn, reservationBtn, testBtn;
     private ArrayList<Restaurant> listaRistoranti;
+    private User userInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setBackButtonVisibility(false);
         setIconaToolbar(true);
+
+        //gestione login e dati utente
+        //controllo file di configurazione per login automatico (così non deve farlo l'utente ad ogni avvio)
+        try {
+            //ottengo i risultati della ricerca
+
+            Bundle extras = getIntent().getExtras();
+            if (extras != null) {
+                userInfo = (User) extras.getSerializable("userInfo");
+                extras.clear();
+
+            } else {
+                userInfo = controlloLoginAutomatico();
+
+            }
+        }catch(Exception e){
+
+            userInfo = new User(null, null, -1);
+        }
 
         setContentView(R.layout.activity_main);
 
@@ -70,6 +91,22 @@ public class MainActivity extends BaseActivity {
         // sul server che ci restituisce la lista dei risultati con informazioni riassuntive per visualizzare
         // la lista dei locali cercati
         caricaDati();
+    }
+
+    @Override
+    protected boolean controlloLogin() {
+        return this.userInfo.getUserLoginInfo().isLogin();
+    }
+
+    private User controlloLoginAutomatico(){
+        //controllo file di configurazione ed eventualmente eseguo login e carico le info dell'utente nella struttura dati
+        User user = null;
+        try{
+
+            return new User(null, null, -1);
+        }catch(Exception e) {
+            return new User(null, null, -1);
+        }
     }
 
     @Override

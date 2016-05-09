@@ -63,6 +63,11 @@ public class MenuPhotoViewActivity extends BaseActivity {
     }
 
     @Override
+    protected boolean controlloLogin() {
+        return false;
+    }
+
+    @Override
     protected void ModificaProfilo() {
 
     }

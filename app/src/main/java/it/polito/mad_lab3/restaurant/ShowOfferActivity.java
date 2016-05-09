@@ -105,6 +105,11 @@ public class ShowOfferActivity extends BaseActivity implements PhotoViewerListen
     }
 
     @Override
+    protected boolean controlloLogin() {
+        return false;
+    }
+
+    @Override
     protected void filterButton() {
 
     }

@@ -64,6 +64,11 @@ public class ChoosePhotoActivity extends BaseActivity implements PhotoViewerList
     }
 
     @Override
+    protected boolean controlloLogin() {
+        return false;
+    }
+
+    @Override
     protected void filterButton() {
 
     }

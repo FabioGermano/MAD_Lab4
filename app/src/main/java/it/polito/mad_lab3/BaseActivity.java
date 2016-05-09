@@ -184,9 +184,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
             titleTextView.setText(title);
     }
 
-    private boolean controlloLogin(){
-        return true;
-    }
+    protected abstract boolean controlloLogin();
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -286,6 +284,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     private void Login(){
         Toast toast = Toast.makeText(getApplicationContext(), "Esegui login", Toast.LENGTH_SHORT);
         toast.show();
+        // accedo alla pagina del login e se l'utente vuole memorizzare in modo permanente i dati
+        // li salviamo sul file
         /*Intent i = new Intent(getBaseContext(), EseguiLogin.class);
         startActivity(i);*/
     }
@@ -293,6 +293,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     private void Logout(){
         Toast toast = Toast.makeText(getApplicationContext(), "Logout", Toast.LENGTH_SHORT);
         toast.show();
+        //eseguo il logout e cancello eventualmente il file con le credenziali
         /*Intent i = new Intent(getBaseContext(), EseguiLogout.class);
         startActivity(i);*/
     }

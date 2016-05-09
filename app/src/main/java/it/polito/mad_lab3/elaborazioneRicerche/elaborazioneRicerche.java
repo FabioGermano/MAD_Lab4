@@ -69,6 +69,11 @@ public class elaborazioneRicerche extends BaseActivity implements fragment_ricer
         }
     }
 
+    @Override
+    protected boolean controlloLogin() {
+        return false;
+    }
+
     private void stampaMessaggioErrore(){
         Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.exceptionError), Toast.LENGTH_SHORT);
         toast.show();

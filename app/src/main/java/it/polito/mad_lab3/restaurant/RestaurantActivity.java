@@ -115,6 +115,11 @@ public class  RestaurantActivity extends BaseActivity {
 
     }
 
+    @Override
+    protected boolean controlloLogin() {
+        return false;
+    }
+
     private void showAllReviewsButtonPressed() {
         Intent i = new Intent(getBaseContext(), ReviewsActivity.class);
         i.putExtra("restaurantId", this.restaurant.getRestaurantId());
