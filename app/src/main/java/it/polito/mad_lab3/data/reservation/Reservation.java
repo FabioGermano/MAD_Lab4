@@ -1,5 +1,6 @@
 package it.polito.mad_lab3.data.reservation;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import it.polito.mad_lab3.data.user.User;
@@ -7,7 +8,7 @@ import it.polito.mad_lab3.data.user.User;
 /**
  * Created by f.germano on 12/04/2016.
  */
-public class Reservation {
+public class Reservation implements Serializable {
 
     private int reservationId;
     private int restaurantId;

@@ -48,7 +48,7 @@ public class MainActivity extends BaseActivity {
         //gestione login e dati utente
         //controllo file di configurazione per login automatico (così non deve farlo l'utente ad ogni avvio)
         try {
-            //ottengo i risultati della ricerca
+            //ottengo i dati utente dalle altre activity
 
             Bundle extras = getIntent().getExtras();
             if (extras != null) {
@@ -150,6 +150,7 @@ public class MainActivity extends BaseActivity {
 
         Bundle b = new Bundle();
         b.putSerializable("results", listaRicerca);
+        b.putSerializable("userInfo", userInfo);
 
         Intent i = new Intent(getBaseContext(), elaborazioneRicerche.class);
         i.putExtras(b);

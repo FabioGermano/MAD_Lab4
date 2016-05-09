@@ -3,10 +3,12 @@ package it.polito.mad_lab3.data.reservation;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.Serializable;
+
 /**
  * Created by f.germano on 12/04/2016.
  */
-public class ReservedDish implements Parcelable{
+public class ReservedDish implements Parcelable, Serializable{
     private String name;
     private boolean isOffer;
     private int quantity;

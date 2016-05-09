@@ -1,9 +1,11 @@
 package it.polito.mad_lab3.data.user;
 
+import java.io.Serializable;
+
 /**
  * Created by Eugenio on 09/05/2016.
  */
-public class UserLoginInformation {
+public class UserLoginInformation implements Serializable {
     private boolean login;
     private String username;
     private String password;

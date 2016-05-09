@@ -1,5 +1,6 @@
 package it.polito.mad_lab3.data.user;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import it.polito.mad_lab3.data.reservation.Reservation;
@@ -7,12 +8,12 @@ import it.polito.mad_lab3.data.reservation.Reservation;
 /**
  * Created by f.germano on 12/04/2016.
  */
-public class User {
-    private ArrayList<Reservation> reservations;
+public class User implements Serializable{
+    private ArrayList<Reservation> reservations; //verranno poi prese dinamicamente dal server
     private String name;
     private String phone;
     private int userId;
-    private ArrayList<UserPhotoLike> userPhotoLikes;
+    private ArrayList<UserPhotoLike> userPhotoLikes; //verranno poi prese dinamicamente dal server
 
     private UserLoginInformation userLoginInfo;
 

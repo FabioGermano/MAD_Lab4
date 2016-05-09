@@ -1,9 +1,11 @@
 package it.polito.mad_lab3.data.user;
 
+import java.io.Serializable;
+
 /**
  * Created by f.germano on 30/04/2016.
  */
-public class UserPhotoLike {
+public class UserPhotoLike implements Serializable {
     private int restaurantId;
     private int userPhotoId;
 

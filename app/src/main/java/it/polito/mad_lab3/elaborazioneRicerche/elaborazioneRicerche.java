@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import it.polito.mad_lab3.BaseActivity;
 import it.polito.mad_lab3.MainActivity;
 import it.polito.mad_lab3.R;
+import it.polito.mad_lab3.data.user.User;
 
 public class elaborazioneRicerche extends BaseActivity implements fragment_ricercaAvanzata.OnButtonPressedListener{
     private ArrayList<Oggetto_risultatoRicerca> lista_risultati = null;
@@ -23,6 +24,7 @@ public class elaborazioneRicerche extends BaseActivity implements fragment_ricer
     private fragment_ricercaAvanzata fragmentRicerca;
     private  boolean finderOpen = false;
     private RecyclerAdapter_risultatoRicerca myAdapter;
+    private User userInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +38,7 @@ public class elaborazioneRicerche extends BaseActivity implements fragment_ricer
 
             Bundle extras = getIntent().getExtras();
             if (extras != null) {
+                userInfo = (User) extras.getSerializable("userInfo");
                 lista_risultati = (ArrayList<Oggetto_risultatoRicerca>) extras.getSerializable("results");
                 //importante tengo una copia per quando eseguo una ricerca avanzata, così posso sempre tornare alla
                 //ricerca iniziale senza doverla rifare ogni volta da capo
@@ -47,6 +50,10 @@ public class elaborazioneRicerche extends BaseActivity implements fragment_ricer
                 stampaMessaggioErrore();
             }
 
+            if(userInfo == null){
+                userInfo = new User(null, null, -1);
+            }
+            
             fragmentRicerca = (fragment_ricercaAvanzata) getSupportFragmentManager().findFragmentById(R.id.ricerca_avanzata);
 
             setUpRecyclerView();
