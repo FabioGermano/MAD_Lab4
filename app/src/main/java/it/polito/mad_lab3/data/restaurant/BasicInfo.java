@@ -19,6 +19,8 @@ public class BasicInfo implements Serializable{
     private ArrayList<Cover> covers;
     private boolean wifi, reservations, seatsOutside, parking, music, creditCard, bancomat;
     private ArrayList<String> typesOfServices;
+    private int distance;
+
 
     public BasicInfo(String address,String city, String phone,String email, String description, String logoThumb,  ArrayList<String> timeTable,ArrayList<String> typesOfServices){
         this.address = address;
@@ -37,7 +39,7 @@ public class BasicInfo implements Serializable{
         this.creditCard = false;
         this.bancomat = false;
         this.typesOfServices=typesOfServices;
-
+        this.distance = -1;
     }
 
 
@@ -168,4 +170,6 @@ public class BasicInfo implements Serializable{
     public void setCity(String city) {
         this.city = city;
     }
+
+    public int getDistance(){ return distance; }
 }

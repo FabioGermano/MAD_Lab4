@@ -3,6 +3,7 @@ package it.polito.mad_lab3;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Build;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -77,7 +78,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         titleTextView.setVisibility(View.GONE);
         //toolbar.setBackgroundColor(Color.TRANSPARENT);
         toolbar.setBackgroundResource(R.drawable.shadow);
-
     }
 
     protected boolean useToolbar(boolean useToolbar) {
@@ -175,11 +175,16 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
             actionB.setDisplayHomeAsUpEnabled(backbutton_visibility);
     }
 
+    protected  void setToolbarColor(){
+        toolbar.setBackgroundColor(getResources().getColor((R.color.themeColor)));
+    }
 
+    protected void setTitleVisible(){
+        titleTextView.setVisibility(View.VISIBLE);
+    }
 
     protected void hideToolbarShadow(boolean bool){
         toolbarShadow.setVisibility(View.GONE);
-
     }
 
     protected void setActivityTitle(String title){
@@ -195,6 +200,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         toolbar.inflateMenu(R.menu.filter_button_toolbar);
         final MenuItem filter = menu.findItem(R.id.menu_find);
         filter.setVisible(filter_visibility);
+
         /*if(filter_visibility){
 
             RelativeLayout notificationLayout = (RelativeLayout) notification.getActionView();

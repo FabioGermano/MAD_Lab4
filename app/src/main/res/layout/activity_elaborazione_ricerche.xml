@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="it.polito.mad_lab3.elaborazioneRicerche.elaborazioneRicerche">
+    tools:context="it.polito.mad_lab3.elaborazioneRicerche.elaborazioneRicerche"
+    android:background="@drawable/wood_background">
 
     <!-- Import the our toolbar -->
     <include layout="@layout/toolbar_view" android:layout_height="wrap_content" android:layout_width="match_parent"/>
@@ -17,15 +19,6 @@
         class="it.polito.mad_lab3.elaborazioneRicerche.fragment_ricercaAvanzata"
         />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/risultati_ricerca"
-        android:textSize="18sp"
-        android:layout_gravity="center_horizontal"
-        android:textColor="@color/titoli"
-        android:layout_marginTop="10sp"
-        android:layout_marginBottom="10sp"/>
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"

@@ -15,8 +15,10 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import it.polito.mad_lab3.bl.RestaurantBL;
+import it.polito.mad_lab3.data.restaurant.Offer;
 import it.polito.mad_lab3.data.restaurant.Restaurant;
 import it.polito.mad_lab3.data.user.User;
+import it.polito.mad_lab3.elaborazioneRicerche.Oggetto_offerteVicine;
 import it.polito.mad_lab3.elaborazioneRicerche.Oggetto_risultatoRicerca;
 import it.polito.mad_lab3.elaborazioneRicerche.RecyclerAdapter_offerteVicine;
 import it.polito.mad_lab3.elaborazioneRicerche.RecyclerAdapter_risultatoRicerca;
@@ -28,7 +30,8 @@ public class MainActivity extends BaseActivity {
     private Button addReview, reservationBtn, testBtn;
     private ArrayList<Restaurant> listaRistoranti;
     private User userInfo;
-    private ArrayList<String> lista_offerte_vicine;
+
+    private ArrayList<Oggetto_offerteVicine> lista_offerte_vicine;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +59,9 @@ public class MainActivity extends BaseActivity {
         }
 
         setContentView(R.layout.activity_main);
-
         hideToolbar(true);
         hideToolbarShadow(true);
+
 
         setActivityTitle(getResources().getString(R.string.titolo_main_activity));
 
@@ -77,7 +80,7 @@ public class MainActivity extends BaseActivity {
         // la lista dei locali cercati
         caricaDati();
 
-        SearchView ricerca = (SearchView) findViewById(R.id.searchView_main);
+        final SearchView ricerca = (SearchView) findViewById(R.id.searchView_main);
         ricerca.setQueryHint("Restaurant Search");
         ricerca.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -91,7 +94,19 @@ public class MainActivity extends BaseActivity {
                 return false;
             }
         });
-        ricerca.setIconifiedByDefault(false);
+
+        ricerca.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch(v.getId()){
+                    case R.id.searchView_main:
+                        ricerca.onActionViewExpanded();
+                        break;
+                }
+            }
+        });
+
+        //ricerca.setIconifiedByDefault(false);
 
         setUpRecyclerView();
 
@@ -136,25 +151,33 @@ public class MainActivity extends BaseActivity {
     private void caricaDati() {
 
         lista_offerte_vicine = new ArrayList<>();
-        lista_offerte_vicine.add("dddddd");
-        lista_offerte_vicine.add("dddddd");
-        lista_offerte_vicine.add("dddddd");
-        lista_offerte_vicine.add("dddddd");
-       // Gson gson = new GsonBuilder().serializeNulls().create();
-        //String restaurants = DBManager.readJSON(this, DB.Restaurants);
-        //re = gson.fromJson(restaurants, RestaurantEntity.class);
-        /*String json = gson.toJson(re);
-        System.out.println(re.getRestaurants().size() + " \n" +json);*/
 
         //f.germano mod. Ci sono appositi metodi del bl:
         this.listaRistoranti = RestaurantBL.getAllRestaurants(getBaseContext());
+
+        for (Restaurant r: listaRistoranti){
+            if (r.getBasicInfo().getDistance() <= 15){
+                for (Offer o: r.getOffers()){
+                    lista_offerte_vicine.add(new Oggetto_offerteVicine(o, r.getRestaurantId()));
+                }
+            }
+        }
     }
 
     public void searchRestaurant(String query) {
         ArrayList<Oggetto_risultatoRicerca> listaRicerca = new ArrayList<>();
+
         for(Restaurant r : this.listaRistoranti){
-            Oggetto_risultatoRicerca obj = new Oggetto_risultatoRicerca(r.getRestaurantId(), r.getRestaurantName(), r.getBasicInfo().getAddress(), r.getBasicInfo().getLogoThumb(), r.getAvgPrice(), r.getAvgReview(), Oggetto_risultatoRicerca.type.RISTORANTE, r.getBasicInfo().getTypesOfServices());
-            listaRicerca.add(obj);
+            String nome = r.getRestaurantName().toLowerCase();
+            String address = r.getBasicInfo().getAddress().toLowerCase();
+            if (nome.contains(query.toLowerCase())){
+                Oggetto_risultatoRicerca obj = new Oggetto_risultatoRicerca(r.getRestaurantId(), r.getRestaurantName(), r.getBasicInfo().getAddress(), r.getBasicInfo().getLogoThumb(), r.getAvgPrice(), r.getAvgReview(), Oggetto_risultatoRicerca.type.RISTORANTE, r.getBasicInfo().getTypesOfServices());
+                listaRicerca.add(obj);
+            }
+            else if (address.contains(query.toLowerCase())){
+                Oggetto_risultatoRicerca obj = new Oggetto_risultatoRicerca(r.getRestaurantId(), r.getRestaurantName(), r.getBasicInfo().getAddress(), r.getBasicInfo().getLogoThumb(), r.getAvgPrice(), r.getAvgReview(), Oggetto_risultatoRicerca.type.RISTORANTE, r.getBasicInfo().getTypesOfServices());
+                listaRicerca.add(obj);
+            }
         }
         if(listaRicerca.size() == 0){
             Toast toast = Toast.makeText(getApplicationContext(), "Nessun Ristorante Trovato", Toast.LENGTH_SHORT);
