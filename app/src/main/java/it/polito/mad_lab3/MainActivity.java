@@ -170,7 +170,12 @@ public class MainActivity extends BaseActivity {
             Toast.makeText(MainActivity.this, "Search key too short!", Toast.LENGTH_SHORT).show();
             return;
         }
-        
+
+        if (query.length() > 20){
+            Toast.makeText(MainActivity.this, "Search key too long!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         ArrayList<Oggetto_risultatoRicerca> listaRicerca = new ArrayList<>();
 
         for(Restaurant r : this.listaRistoranti){
