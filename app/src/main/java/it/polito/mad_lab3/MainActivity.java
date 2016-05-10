@@ -1,9 +1,15 @@
 package it.polito.mad_lab3;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -12,6 +18,8 @@ import it.polito.mad_lab3.bl.RestaurantBL;
 import it.polito.mad_lab3.data.restaurant.Restaurant;
 import it.polito.mad_lab3.data.user.User;
 import it.polito.mad_lab3.elaborazioneRicerche.Oggetto_risultatoRicerca;
+import it.polito.mad_lab3.elaborazioneRicerche.RecyclerAdapter_offerteVicine;
+import it.polito.mad_lab3.elaborazioneRicerche.RecyclerAdapter_risultatoRicerca;
 import it.polito.mad_lab3.elaborazioneRicerche.elaborazioneRicerche;
 import it.polito.mad_lab3.restaurant.reviews.add_review.AddReviewActivity;
 
@@ -20,6 +28,7 @@ public class MainActivity extends BaseActivity {
     private Button addReview, reservationBtn, testBtn;
     private ArrayList<Restaurant> listaRistoranti;
     private User userInfo;
+    private ArrayList<String> lista_offerte_vicine;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +57,9 @@ public class MainActivity extends BaseActivity {
 
         setContentView(R.layout.activity_main);
 
+        hideToolbar(true);
+        hideToolbarShadow(true);
+
         setActivityTitle(getResources().getString(R.string.titolo_main_activity));
 
         addReview = (Button) findViewById(R.id.addReview);
@@ -64,11 +76,35 @@ public class MainActivity extends BaseActivity {
         // sul server che ci restituisce la lista dei risultati con informazioni riassuntive per visualizzare
         // la lista dei locali cercati
         caricaDati();
+
+        SearchView ricerca = (SearchView) findViewById(R.id.searchView_main);
+        ricerca.setQueryHint("Restaurant Search");
+        ricerca.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchRestaurant(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+        ricerca.setIconifiedByDefault(false);
+
+        setUpRecyclerView();
+
     }
 
     @Override
     protected boolean controlloLogin() {
-        return this.userInfo.getUserLoginInfo().isLogin();
+        if(userInfo != null)
+            return this.userInfo.getUserLoginInfo().isLogin();
+        else{
+            userInfo = new User(null, null , -1);
+            return false;
+        }
     }
 
     private User controlloLoginAutomatico(){
@@ -99,6 +135,11 @@ public class MainActivity extends BaseActivity {
 
     private void caricaDati() {
 
+        lista_offerte_vicine = new ArrayList<>();
+        lista_offerte_vicine.add("dddddd");
+        lista_offerte_vicine.add("dddddd");
+        lista_offerte_vicine.add("dddddd");
+        lista_offerte_vicine.add("dddddd");
        // Gson gson = new GsonBuilder().serializeNulls().create();
         //String restaurants = DBManager.readJSON(this, DB.Restaurants);
         //re = gson.fromJson(restaurants, RestaurantEntity.class);
@@ -109,7 +150,7 @@ public class MainActivity extends BaseActivity {
         this.listaRistoranti = RestaurantBL.getAllRestaurants(getBaseContext());
     }
 
-    public void searchRestaurant(View view) {
+    public void searchRestaurant(String query) {
         ArrayList<Oggetto_risultatoRicerca> listaRicerca = new ArrayList<>();
         for(Restaurant r : this.listaRistoranti){
             Oggetto_risultatoRicerca obj = new Oggetto_risultatoRicerca(r.getRestaurantId(), r.getRestaurantName(), r.getBasicInfo().getAddress(), r.getBasicInfo().getLogoThumb(), r.getAvgPrice(), r.getAvgReview(), Oggetto_risultatoRicerca.type.RISTORANTE, r.getBasicInfo().getTypesOfServices());
@@ -128,5 +169,20 @@ public class MainActivity extends BaseActivity {
         Intent i = new Intent(getBaseContext(), elaborazioneRicerche.class);
         i.putExtras(b);
         startActivity(i);
+    }
+
+    private void setUpRecyclerView(){
+        RecyclerView rView = (RecyclerView) findViewById(R.id.recyclerView_nearOffers);
+
+        RecyclerAdapter_offerteVicine myAdapter = new RecyclerAdapter_offerteVicine(this, lista_offerte_vicine);
+        if(rView != null) {
+            rView.setAdapter(myAdapter);
+
+            LinearLayoutManager myLLM_vertical = new LinearLayoutManager(this);
+            myLLM_vertical.setOrientation(LinearLayoutManager.HORIZONTAL);
+            rView.setLayoutManager(myLLM_vertical);
+
+            rView.setItemAnimator(new DefaultItemAnimator());
+        }
     }
 }

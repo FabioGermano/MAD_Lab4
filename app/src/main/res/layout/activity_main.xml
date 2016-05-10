@@ -17,64 +17,83 @@
         android:orientation="vertical"
         tools:context="it.polito.mad_lab3.MainActivity">
 
-
-        <!-- Import the our toolbar -->
-        <include layout="@layout/toolbar_view" android:layout_height="wrap_content" android:layout_width="match_parent"/>
-
-        <View
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:background="#c0c0c0"
-            android:layout_marginTop="3sp"/>
+            android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:orientation="vertical"
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:id="@+id/cover"
+                android:scaleType="centerCrop"
+                android:src="@drawable/main_background"/>
+
+            <include layout="@layout/toolbar_view" android:layout_height="wrap_content" android:layout_width="match_parent" android:layout_alignParentTop="true"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/restaurant_name"
+                android:text=""
+                android:layout_alignParentTop="true"
+                android:textColor="@android:color/white"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_marginTop="20dp"
+                android:layout_centerHorizontal="true"
+                android:gravity="center" />
+        </RelativeLayout>
+
+        <android.support.v7.widget.CardView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            card_view:cardCornerRadius="5dp"
+            card_view:cardBackgroundColor="@color/lightGrey"
             >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/titolo_ricerca"
-                android:textSize="18sp"
-                android:layout_gravity="center_horizontal"
-                android:textColor="@color/titoli"
-                android:layout_marginBottom="5sp"/>
 
-            <EditText
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/testo_ricerca_ristorante"
-                android:gravity="center"
-                android:layout_span="1"
-                android:layout_gravity="center_horizontal" />
+                android:orientation="vertical">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/info_ricerca"
-                android:gravity="center"
-                android:layout_marginBottom="1sp"/>
+                <android.support.v7.widget.CardView
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="10dp"
+                    card_view:cardCornerRadius="5dp"
+                    card_view:cardBackgroundColor="@color/white"
+                    >
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/tasto_ricerca_ristorante"
-                android:layout_gravity="right"
-                android:text="@string/search"
-                android:onClick="searchRestaurant"
-                android:background="#00FA9A">
-            </Button>
+                    <SearchView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/searchView_main"
+                        android:layout_gravity="center_horizontal"
+                        />
+                </android.support.v7.widget.CardView>
 
-        </LinearLayout>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/info_ricerca"
+                    android:gravity="center"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="5dp"/>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:background="#c0c0c0"
-            android:layout_marginTop="3sp"/>
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
 
         <TextView
             android:layout_width="wrap_content"
@@ -92,6 +111,10 @@
             del ristorante desiderato
          -->
 
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/recyclerView_nearOffers"/>
 
         <Button
             android:layout_marginTop="50sp"
@@ -108,5 +131,6 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header" />
+
 
 </android.support.v4.widget.DrawerLayout>

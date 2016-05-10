@@ -10,12 +10,12 @@
 
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:hardwareAccelerated="true"
-        android:windowSoftInputMode="stateVisible|adjustResize"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:windowSoftInputMode="stateVisible|adjustResize">
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,41 +26,43 @@
         <activity
             android:name=".reservation.ReservationActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".MainActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".reservation.CheckoutOrderActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:parentActivityName=".reservation.ReservationActivity" />
+            android:parentActivityName=".reservation.ReservationActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".restaurant.RestaurantActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".MainActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".restaurant.ShowOfferActivity"
-            android:parentActivityName=".restaurant.RestaurantActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
+            android:parentActivityName=".restaurant.RestaurantActivity"
             android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity android:name=".common.photo_viewer.PhotoViewActivity"
+        <activity
+            android:name=".common.photo_viewer.PhotoViewActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
-        <activity android:name=".restaurant.ChoosePhotoActivity"
+        <activity
+            android:name=".restaurant.ChoosePhotoActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity android:name=".restaurant.gallery.GalleryPhotoViewActivity" />
         <activity
             android:name=".restaurant.gallery.PhotoGaleryActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:parentActivityName=".restaurant.RestaurantActivity" />
+            android:parentActivityName=".restaurant.RestaurantActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".reservation.food_order.FoodOrderActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:parentActivityName=".reservation.ReservationActivity">
+            android:parentActivityName=".reservation.ReservationActivity"
+            android:windowSoftInputMode="stateAlwaysHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="it.polito.mad_lab3.reservation.ReservationActivity" />
@@ -68,27 +70,33 @@
         <activity
             android:name=".elaborazioneRicerche.elaborazioneRicerche"
             android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
-            android:windowSoftInputMode="stateAlwaysHidden"
-            android:parentActivityName=".MainActivity" />
-        <activity android:name=".restaurant.menu.MenuActivity"
+            android:parentActivityName=".MainActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".restaurant.menu.MenuActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
             android:windowSoftInputMode="stateAlwaysHidden" />
-
-        <activity android:name=".restaurant.ShowAdditionalInfoActivity"
+        <activity
+            android:name=".restaurant.ShowAdditionalInfoActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
-            android:windowSoftInputMode="stateAlwaysHidden" ></activity>
-        <activity android:name=".restaurant.menu.MenuPhotoViewActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".restaurant.menu.MenuPhotoViewActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
-            android:windowSoftInputMode="stateAlwaysHidden" ></activity>
-        <activity android:name=".restaurant.reviews.ReviewsActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".restaurant.reviews.ReviewsActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
-            android:windowSoftInputMode="stateAlwaysHidden" ></activity>
-        <activity android:name=".restaurant.reviews.add_review.AddReviewActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".restaurant.reviews.add_review.AddReviewActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
-            android:windowSoftInputMode="stateAlwaysHidden" ></activity>
-        <activity android:name=".restaurant.reviews.add_review.RateDishesActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".restaurant.reviews.add_review.RateDishesActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
-            android:windowSoftInputMode="stateAlwaysHidden" ></activity>
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity android:name=".login.Login"></activity>
     </application>
 
 </manifest>

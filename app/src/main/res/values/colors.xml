@@ -26,4 +26,6 @@
     <color name="good">#008000</color>
     <color name="medium">#ff8400</color>
     <color name="bad">#cc0000</color>
+
+    <color name="white">#FFFFFF</color>
 </resources>

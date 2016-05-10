@@ -1,6 +1,7 @@
 package it.polito.mad_lab3;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.support.design.widget.NavigationView;
@@ -19,6 +20,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import it.polito.mad_lab3.login.Login;
 
 public abstract class BaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     protected Toolbar toolbar;
@@ -282,20 +285,16 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     }
 
     private void Login(){
-        Toast toast = Toast.makeText(getApplicationContext(), "Esegui login", Toast.LENGTH_SHORT);
-        toast.show();
         // accedo alla pagina del login e se l'utente vuole memorizzare in modo permanente i dati
         // li salviamo sul file
-        /*Intent i = new Intent(getBaseContext(), EseguiLogin.class);
-        startActivity(i);*/
+        Intent i = new Intent(getBaseContext(), Login.class);
+        startActivity(i);
     }
 
     private void Logout(){
-        Toast toast = Toast.makeText(getApplicationContext(), "Logout", Toast.LENGTH_SHORT);
-        toast.show();
         //eseguo il logout e cancello eventualmente il file con le credenziali
-        /*Intent i = new Intent(getBaseContext(), EseguiLogout.class);
-        startActivity(i);*/
+        Intent i = new Intent(getBaseContext(), MainActivity.class);
+        startActivity(i);
     }
 
     /******************/
