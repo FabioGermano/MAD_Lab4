@@ -113,7 +113,7 @@ public class MainActivity extends BaseActivity {
         ricercaRistoranteBtn = (ImageButton) findViewById(R.id.ricerca_ristorante);
         ricercaPiattoBtn = (ImageButton) findViewById(R.id.ricerca_piatto);
 
-        setUpRecyclerView();
+        //setUpRecyclerView();
 
     }
 

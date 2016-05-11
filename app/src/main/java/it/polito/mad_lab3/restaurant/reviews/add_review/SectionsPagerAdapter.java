@@ -1,4 +1,4 @@
-package it.polito.mad_lab3.common;
+package it.polito.mad_lab3.restaurant.reviews.add_review;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
@@ -8,11 +8,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import java.util.ArrayList;
 
 import it.polito.mad_lab3.R;
-import it.polito.mad_lab3.data.reservation.ReservedDish;
-import it.polito.mad_lab3.data.restaurant.Dish;
-import it.polito.mad_lab3.data.restaurant.Offer;
 import it.polito.mad_lab3.data.restaurant.ReviewFood;
-import it.polito.mad_lab3.reservation.food_order.ListOrderFragment;
 
 /**
  * Created by Giovanna on 09/05/2016.

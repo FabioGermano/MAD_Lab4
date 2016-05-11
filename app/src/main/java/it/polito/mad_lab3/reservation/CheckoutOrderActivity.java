@@ -21,6 +21,8 @@ import it.polito.mad_lab3.R;
 import it.polito.mad_lab3.bl.UserBL;
 import it.polito.mad_lab3.common.Helper;
 import it.polito.mad_lab3.data.reservation.Reservation;
+import it.polito.mad_lab3.data.reservation.ReservationType;
+import it.polito.mad_lab3.data.reservation.ReservationTypeConverter;
 import it.polito.mad_lab3.data.reservation.ReservedDish;
 import it.polito.mad_lab3.data.user.User;
 
@@ -89,15 +91,17 @@ public class CheckoutOrderActivity extends BaseActivity {
 
                 User user = UserBL.getUserById(getBaseContext(), UserBL.getCurrentUserId());
                 Reservation r = new Reservation();
-                r.setReservationId(35);
+                r.setReservationId(UserBL.getNewReservatioId(user));
                 r.setReservedDishes(reservedDishes);
                 r.setDate(date);
                 r.setTime(time);
+                r.setStatus(ReservationTypeConverter.toString(ReservationType.PENDING));
                 r.setPlaces(String.valueOf(seatsNumber));
                 r.setRestaurantId(restaurantID);
                 r.setNoteByUser(notesTextView.getText().toString());
                 r.setTotalIncome(total);
-                user.getReservations().add(r);
+                UserBL.addReservation(user, r);
+                UserBL.saveChanges(getApplicationContext());
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);

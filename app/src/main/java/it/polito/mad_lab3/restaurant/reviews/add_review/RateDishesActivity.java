@@ -1,12 +1,10 @@
 package it.polito.mad_lab3.restaurant.reviews.add_review;
 
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -14,7 +12,6 @@ import java.util.ArrayList;
 import it.polito.mad_lab3.BaseActivity;
 import it.polito.mad_lab3.R;
 import it.polito.mad_lab3.bl.RestaurantBL;
-import it.polito.mad_lab3.common.SectionsPagerAdapter;
 import it.polito.mad_lab3.data.reservation.ReservedDish;
 import it.polito.mad_lab3.data.restaurant.Dish;
 import it.polito.mad_lab3.data.restaurant.DishType;
@@ -22,7 +19,6 @@ import it.polito.mad_lab3.data.restaurant.Offer;
 import it.polito.mad_lab3.data.restaurant.Restaurant;
 import it.polito.mad_lab3.data.restaurant.ReviewFood;
 import it.polito.mad_lab3.data.user.User;
-import it.polito.mad_lab3.reservation.food_order.FoodOrderActivity;
 
 /**
  * Created by Giovanna on 09/05/2016.

@@ -6,6 +6,7 @@ import java.util.Iterator;
 
 import it.polito.mad_lab3.dal.DB;
 import it.polito.mad_lab3.dal.DBManager;
+import it.polito.mad_lab3.data.reservation.Reservation;
 import it.polito.mad_lab3.data.user.User;
 import it.polito.mad_lab3.data.user.UserEntity;
 import it.polito.mad_lab3.data.user.UserPhotoLike;
@@ -36,6 +37,10 @@ public class UserBL {
 
         return null;
     }
+    public static int getNewReservatioId(User user)
+    {
+        return user.getReservations().size()+1;
+    }
 
     public static boolean checkUserPhotoLike(User user, int restaurantId, int userPhotoId){
         for(UserPhotoLike upl : user.getUserPhotoLikes() ){
@@ -58,6 +63,9 @@ public class UserBL {
                 iterator.remove();
             }
         }
+    }
+    public static void addReservation(User user, Reservation reservation){
+        user.getReservations().add(reservation);
     }
 
     public static void saveChanges(Context _context){

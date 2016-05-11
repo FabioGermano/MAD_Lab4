@@ -1,4 +1,4 @@
-package it.polito.mad_lab3.common;
+package it.polito.mad_lab3.restaurant.reviews.add_review;
 
 import android.content.Context;
 import android.view.LayoutInflater;

@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    android:layout_width="match_parent"
+<RelativeLayout  android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+<android.support.design.widget.CoordinatorLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar_layout"
@@ -13,6 +17,7 @@
         android:layout_height="250dp"
         android:fitsSystemWindows="true"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
@@ -48,14 +53,10 @@
         </android.support.design.widget.CollapsingToolbarLayout>
 
     </android.support.design.widget.AppBarLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:background="@android:color/transparent">
 
         <LinearLayout
@@ -189,7 +190,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="50dp"
+            android:layout_marginBottom="70dp"
             android:orientation="vertical">
             <android.support.v7.widget.CardView
                 xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -212,12 +213,83 @@
         <!-- End Reviews -->
     </android.support.v4.widget.NestedScrollView >
 
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:id="@+id/reservation"
-                style="@style/Base.Widget.AppCompat.Button.Colored"
-                android:text="@string/reservation"
-                android:layout_alignParentBottom="true" />
-        </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>
+
+
+        <Button
+            android:layout_width="250dp"
+            android:layout_height="60dp"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:id="@+id/reservation"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp"
+            android:visibility="gone"
+            android:paddingLeft="10dp"
+            style="@style/Base.Widget.AppCompat.Button.Colored"
+            android:text="@string/reservation" />
+
+
+
+        <com.github.clans.fab.FloatingActionMenu
+            android:id="@+id/add"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
+            fab:menu_labels_ellipsize="end"
+            fab:menu_labels_singleLine="true"
+            fab:menu_backgroundColor="#ccffffff"
+            android:src="@drawable/fab_add"
+            app:fab_elevationCompat="4dp"
+            fab:menu_colorNormal="@color/colorAccent"
+            fab:menu_colorPressed="@color/themeColor"
+            fab:menu_colorRipple="#99FFFFFF"
+            fab:menu_labels_position="left"
+            fab:fab_label="Disabled"
+            fab:menu_openDirection="up">
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/add_review"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_rate_review_white_24dp"
+                fab:fab_colorNormal="@color/themeColor"
+                fab:fab_colorPressed="@color/themeColorLighter"
+                fab:fab_colorRipple="@color/colorAccent"
+                fab:fab_shadowColor="#000"
+                fab:fab_size="mini"
+                fab:fab_label="@string/add_review"/>
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/add_photo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:fab_colorNormal="@color/themeColor"
+                fab:fab_colorPressed="@color/themeColorLighter"
+                fab:fab_colorRipple="@color/colorAccent"
+                fab:fab_shadowColor="#000"
+                android:src="@drawable/ic_add_a_photo_white_24dp"
+                fab:fab_size="mini"
+                fab:fab_label="@string/add_photo"/>
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/add_reservation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:fab_colorNormal="@color/themeColor"
+                fab:fab_colorPressed="@color/themeColorLighter"
+                fab:fab_colorRipple="@color/colorAccent"
+                fab:fab_shadowColor="#000"
+                android:src="@drawable/ic_restaurant_white_24dp"
+                fab:fab_size="mini"
+                fab:fab_label="@string/make_reservation"/>
+
+            </com.github.clans.fab.FloatingActionMenu>
+
+
+</RelativeLayout>

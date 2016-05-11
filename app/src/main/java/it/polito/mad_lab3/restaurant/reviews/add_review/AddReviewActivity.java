@@ -73,7 +73,7 @@ public class AddReviewActivity extends BaseActivity implements PhotoViewerListen
                     builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             Intent i = new Intent(context, RateDishesActivity.class);
-                            i.putExtra("review", editText.getText());
+                            i.putExtra("review", editText.getText().toString());
                             i.putExtra("rating", rbValue);
                             startActivity(i);
 
@@ -83,6 +83,7 @@ public class AddReviewActivity extends BaseActivity implements PhotoViewerListen
                         public void onClick(DialogInterface dialog, int id) {
                             Toast.makeText(getApplicationContext(), getResources().getString(R.string.review_published), Toast.LENGTH_SHORT).show();
                             //TODO aggiungere review al db
+
                             finish();
                         }
                     });

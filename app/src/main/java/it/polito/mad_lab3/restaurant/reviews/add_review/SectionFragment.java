@@ -1,4 +1,4 @@
-package it.polito.mad_lab3.common;
+package it.polito.mad_lab3.restaurant.reviews.add_review;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -11,8 +11,6 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 import it.polito.mad_lab3.R;
-import it.polito.mad_lab3.data.restaurant.Dish;
-import it.polito.mad_lab3.data.restaurant.Offer;
 import it.polito.mad_lab3.data.restaurant.ReviewFood;
 
 /**

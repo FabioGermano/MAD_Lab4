@@ -21,8 +21,6 @@ import java.util.Calendar;
 
 import it.polito.mad_lab3.R;
 import it.polito.mad_lab3.common.ExpandableHeightGridView;
-import ivb.com.materialstepper.stepperFragment;
-
 /**
  * Created by Giovanna on 23/04/2016.
  */

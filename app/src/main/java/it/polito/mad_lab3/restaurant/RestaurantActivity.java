@@ -5,11 +5,16 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 
 import it.polito.mad_lab3.BaseActivity;
 import it.polito.mad_lab3.MainActivity;
@@ -38,9 +43,11 @@ public class  RestaurantActivity extends BaseActivity {
     private MenuPrevFragment menuPrevFragment;
     private OfferPrevFragment offerPrevFragment;
     private User user;
-    private Button showAllMenuButton, showAllReviewsButton;
+    private Button showAllMenuButton, showAllReviewsButton, reservation;
     private ReviewsPrevFragment reviewsPrevFragment;
     private ImageView coverImage;
+    private FloatingActionMenu add;
+    private FloatingActionButton add_review, add_photo, add_reservation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +63,17 @@ public class  RestaurantActivity extends BaseActivity {
         collapsingToolbarLayout.setExpandedTitleColor(Color.WHITE);
         collapsingToolbarLayout.setCollapsedTitleTextColor(Color.WHITE);
         //FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.reservation);
-        Button reservation = (Button) findViewById(R.id.reservation);
+        reservation = (Button) findViewById(R.id.reservation);
 
+
+        add = (FloatingActionMenu) findViewById(R.id.add);
+        add_review = (FloatingActionButton) findViewById(R.id.add_review);
+        add_photo = (FloatingActionButton) findViewById(R.id.add_photo);
+        add_reservation = (FloatingActionButton) findViewById(R.id.add_reservation);
+        add.setClosedOnTouchOutside(true);
+        add_photo.setOnClickListener(clickListener);
+        add_reservation.setOnClickListener(clickListener);
+        add_review.setOnClickListener(clickListener);
 
         Bundle extras = getIntent().getExtras();
         int id = -1;
@@ -113,6 +129,17 @@ public class  RestaurantActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 newReservation();
+            }
+        });
+
+        add.setOnMenuButtonClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (add.isOpened()) {
+                    Toast.makeText(getBaseContext(), add.getMenuButtonLabelText(), Toast.LENGTH_SHORT).show();
+                }
+
+                add.toggle(true);
             }
         });
 
@@ -178,6 +205,25 @@ public class  RestaurantActivity extends BaseActivity {
         i.putExtra("restaurantId", this.restaurant.getRestaurantId());
         startActivity(i);
     }
+
+    private View.OnClickListener clickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent i;
+            switch (v.getId()) {
+                case R.id.add_photo:
+                    break;
+                case R.id.add_review:
+                    i= new Intent(getBaseContext(), AddReviewActivity.class);
+                    i.putExtra("restaurantId", restaurant.getRestaurantId());
+                    startActivity(i);
+                    break;
+                case R.id.add_reservation:
+                    newReservation();
+                    break;
+            }
+        }
+    };
 
 
     @Override
