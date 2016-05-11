@@ -28,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="175dp"
                 android:id="@+id/cover"
-                android:src="@drawable/title"
+                android:src="@drawable/title_wood"
                 android:layout_marginTop="20dp"
 
                 />
