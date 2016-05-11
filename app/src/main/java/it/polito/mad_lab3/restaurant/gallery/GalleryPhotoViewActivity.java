@@ -14,6 +14,7 @@ import it.polito.mad_lab3.BaseActivity;
 import it.polito.mad_lab3.R;
 import it.polito.mad_lab3.bl.RestaurantBL;
 import it.polito.mad_lab3.bl.UserBL;
+import it.polito.mad_lab3.common.UserSession;
 import it.polito.mad_lab3.common.photo_viewer.TouchImageView;
 import it.polito.mad_lab3.data.restaurant.Restaurant;
 import it.polito.mad_lab3.data.restaurant.UserPhoto;
@@ -32,14 +33,14 @@ public class GalleryPhotoViewActivity extends BaseActivity {
         userPhoto = (UserPhoto)extras.getSerializable("userPhoto");
         galleryPhotoText.setText(userPhoto.getDescription());
 
-        user = UserBL.getUserById(getBaseContext(), UserBL.getCurrentUserId());
+        if(UserSession.userId != null) {
+            user = UserBL.getUserById(getBaseContext(), UserSession.userId);
 
-        if(!UserBL.checkUserPhotoLike(user, this.restaurant.getRestaurantId(), userPhoto.getId())) {
-            this.likeButton.setColorFilter(Color.WHITE);
-        }
-        else
-        {
-            this.likeButton.setColorFilter(getResources().getColor(R.color.themeColor));
+            if (!UserBL.checkUserPhotoLike(user, this.restaurant.getRestaurantId(), userPhoto.getId())) {
+                this.likeButton.setColorFilter(Color.WHITE);
+            } else {
+                this.likeButton.setColorFilter(getResources().getColor(R.color.themeColor));
+            }
         }
     }
 
@@ -62,6 +63,10 @@ public class GalleryPhotoViewActivity extends BaseActivity {
                 likeButtonPressed();
             }
         });
+
+        if(UserSession.userId == null){
+            likeButton.setVisibility(View.GONE);
+        }
 
         getBitmap(getIntent().getExtras());
         setDeleteVisibility(getIntent().getExtras());

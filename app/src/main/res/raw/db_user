@@ -15,6 +15,22 @@
             "username":"fgermano",
             "password":"pass"
          }
-      }
+      },
+      {
+               "name":"Giovanna Galeano",
+               "phone":"589-99999",
+               "reservations":[
+
+               ],
+               "userPhotoLikes":[
+
+               ],
+               "userId":2,
+               "photo_path":null,
+               "userLoginInfo":{
+                  "username":"ggaleano",
+                  "password":"pass1"
+               }
+            }
    ]
 }

@@ -4,28 +4,68 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
+import it.polito.mad_lab3.BaseActivity;
 import it.polito.mad_lab3.MainActivity;
 import it.polito.mad_lab3.R;
 import it.polito.mad_lab3.bl.UserBL;
+import it.polito.mad_lab3.common.UserSession;
 import it.polito.mad_lab3.data.user.User;
 
-public class Login extends AppCompatActivity {
+public class Login extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        setActivityTitle(getResources().getString(R.string.login_title));
+        setToolbarColor();
+
+    }
+
+    @Override
+    protected User controlloLogin() {
+        return null;
+    }
+
+    @Override
+    protected void filterButton() {
+
+    }
+
+    @Override
+    protected void ModificaProfilo() {
+
+    }
+
+    @Override
+    protected void ShowPrenotazioni() {
+
     }
 
     public void eseguiLogin(View view) {
-        User userInfo = UserBL.getUserById(getBaseContext(), 1);
 
-        if(userInfo != null) {
+        EditText passwordET = (EditText)findViewById(R.id.passwordET);
+        EditText usernameET = (EditText)findViewById(R.id.usernameET);
+
+        User userInfo = UserBL.findUserByUsernamePassword(getBaseContext(), usernameET.getText().toString(), passwordET.getText().toString());
+        if(userInfo == null){
+            Toast.makeText(getBaseContext(), "Incorrect credentials", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        //User userInfo = UserBL.getUserById(getBaseContext(), 1);
+
+        //if(userInfo != null) {
             if(userInfo.getUserLoginInfo() != null){
                 userInfo.getUserLoginInfo().setLogin(true);
             }
-        }
+        //}
+
+        UserSession.userId = userInfo.getUserId();
 
         Bundle b = new Bundle();
         b.putSerializable("userInfo", userInfo);

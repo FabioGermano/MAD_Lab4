@@ -1,38 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+    <include android:id="@+id/toolbar_layout" layout="@layout/toolbar_view" android:layout_height="wrap_content" android:layout_width="match_parent"/>
+
+    <LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:orientation="vertical"
     android:paddingTop="@dimen/activity_vertical_margin"
+        android:layout_below="@id/toolbar_layout"
     tools:context="it.polito.mad_lab3.login.Login">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Login:"
-        android:layout_gravity="center_horizontal"
-        android:textSize="20sp"
-        android:textColor="@color/titoli"
-        android:layout_marginBottom="10sp"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center_vertical">
-
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Username:"/>
+            <EditText
+                android:id="@+id/usernameET"
+                android:layout_marginLeft="8dp"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Password:"/>
+            <EditText
+                android:id="@+id/passwordET"
+                android:layout_marginLeft="8dp"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Login"
+            android:layout_marginTop="16dp"
             android:layout_gravity="center_horizontal"
             android:onClick="eseguiLogin"
             />
 
-    </LinearLayout>
+        <TextView
+            android:layout_marginTop="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Log in with one of the following:\nUsername: fgermano; Password: pass\nUsername: ggaleano; Password: pass1"/>
 
-</LinearLayout>
+
+    </LinearLayout>
+</RelativeLayout>

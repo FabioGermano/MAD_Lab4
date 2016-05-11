@@ -23,6 +23,21 @@ public class UserBL {
         userEntity = DBManager.deserializeToEntity(context, DB.Users, UserEntity.class);
     }
 
+    public static User findUserByUsernamePassword(Context _context, String username, String password){
+        if(context == null){
+            init(_context);
+        }
+
+        for(User u : userEntity.getUsers()){
+            if(u.getUserLoginInfo().getUsername().equals(username) && u.getUserLoginInfo().getPassword().equals(password)){
+
+                return u;
+            }
+        }
+
+        return null;
+    }
+
     public static User getUserById(Context _context, int id){
 
         if(context == null){

@@ -20,6 +20,7 @@ import it.polito.mad_lab3.MainActivity;
 import it.polito.mad_lab3.R;
 import it.polito.mad_lab3.bl.UserBL;
 import it.polito.mad_lab3.common.Helper;
+import it.polito.mad_lab3.common.UserSession;
 import it.polito.mad_lab3.data.reservation.Reservation;
 import it.polito.mad_lab3.data.reservation.ReservationType;
 import it.polito.mad_lab3.data.reservation.ReservationTypeConverter;
@@ -89,7 +90,7 @@ public class CheckoutOrderActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-                User user = UserBL.getUserById(getBaseContext(), UserBL.getCurrentUserId());
+                User user = UserBL.getUserById(getBaseContext(), UserSession.userId);
                 Reservation r = new Reservation();
                 r.setReservationId(UserBL.getNewReservatioId(user));
                 r.setReservedDishes(reservedDishes);

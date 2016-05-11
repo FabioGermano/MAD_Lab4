@@ -250,7 +250,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void setUpRecyclerView(){
-        RecyclerView rView = (RecyclerView) findViewById(R.id.recyclerView_nearOffers);
+        /*RecyclerView rView = (RecyclerView) findViewById(R.id.recyclerView_nearOffers);
 
         RecyclerAdapter_offerteVicine myAdapter = new RecyclerAdapter_offerteVicine(this, lista_offerte_vicine);
         if(rView != null) {
@@ -261,7 +261,7 @@ public class MainActivity extends BaseActivity {
             rView.setLayoutManager(myLLM_vertical);
 
             rView.setItemAnimator(new DefaultItemAnimator());
-        }
+        }*/
     }
 
     public void ricercaLuogo(View view) {

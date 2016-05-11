@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import it.polito.mad_lab3.R;
 import it.polito.mad_lab3.bl.RestaurantBL;
+import it.polito.mad_lab3.common.UserSession;
 import it.polito.mad_lab3.data.restaurant.Restaurant;
 import it.polito.mad_lab3.data.restaurant.UserPhoto;
 import it.polito.mad_lab3.restaurant.ChoosePhotoActivity;
@@ -54,6 +55,9 @@ public class ContainerUserPhotoFragment extends Fragment  {
                 addPhotoClicked();
             }
         });
+        if(UserSession.userId == null){
+            addPhotoButton.setVisibility(View.GONE);
+        }
 
         testButton = (Button) rootView.findViewById(R.id.testButton);
         testButton.setOnClickListener(new View.OnClickListener() {
