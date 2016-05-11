@@ -1,6 +1,7 @@
 package it.polito.mad_lab3.restaurant;
 
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
@@ -14,14 +15,18 @@ import it.polito.mad_lab3.BaseActivity;
 import it.polito.mad_lab3.MainActivity;
 import it.polito.mad_lab3.R;
 import it.polito.mad_lab3.bl.RestaurantBL;
+import it.polito.mad_lab3.common.Helper;
+import it.polito.mad_lab3.data.restaurant.Cover;
 import it.polito.mad_lab3.data.restaurant.Restaurant;
 import it.polito.mad_lab3.data.user.User;
 import it.polito.mad_lab3.reservation.ReservationActivity;
+import it.polito.mad_lab3.restaurant.cover.CoverActivity;
 import it.polito.mad_lab3.restaurant.foodPhoto.ContainerUserPhotoFragment;
 import it.polito.mad_lab3.restaurant.menu.MenuActivity;
 import it.polito.mad_lab3.restaurant.menu_prev.MenuPrevFragment;
 import it.polito.mad_lab3.restaurant.offer_prev.OfferPrevFragment;
 import it.polito.mad_lab3.restaurant.reviews.ReviewsActivity;
+import it.polito.mad_lab3.restaurant.reviews.add_review.AddReviewActivity;
 import it.polito.mad_lab3.restaurant.reviews_prev.ReviewsPrevFragment;
 
 public class  RestaurantActivity extends BaseActivity {
@@ -35,6 +40,7 @@ public class  RestaurantActivity extends BaseActivity {
     private User user;
     private Button showAllMenuButton, showAllReviewsButton;
     private ReviewsPrevFragment reviewsPrevFragment;
+    private ImageView coverImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +53,6 @@ public class  RestaurantActivity extends BaseActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-        collapsingToolbarLayout.setTitle("Demo");
         collapsingToolbarLayout.setExpandedTitleColor(Color.WHITE);
         collapsingToolbarLayout.setCollapsedTitleTextColor(Color.WHITE);
         //FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.reservation);
@@ -69,6 +74,8 @@ public class  RestaurantActivity extends BaseActivity {
         //System.out.println("Id ricevuto: " + id);
         restaurant = RestaurantBL.getRestaurantById(getBaseContext(), id);
         //System.out.println("Ristorante: " + restaurant.getRestaurantName());
+
+        collapsingToolbarLayout.setTitle(restaurant.getRestaurantName());
 
         containerUserPhotoFragment = (ContainerUserPhotoFragment)getSupportFragmentManager().findFragmentById(R.id.UserPhotoFragment);
         containerUserPhotoFragment.init(restaurant);
@@ -109,6 +116,39 @@ public class  RestaurantActivity extends BaseActivity {
             }
         });
 
+        coverImage = (ImageView)findViewById(R.id.coverImage);
+        coverImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                coverImageClick();
+            }
+        });
+        setCoverImage();
+    }
+
+    private void setCoverImage() {
+        Cover cover = this.restaurant.getBasicInfo().getCovers().get(0);
+
+        if(cover.getThumbPath() == null) {
+            coverImage.setImageBitmap(
+                    BitmapFactory.decodeResource(getResources(),
+                            Helper.getResourceByName(getApplicationContext(), cover.getResPhoto(), "drawable")
+                    )
+            );
+        }
+        else
+        {
+            coverImage.setImageBitmap(
+                    BitmapFactory.decodeFile(cover.getThumbPath())
+            );
+        }
+
+    }
+
+    private void coverImageClick() {
+        Intent i = new Intent(getBaseContext(), CoverActivity.class);
+        i.putExtra("restaurantId", this.restaurant.getRestaurantId());
+        startActivity(i);
     }
 
     @Override

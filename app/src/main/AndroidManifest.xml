@@ -97,6 +97,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity android:name=".login.Login"></activity>
+        <activity android:name=".restaurant.cover.CoverActivity"></activity>
     </application>
 
 </manifest>

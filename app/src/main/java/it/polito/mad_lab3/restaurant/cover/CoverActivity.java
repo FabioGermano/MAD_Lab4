@@ -36,16 +36,18 @@ public class CoverActivity extends BaseActivity {
         hideToolbar(true);
         hideToolbarShadow(true);
 
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-        viewPager = (CustomViewPager) findViewById(R.id.coverPager);
-        viewPager.setAdapter(mSectionsPagerAdapter);
-
         shapesIndicator[0] = (ImageView)findViewById(R.id.shape1);
         shapesIndicator[1] = (ImageView)findViewById(R.id.shape2);
         shapesIndicator[2] = (ImageView)findViewById(R.id.shape3);
         shapesIndicator[3] = (ImageView)findViewById(R.id.shape4);
 
-        initIndicator(3);
+        init(getIntent().getIntExtra("restaurantId", -1));
+
+        initIndicator( this.covers.size());
+
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        viewPager = (CustomViewPager) findViewById(R.id.coverPager);
+        viewPager.setAdapter(mSectionsPagerAdapter);
 
         viewPager.setPagingEnabled(true);
 
@@ -63,8 +65,6 @@ public class CoverActivity extends BaseActivity {
             }
 
         });
-
-        init(1);
     }
 
     public void init(int restaurantId) {
@@ -102,13 +102,13 @@ public class CoverActivity extends BaseActivity {
 
         @Override
         public Fragment getItem(int position) {
-            CoverFragment f = CoverFragment.newInstance(position, covers.get(position) );
+            CoverFragment f = CoverFragment.newInstance(position, covers.get(position), covers.size());
             return f;
         }
 
         @Override
         public int getCount() {
-            return 3;//RestaurantBL.getRestaurantById(getContext(), restaurantId).getOffers().size();
+            return covers.size();
         }
 
     }

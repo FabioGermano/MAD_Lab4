@@ -23,15 +23,15 @@
                     "resPhoto":"cibo1"
                 },
                 {
-                                    "thumbPath":null,
-                                    "thumbPath":null,
-                                    "resPhoto":"cibo2"
-                                },
-                                {
-                                                    "thumbPath":null,
-                                                    "thumbPath":null,
-                                                    "resPhoto":"cibo3"
-                                                }
+                    "thumbPath":null,
+                    "thumbPath":null,
+                    "resPhoto":"cibo2"
+                },
+                {
+                    "thumbPath":null,
+                    "thumbPath":null,
+                    "resPhoto":"cibo3"
+                }
             ],
             "description":"Descrizione locale",
             "email":"restaurant@email.com",
@@ -186,8 +186,17 @@
           "city":"Torino",
           "address":"Corso Duca degli Abruzzi, 245",
           "covers":[
-
-          ],
+                          {
+                              "thumbPath":null,
+                              "thumbPath":null,
+                              "resPhoto":"cibo1"
+                          },
+                          {
+                              "thumbPath":null,
+                              "thumbPath":null,
+                              "resPhoto":"cibo2"
+                          }
+                      ],
           "typesOfServices":[
                          "TA"
                       ],
@@ -386,8 +395,22 @@
              "city":"Torino",
              "address":"Corso Duca degli Abruzzi, 245",
              "covers":[
-
-             ],
+                             {
+                                 "thumbPath":null,
+                                 "thumbPath":null,
+                                 "resPhoto":"cibo1"
+                             },
+                             {
+                                 "thumbPath":null,
+                                 "thumbPath":null,
+                                 "resPhoto":"cibo2"
+                             },
+                             {
+                                 "thumbPath":null,
+                                 "thumbPath":null,
+                                 "resPhoto":"cibo3"
+                             }
+                         ],
              "typesOfServices":[
                             "R"
                          ],

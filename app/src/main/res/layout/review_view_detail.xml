@@ -22,7 +22,7 @@
                 android:layout_margin="4dp"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/nothumb"/>
+                android:src="@drawable/user_noimage"/>
 
             <LinearLayout
                 android:layout_toRightOf="@id/offDetUserPhoto"

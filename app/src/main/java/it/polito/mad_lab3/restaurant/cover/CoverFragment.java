@@ -32,18 +32,24 @@ public class CoverFragment extends Fragment implements TouchImageViewListener {
 
     private int restaurantId;
     private int sectionNumber;
+    private int size;
     private Cover cover;
 
     public CoverFragment(){
 
     }
 
-    public static CoverFragment newInstance(int sectionNumber, Cover cover) {
+    public static CoverFragment newInstance(int sectionNumber, Cover cover, int size) {
         CoverFragment fragment = new CoverFragment();
         fragment.setSectionNumber(sectionNumber);
         fragment.setCover(cover);
+        fragment.setSize(size);
 
         return fragment;
+    }
+
+    private void setSize(int size) {
+        this.size = size;
     }
 
     private void setCover(Cover cover) {
