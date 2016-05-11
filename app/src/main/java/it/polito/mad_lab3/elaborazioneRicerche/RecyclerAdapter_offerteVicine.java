@@ -123,7 +123,7 @@ public class RecyclerAdapter_offerteVicine extends RecyclerView.Adapter<Recycler
                         if(bitmap != null)
                             image.setImageBitmap(bitmap);
                     } catch (Exception e){
-                        System.out.println("Errore creazione bitmap");
+                        System.out.println("Errore creazione bitmap"); //debug
                     }
                 }
             }

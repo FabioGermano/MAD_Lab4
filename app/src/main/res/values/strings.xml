@@ -76,6 +76,9 @@
     <string name="error_complete">Please, complete correctly all fields</string>
     <string name="gallery_activity_title">Gallery</string>
     <string name="add_userphoto_activity_title">Add a new photo</string>
+    <string name="query_troppo_lunga">Search key too long!</string>
+    <string name="query_troppo_corta">Search key too short!</string>
+    <string name="nessun_risultato">No restaurants found</string>
 
 
     <string name="seats_string">seats</string>

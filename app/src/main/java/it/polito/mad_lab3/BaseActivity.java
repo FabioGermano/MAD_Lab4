@@ -149,7 +149,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                                 if(bitmap != null)
                                     user_logo.setImageBitmap(bitmap);
                             } catch (Exception e){
-                                System.out.println("Errore creazione bitmap");
+                                System.out.println("Errore creazione bitmap"); //debug
                             }
                         }
                     }
@@ -217,26 +217,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         final MenuItem filter = menu.findItem(R.id.menu_find);
         filter.setVisible(filter_visibility);
 
-        /*if(filter_visibility){
-
-            RelativeLayout notificationLayout = (RelativeLayout) notification.getActionView();
-            alertButton = (ImageButton) notificationLayout.findViewById(R.id.alertButton);
-            alertCountView = (TextView) notificationLayout.findViewById(R.id.alertCountView);
-            View.OnClickListener listener = new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onOptionsItemSelected(notification);
-                }
-            };
-            alertButton.setOnClickListener(listener);
-            notificationLayout.setOnClickListener(listener);
-            SetAlertCount(4);
-            if(alertCount==0){
-                alertButton.setImageResource(R.drawable.ic_bell_white_48dp);
-            }
-
-
-        }*/
         return super.onCreateOptionsMenu(menu);
     }
 

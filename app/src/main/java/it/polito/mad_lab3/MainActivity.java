@@ -165,12 +165,12 @@ public class MainActivity extends BaseActivity {
     public void searchRestaurant(String query) {
 
         if (query.length() < 3){
-            Toast.makeText(MainActivity.this, "Search key too short!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, getResources().getString(R.string.query_troppo_corta), Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (query.length() > 20){
-            Toast.makeText(MainActivity.this, "Search key too long!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, getResources().getString(R.string.query_troppo_lunga), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -189,7 +189,7 @@ public class MainActivity extends BaseActivity {
             }
         }
         if(listaRicerca.size() == 0){
-            Toast toast = Toast.makeText(getApplicationContext(), "Nessun Ristorante Trovato", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.nessun_risultato), Toast.LENGTH_SHORT);
             toast.show();
             return;
         }

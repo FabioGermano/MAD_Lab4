@@ -137,7 +137,7 @@ public class RecyclerAdapter_risultatoRicerca extends RecyclerView.Adapter<Recyc
                         if(bitmap != null)
                             imgView.setImageBitmap(bitmap);
                     } catch (Exception e){
-                        System.out.println("Errore creazione bitmap");
+                        System.out.println("Errore creazione bitmap");  //debug
                     }
                 }
             }

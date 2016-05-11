@@ -82,14 +82,21 @@ public class elaborazioneRicerche extends BaseActivity implements fragment_ricer
 
     @Override
     protected User controlloLogin() {
-        return new User(null, null, -1);
+        if(userInfo == null || userInfo.getUserLoginInfo() == null)
+            userInfo = new User(null, null , -1);
+
+        return this.userInfo;
     }
 
     private void stampaMessaggioErrore(){
         Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.exceptionError), Toast.LENGTH_SHORT);
         toast.show();
 
+        Bundle b = new Bundle();
+        b.putSerializable("userInfo", userInfo);
+
         Intent i = new Intent(getBaseContext(), MainActivity.class);
+        i.putExtras(b);
         startActivity(i);
     }
 
@@ -185,7 +192,7 @@ public class elaborazioneRicerche extends BaseActivity implements fragment_ricer
             if(lista_risultati.isEmpty()){
                 lista_risultati = lista_risultati_base;
 
-                Toast toast = Toast.makeText(getApplicationContext(), "Nessun Ristorante Trovato", Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.nessun_risultato), Toast.LENGTH_SHORT);
                 toast.show();
             } else {
                 myAdapter.setNewArray(lista_risultati);
@@ -193,7 +200,7 @@ public class elaborazioneRicerche extends BaseActivity implements fragment_ricer
                 fragmentRicerca.setResetButton();
             }
         } else {
-            Toast toast = Toast.makeText(getApplicationContext(), "Nessun Ristorante Trovato", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.nessun_risultato), Toast.LENGTH_SHORT);
             toast.show();
         }
 
