@@ -35,6 +35,8 @@ public class ShowAdditionalInfoActivity extends BaseActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_additional_info);
 
+        setToolbarColor();
+
         setActivityTitle(getResources().getString(R.string.additional_info));
 
         basicInfo= (BasicInfo) getIntent().getExtras().getSerializable("basicInfo");

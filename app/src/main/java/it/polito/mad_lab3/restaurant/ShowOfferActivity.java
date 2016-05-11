@@ -43,6 +43,7 @@ public class ShowOfferActivity extends BaseActivity implements PhotoViewerListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_offer);
 
+        setToolbarColor();
 
         offer = (Offer)getIntent().getExtras().getSerializable("offer");
 

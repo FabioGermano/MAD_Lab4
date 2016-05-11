@@ -42,6 +42,7 @@ public class ChoosePhotoActivity extends BaseActivity implements PhotoViewerList
         setContentView(  R.layout.activity_choose_photo);
 
         setActivityTitle(getResources().getString(R.string.add_userphoto_activity_title));
+        setToolbarColor();
 
         sendButton = (FloatingActionButton)findViewById(R.id.sendButton);
         sendButton.setOnClickListener(new View.OnClickListener() {

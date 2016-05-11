@@ -23,6 +23,8 @@ public class PhotoGaleryActivity extends BaseActivity implements PhotoGalleryLis
         setContentView(R.layout.activity_photo_galery);
 
         hideToolbarShadow(true);
+        setToolbarColor();
+
         setActivityTitle(getResources().getString(R.string.gallery_activity_title));
 
         this.restaurant = RestaurantBL.getRestaurantById(getBaseContext(), getIntent().getExtras().getInt("restaurantId"));

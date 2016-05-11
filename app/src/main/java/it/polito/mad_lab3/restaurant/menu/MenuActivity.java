@@ -27,6 +27,7 @@ public class MenuActivity extends BaseActivity {
 
         setActivityTitle("Menu");
         hideToolbarShadow(true);
+        setToolbarColor();
 
         restaurantId = getIntent().getExtras().getInt("restaurantId");
 

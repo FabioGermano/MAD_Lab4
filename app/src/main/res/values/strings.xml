@@ -114,7 +114,7 @@
     <string name="description">Description:</string>
     <string name="send_mail">Send mail</string>
     <string name="no_email_client">There is no email client installed</string>
-    <string name="numReviewsText">Avarage rank on % reviews</string>
+    <string name="numReviewsText">Average rank on % reviews</string>
     <string name="orderBy">Order</string>
     <string name="add_review_activity_title">Add review</string>
 
