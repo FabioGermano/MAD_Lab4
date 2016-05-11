@@ -51,6 +51,7 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
 
         hideToolbar(true);
         hideToolbarShadow(true);
+
         calendarFragment = (CalendarFragment) getSupportFragmentManager().findFragmentById(R.id.date_time);
         TextView name= (TextView) findViewById(R.id.restaurant_name);
 

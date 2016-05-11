@@ -45,6 +45,8 @@ public class CheckoutOrderActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout_order);
 
+        setToolbarColor();
+
         setActivityTitle(getResources().getString(R.string.your_reservation));
 
         Bundle extras = getIntent().getExtras();
