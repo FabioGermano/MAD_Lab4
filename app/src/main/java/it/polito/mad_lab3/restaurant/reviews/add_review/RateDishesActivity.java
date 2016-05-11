@@ -21,6 +21,7 @@ import it.polito.mad_lab3.data.restaurant.DishType;
 import it.polito.mad_lab3.data.restaurant.Offer;
 import it.polito.mad_lab3.data.restaurant.Restaurant;
 import it.polito.mad_lab3.data.restaurant.ReviewFood;
+import it.polito.mad_lab3.data.user.User;
 import it.polito.mad_lab3.reservation.food_order.FoodOrderActivity;
 
 /**
@@ -152,8 +153,8 @@ public class RateDishesActivity extends BaseActivity{
     }
 
     @Override
-    protected boolean controlloLogin() {
-        return false;
+    protected User controlloLogin() {
+        return new User(null, null, -1);
     }
 
     @Override

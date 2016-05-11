@@ -129,8 +129,8 @@ public class CheckoutOrderActivity extends BaseActivity {
     }
 
     @Override
-    protected boolean controlloLogin() {
-        return false;
+    protected User controlloLogin() {
+        return new User(null, null, -1);
     }
 
     @Override

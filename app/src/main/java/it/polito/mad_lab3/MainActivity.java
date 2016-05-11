@@ -113,13 +113,11 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    protected boolean controlloLogin() {
-        if(userInfo != null)
-            return this.userInfo.getUserLoginInfo().isLogin();
-        else{
+    protected User controlloLogin() {
+        if(userInfo == null || userInfo.getUserLoginInfo() == null)
             userInfo = new User(null, null , -1);
-            return false;
-        }
+
+        return this.userInfo;
     }
 
     private User controlloLoginAutomatico(){

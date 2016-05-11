@@ -70,8 +70,8 @@ public class GalleryPhotoViewActivity extends BaseActivity {
     }
 
     @Override
-    protected boolean controlloLogin() {
-        return false;
+    protected User controlloLogin() {
+        return new User(null, null, -1);
     }
 
     @Override

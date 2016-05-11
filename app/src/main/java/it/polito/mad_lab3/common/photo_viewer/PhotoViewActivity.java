@@ -13,6 +13,7 @@ import android.view.MenuItem;
 
 import it.polito.mad_lab3.BaseActivity;
 import it.polito.mad_lab3.R;
+import it.polito.mad_lab3.data.user.User;
 
 public class PhotoViewActivity  extends BaseActivity {
 
@@ -44,8 +45,8 @@ public class PhotoViewActivity  extends BaseActivity {
     }
 
     @Override
-    protected boolean controlloLogin() {
-        return false;
+    protected User controlloLogin() {
+        return new User(null, null, -1);
     }
 
     @Override

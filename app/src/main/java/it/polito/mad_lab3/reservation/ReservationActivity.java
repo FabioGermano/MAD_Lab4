@@ -14,6 +14,7 @@ import it.polito.mad_lab3.R;
 import it.polito.mad_lab3.bl.RestaurantBL;
 import it.polito.mad_lab3.common.Helper;
 import it.polito.mad_lab3.data.restaurant.Restaurant;
+import it.polito.mad_lab3.data.user.User;
 import it.polito.mad_lab3.reservation.food_order.*;
 
 public class ReservationActivity extends BaseActivity implements ChoiceFragment.OnChoiceSelectedListener,CalendarFragment.OnDateSelectedListener, TimeFragment.OnTimeSelectedListener{
@@ -78,8 +79,8 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
     }
 
     @Override
-    protected boolean controlloLogin() {
-        return false;
+    protected User controlloLogin() {
+        return new User(null, null, -1);
     }
 
     @Override

@@ -25,6 +25,7 @@ import it.polito.mad_lab3.data.restaurant.Dish;
 import it.polito.mad_lab3.data.restaurant.DishType;
 import it.polito.mad_lab3.data.restaurant.Offer;
 import it.polito.mad_lab3.data.restaurant.Restaurant;
+import it.polito.mad_lab3.data.user.User;
 import it.polito.mad_lab3.reservation.CheckoutOrderActivity;
 
 public class FoodOrderActivity extends BaseActivity {
@@ -40,8 +41,8 @@ public class FoodOrderActivity extends BaseActivity {
     private Restaurant restaurant;
 
     @Override
-    protected boolean controlloLogin() {
-        return false;
+    protected User controlloLogin() {
+        return new User(null, null, -1);
     }
 
 

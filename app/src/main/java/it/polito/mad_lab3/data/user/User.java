@@ -12,6 +12,7 @@ public class User implements Serializable{
     private ArrayList<Reservation> reservations; //verranno poi prese dinamicamente dal server
     private String name;
     private String phone;
+    private String photo_path;
     private int userId;
     private ArrayList<UserPhotoLike> userPhotoLikes; //verranno poi prese dinamicamente dal server
 
@@ -24,7 +25,16 @@ public class User implements Serializable{
         this.userId = userId;
         this.reservations = new ArrayList<Reservation>();
         this.userPhotoLikes = new ArrayList<UserPhotoLike>();
-        userLoginInfo = new UserLoginInformation();
+        this.userLoginInfo = new UserLoginInformation();
+        this.photo_path = null;
+    }
+
+    public void setPhoto_path(String path){
+        this.photo_path = path;
+    }
+
+    public String getPhoto_path(){
+        return this.photo_path;
     }
 
     public void setUserLoginInfo(UserLoginInformation loginInfo){

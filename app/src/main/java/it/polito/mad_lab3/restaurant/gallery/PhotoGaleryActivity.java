@@ -10,6 +10,7 @@ import it.polito.mad_lab3.R;
 import it.polito.mad_lab3.bl.RestaurantBL;
 import it.polito.mad_lab3.data.restaurant.Restaurant;
 import it.polito.mad_lab3.data.restaurant.UserPhoto;
+import it.polito.mad_lab3.data.user.User;
 
 public class PhotoGaleryActivity extends BaseActivity implements PhotoGalleryListener{
 
@@ -40,8 +41,8 @@ public class PhotoGaleryActivity extends BaseActivity implements PhotoGalleryLis
     }
 
     @Override
-    protected boolean controlloLogin() {
-        return false;
+    protected User controlloLogin() {
+        return new User(null, null, -1);
     }
 
     @Override

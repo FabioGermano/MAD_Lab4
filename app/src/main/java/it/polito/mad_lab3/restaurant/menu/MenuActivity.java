@@ -12,6 +12,7 @@ import it.polito.mad_lab3.BaseActivity;
 import it.polito.mad_lab3.R;
 import it.polito.mad_lab3.common.Helper;
 import it.polito.mad_lab3.data.restaurant.DishTypeConverter;
+import it.polito.mad_lab3.data.user.User;
 import it.polito.mad_lab3.restaurant.menu_prev.MenuListPrevFragment;
 
 public class MenuActivity extends BaseActivity {
@@ -42,8 +43,8 @@ public class MenuActivity extends BaseActivity {
     }
 
     @Override
-    protected boolean controlloLogin() {
-        return false;
+    protected User controlloLogin() {
+        return new User(null, null, -1);
     }
 
     @Override

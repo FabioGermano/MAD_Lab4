@@ -81,8 +81,8 @@ public class elaborazioneRicerche extends BaseActivity implements fragment_ricer
     }
 
     @Override
-    protected boolean controlloLogin() {
-        return false;
+    protected User controlloLogin() {
+        return new User(null, null, -1);
     }
 
     private void stampaMessaggioErrore(){

@@ -21,8 +21,11 @@ public class Login extends AppCompatActivity {
     public void eseguiLogin(View view) {
         User userInfo = UserBL.getUserById(getBaseContext(), 1);
 
-        System.out.println("Utente:\n" + userInfo.getName() + "\n" + userInfo.getPhone()
-            + "\n" + userInfo.getUserLoginInfo().getUsername() + "\n" + userInfo.getUserLoginInfo().getPassword());
+        if(userInfo != null) {
+            if(userInfo.getUserLoginInfo() != null){
+                userInfo.getUserLoginInfo().setLogin(true);
+            }
+        }
 
         Bundle b = new Bundle();
         b.putSerializable("userInfo", userInfo);

@@ -3,6 +3,8 @@ package it.polito.mad_lab3;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.design.widget.NavigationView;
@@ -22,6 +24,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import it.polito.mad_lab3.data.user.User;
 import it.polito.mad_lab3.login.Login;
 
 public abstract class BaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -33,6 +36,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     String activityTitle =  "Titolo App";
     private View toolbarShadow;
     private boolean useToolbar=true;
+
+    private User userInformation;
 
     //per visualizzare o meno, e abilitare, l'icona nella toolbar
     private boolean icona_toolbar = false;
@@ -111,7 +116,9 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
             NavigationView navigationView = (NavigationView) view.findViewById(R.id.nav_view);
 
             //controllo se l'utente è collegato e decido quale menu/header visualizzare
-            boolean login = controlloLogin();
+            userInformation = controlloLogin();
+
+            boolean login = userInformation.getUserLoginInfo().isLogin();
 
             if(navigationView != null) {
                 if (login) {
@@ -130,13 +137,22 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                     ImageView user_logo = (ImageView) header.findViewById(R.id.nav_drawer_logo);
                     TextView user_name = (TextView) header.findViewById(R.id.nav_drawer_name);
 
-                    user_name.setText("Nome dell'utente");
-                /*if (restaurant_name != null && restaurant_logo != null) {
-                    if (name != null && name.compareTo("") != 0)
-                        restaurant_name.setText(name);
-                    if (logo != null)
-                        restaurant_logo.setImageBitmap(logo);
-                }*/
+                    //setto il nome dell'utente
+                    if(user_name != null)
+                        user_name.setText(userInformation.getName());
+                    //setto la foto dell'utente
+                    if (user_logo != null){
+                        String path = userInformation.getPhoto_path();
+                        if (path != null){
+                            try {
+                                Bitmap bitmap = BitmapFactory.decodeFile(path);
+                                if(bitmap != null)
+                                    user_logo.setImageBitmap(bitmap);
+                            } catch (Exception e){
+                                System.out.println("Errore creazione bitmap");
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -192,7 +208,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
             titleTextView.setText(title);
     }
 
-    protected abstract boolean controlloLogin();
+    protected abstract User controlloLogin();
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -21,6 +21,7 @@ import it.polito.mad_lab3.bl.RestaurantBL;
 import it.polito.mad_lab3.common.Helper;
 import it.polito.mad_lab3.data.restaurant.Restaurant;
 import it.polito.mad_lab3.data.restaurant.Review;
+import it.polito.mad_lab3.data.user.User;
 import it.polito.mad_lab3.restaurant.menu.MenuListAdapter;
 
 public class ReviewsActivity extends BaseActivity {
@@ -69,8 +70,8 @@ public class ReviewsActivity extends BaseActivity {
     }
 
     @Override
-    protected boolean controlloLogin() {
-        return false;
+    protected User controlloLogin() {
+        return new User(null, null, -1);
     }
 
     @Override

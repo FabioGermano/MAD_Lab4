@@ -19,6 +19,7 @@ import it.polito.mad_lab3.common.photo_manager.PhotoType;
 import it.polito.mad_lab3.common.photo_viewer.PhotoViewer;
 import it.polito.mad_lab3.common.photo_viewer.PhotoViewerListener;
 import it.polito.mad_lab3.data.restaurant.Offer;
+import it.polito.mad_lab3.data.user.User;
 
 /**
  * Created by Giovanna on 03/05/2016.
@@ -106,8 +107,8 @@ public class ShowOfferActivity extends BaseActivity implements PhotoViewerListen
     }
 
     @Override
-    protected boolean controlloLogin() {
-        return false;
+    protected User controlloLogin() {
+        return new User(null, null, -1);
     }
 
     @Override

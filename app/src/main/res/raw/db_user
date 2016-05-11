@@ -10,10 +10,11 @@
 
          ],
          "userId":1,
-         "userLoginInfo":[
+         "photo_path":null,
+         "userLoginInfo":{
             "username":"fgermano",
             "password":"pass"
-         ]
+         }
       }
    ]
 }

@@ -10,6 +10,7 @@ import it.polito.mad_lab3.R;
 import it.polito.mad_lab3.common.Helper;
 import it.polito.mad_lab3.common.photo_viewer.TouchImageView;
 import it.polito.mad_lab3.data.restaurant.Dish;
+import it.polito.mad_lab3.data.user.User;
 
 public class MenuPhotoViewActivity extends BaseActivity {
 
@@ -63,8 +64,8 @@ public class MenuPhotoViewActivity extends BaseActivity {
     }
 
     @Override
-    protected boolean controlloLogin() {
-        return false;
+    protected User controlloLogin() {
+        return new User(null, null, -1);
     }
 
     @Override

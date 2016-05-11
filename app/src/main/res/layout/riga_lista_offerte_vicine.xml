@@ -8,7 +8,6 @@
     android:layout_marginBottom="@dimen/card_risultati_verticale"
     android:layout_marginLeft="@dimen/card_risultati_orizzontale"
     android:layout_marginRight="@dimen/card_risultati_orizzontale"
-    card_view:cardBackgroundColor="@color/lightGrey"
     card_view:cardCornerRadius="5dp"
     android:clickable="true">
 
@@ -128,7 +127,7 @@
                     android:text="(37)"/>
             </LinearLayout>
         </RelativeLayout>
-        
+
         <RelativeLayout
             android:layout_centerHorizontal="true"
             android:id="@+id/trasparentContainer"

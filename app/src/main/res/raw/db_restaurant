@@ -3,10 +3,10 @@
       {
 
          "basicInfo":{
-         "typesOfServices":[
-                        "TA",
-                        "R"
-                     ],
+            "typesOfServices":[
+                "TA",
+                "R"
+             ],
             "wifi":true,
             "reservations":false,
             "seatsOutside":true,
