@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +31,8 @@ public class MainActivity extends BaseActivity {
     private Button addReview, reservationBtn, testBtn;
     private ArrayList<Restaurant> listaRistoranti;
     private User userInfo;
+    private ImageButton ricercaLuogoBtn, ricercaRistoranteBtn, ricercaPiattoBtn;
+    private boolean ricerca_luogo=false, ricerca_ristorante=false, ricerca_piatto=false;
 
     private ArrayList<Oggetto_offerteVicine> lista_offerte_vicine;
 
@@ -106,7 +109,9 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-        //ricerca.setIconifiedByDefault(false);
+        ricercaLuogoBtn = (ImageButton) findViewById(R.id.ricerca_luogo);
+        ricercaRistoranteBtn = (ImageButton) findViewById(R.id.ricerca_ristorante);
+        ricercaPiattoBtn = (ImageButton) findViewById(R.id.ricerca_piatto);
 
         setUpRecyclerView();
 
@@ -174,20 +179,27 @@ public class MainActivity extends BaseActivity {
             return;
         }
 
-        ArrayList<Oggetto_risultatoRicerca> listaRicerca = new ArrayList<>();
+        ArrayList<Oggetto_risultatoRicerca> listaRicerca = null;
 
-        for(Restaurant r : this.listaRistoranti){
-            String nome = r.getRestaurantName().toLowerCase();
-            String address = r.getBasicInfo().getAddress().toLowerCase();
-            if (nome.contains(query.toLowerCase())){
-                Oggetto_risultatoRicerca obj = new Oggetto_risultatoRicerca(r.getRestaurantId(), r.getRestaurantName(), r.getBasicInfo().getAddress(), r.getBasicInfo().getLogoThumb(), r.getAvgPrice(), r.getAvgReview(), Oggetto_risultatoRicerca.type.RISTORANTE, r.getBasicInfo().getTypesOfServices());
-                listaRicerca.add(obj);
-            }
-            else if (address.contains(query.toLowerCase())){
-                Oggetto_risultatoRicerca obj = new Oggetto_risultatoRicerca(r.getRestaurantId(), r.getRestaurantName(), r.getBasicInfo().getAddress(), r.getBasicInfo().getLogoThumb(), r.getAvgPrice(), r.getAvgReview(), Oggetto_risultatoRicerca.type.RISTORANTE, r.getBasicInfo().getTypesOfServices());
-                listaRicerca.add(obj);
-            }
+        if(ricerca_piatto){
+            System.out.println("Ricerco per piatto");
+            listaRicerca = ricercaPerPiatto(query);
         }
+        if(ricerca_luogo){
+            System.out.println("Ricerco per luogo");
+            listaRicerca = ricercaPerLuogo(query);
+        }
+        if(ricerca_ristorante){
+            System.out.println("Ricerco per ristorante");
+            listaRicerca = ricercaPerRistorante(query);
+        }
+
+        if(listaRicerca == null ){
+            Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.exceptionError), Toast.LENGTH_SHORT);
+            toast.show();
+            return;
+        }
+
         if(listaRicerca.size() == 0){
             Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.nessun_risultato), Toast.LENGTH_SHORT);
             toast.show();
@@ -203,6 +215,40 @@ public class MainActivity extends BaseActivity {
         startActivity(i);
     }
 
+    //implemento ricerca per piatto
+    private ArrayList<Oggetto_risultatoRicerca> ricercaPerPiatto(String query) {
+        ArrayList<Oggetto_risultatoRicerca> listaRicerca = new ArrayList<>();
+
+        return listaRicerca;
+    }
+
+    //implemento ricerca per luogo
+    private ArrayList<Oggetto_risultatoRicerca> ricercaPerLuogo(String query) {
+        ArrayList<Oggetto_risultatoRicerca> listaRicerca = new ArrayList<>();
+
+        return listaRicerca;
+    }
+
+    //implemento ricerca per ristorante
+    private ArrayList<Oggetto_risultatoRicerca> ricercaPerRistorante(String query) {
+        ArrayList<Oggetto_risultatoRicerca> listaRicerca = new ArrayList<>();
+
+        for(Restaurant r : this.listaRistoranti){
+            String nome = r.getRestaurantName().toLowerCase();
+            String address = r.getBasicInfo().getAddress().toLowerCase();
+            if (nome.contains(query.toLowerCase())){
+                Oggetto_risultatoRicerca obj = new Oggetto_risultatoRicerca(r.getRestaurantId(), r.getRestaurantName(), r.getBasicInfo().getAddress(), r.getBasicInfo().getLogoThumb(), r.getAvgPrice(), r.getAvgReview(), Oggetto_risultatoRicerca.type.RISTORANTE, r.getBasicInfo().getTypesOfServices());
+                listaRicerca.add(obj);
+            }
+            else if (address.contains(query.toLowerCase())){
+                Oggetto_risultatoRicerca obj = new Oggetto_risultatoRicerca(r.getRestaurantId(), r.getRestaurantName(), r.getBasicInfo().getAddress(), r.getBasicInfo().getLogoThumb(), r.getAvgPrice(), r.getAvgReview(), Oggetto_risultatoRicerca.type.RISTORANTE, r.getBasicInfo().getTypesOfServices());
+                listaRicerca.add(obj);
+            }
+        }
+
+        return listaRicerca;
+    }
+
     private void setUpRecyclerView(){
         RecyclerView rView = (RecyclerView) findViewById(R.id.recyclerView_nearOffers);
 
@@ -215,6 +261,66 @@ public class MainActivity extends BaseActivity {
             rView.setLayoutManager(myLLM_vertical);
 
             rView.setItemAnimator(new DefaultItemAnimator());
+        }
+    }
+
+    public void ricercaLuogo(View view) {
+        if(ricercaPiattoBtn != null && ricercaLuogoBtn != null && ricercaRistoranteBtn != null) {
+            if (!ricerca_luogo) {
+                ricercaLuogoBtn.setImageResource(R.drawable.ic_ricerca_luogo_selezione);
+                ricerca_luogo = true;
+                if (ricerca_piatto) {
+                    ricerca_piatto = false;
+                    ricercaPiattoBtn.setImageResource(R.drawable.ic_ricerca_luogo);
+                }
+                if (ricerca_ristorante) {
+                    ricerca_ristorante = false;
+                    ricercaRistoranteBtn.setImageResource(R.drawable.ic_ricerca_luogo);
+                }
+            } else {
+                ricerca_luogo = false;
+                ricercaLuogoBtn.setImageResource(R.drawable.ic_ricerca_luogo);
+            }
+        }
+    }
+
+    public void ricercaRistorante(View view) {
+        if(ricercaPiattoBtn != null && ricercaLuogoBtn != null && ricercaRistoranteBtn != null) {
+            if (!ricerca_ristorante) {
+                ricercaRistoranteBtn.setImageResource(R.drawable.ic_ricerca_luogo_selezione);
+                ricerca_ristorante = true;
+                if (ricerca_piatto) {
+                    ricerca_piatto = false;
+                    ricercaPiattoBtn.setImageResource(R.drawable.ic_ricerca_luogo);
+                }
+                if (ricerca_luogo) {
+                    ricerca_luogo = false;
+                    ricercaLuogoBtn.setImageResource(R.drawable.ic_ricerca_luogo);
+                }
+            } else {
+                ricerca_ristorante = false;
+                ricercaRistoranteBtn.setImageResource(R.drawable.ic_ricerca_luogo);
+            }
+        }
+    }
+
+    public void ricercaPiatto(View view) {
+        if(ricercaPiattoBtn != null && ricercaLuogoBtn != null && ricercaRistoranteBtn != null) {
+            if (!ricerca_piatto) {
+                ricercaPiattoBtn.setImageResource(R.drawable.ic_ricerca_luogo_selezione);
+                ricerca_piatto = true;
+                if (ricerca_luogo) {
+                    ricerca_luogo = false;
+                    ricercaLuogoBtn.setImageResource(R.drawable.ic_ricerca_luogo);
+                }
+                if (ricerca_ristorante) {
+                    ricerca_ristorante = false;
+                    ricercaRistoranteBtn.setImageResource(R.drawable.ic_ricerca_luogo);
+                }
+            } else {
+                ricerca_piatto = false;
+                ricercaPiattoBtn.setImageResource(R.drawable.ic_ricerca_luogo);
+            }
         }
     }
 }

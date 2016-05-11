@@ -33,7 +33,7 @@
     <!--<string name="ricerca">research ...</string>-->
     <string name="titolo_main_activity">Restaurant finder</string>
     <string name="titolo_ricerca">Find your restaurant:</string>
-    <string name="info_ricerca">(make searches by name of restaurant or by place)</string>
+    <string name="info_ricerca">(make searches by name of restaurant, dish or by place)</string>
     <string name="titolo_offerte_vicine">Some offers near you ...</string>
 
     <!-- navigation drawer -->

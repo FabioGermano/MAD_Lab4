@@ -12,12 +12,12 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        
+
         <LinearLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             tools:context="it.polito.mad_lab3.MainActivity"
             android:background="@drawable/wood_background"
@@ -69,12 +69,47 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="5dp"
+                        android:layout_gravity="center">
+
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            android:src="@drawable/ic_ricerca_luogo"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:background="@color/transparent"
+                            android:onClick="ricercaLuogo"
+                            android:id="@+id/ricerca_luogo"/>
+
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_ricerca_luogo"
+                            android:background="@color/transparent"
+                            android:layout_marginRight="10dp"
+                            android:onClick="ricercaRistorante"
+                            android:id="@+id/ricerca_ristorante"/>
+
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_ricerca_luogo"
+                            android:background="@color/transparent"
+                            android:onClick="ricercaPiatto"
+                            android:id="@+id/ricerca_piatto"/>
+
+                    </LinearLayout>
+
                     <android.support.v7.widget.CardView
                         xmlns:android="http://schemas.android.com/apk/res/android"
                         xmlns:card_view="http://schemas.android.com/apk/res-auto"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginTop="5dp"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:layout_marginBottom="10dp"
@@ -95,8 +130,8 @@
                         android:layout_height="wrap_content"
                         android:text="@string/info_ricerca"
                         android:gravity="center"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginTop="5dp"/>
+                        android:textSize="12dp"
+                        android:layout_marginBottom="10dp"/>
 
                 </LinearLayout>
 
@@ -132,7 +167,7 @@
         </LinearLayout>
     </ScrollView>
 
-    <!---->
+    <!-- -->
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
