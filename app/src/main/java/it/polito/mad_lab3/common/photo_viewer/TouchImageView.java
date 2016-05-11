@@ -17,6 +17,7 @@ import android.widget.ImageView;
 public class TouchImageView extends ImageView {
 
     Matrix matrix;
+    private TouchImageViewListener listener = null;
 
     // We can be in one of these 3 states
     static final int NONE = 0;
@@ -132,6 +133,15 @@ public class TouchImageView extends ImageView {
             } else if (saveScale < minScale) {
                 saveScale = minScale;
                 mScaleFactor = minScale / origScale;
+
+                if(listener != null){
+                    listener.OnScaleOutListener();
+                }
+            }
+            else{
+                if(listener != null){
+                    listener.OnScaleListener();
+                }
             }
 
             if (origWidth * saveScale <= viewWidth
@@ -233,5 +243,9 @@ public class TouchImageView extends ImageView {
             setImageMatrix(matrix);
         }
         fixTrans();
+    }
+
+    public void setListener(TouchImageViewListener listener){
+        this.listener = listener;
     }
 }
