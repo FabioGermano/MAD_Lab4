@@ -50,7 +50,8 @@ public class  RestaurantActivity extends BaseActivity {
         collapsingToolbarLayout.setTitle("Demo");
         collapsingToolbarLayout.setExpandedTitleColor(Color.WHITE);
         collapsingToolbarLayout.setCollapsedTitleTextColor(Color.WHITE);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.reservation);
+        //FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.reservation);
+        Button reservation = (Button) findViewById(R.id.reservation);
 
 
         Bundle extras = getIntent().getExtras();
@@ -101,7 +102,7 @@ public class  RestaurantActivity extends BaseActivity {
             }
         });
 
-        fab.setOnClickListener(new View.OnClickListener() {
+        reservation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 newReservation();

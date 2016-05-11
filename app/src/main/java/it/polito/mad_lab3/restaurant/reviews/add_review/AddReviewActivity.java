@@ -33,15 +33,12 @@ public class AddReviewActivity extends BaseActivity implements PhotoViewerListen
     private Button addReview;
     private int restaurantID=-1;
     private Context context = this;
+    private float rbValue=-1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_review);
-
-        if (savedInstanceState != null) {
-            review= savedInstanceState.getString("review", null);
-        }
 
         this.restaurantID = getIntent().getExtras().getInt("restaurantId");
         hideToolbar(true);
@@ -52,6 +49,14 @@ public class AddReviewActivity extends BaseActivity implements PhotoViewerListen
         cover = (ImageView)findViewById(R.id.cover) ;
         restaurantNameTextView = (TextView) findViewById(R.id.restaurant_name);
         rb = (RatingBar) findViewById(R.id.rating);
+        rb.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                if(fromUser){
+                    rbValue=rating;
+                }
+            }
+        });
         ratingTextView= (TextView) findViewById(R.id.ratingText);
 
         addReview= (Button) findViewById(R.id.add);
@@ -68,15 +73,16 @@ public class AddReviewActivity extends BaseActivity implements PhotoViewerListen
                         public void onClick(DialogInterface dialog, int id) {
                             Intent i = new Intent(context, RateDishesActivity.class);
                             i.putExtra("review", editText.getText());
-                            i.putExtra("rating", rb.getRating());
+                            i.putExtra("rating", rbValue);
                             startActivity(i);
 
                         }
                     });
                     builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            Toast toast = Toast.makeText(context, getResources().getString(R.string.review_published), Toast.LENGTH_SHORT);
+                            Toast.makeText(getApplicationContext(), getResources().getString(R.string.review_published), Toast.LENGTH_SHORT).show();
                             //TODO aggiungere review al db
+                            finish();
                         }
                     });
 
@@ -84,7 +90,7 @@ public class AddReviewActivity extends BaseActivity implements PhotoViewerListen
                     dialog.show();
                 }
                 else{
-                    Toast toast = Toast.makeText(context, getResources().getString(R.string.insert_review), Toast.LENGTH_SHORT);
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.insert_review), Toast.LENGTH_SHORT).show();
                 }
 
             }
