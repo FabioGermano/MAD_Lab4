@@ -10,6 +10,16 @@ public class Cover implements Serializable{
     private String largePath;
     private String thumbPath;
 
+    public String getResPhoto() {
+        return resPhoto;
+    }
+
+    public void setResPhoto(String resPhoto) {
+        this.resPhoto = resPhoto;
+    }
+
+    private String resPhoto;
+
     public Cover(String largePath, String thumbPath) {
         this.largePath = largePath;
         this.thumbPath = thumbPath;

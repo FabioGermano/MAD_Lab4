@@ -17,7 +17,21 @@
             "city":"Torino",
             "address":"Via Monginevro, 12",
             "covers":[
-
+                {
+                    "thumbPath":null,
+                    "thumbPath":null,
+                    "resPhoto":"cibo1"
+                },
+                {
+                                    "thumbPath":null,
+                                    "thumbPath":null,
+                                    "resPhoto":"cibo2"
+                                },
+                                {
+                                                    "thumbPath":null,
+                                                    "thumbPath":null,
+                                                    "resPhoto":"cibo3"
+                                                }
             ],
             "description":"Descrizione locale",
             "email":"restaurant@email.com",
