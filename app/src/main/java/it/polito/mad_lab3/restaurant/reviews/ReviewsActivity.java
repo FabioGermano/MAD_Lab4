@@ -43,6 +43,7 @@ public class ReviewsActivity extends BaseActivity {
 
         hideToolbarShadow(true);
         setToolbarColor();
+
         setActivityTitle(getResources().getString(R.string.reviews_activity_title));
 
         reviewsListView = (ListView) findViewById(R.id.reviewsListView);

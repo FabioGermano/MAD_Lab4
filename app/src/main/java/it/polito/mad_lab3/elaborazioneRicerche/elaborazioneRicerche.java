@@ -39,6 +39,7 @@ public class elaborazioneRicerche extends BaseActivity implements fragment_ricer
         setTitleVisible();
 
         setActivityTitle(getResources().getString(R.string.titolo_elaborazioneRicerche));
+
         try {
             //ottengo i risultati della ricerca
 
