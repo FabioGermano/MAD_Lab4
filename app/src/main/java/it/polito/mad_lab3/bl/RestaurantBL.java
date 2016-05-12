@@ -8,8 +8,13 @@ import java.util.Iterator;
 import it.polito.mad_lab3.common.photo_viewer.PhotoViewer;
 import it.polito.mad_lab3.dal.DB;
 import it.polito.mad_lab3.dal.DBManager;
+import it.polito.mad_lab3.data.restaurant.Dish;
+import it.polito.mad_lab3.data.restaurant.DishType;
+import it.polito.mad_lab3.data.restaurant.Offer;
 import it.polito.mad_lab3.data.restaurant.Restaurant;
 import it.polito.mad_lab3.data.restaurant.RestaurantEntity;
+import it.polito.mad_lab3.data.restaurant.Review;
+import it.polito.mad_lab3.data.restaurant.ReviewFood;
 import it.polito.mad_lab3.data.restaurant.UserPhoto;
 
 /**
@@ -64,6 +69,44 @@ public class RestaurantBL {
                 r.setLikes(r.getLikes()+1);
             }
         }
+    }
+    public static void updateDishesRating (Restaurant restaurant, ArrayList<ReviewFood> data, int section){
+        Dish d;
+        for(ReviewFood r : data)
+        switch (section) {
+            case 0:
+                Offer o = restaurant.getOffers().get(r.getPosition());
+                o.setNumRanks(o.getNumRanks()+1);
+                o.setSumRank(o.getSumRank()+r.getRating());
+                break;
+            case 1:
+                d = restaurant.getDishesOfCategory(DishType.MainCourses).get(r.getPosition());
+                d.setNumRanks(d.getNumRanks()+1);
+                d.setSumRank(d.getSumRank()+r.getRating());
+                break;
+            case 2:
+                d = restaurant.getDishesOfCategory(DishType.SecondCourses).get(r.getPosition());
+                d.setNumRanks(d.getNumRanks()+1);
+                d.setSumRank(d.getSumRank()+r.getRating());
+                break;
+            case 3:
+                d = restaurant.getDishesOfCategory(DishType.Dessert).get(r.getPosition());
+                d.setNumRanks(d.getNumRanks()+1);
+                d.setSumRank(d.getSumRank()+r.getRating());
+                break;
+            case 4:
+                d = restaurant.getDishesOfCategory(DishType.Other).get(r.getPosition());
+                d.setNumRanks(d.getNumRanks()+1);
+                d.setSumRank(d.getSumRank()+r.getRating());
+                break;
+            default:
+                break;
+        }
+    }
+
+    public static void addReview(Restaurant restaurant, Review review){
+        restaurant.getReviews().add(review);
+        restaurant.setNumReviews(restaurant.getNumReviews()+1);
     }
 
     public static void removeLikeToUserPhoto(Restaurant restaurant, int userPhotoId){

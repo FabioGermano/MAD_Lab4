@@ -18,10 +18,10 @@
         android:textSize="18sp"
         android:text="Nome piatto"/>
 
-    <ViewSwitcher
+    <!-- <ViewSwitcher
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/viewSwitcher" >
+        android:id="@+id/viewSwitcher" > -->
 
         <Button
             android:layout_width="wrap_content"
@@ -37,6 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:id="@+id/rate"
             android:orientation="horizontal">
 
             <RatingBar
@@ -60,6 +61,6 @@
                 android:background="@android:drawable/ic_menu_close_clear_cancel"/>
 
         </LinearLayout>
-    </ViewSwitcher>
+   <!-- </ViewSwitcher>-->
 
 </LinearLayout>

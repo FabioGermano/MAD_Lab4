@@ -14,10 +14,19 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import it.polito.mad_lab3.BaseActivity;
 import it.polito.mad_lab3.R;
+import it.polito.mad_lab3.bl.RestaurantBL;
+import it.polito.mad_lab3.bl.UserBL;
 import it.polito.mad_lab3.common.photo_viewer.PhotoViewer;
 import it.polito.mad_lab3.common.photo_viewer.PhotoViewerListener;
+import it.polito.mad_lab3.data.restaurant.Restaurant;
+import it.polito.mad_lab3.data.restaurant.Review;
 import it.polito.mad_lab3.data.user.User;
 
 /**
@@ -35,6 +44,7 @@ public class AddReviewActivity extends BaseActivity implements PhotoViewerListen
     private int restaurantID=-1;
     private Context context = this;
     private float rbValue=-1;
+    private Restaurant restaurant;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +59,9 @@ public class AddReviewActivity extends BaseActivity implements PhotoViewerListen
         editText= (EditText) findViewById(R.id.review);
         cover = (ImageView)findViewById(R.id.cover) ;
         restaurantNameTextView = (TextView) findViewById(R.id.restaurant_name);
+        restaurant = RestaurantBL.getRestaurantById(this, restaurantID);
+
+        restaurantNameTextView.setText(restaurant.getRestaurantName());
         rb = (RatingBar) findViewById(R.id.rating);
         rb.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
@@ -66,7 +79,7 @@ public class AddReviewActivity extends BaseActivity implements PhotoViewerListen
             @Override
             public void onClick(View v) {
 
-                if(!editText.getText().toString().equals("")) {
+                if(!editText.getText().toString().equals("") && rbValue!=-1) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setTitle(getResources().getString(R.string.would_you_rate_dishes));
                     builder.setMessage(getResources().getString(R.string.rate_dishes_message));
@@ -74,6 +87,7 @@ public class AddReviewActivity extends BaseActivity implements PhotoViewerListen
                         public void onClick(DialogInterface dialog, int id) {
                             Intent i = new Intent(context, RateDishesActivity.class);
                             i.putExtra("review", editText.getText().toString());
+                            i.putExtra("restaurantId", restaurantID);
                             i.putExtra("rating", rbValue);
                             startActivity(i);
 
@@ -81,9 +95,14 @@ public class AddReviewActivity extends BaseActivity implements PhotoViewerListen
                     });
                     builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            Toast.makeText(getApplicationContext(), getResources().getString(R.string.review_published), Toast.LENGTH_SHORT).show();
                             //TODO aggiungere review al db
-
+                            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                            Date today = new Date();
+                            User user = UserBL.getUserById(getApplicationContext(), 1);
+                            Review r = new Review(user.getName(), null, rbValue, df.format(today), editText.getText().toString() );
+                            RestaurantBL.addReview(restaurant, r);
+                            RestaurantBL.saveChanges(getApplicationContext());
+                            Toast.makeText(getApplicationContext(), getResources().getString(R.string.review_published), Toast.LENGTH_SHORT).show();
                             finish();
                         }
                     });

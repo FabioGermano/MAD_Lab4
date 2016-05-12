@@ -1,22 +1,30 @@
 package it.polito.mad_lab3.restaurant.reviews.add_review;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import it.polito.mad_lab3.BaseActivity;
+import it.polito.mad_lab3.MainActivity;
 import it.polito.mad_lab3.R;
 import it.polito.mad_lab3.bl.RestaurantBL;
+import it.polito.mad_lab3.bl.UserBL;
 import it.polito.mad_lab3.data.reservation.ReservedDish;
 import it.polito.mad_lab3.data.restaurant.Dish;
 import it.polito.mad_lab3.data.restaurant.DishType;
 import it.polito.mad_lab3.data.restaurant.Offer;
 import it.polito.mad_lab3.data.restaurant.Restaurant;
+import it.polito.mad_lab3.data.restaurant.Review;
 import it.polito.mad_lab3.data.restaurant.ReviewFood;
 import it.polito.mad_lab3.data.user.User;
 
@@ -30,7 +38,9 @@ public class RateDishesActivity extends BaseActivity{
     private Restaurant restaurant;
     ArrayList<ArrayList<ReviewFood>> data;
     private ArrayList<ArrayList<ReservedDish>> lists; //order: offer, main, second, dessert , other
-    private int restaurantId=1;
+    private int restaurantId=-1;
+    private String review;
+    private float rating;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +56,13 @@ public class RateDishesActivity extends BaseActivity{
         hideToolbar(true);
         hideToolbarShadow(true);
 
+        //retrieve values from intent extras
+        this.restaurantId = getIntent().getExtras().getInt("restaurantId");
+        this.review = getIntent().getExtras().getString("review");
+        this.rating = getIntent().getExtras().getFloat("rating");
+
         restaurant = RestaurantBL.getRestaurantById(getApplicationContext(), restaurantId);
+
         ArrayList<Dish> main = restaurant.getDishesOfCategory(DishType.MainCourses);
         ArrayList<Dish> second = restaurant.getDishesOfCategory(DishType.SecondCourses);
         ArrayList<Dish> dessert = restaurant.getDishesOfCategory(DishType.Dessert);
@@ -104,44 +120,21 @@ public class RateDishesActivity extends BaseActivity{
         doneFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 for(int j=0;j<5;j++) {
-                    for (ReviewFood r : data.get(j)) {
-                        //Log.w("RF", String.valueOf(r.getRating()));
-                        if(r.getRating()>=0) {
-                            switch (j) {
-                                case 0:
-                                    //offers
-                                    restaurant.getOffers().get(r.getPosition()).setNumRanks(restaurant.getOffers().get(r.getPosition()).getNumRanks()+1);
-                                    restaurant.getOffers().get(r.getPosition()).setSumRank(restaurant.getOffers().get(r.getPosition()).getSumRank()+r.getRating());
-                                    break;
-                                case 1:
-                                    restaurant.getDishesOfCategory(DishType.MainCourses).get(r.getPosition()).setNumRanks(restaurant.getDishesOfCategory(DishType.MainCourses).get(r.getPosition()).getNumRanks()+1);
-                                    restaurant.getDishesOfCategory(DishType.MainCourses).get(r.getPosition()).setSumRank(restaurant.getDishesOfCategory(DishType.MainCourses).get(r.getPosition()).getSumRank()+r.getRating());
-
-                                    break;
-                                case 2:
-                                    restaurant.getDishesOfCategory(DishType.SecondCourses).get(r.getPosition()).setNumRanks(restaurant.getDishesOfCategory(DishType.SecondCourses).get(r.getPosition()).getNumRanks()+1);
-                                    restaurant.getDishesOfCategory(DishType.SecondCourses).get(r.getPosition()).setSumRank(restaurant.getDishesOfCategory(DishType.SecondCourses).get(r.getPosition()).getSumRank()+r.getRating());
-
-
-                                    break;
-                                case 3:
-                                    restaurant.getDishesOfCategory(DishType.Dessert).get(r.getPosition()).setNumRanks(restaurant.getDishesOfCategory(DishType.Dessert).get(r.getPosition()).getNumRanks()+1);
-                                    restaurant.getDishesOfCategory(DishType.Dessert).get(r.getPosition()).setSumRank(restaurant.getDishesOfCategory(DishType.Dessert).get(r.getPosition()).getSumRank()+r.getRating());
-
-                                    break;
-                                case 4:
-                                    restaurant.getDishesOfCategory(DishType.Other).get(r.getPosition()).setNumRanks(restaurant.getDishesOfCategory(DishType.Other).get(r.getPosition()).getNumRanks()+1);
-                                    restaurant.getDishesOfCategory(DishType.Other).get(r.getPosition()).setSumRank(restaurant.getDishesOfCategory(DishType.Other).get(r.getPosition()).getSumRank()+r.getRating());
-
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                    }
+                    RestaurantBL.updateDishesRating(restaurant, data.get(j),  j);
                 }
-                //TODO insert review and restart from main activity
+                DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                Date today = new Date();
+                User user = UserBL.getUserById(getApplicationContext(), 1);
+                Review r = new Review(user.getName(), null, rating, df.format(today), review );
+                RestaurantBL.addReview(restaurant, r);
+                RestaurantBL.saveChanges(getApplicationContext());
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.review_published), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
 
             }
         });
