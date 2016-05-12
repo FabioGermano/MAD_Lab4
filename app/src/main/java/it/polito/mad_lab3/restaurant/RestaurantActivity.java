@@ -85,7 +85,7 @@ public class  RestaurantActivity extends BaseActivity {
         Bundle extras = getIntent().getExtras();
         int id = -1;
         if (extras != null) {
-            id = (int) extras.getInt("idRestaurant");
+            id = (int) extras.getInt("restaurantId");
             extras.clear();
         }
         if(id == -1){

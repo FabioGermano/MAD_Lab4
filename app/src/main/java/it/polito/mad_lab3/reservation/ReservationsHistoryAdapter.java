@@ -102,7 +102,7 @@ public class ReservationsHistoryAdapter extends RecyclerView.Adapter<Reservation
                     case R.id.restaurant:
                         goToRestaurantActivity();
                         break;
-                    case R.id.food_order:
+                    case R.id.info:
                         showOrderDetails();
                         break;
                 }
@@ -113,7 +113,7 @@ public class ReservationsHistoryAdapter extends RecyclerView.Adapter<Reservation
                 Reservation r = data.get(position);
                 Intent i= new Intent(context, RestaurantActivity.class);
                 Restaurant restaurant = RestaurantBL.getRestaurantById(context, r.getRestaurantId());
-                i.putExtra("idRestaurant", restaurant.getRestaurantId());
+                i.putExtra("restaurantId", restaurant.getRestaurantId());
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(i);
             }

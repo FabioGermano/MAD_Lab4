@@ -156,7 +156,7 @@ public class RecyclerAdapter_risultatoRicerca extends RecyclerView.Adapter<Recyc
 
         private void visualizzaRistorante(){
             Bundle b = new Bundle();
-            b.putInt("idRestaurant", current.getId());
+            b.putInt("restaurantId", current.getId());
             Intent intent = new Intent(context, RestaurantActivity.class);
             intent.putExtras(b);
             context.startActivity(intent);

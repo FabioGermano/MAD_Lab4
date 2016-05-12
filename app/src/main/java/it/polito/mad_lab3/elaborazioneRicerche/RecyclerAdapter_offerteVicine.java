@@ -136,7 +136,7 @@ public class RecyclerAdapter_offerteVicine extends RecyclerView.Adapter<Recycler
 
         private void visualizzaRistorante(){
             Bundle b = new Bundle();
-            b.putInt("idRestaurant", (current.getId()));
+            b.putInt("restaurantId", (current.getId()));
             Intent intent = new Intent(context, RestaurantActivity.class);
             intent.putExtras(b);
             context.startActivity(intent);

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import it.polito.mad_lab3.BaseActivity;
 import it.polito.mad_lab3.R;
 import it.polito.mad_lab3.bl.UserBL;
+import it.polito.mad_lab3.common.UserSession;
 import it.polito.mad_lab3.data.reservation.Reservation;
 import it.polito.mad_lab3.data.user.User;
 
@@ -35,7 +36,7 @@ public class ReservationsHistoryActivity extends BaseActivity {
 
         setActivityTitle(getResources().getString(R.string.your_reservations));
 
-        user = UserBL.getUserById(getApplicationContext(),1);
+        user = UserBL.getUserById(getApplicationContext(), UserSession.userId);
         reservations = user.getReservations();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
