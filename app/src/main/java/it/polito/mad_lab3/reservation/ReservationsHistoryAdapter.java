@@ -11,12 +11,17 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import it.polito.mad_lab3.R;
 import it.polito.mad_lab3.bl.RestaurantBL;
+import it.polito.mad_lab3.bl.UserBL;
+import it.polito.mad_lab3.common.UserSession;
 import it.polito.mad_lab3.data.reservation.Reservation;
+import it.polito.mad_lab3.data.reservation.ReservationType;
+import it.polito.mad_lab3.data.reservation.ReservationTypeConverter;
 import it.polito.mad_lab3.data.restaurant.Restaurant;
 import it.polito.mad_lab3.restaurant.RestaurantActivity;
 import it.polito.mad_lab3.restaurant.reviews.add_review.AddReviewActivity;
@@ -37,13 +42,13 @@ public class ReservationsHistoryAdapter extends ArrayAdapter<Reservation> {
     private static class ViewHolder {
 
         TextView restaurant, date, time, address, status;
-        Button info, restaurantPage, review;
+        Button info, restaurantPage, cancel;
 
     }
     @Override
     public View getView(final int position, View convertView, final ViewGroup parent) {
 
-        Reservation r = getItem(position);
+        final Reservation r = getItem(position);
         final Restaurant restaurant = RestaurantBL.getRestaurantById(context, r.getRestaurantId());
 
         final ViewHolder viewHolder; // view lookup cache stored in tag
@@ -62,7 +67,7 @@ public class ReservationsHistoryAdapter extends ArrayAdapter<Reservation> {
 
             viewHolder.info = (Button)  convertView.findViewById(R.id.info);
             viewHolder.restaurantPage = (Button)  convertView.findViewById(R.id.restaurant);
-            viewHolder.review = (Button)  convertView.findViewById(R.id.review);
+            viewHolder.cancel = (Button)  convertView.findViewById(R.id.cancel);
 
             // Get the data item for this position
             convertView.setTag(viewHolder);
@@ -78,20 +83,32 @@ public class ReservationsHistoryAdapter extends ArrayAdapter<Reservation> {
         viewHolder.time.setText(r.getTime());
         viewHolder.status.setText(r.getStatus());
 
+        if(r.getStatus().equals(ReservationTypeConverter.toString(ReservationType.ACCEPTED)) || r.getStatus().equals(ReservationTypeConverter.toString(ReservationType.PENDING)))
+            viewHolder.cancel.setVisibility(View.VISIBLE);
+        else
+            viewHolder.cancel.setVisibility(View.GONE);
+
         viewHolder.info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //TODO create dialog
 
             }
         });
-        viewHolder.review.setOnClickListener(new View.OnClickListener() {
+        viewHolder.cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Intent i= new Intent(context, AddReviewActivity.class);
-                i.putExtra("restaurantId", restaurant.getRestaurantId());
-                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                context.startActivity(i);
+                if(r.getStatus().equals(ReservationTypeConverter.toString(ReservationType.ACCEPTED))){
+                    // se in stato accettato
+                    UserBL.cancelReservation(UserBL.getUserById(getContext(), UserSession.userId),r.getReservationId(), false);
+
+                }
+                else if(r.getStatus().equals(ReservationTypeConverter.toString(ReservationType.PENDING))){
+                    UserBL.cancelReservation(UserBL.getUserById(getContext(), UserSession.userId),r.getReservationId(), true);
+                }
+
+                Toast.makeText(getContext(), R.string.reservation_canceled, Toast.LENGTH_SHORT );
 
             }
         });

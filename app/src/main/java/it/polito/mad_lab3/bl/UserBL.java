@@ -7,6 +7,8 @@ import java.util.Iterator;
 import it.polito.mad_lab3.dal.DB;
 import it.polito.mad_lab3.dal.DBManager;
 import it.polito.mad_lab3.data.reservation.Reservation;
+import it.polito.mad_lab3.data.reservation.ReservationType;
+import it.polito.mad_lab3.data.reservation.ReservationTypeConverter;
 import it.polito.mad_lab3.data.user.User;
 import it.polito.mad_lab3.data.user.UserEntity;
 import it.polito.mad_lab3.data.user.UserPhotoLike;
@@ -81,6 +83,22 @@ public class UserBL {
     }
     public static void addReservation(User user, Reservation reservation){
         user.getReservations().add(reservation);
+    }
+
+    public static void cancelReservation ( User user, int reservationId, boolean isPending){
+        int index=-1;
+        for(Reservation r: user.getReservations()) {
+            if (r.getReservationId() == reservationId)
+                index = user.getReservations().indexOf(r);
+        }
+
+        if(isPending){
+                user.getReservations().remove(index);
+            }
+        else{
+            user.getReservations().get(index).setStatus(ReservationTypeConverter.toString(ReservationType.DELETED));
+        }
+
     }
 
     public static void saveChanges(Context _context){
