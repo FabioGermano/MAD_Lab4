@@ -67,7 +67,7 @@ public class CheckoutOrderActivity extends BaseActivity {
             weekday = extras.getString("weekday");
             seatsNumber = extras.getInt("seats");
             restaurantName= extras.getString("restaurantName");
-            restaurantID = extras.getInt("restaurant");
+            restaurantID = extras.getInt("restaurantId");
         }
         /*
         offers = getIntent().getParcelableArrayListExtra("offers");

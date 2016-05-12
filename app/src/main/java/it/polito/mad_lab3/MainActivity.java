@@ -24,6 +24,7 @@ import it.polito.mad_lab3.elaborazioneRicerche.Oggetto_risultatoRicerca;
 import it.polito.mad_lab3.elaborazioneRicerche.RecyclerAdapter_offerteVicine;
 import it.polito.mad_lab3.elaborazioneRicerche.RecyclerAdapter_risultatoRicerca;
 import it.polito.mad_lab3.elaborazioneRicerche.elaborazioneRicerche;
+import it.polito.mad_lab3.reservation.ReservationsHistoryActivity;
 import it.polito.mad_lab3.restaurant.reviews.add_review.AddReviewActivity;
 
 public class MainActivity extends BaseActivity {
@@ -149,6 +150,9 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void ShowPrenotazioni() {
+
+        Intent i= new Intent(this, ReservationsHistoryActivity.class);
+        startActivity(i);
     }
 
     private void caricaDati() {
@@ -250,18 +254,18 @@ public class MainActivity extends BaseActivity {
     }
 
     private void setUpRecyclerView(){
-        /*RecyclerView rView = (RecyclerView) findViewById(R.id.recyclerView_nearOffers);
+        RecyclerView rView = (RecyclerView) findViewById(R.id.recyclerView_nearOffers);
 
         RecyclerAdapter_offerteVicine myAdapter = new RecyclerAdapter_offerteVicine(this, lista_offerte_vicine);
         if(rView != null) {
             rView.setAdapter(myAdapter);
 
             LinearLayoutManager myLLM_vertical = new LinearLayoutManager(this);
-            myLLM_vertical.setOrientation(LinearLayoutManager.HORIZONTAL);
+            myLLM_vertical.setOrientation(LinearLayoutManager.VERTICAL);
             rView.setLayoutManager(myLLM_vertical);
 
             rView.setItemAnimator(new DefaultItemAnimator());
-        }*/
+        }
     }
 
     public void ricercaLuogo(View view) {

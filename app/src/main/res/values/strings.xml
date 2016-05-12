@@ -136,5 +136,6 @@
     <string name="logout_message">You are now logged out</string>
     <string name="add_review">Add review</string>
     <string name="make_reservation">Make a reservation</string>
+    <string name="your_reservations">Your reservations</string>
 
 </resources>

@@ -174,7 +174,7 @@ public class FoodOrderActivity extends BaseActivity {
                     i.putExtra("time", time);
                     i.putExtra("seats", seatsNumber);
                     i.putExtra("restaurantName", restaurantName);
-                    i.putExtra("restaurant", restaurantID);
+                    i.putExtra("restaurantId", restaurantID);
                     startActivity(i);
                 }
 
