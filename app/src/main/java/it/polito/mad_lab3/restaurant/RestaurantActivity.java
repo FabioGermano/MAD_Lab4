@@ -21,6 +21,7 @@ import it.polito.mad_lab3.MainActivity;
 import it.polito.mad_lab3.R;
 import it.polito.mad_lab3.bl.RestaurantBL;
 import it.polito.mad_lab3.common.Helper;
+import it.polito.mad_lab3.common.UserSession;
 import it.polito.mad_lab3.data.restaurant.Cover;
 import it.polito.mad_lab3.data.restaurant.Restaurant;
 import it.polito.mad_lab3.data.user.User;
@@ -63,14 +64,20 @@ public class  RestaurantActivity extends BaseActivity {
         collapsingToolbarLayout.setExpandedTitleColor(Color.WHITE);
         collapsingToolbarLayout.setCollapsedTitleTextColor(Color.WHITE);
         //FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.reservation);
-        reservation = (Button) findViewById(R.id.reservation);
+        //reservation = (Button) findViewById(R.id.reservation);
 
 
         add = (FloatingActionMenu) findViewById(R.id.add);
+
         add_review = (FloatingActionButton) findViewById(R.id.add_review);
         add_photo = (FloatingActionButton) findViewById(R.id.add_photo);
         add_reservation = (FloatingActionButton) findViewById(R.id.add_reservation);
         add.setClosedOnTouchOutside(true);
+
+        if(UserSession.userId == null){
+            add.setVisibility(View.GONE);
+        }
+
         add_photo.setOnClickListener(clickListener);
         add_reservation.setOnClickListener(clickListener);
         add_review.setOnClickListener(clickListener);
@@ -84,11 +91,11 @@ public class  RestaurantActivity extends BaseActivity {
         if(id == -1){
             Toast toast = Toast.makeText(getApplicationContext(), "Errore", Toast.LENGTH_SHORT);
             toast.show();
-            Intent i = new Intent(getBaseContext(), MainActivity.class);
+            Intent i = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(i);
         }
         //System.out.println("Id ricevuto: " + id);
-        restaurant = RestaurantBL.getRestaurantById(getBaseContext(), id);
+        restaurant = RestaurantBL.getRestaurantById(getApplicationContext(), id);
         //System.out.println("Ristorante: " + restaurant.getRestaurantName());
 
         collapsingToolbarLayout.setTitle(restaurant.getRestaurantName());
@@ -125,24 +132,6 @@ public class  RestaurantActivity extends BaseActivity {
             }
         });
 
-        reservation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                newReservation();
-            }
-        });
-
-        add.setOnMenuButtonClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (add.isOpened()) {
-                    Toast.makeText(getBaseContext(), add.getMenuButtonLabelText(), Toast.LENGTH_SHORT).show();
-                }
-
-                add.toggle(true);
-            }
-        });
-
         coverImage = (ImageView)findViewById(R.id.coverImage);
         coverImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,7 +162,7 @@ public class  RestaurantActivity extends BaseActivity {
     }
 
     private void coverImageClick() {
-        Intent i = new Intent(getBaseContext(), CoverActivity.class);
+        Intent i = new Intent(getApplicationContext(), CoverActivity.class);
         i.putExtra("restaurantId", this.restaurant.getRestaurantId());
         startActivity(i);
     }
@@ -189,19 +178,19 @@ public class  RestaurantActivity extends BaseActivity {
     }
 
     private void showAllReviewsButtonPressed() {
-        Intent i = new Intent(getBaseContext(), ReviewsActivity.class);
+        Intent i = new Intent(getApplicationContext(), ReviewsActivity.class);
         i.putExtra("restaurantId", this.restaurant.getRestaurantId());
         startActivity(i);
     }
 
     private void showAllMenuButtonPressed() {
-        Intent i = new Intent(getBaseContext(), MenuActivity.class);
+        Intent i = new Intent(getApplicationContext(), MenuActivity.class);
         i.putExtra("restaurantId", this.restaurant.getRestaurantId());
         startActivity(i);
     }
 
     private void newReservation() {
-        Intent i = new Intent(getBaseContext(), ReservationActivity.class);
+        Intent i = new Intent(getApplicationContext(), ReservationActivity.class);
         i.putExtra("restaurantId", this.restaurant.getRestaurantId());
         startActivity(i);
     }
@@ -212,9 +201,10 @@ public class  RestaurantActivity extends BaseActivity {
             Intent i;
             switch (v.getId()) {
                 case R.id.add_photo:
+                    //TODO imp
                     break;
                 case R.id.add_review:
-                    i= new Intent(getBaseContext(), AddReviewActivity.class);
+                    i= new Intent(getApplicationContext(), AddReviewActivity.class);
                     i.putExtra("restaurantId", restaurant.getRestaurantId());
                     startActivity(i);
                     break;

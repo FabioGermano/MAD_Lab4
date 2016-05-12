@@ -71,7 +71,7 @@ public class UserPhotoFragment extends Fragment {
             startActivity(i);
         }
         else if(!this.openGalleryOnClick && this.restaurant != null && this.userPhoto != null){ // apro dettaglio photo
-            Intent intent = new Intent(getActivity().getBaseContext(), GalleryPhotoViewActivity.class);
+            Intent intent = new Intent(getActivity().getApplicationContext(), GalleryPhotoViewActivity.class);
             intent.putExtra("photoPath", userPhoto.getLargePath());
             intent.putExtra("isEditable", false);
             intent.putExtra("userPhoto", userPhoto);

@@ -87,7 +87,7 @@ public class ChoosePhotoActivity extends BaseActivity implements PhotoViewerList
 
     private void sendButtonClicked() {
         if(!this.photoViewer.isPhotoSetted()){
-            Toast.makeText(getBaseContext(), "No photo choosen, please select a photo", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "No photo choosen, please select a photo", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -98,7 +98,7 @@ public class ChoosePhotoActivity extends BaseActivity implements PhotoViewerList
         returnIntent.putExtra("UserPhoto",(Serializable) up);
         setResult(Activity.RESULT_OK, returnIntent);
 
-        Toast.makeText(getBaseContext(), "Your selected photo has been sent.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Your selected photo has been sent.", Toast.LENGTH_SHORT).show();
 
         finish();
     }

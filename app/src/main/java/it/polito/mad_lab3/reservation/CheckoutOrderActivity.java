@@ -90,7 +90,7 @@ public class CheckoutOrderActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-                User user = UserBL.getUserById(getBaseContext(), UserSession.userId);
+                User user = UserBL.getUserById(getApplicationContext(), UserSession.userId);
                 Reservation r = new Reservation();
                 r.setReservationId(UserBL.getNewReservatioId(user));
                 r.setReservedDishes(reservedDishes);
@@ -156,7 +156,7 @@ public class CheckoutOrderActivity extends BaseActivity {
     public void fillLayout(ArrayList<ReservedDish> list) {
         for (ReservedDish d : list) {
             if(d.getQuantity()>0){
-                View child = LayoutInflater.from(getBaseContext()).inflate(R.layout.your_order_row, null);
+                View child = LayoutInflater.from(getApplicationContext()).inflate(R.layout.your_order_row, null);
                 TextView name = (TextView) child.findViewById(R.id.food_name);
                 name.setText(d.getName());
                 TextView quantity = (TextView) child.findViewById(R.id.food_quantity);

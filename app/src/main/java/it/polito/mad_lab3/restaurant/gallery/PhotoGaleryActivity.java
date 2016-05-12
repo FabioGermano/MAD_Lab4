@@ -28,7 +28,7 @@ public class PhotoGaleryActivity extends BaseActivity implements PhotoGalleryLis
 
         setActivityTitle(getResources().getString(R.string.gallery_activity_title));
 
-        this.restaurant = RestaurantBL.getRestaurantById(getBaseContext(), getIntent().getExtras().getInt("restaurantId"));
+        this.restaurant = RestaurantBL.getRestaurantById(getApplicationContext(), getIntent().getExtras().getInt("restaurantId"));
 
         gridView = (GridView)findViewById(R.id.galleryGridview);
 

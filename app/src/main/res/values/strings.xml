@@ -138,5 +138,6 @@
     <string name="make_reservation">Make a reservation</string>
     <string name="your_reservations">Your reservations</string>
     <string name="reservation_canceled">Your reservation has been canceled</string>
+    <string name="your_order_details">Your order details</string>
 
 </resources>

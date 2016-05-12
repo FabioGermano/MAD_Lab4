@@ -44,7 +44,7 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
         setContentView(R.layout.activity_reservation_request);
 
         this.restaurantID = getIntent().getExtras().getInt("restaurantId");
-        if (isLargeDevice(getBaseContext())) {
+        if (isLargeDevice(getApplicationContext())) {
             this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
         } else {
             this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -106,7 +106,7 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
         //extract the day of the week
         int dayOfTheweek = Integer.parseInt(date.substring(0,1));
 
-        this.reservationDayOfWeek= Helper.intToWeekString(getBaseContext(), dayOfTheweek);
+        this.reservationDayOfWeek= Helper.intToWeekString(getApplicationContext(), dayOfTheweek);
         //extract and set the reservation date
         this.reservationDate = date.substring(1,date.length());
 
@@ -195,7 +195,7 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
 
 
     public void goToFoodOrderAsEatin(){
-        Intent i = new Intent(getBaseContext(), FoodOrderActivity.class);
+        Intent i = new Intent(getApplicationContext(), FoodOrderActivity.class);
         i.putExtra("date", reservationDate);
         i.putExtra("weekday", reservationDayOfWeek);
         i.putExtra("time", reservationTime);
@@ -206,7 +206,7 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
     }
 
     public void goToFoodOrderAsTakeaway(){
-        Intent i = new Intent(getBaseContext(), FoodOrderActivity.class);
+        Intent i = new Intent(getApplicationContext(), FoodOrderActivity.class);
         i.putExtra("date", reservationDate);
         i.putExtra("weekday", reservationDayOfWeek);
         i.putExtra("time", reservationTime);
@@ -216,7 +216,7 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
     }
 
     public void goToCheckOutAsEatin(){
-        Intent i = new Intent(getBaseContext(), CheckoutOrderActivity.class);
+        Intent i = new Intent(getApplicationContext(), CheckoutOrderActivity.class);
         i.putExtra("date", reservationDate);
         i.putExtra("weekday", reservationDayOfWeek);
         i.putExtra("time", reservationTime);

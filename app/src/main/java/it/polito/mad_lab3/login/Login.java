@@ -51,9 +51,9 @@ public class Login extends BaseActivity {
         EditText passwordET = (EditText)findViewById(R.id.passwordET);
         EditText usernameET = (EditText)findViewById(R.id.usernameET);
 
-        User userInfo = UserBL.findUserByUsernamePassword(getBaseContext(), usernameET.getText().toString(), passwordET.getText().toString());
+        User userInfo = UserBL.findUserByUsernamePassword(getApplicationContext(), usernameET.getText().toString(), passwordET.getText().toString());
         if(userInfo == null){
-            Toast.makeText(getBaseContext(), "Incorrect credentials", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Incorrect credentials", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -70,7 +70,7 @@ public class Login extends BaseActivity {
         Bundle b = new Bundle();
         b.putSerializable("userInfo", userInfo);
 
-        Intent i = new Intent(getBaseContext(), MainActivity.class);
+        Intent i = new Intent(getApplicationContext(), MainActivity.class);
         i.putExtras(b);
         startActivity(i);
     }

@@ -293,7 +293,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     private void Login(){
         // accedo alla pagina del login e se l'utente vuole memorizzare in modo permanente i dati
         // li salviamo sul file
-        Intent i = new Intent(getBaseContext(), Login.class);
+        Intent i = new Intent(getApplicationContext(), Login.class);
         startActivity(i);
     }
 
@@ -301,7 +301,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         //eseguo il logout e cancello eventualmente il file con le credenziali
         UserSession.userId = null;
         Toast.makeText(getApplicationContext(), getResources().getString(R.string.logout_message), Toast.LENGTH_LONG).show();
-        Intent i = new Intent(getBaseContext(), MainActivity.class);
+        Intent i = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(i);
     }
 

@@ -54,14 +54,14 @@ public class ShowAdditionalInfoActivity extends BaseActivity{
         call.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Helper.dialNumber(getBaseContext(), basicInfo.getPhone());
+                Helper.dialNumber(getApplicationContext(), basicInfo.getPhone());
             }
         });
         location = (LinearLayout) findViewById(R.id.location);
         location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Helper.findOnGoogleMaps(getBaseContext(), basicInfo.getAddress(), basicInfo.getCity());
+                Helper.findOnGoogleMaps(getApplicationContext(), basicInfo.getAddress(), basicInfo.getCity());
             }
         });
 
@@ -110,13 +110,13 @@ public class ShowAdditionalInfoActivity extends BaseActivity{
             i++;
         }
 
-        wifi.setText(Helper.fromBoolToString(getBaseContext(),basicInfo.isWifi()));
-        reservations.setText(Helper.fromBoolToString(getBaseContext(),basicInfo.isReservations()));
-        music.setText(Helper.fromBoolToString(getBaseContext(),basicInfo.isMusic()));
-        parking.setText(Helper.fromBoolToString(getBaseContext(),basicInfo.isParking()));
-        creditCard.setText(Helper.fromBoolToString(getBaseContext(),basicInfo.isCreditCard()));
-        bancomat.setText(Helper.fromBoolToString(getBaseContext(),basicInfo.isBancomat()));
-        seatsOutside.setText(Helper.fromBoolToString(getBaseContext(),basicInfo.isSeatsOutside()));
+        wifi.setText(Helper.fromBoolToString(getApplicationContext(),basicInfo.isWifi()));
+        reservations.setText(Helper.fromBoolToString(getApplicationContext(),basicInfo.isReservations()));
+        music.setText(Helper.fromBoolToString(getApplicationContext(),basicInfo.isMusic()));
+        parking.setText(Helper.fromBoolToString(getApplicationContext(),basicInfo.isParking()));
+        creditCard.setText(Helper.fromBoolToString(getApplicationContext(),basicInfo.isCreditCard()));
+        bancomat.setText(Helper.fromBoolToString(getApplicationContext(),basicInfo.isBancomat()));
+        seatsOutside.setText(Helper.fromBoolToString(getApplicationContext(),basicInfo.isSeatsOutside()));
 
     }
 

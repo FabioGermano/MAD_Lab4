@@ -97,7 +97,7 @@ public class elaborazioneRicerche extends BaseActivity implements fragment_ricer
         Bundle b = new Bundle();
         b.putSerializable("userInfo", userInfo);
 
-        Intent i = new Intent(getBaseContext(), MainActivity.class);
+        Intent i = new Intent(getApplicationContext(), MainActivity.class);
         i.putExtras(b);
         startActivity(i);
     }

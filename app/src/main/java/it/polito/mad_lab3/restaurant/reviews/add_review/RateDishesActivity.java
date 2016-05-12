@@ -47,7 +47,7 @@ public class RateDishesActivity extends BaseActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rate_dishes);
 
-        if (isLargeDevice(getBaseContext())) {
+        if (isLargeDevice(getApplicationContext())) {
             this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
         } else {
             this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -108,7 +108,7 @@ public class RateDishesActivity extends BaseActivity{
         data.add(oth);
 
         SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(),
-                getBaseContext(), data );
+                getApplicationContext(), data );
         mViewPager = (ViewPager) findViewById(R.id.viewpager_menu);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 

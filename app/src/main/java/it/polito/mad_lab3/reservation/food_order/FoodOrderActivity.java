@@ -53,7 +53,7 @@ public class FoodOrderActivity extends BaseActivity {
 
 
 
-        if (isLargeDevice(getBaseContext())) {
+        if (isLargeDevice(getApplicationContext())) {
             this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
         } else {
             this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -89,7 +89,7 @@ public class FoodOrderActivity extends BaseActivity {
         nameTextView = (TextView) findViewById(R.id.restaurant_name);
 
         if(date!=null && time!=null && restaurantName!=null){
-            dateTextView.setText(Helper.formatDate(getBaseContext(),weekday, date));
+            dateTextView.setText(Helper.formatDate(getApplicationContext(),weekday, date));
             timeTextView.setText(time);
             nameTextView.setText(restaurantName);
         }
@@ -162,7 +162,7 @@ public class FoodOrderActivity extends BaseActivity {
                     Toast.makeText(FoodOrderActivity.this, getResources().getString(R.string.no_item_in_order), Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    Intent i = new Intent(getBaseContext(), CheckoutOrderActivity.class);
+                    Intent i = new Intent(getApplicationContext(), CheckoutOrderActivity.class);
                     i.putParcelableArrayListExtra("reservedDishes", reservedDishes );
                     /*i.putParcelableArrayListExtra("offers", lists.get(0) );
                     i.putParcelableArrayListExtra("main",lists.get(1) );
@@ -210,7 +210,7 @@ public class FoodOrderActivity extends BaseActivity {
         @Override
         public Fragment getItem(int position) {
 
-            return ListOrderFragment.newInstance(position, getBaseContext(), lists.get(position));
+            return ListOrderFragment.newInstance(position, getApplicationContext(), lists.get(position));
         }
 
         @Override

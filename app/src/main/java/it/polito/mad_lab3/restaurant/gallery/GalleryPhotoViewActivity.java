@@ -34,7 +34,7 @@ public class GalleryPhotoViewActivity extends BaseActivity {
         galleryPhotoText.setText(userPhoto.getDescription());
 
         if(UserSession.userId != null) {
-            user = UserBL.getUserById(getBaseContext(), UserSession.userId);
+            user = UserBL.getUserById(getApplicationContext(), UserSession.userId);
 
             if (!UserBL.checkUserPhotoLike(user, this.restaurant.getRestaurantId(), userPhoto.getId())) {
                 this.likeButton.setColorFilter(Color.WHITE);
@@ -112,7 +112,7 @@ public class GalleryPhotoViewActivity extends BaseActivity {
     }
 
     private void getRestaurant(Bundle extras) {
-        this.restaurant = RestaurantBL.getRestaurantById(getBaseContext(), extras.getInt("restaurantId"));
+        this.restaurant = RestaurantBL.getRestaurantById(getApplicationContext(), extras.getInt("restaurantId"));
     }
 
     private void setDeleteVisibility(Bundle savedInstanceState)
@@ -136,7 +136,7 @@ public class GalleryPhotoViewActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-        RestaurantBL.saveChanges(getBaseContext());
-        UserBL.saveChanges(getBaseContext());
+        RestaurantBL.saveChanges(getApplicationContext());
+        UserBL.saveChanges(getApplicationContext());
     }
 }

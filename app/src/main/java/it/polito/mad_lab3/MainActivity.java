@@ -75,7 +75,7 @@ public class MainActivity extends BaseActivity {
         addReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getBaseContext(), AddReviewActivity.class);
+                Intent i = new Intent(getApplicationContext(), AddReviewActivity.class);
                 i.putExtra("restaurantId", 1);
                 startActivity(i);
             }
@@ -162,7 +162,7 @@ public class MainActivity extends BaseActivity {
         lista_offerte_vicine = new ArrayList<>();
 
         //f.germano mod. Ci sono appositi metodi del bl:
-        this.listaRistoranti = RestaurantBL.getAllRestaurants(getBaseContext());
+        this.listaRistoranti = RestaurantBL.getAllRestaurants(getApplicationContext());
 
         for (Restaurant r: listaRistoranti){
             if (r.getBasicInfo().getDistance() <= 15){
@@ -212,7 +212,7 @@ public class MainActivity extends BaseActivity {
         b.putSerializable("results", listaRicerca);
         b.putSerializable("userInfo", userInfo);
 
-        Intent i = new Intent(getBaseContext(), elaborazioneRicerche.class);
+        Intent i = new Intent(getApplicationContext(), elaborazioneRicerche.class);
         i.putExtras(b);
         startActivity(i);
     }
