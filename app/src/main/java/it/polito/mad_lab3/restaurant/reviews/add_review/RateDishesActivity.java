@@ -19,6 +19,7 @@ import it.polito.mad_lab3.MainActivity;
 import it.polito.mad_lab3.R;
 import it.polito.mad_lab3.bl.RestaurantBL;
 import it.polito.mad_lab3.bl.UserBL;
+import it.polito.mad_lab3.common.UserSession;
 import it.polito.mad_lab3.data.reservation.ReservedDish;
 import it.polito.mad_lab3.data.restaurant.Dish;
 import it.polito.mad_lab3.data.restaurant.DishType;
@@ -126,7 +127,7 @@ public class RateDishesActivity extends BaseActivity{
                 }
                 DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
                 Date today = new Date();
-                User user = UserBL.getUserById(getApplicationContext(), 1);
+                User user = UserBL.getUserById(getApplicationContext(), UserSession.userId);
                 Review r = new Review(user.getName(), null, rating, df.format(today), review );
                 RestaurantBL.addReview(restaurant, r);
                 RestaurantBL.saveChanges(getApplicationContext());
