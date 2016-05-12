@@ -45,6 +45,15 @@ public class RestaurantBL {
         return null;
     }
 
+    public static ArrayList<String> getAllDishName(Context context, int id){
+        ArrayList<String> risultato = new ArrayList<>();
+        Restaurant r = getRestaurantById(context, id);
+        for(Dish d : r.getDishes()){
+            risultato.add(d.getDishName());
+        }
+        return risultato;
+    }
+
     public static ArrayList<Restaurant> getAllRestaurants(Context _context){
 
         if(context == null){

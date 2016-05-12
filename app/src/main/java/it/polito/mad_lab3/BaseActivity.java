@@ -119,6 +119,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
             //userInformation = controlloLogin();
             //boolean login = userInformation.getUserLoginInfo().isLogin();
             boolean login = UserSession.userId != null;
+
             if(login){
                 userInformation = UserBL.getUserById(getApplicationContext(), UserSession.userId);
             }

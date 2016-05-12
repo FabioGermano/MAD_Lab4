@@ -499,23 +499,23 @@
                  },
                  {
                     "sumRank":50.0,
-                    "dishName":"panino",
+                    "dishName":"paella",
                     "largePath":null,
                     "numRanks":18,
                     "price":4.0,
                     "thumbPath":null,
                     "resPhoto":null,
-                    "type":"Second courses"
+                    "type":"Main courses"
                  },
                  {
                     "sumRank":50.0,
-                    "dishName":"cassata",
+                    "dishName":"torta salata",
                     "largePath":null,
                     "numRanks":18,
                     "price":3.0,
                     "thumbPath":null,
                     "resPhoto":null,
-                    "type":"Dessert"
+                    "type":"Second courses"
                  }
               ],
               "offers":[
@@ -560,42 +560,42 @@
                  {
                     "comment":"jhkjhlkhl 1 sdkmsdfl fggmdf dgl fgmgdf gd fl",
                     "date":"2015-05-18",
-                    "rank":4.0,
+                    "rank":5.0,
                     "thumbPath":null,
                     "userName":"userName 1"
                  },
                  {
                     "comment":"ljkòjkà 2 sdkmsdfl fggmdf dgl fgmgdf gd fl",
                     "date":"2015-04-10",
-                    "rank":3.5,
+                    "rank":4.5,
                     "thumbPath":null,
                     "userName":"userName 2"
                  },
                  {
                     "comment":"commento 1 sdkmsdfl fggmdf dgl fgmgdf gd fl",
                     "date":"2015-05-08",
-                    "rank":0.7,
+                    "rank":4.7,
                     "thumbPath":null,
                     "userName":"userName 1"
                  },
                  {
                     "comment":"commento 2 sdkmsdfl fggmdf dgl fgmgdf gd fl",
                     "date":"2015-05-10",
-                    "rank":1.7,
+                    "rank":4.7,
                     "thumbPath":null,
                     "userName":"userName 2"
                  },
                  {
                     "comment":"commento 3 sdkmsdfl fggmdf dgl fgmgdffg fgh fg hfh fg h gd fl",
                     "date":"2015-06-08",
-                    "rank":0.7,
+                    "rank":4.7,
                     "thumbPath":null,
                     "userName":"userName 3"
                  },
                  {
                     "comment":"commento 4 sdkmsdfl fggmdf dgl fgmgdf gd fl",
                     "date":"2016-05-08",
-                    "rank":1.7,
+                    "rank":3.7,
                     "thumbPath":null,
                     "userName":"userName 4"
                  }

@@ -32,8 +32,10 @@ public class MainActivity extends BaseActivity {
     private Button addReview, reservationBtn, testBtn;
     private ArrayList<Restaurant> listaRistoranti;
     private User userInfo;
-    private ImageButton ricercaLuogoBtn, ricercaRistoranteBtn, ricercaPiattoBtn;
-    private boolean ricerca_luogo=false, ricerca_ristorante=false, ricerca_piatto=false;
+    private ImageButton ricercaLuogoBtn, ricercaRistoranteBtn;
+    private boolean ricerca_luogo=false, ricerca_ristorante=true;
+
+    private SearchView ricerca;
 
     private ArrayList<Oggetto_offerteVicine> lista_offerte_vicine;
 
@@ -84,8 +86,8 @@ public class MainActivity extends BaseActivity {
         // la lista dei locali cercati
         caricaDati();
 
-        final SearchView ricerca = (SearchView) findViewById(R.id.searchView_main);
-        ricerca.setQueryHint("Restaurant Search");
+        ricerca = (SearchView) findViewById(R.id.searchView_main);
+        ricerca.setQueryHint("Search by Restaurant");
         ricerca.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -112,7 +114,7 @@ public class MainActivity extends BaseActivity {
 
         ricercaLuogoBtn = (ImageButton) findViewById(R.id.ricerca_luogo);
         ricercaRistoranteBtn = (ImageButton) findViewById(R.id.ricerca_ristorante);
-        ricercaPiattoBtn = (ImageButton) findViewById(R.id.ricerca_piatto);
+        //ricercaPiattoBtn = (ImageButton) findViewById(R.id.ricerca_piatto);
 
         //setUpRecyclerView();
 
@@ -185,10 +187,6 @@ public class MainActivity extends BaseActivity {
 
         ArrayList<Oggetto_risultatoRicerca> listaRicerca = null;
 
-        if(ricerca_piatto){
-            System.out.println("Ricerco per piatto");
-            listaRicerca = ricercaPerPiatto(query);
-        }
         if(ricerca_luogo){
             System.out.println("Ricerco per luogo");
             listaRicerca = ricercaPerLuogo(query);
@@ -219,16 +217,17 @@ public class MainActivity extends BaseActivity {
         startActivity(i);
     }
 
-    //implemento ricerca per piatto
-    private ArrayList<Oggetto_risultatoRicerca> ricercaPerPiatto(String query) {
-        ArrayList<Oggetto_risultatoRicerca> listaRicerca = new ArrayList<>();
-
-        return listaRicerca;
-    }
-
     //implemento ricerca per luogo
     private ArrayList<Oggetto_risultatoRicerca> ricercaPerLuogo(String query) {
         ArrayList<Oggetto_risultatoRicerca> listaRicerca = new ArrayList<>();
+
+        for(Restaurant r : this.listaRistoranti){
+            String address = r.getBasicInfo().getAddress().toLowerCase();
+            if (address.contains(query.toLowerCase())){
+                Oggetto_risultatoRicerca obj = new Oggetto_risultatoRicerca(r.getRestaurantId(), r.getRestaurantName(), r.getBasicInfo().getAddress(), r.getBasicInfo().getLogoThumb(), r.getAvgPrice(), r.getAvgReview(), Oggetto_risultatoRicerca.type.RISTORANTE, r.getBasicInfo().getTypesOfServices());
+                listaRicerca.add(obj);
+            }
+        }
 
         return listaRicerca;
     }
@@ -239,12 +238,7 @@ public class MainActivity extends BaseActivity {
 
         for(Restaurant r : this.listaRistoranti){
             String nome = r.getRestaurantName().toLowerCase();
-            String address = r.getBasicInfo().getAddress().toLowerCase();
             if (nome.contains(query.toLowerCase())){
-                Oggetto_risultatoRicerca obj = new Oggetto_risultatoRicerca(r.getRestaurantId(), r.getRestaurantName(), r.getBasicInfo().getAddress(), r.getBasicInfo().getLogoThumb(), r.getAvgPrice(), r.getAvgReview(), Oggetto_risultatoRicerca.type.RISTORANTE, r.getBasicInfo().getTypesOfServices());
-                listaRicerca.add(obj);
-            }
-            else if (address.contains(query.toLowerCase())){
                 Oggetto_risultatoRicerca obj = new Oggetto_risultatoRicerca(r.getRestaurantId(), r.getRestaurantName(), r.getBasicInfo().getAddress(), r.getBasicInfo().getLogoThumb(), r.getAvgPrice(), r.getAvgReview(), Oggetto_risultatoRicerca.type.RISTORANTE, r.getBasicInfo().getTypesOfServices());
                 listaRicerca.add(obj);
             }
@@ -269,62 +263,44 @@ public class MainActivity extends BaseActivity {
     }
 
     public void ricercaLuogo(View view) {
-        if(ricercaPiattoBtn != null && ricercaLuogoBtn != null && ricercaRistoranteBtn != null) {
+        if(ricercaLuogoBtn != null && ricercaRistoranteBtn != null) {
             if (!ricerca_luogo) {
                 ricercaLuogoBtn.setImageResource(R.drawable.ic_ricerca_luogo_selezione);
                 ricerca_luogo = true;
-                if (ricerca_piatto) {
+                ricerca.setQueryHint("Search by Place");
+                /*if (ricerca_piatto) {
                     ricerca_piatto = false;
                     ricercaPiattoBtn.setImageResource(R.drawable.ic_ricerca_luogo);
-                }
+                }*/
                 if (ricerca_ristorante) {
                     ricerca_ristorante = false;
-                    ricercaRistoranteBtn.setImageResource(R.drawable.ic_ricerca_luogo);
+                    ricercaRistoranteBtn.setImageResource(R.drawable.ic_ricerca_ristorante);
                 }
-            } else {
+            }/* else {
                 ricerca_luogo = false;
                 ricercaLuogoBtn.setImageResource(R.drawable.ic_ricerca_luogo);
-            }
+            }*/
         }
     }
 
     public void ricercaRistorante(View view) {
-        if(ricercaPiattoBtn != null && ricercaLuogoBtn != null && ricercaRistoranteBtn != null) {
+        if(ricercaLuogoBtn != null && ricercaRistoranteBtn != null) {
             if (!ricerca_ristorante) {
-                ricercaRistoranteBtn.setImageResource(R.drawable.ic_ricerca_luogo_selezione);
+                ricercaRistoranteBtn.setImageResource(R.drawable.ic_ricerca_ristorante_selezione);
                 ricerca_ristorante = true;
-                if (ricerca_piatto) {
+                ricerca.setQueryHint("Search by Restaurant");
+                /*if (ricerca_piatto) {
                     ricerca_piatto = false;
                     ricercaPiattoBtn.setImageResource(R.drawable.ic_ricerca_luogo);
-                }
+                }*/
                 if (ricerca_luogo) {
                     ricerca_luogo = false;
                     ricercaLuogoBtn.setImageResource(R.drawable.ic_ricerca_luogo);
                 }
-            } else {
+            } /*else {
                 ricerca_ristorante = false;
                 ricercaRistoranteBtn.setImageResource(R.drawable.ic_ricerca_luogo);
-            }
-        }
-    }
-
-    public void ricercaPiatto(View view) {
-        if(ricercaPiattoBtn != null && ricercaLuogoBtn != null && ricercaRistoranteBtn != null) {
-            if (!ricerca_piatto) {
-                ricercaPiattoBtn.setImageResource(R.drawable.ic_ricerca_luogo_selezione);
-                ricerca_piatto = true;
-                if (ricerca_luogo) {
-                    ricerca_luogo = false;
-                    ricercaLuogoBtn.setImageResource(R.drawable.ic_ricerca_luogo);
-                }
-                if (ricerca_ristorante) {
-                    ricerca_ristorante = false;
-                    ricercaRistoranteBtn.setImageResource(R.drawable.ic_ricerca_luogo);
-                }
-            } else {
-                ricerca_piatto = false;
-                ricercaPiattoBtn.setImageResource(R.drawable.ic_ricerca_luogo);
-            }
+            }*/
         }
     }
 }

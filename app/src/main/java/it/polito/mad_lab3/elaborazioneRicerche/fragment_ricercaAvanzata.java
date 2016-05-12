@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 import it.polito.mad_lab3.R;
@@ -28,6 +29,7 @@ public class fragment_ricercaAvanzata extends Fragment {
     private Spinner valutazioneLocale;
     private Spinner tipoLocale;
     private Spinner costoLocale;
+    private EditText nomePiatto;
 
     public void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +38,7 @@ public class fragment_ricercaAvanzata extends Fragment {
 
     public interface OnButtonPressedListener {
 
-        public void onButtonPressed(String type, String cost, String rating);
+        public void onButtonPressed(String type, String cost, String rating, String nomePiatto);
 
         public void onResetPressed();
 
@@ -126,6 +128,8 @@ public class fragment_ricercaAvanzata extends Fragment {
             });
         }
 
+        nomePiatto = (EditText) rootView.findViewById(R.id.piatto_finder);
+
         return rootView;
     }
 
@@ -142,7 +146,7 @@ public class fragment_ricercaAvanzata extends Fragment {
 
     private void ricercaAvanzata(){
         //leggo i vari parametri dei filtri e li passo alla funzione, deve essere definita in modo opportuno la funzione
-        mCallback.onButtonPressed(selezioneTipoLocale, selezioneCostoLocale, selezioneValutazioneLocale);
+        mCallback.onButtonPressed(selezioneTipoLocale, selezioneCostoLocale, selezioneValutazioneLocale, nomePiatto.getText().toString());
 
         //resetto i valori dei campi dello spinner
         //imposto lo spinner al valore corretto del piatto
@@ -152,6 +156,8 @@ public class fragment_ricercaAvanzata extends Fragment {
             tipoLocale.setSelection(0);
         if (costoLocale != null)
             costoLocale.setSelection(0);
+        if(nomePiatto != null)
+            nomePiatto.setText("");
     }
 
     public void setResetButton(){
@@ -169,6 +175,8 @@ public class fragment_ricercaAvanzata extends Fragment {
             tipoLocale.setSelection(0);
         if (costoLocale != null)
             costoLocale.setSelection(0);
+        if (nomePiatto != null)
+            nomePiatto.setText("");
 
         buttonR.setVisibility(View.INVISIBLE);
     }

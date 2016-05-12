@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import it.polito.mad_lab3.BaseActivity;
 import it.polito.mad_lab3.MainActivity;
 import it.polito.mad_lab3.R;
+import it.polito.mad_lab3.bl.RestaurantBL;
+import it.polito.mad_lab3.data.restaurant.Dish;
 import it.polito.mad_lab3.data.user.User;
 
 public class elaborazioneRicerche extends BaseActivity implements fragment_ricercaAvanzata.OnButtonPressedListener{
@@ -126,7 +128,7 @@ public class elaborazioneRicerche extends BaseActivity implements fragment_ricer
     }
 
     @Override
-    public void onButtonPressed(String type, String cost, String rating) {
+    public void onButtonPressed(String type, String cost, String rating, String nomePiatto) {
         //leggo tutte le info che mi passa il fragment ed eseguo la ricerca più approfondita
         boolean change = false;
         ArrayList<Oggetto_risultatoRicerca> newList = new ArrayList<>();
@@ -174,11 +176,11 @@ public class elaborazioneRicerche extends BaseActivity implements fragment_ricer
             String val = null;
             for(Oggetto_risultatoRicerca obj : lista_risultati){
                 if(obj.getValutazione() <= 1.5 )
-                    val = "*";
+                    val = "★";
                 else if(obj.getValutazione() <= 3.5)
-                    val = "**";
+                    val = "★★";
                 else
-                    val = "***";
+                    val = "★★★";
 
                 if(val.compareTo(rating) == 0){
                     newList.add(obj);
@@ -186,6 +188,26 @@ public class elaborazioneRicerche extends BaseActivity implements fragment_ricer
 
             }
             lista_risultati = newList;
+            newList = new ArrayList<>();
+        }
+
+        if(nomePiatto != null ){
+            if(!nomePiatto.isEmpty()){
+                System.out.println("Ricerco per nome: ");
+                change = true;
+                //filtro per valutazione
+                String val = null;
+                for(Oggetto_risultatoRicerca obj : lista_risultati){
+                    ArrayList<String> listaPiatti = RestaurantBL.getAllDishName(this, obj.getId());
+                    for(String nome : listaPiatti){
+                        System.out.println(nome + " == " + nomePiatto);
+                        if(nome.contains(nomePiatto)){
+                            newList.add(obj);
+                        }
+                    }
+                }
+                lista_risultati = newList;
+            }
         }
 
         if(change) {

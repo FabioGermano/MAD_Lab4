@@ -257,7 +257,7 @@
                 android:id="@+id/add_review"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_rate_review_white_24dp"
+                android:src="@drawable/ic_remove_circle_white_24dp"
                 fab:fab_colorNormal="@color/themeColor"
                 fab:fab_colorPressed="@color/themeColorLighter"
                 fab:fab_colorRipple="@color/colorAccent"
@@ -273,7 +273,7 @@
                 fab:fab_colorPressed="@color/themeColorLighter"
                 fab:fab_colorRipple="@color/colorAccent"
                 fab:fab_shadowColor="#000"
-                android:src="@drawable/ic_add_a_photo_white_24dp"
+                android:src="@drawable/ic_remove_circle_white_24dp"
                 fab:fab_size="mini"
                 fab:fab_label="@string/add_photo"/>
 
@@ -285,7 +285,7 @@
                 fab:fab_colorPressed="@color/themeColorLighter"
                 fab:fab_colorRipple="@color/colorAccent"
                 fab:fab_shadowColor="#000"
-                android:src="@drawable/ic_restaurant_white_24dp"
+                android:src="@drawable/ic_remove_circle_white_24dp"
                 fab:fab_size="mini"
                 fab:fab_label="@string/make_reservation"/>
 

@@ -19,7 +19,7 @@ public class Oggetto_risultatoRicerca implements Serializable {
 
     public enum type{
         RISTORANTE,
-        PATTO
+        PIATTO
     }
 
     public Oggetto_risultatoRicerca(int id, String name, String via, String path, int costo, float valutazione, type type, ArrayList<String> typesOfservices){
