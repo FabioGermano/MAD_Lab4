@@ -48,7 +48,7 @@ public class ContainerUserPhotoFragment extends Fragment  {
             userPhotoFragments[i] = (UserPhotoFragment) getChildFragmentManager().findFragmentById(photoIds[i]);
         }
 
-        addPhotoButton = (Button) rootView.findViewById(R.id.addPhotoButton);
+        /*addPhotoButton = (Button) rootView.findViewById(R.id.addPhotoButton);
         addPhotoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,7 +65,7 @@ public class ContainerUserPhotoFragment extends Fragment  {
             public void onClick(View v) {
                 testButtonClicked();
             }
-        });
+        });*/
 
         availablePhotosTV = (TextView)rootView.findViewById(R.id.availablePhotosTV);
 
@@ -148,4 +148,7 @@ public class ContainerUserPhotoFragment extends Fragment  {
         }
     }
 
+    public void newPhoto() {
+        addPhotoClicked();
+    }
 }
