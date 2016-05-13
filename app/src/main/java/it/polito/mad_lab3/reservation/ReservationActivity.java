@@ -3,6 +3,7 @@ package it.polito.mad_lab3.reservation;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.support.v4.widget.NestedScrollView;
 import android.view.View;
 import android.widget.TextView;
 
@@ -35,7 +36,7 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
     private Restaurant restaurant;
     View p, c;
     ArrayList<String> timeTable =  new ArrayList<>();
-
+    private NestedScrollView nestedScrollView;
 
 
     @Override
@@ -52,6 +53,8 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
 
         hideToolbar(true);
         hideToolbarShadow(true);
+
+        nestedScrollView = (NestedScrollView)findViewById(R.id.reservationsNestedScrollView);
 
         calendarFragment = (CalendarFragment) getSupportFragmentManager().findFragmentById(R.id.date_time);
         TextView name= (TextView) findViewById(R.id.restaurant_name);
@@ -130,6 +133,12 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
             this.reservationTime = null;
         }
 
+        scrollToEnd();
+
+    }
+
+    private void scrollToEnd() {
+        this.nestedScrollView.scrollTo(0, nestedScrollView.getBottom());
     }
 
     @Override
@@ -185,6 +194,7 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
             View cc = (View) (findViewById(R.id.choice_fragment_container));
         }
 
+        scrollToEnd();
     }
 
 

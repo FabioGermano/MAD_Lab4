@@ -142,9 +142,9 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/order_food"
                 android:padding="10dp"
-                style="@style/Widget.AppCompat.Button.Colored"
+                android:textColor="@color/white"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:background="@drawable/roundend_background"
+                android:background="@drawable/mybutton"
                 android:text="Order now"/>
 
             <Button
@@ -152,10 +152,9 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/checkout"
                 android:padding="10dp"
-
+                android:textColor="@color/white"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:background="@drawable/roundend_background"
-                style="@style/Widget.AppCompat.Button.Colored"
+                android:background="@drawable/mybutton"
                 android:text="Check Out"/>
         </LinearLayout>
 

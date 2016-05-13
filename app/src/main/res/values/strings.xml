@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MAD_Lab3</string>
+    <string name="app_name">FERG Food</string>
 
     <string name="pick_date">Pick a date!</string>
     <string name="pick_time">Pick a time!</string>
@@ -142,5 +142,6 @@
     <string name="reserved_seats">Reserved seats:</string>
     <string name="rate_it">Rate it</string>
     <string name="reservation_added">Reserevation sent! You will receive a notification about its state when it will be accepted</string>
+    <string name="remove_photo">Remove</string>
 
 </resources>
