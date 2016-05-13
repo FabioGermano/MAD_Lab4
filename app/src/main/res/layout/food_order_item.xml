@@ -55,17 +55,16 @@
 
         <ImageButton
             android:id="@+id/minus"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:layout_gravity="center"
-            android:background="@drawable/ic_remove_circle_white_24dp"
-            android:backgroundTint="@color/tabIndicator"
+            android:background="@drawable/ic_remove_blue"
             android:rotation="180" />
 
         <TextView
             android:id="@+id/dish_quantity"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:gravity="center"
             android:text="0"
             android:textColor="@color/blackSemitrasparent"
@@ -74,11 +73,10 @@
 
         <ImageButton
             android:id="@+id/plus"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:layout_gravity="center"
-            android:background="@drawable/ic_add_circle_white_24dp"
-            android:backgroundTint="@color/tabIndicator"
+            android:background="@drawable/ic_add_blue"
             />
 
     </LinearLayout>

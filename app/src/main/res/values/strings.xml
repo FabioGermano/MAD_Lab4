@@ -26,7 +26,7 @@
     <string name="howmany">How many seats do you want to book?</string>
     <string name="take_photo">Take a photo</string>
     <string name="chose_library">Choose from gallery</string>
-    <string name="remove_photo">Remove</string>
+    <string name="remove">Remove</string>
     <string name="add_photo">Add a new photo</string>
 
     <!-- Pagina principale -->
@@ -141,5 +141,6 @@
     <string name="your_order_details">Your order details</string>
     <string name="reserved_seats">Reserved seats:</string>
     <string name="rate_it">Rate it</string>
+    <string name="reservation_added">Reserevation sent! You will receive a notification about its state when it will be accepted</string>
 
 </resources>

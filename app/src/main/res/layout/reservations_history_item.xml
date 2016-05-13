@@ -1,13 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:padding="@dimen/activity_horizontal_margin"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_margin="@dimen/activity_horizontal_margin"
     android:layout_height="match_parent">
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:src="@android:drawable/ic_dialog_info"
+        android:layout_height="wrap_content"
+        android:id="@+id/info2"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"/>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Alma Latina"
         android:id="@+id/restaurant_name" />
@@ -15,8 +27,6 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
-        android:textColor="@color/black"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Via Germanasca, 32 Torino"
         android:id="@+id/address"
@@ -32,8 +42,6 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="20/12/2015"
-
-            android:textColor="@color/black"
             android:id="@+id/date"
             android:textStyle="bold|italic"
             android:layout_marginRight="20dp" />
@@ -43,8 +51,6 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="11:30"
-
-            android:textColor="@color/black"
             android:id="@+id/time"
             android:textStyle="bold|italic" />
     </LinearLayout>
@@ -54,8 +60,6 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="stato: terminato"
-
-        android:textColor="@color/black"
         android:id="@+id/status"
         android:singleLine="false" />
 
@@ -69,24 +73,32 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:background="@drawable/roundend_background"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_margin="@dimen/activity_horizontal_margin"
             android:text="Info"
             android:id="@+id/info" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_margin="@dimen/activity_horizontal_margin"
             android:text="Restaurant"
+            android:background="@drawable/roundend_background"
+            style="@style/Widget.AppCompat.Button.Colored"
             android:id="@+id/restaurant" />
 
         <Button
-            style="?android:attr/buttonStyleSmall"
+
+            android:background="@drawable/roundend_background"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_margin="@dimen/activity_horizontal_margin"
             android:layout_width="wrap_content"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="Cancel"
+            android:text="@string/remove"
             android:id="@+id/cancelBtn" />
     </LinearLayout>
 
 </LinearLayout>
+
+</RelativeLayout>

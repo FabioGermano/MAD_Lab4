@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -103,6 +104,7 @@ public class CheckoutOrderActivity extends BaseActivity {
                 r.setTotalIncome(total);
                 UserBL.addReservation(user, r);
                 UserBL.saveChanges(getApplicationContext());
+                Toast.makeText(getApplicationContext(),getResources().getString(R.string.reservation_added), Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
@@ -156,7 +158,7 @@ public class CheckoutOrderActivity extends BaseActivity {
     public void fillLayout(ArrayList<ReservedDish> list) {
         for (ReservedDish d : list) {
             if(d.getQuantity()>0){
-                View child = LayoutInflater.from(getApplicationContext()).inflate(R.layout.your_order_row, null);
+                View child = LayoutInflater.from(getBaseContext()).inflate(R.layout.your_order_row, null);
                 TextView name = (TextView) child.findViewById(R.id.food_name);
                 name.setText(d.getName());
                 TextView quantity = (TextView) child.findViewById(R.id.food_quantity);
