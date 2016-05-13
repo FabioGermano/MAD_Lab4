@@ -71,6 +71,7 @@ public class MainActivity extends BaseActivity {
 
         setActivityTitle(getResources().getString(R.string.titolo_main_activity));
 
+        /*
         addReview = (Button) findViewById(R.id.addReview);
         addReview.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,6 +81,7 @@ public class MainActivity extends BaseActivity {
                 startActivity(i);
             }
         });
+        */
 
         // carico info dal server: quelle  necessarie per la ricerca, possiamo poi implementare una ricerca direttamente
         // sul server che ci restituisce la lista dei risultati con informazioni riassuntive per visualizzare
@@ -116,7 +118,7 @@ public class MainActivity extends BaseActivity {
         ricercaRistoranteBtn = (ImageButton) findViewById(R.id.ricerca_ristorante);
         //ricercaPiattoBtn = (ImageButton) findViewById(R.id.ricerca_piatto);
 
-        //setUpRecyclerView();
+        setUpRecyclerView();
 
     }
 
@@ -255,7 +257,7 @@ public class MainActivity extends BaseActivity {
             rView.setAdapter(myAdapter);
 
             LinearLayoutManager myLLM_vertical = new LinearLayoutManager(this);
-            myLLM_vertical.setOrientation(LinearLayoutManager.VERTICAL);
+            myLLM_vertical.setOrientation(LinearLayoutManager.HORIZONTAL);
             rView.setLayoutManager(myLLM_vertical);
 
             rView.setItemAnimator(new DefaultItemAnimator());

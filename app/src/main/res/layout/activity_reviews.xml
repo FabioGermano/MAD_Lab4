@@ -12,7 +12,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <include android:id="@+id/toolbarLayout" layout="@layout/toolbar_view" android:layout_height="wrap_content" android:layout_width="match_parent"/>
+
             <RelativeLayout
                 android:id="@+id/rankLayout"
                 android:layout_width="match_parent"
