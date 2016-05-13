@@ -28,6 +28,7 @@ import it.polito.mad_lab3.data.restaurant.Restaurant;
 import it.polito.mad_lab3.data.restaurant.Review;
 import it.polito.mad_lab3.data.restaurant.ReviewFood;
 import it.polito.mad_lab3.data.user.User;
+import it.polito.mad_lab3.restaurant.RestaurantActivity;
 
 /**
  * Created by Giovanna on 09/05/2016.
@@ -109,7 +110,7 @@ public class RateDishesActivity extends BaseActivity{
         data.add(oth);
 
         SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(),
-                getApplicationContext(), data );
+                getBaseContext(), data );
         mViewPager = (ViewPager) findViewById(R.id.viewpager_menu);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
@@ -132,7 +133,8 @@ public class RateDishesActivity extends BaseActivity{
                 RestaurantBL.addReview(restaurant, r);
                 RestaurantBL.saveChanges(getApplicationContext());
                 Toast.makeText(getApplicationContext(), getResources().getString(R.string.review_published), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(), RestaurantActivity.class);
+                intent.putExtra("restaurantId", restaurant.getRestaurantId());
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 finish();

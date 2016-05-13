@@ -64,18 +64,11 @@ public class SectionAdapterOffers extends ArrayAdapter<ReviewFood>{
         Offer offer;
         Dish dish;
 
-        slide_in_left = AnimationUtils.loadAnimation(this.context,
-                android.R.anim.slide_in_left);
-        slide_out_right = AnimationUtils.loadAnimation(this.context,
-                android.R.anim.slide_out_right);
-
-
-
         // Check if an existing view is being reused, otherwise inflate the view
         final ViewHolder viewHolder; // view lookup cache stored in tag
         if (convertView == null) {
             viewHolder = new ViewHolder();
-            LayoutInflater inflater = LayoutInflater.from(getContext());
+            LayoutInflater inflater = LayoutInflater.from(context);
             convertView = inflater.inflate(R.layout.review_dishes_item, parent, false);
 
             //find views

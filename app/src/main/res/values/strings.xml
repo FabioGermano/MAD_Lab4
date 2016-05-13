@@ -139,5 +139,7 @@
     <string name="your_reservations">Your reservations</string>
     <string name="reservation_canceled">Your reservation has been canceled</string>
     <string name="your_order_details">Your order details</string>
+    <string name="reserved_seats">Reserved seats:</string>
+    <string name="rate_it">Rate it</string>
 
 </resources>

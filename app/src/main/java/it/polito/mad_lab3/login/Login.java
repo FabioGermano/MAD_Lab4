@@ -58,12 +58,12 @@ public class Login extends BaseActivity {
         }
 
         //User userInfo = UserBL.getUserById(getBaseContext(), 1);
-
+        /*
         //if(userInfo != null) {
             if(userInfo.getUserLoginInfo() != null){
                 userInfo.getUserLoginInfo().setLogin(true);
             }
-        //}
+        //}*/
 
         UserSession.userId = userInfo.getUserId();
 

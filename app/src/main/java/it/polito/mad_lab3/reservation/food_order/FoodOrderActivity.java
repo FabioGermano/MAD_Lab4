@@ -210,7 +210,7 @@ public class FoodOrderActivity extends BaseActivity {
         @Override
         public Fragment getItem(int position) {
 
-            return ListOrderFragment.newInstance(position, getApplicationContext(), lists.get(position));
+            return ListOrderFragment.newInstance(position, getBaseContext(), lists.get(position));
         }
 
         @Override

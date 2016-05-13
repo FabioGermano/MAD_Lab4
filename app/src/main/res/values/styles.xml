@@ -11,7 +11,7 @@
 
     <style name="AppTheme" parent="ParentOfAppTheme">
         <!-- definitions for both v<21 and v>=21 -->
-
+        <item name="android:textColor">@color/blackSemitrasparent</item>
         <item name="android:windowBackground">@color/colorBackground</item>
     </style>
 

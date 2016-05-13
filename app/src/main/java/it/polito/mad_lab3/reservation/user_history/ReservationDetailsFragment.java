@@ -1,4 +1,4 @@
-package it.polito.mad_lab3.reservation;
+package it.polito.mad_lab3.reservation.user_history;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -36,34 +36,40 @@ public class ReservationDetailsFragment extends DialogFragment {
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
+
+        // Inflate and set the layout for the dialog
+        // Pass null as the parent view because its going in the dialog layout
         View v = inflater.inflate(R.layout.reservation_details_dialog, null);
 
         TextView seatsTextView= (TextView) v.findViewById(R.id.seats);
         TextView totalTextView = (TextView) v.findViewById(R.id.total);
 
         LinearLayout ll = (LinearLayout) v.findViewById(R.id.food_order);
+        LinearLayout seatsLL = (LinearLayout) v.findViewById(R.id.seatsLL);
+        LinearLayout totalLL = (LinearLayout) v.findViewById(R.id.totalLL);
 
         if(seats>=1)
             seatsTextView.setText(String.valueOf(seats) + " "+ getResources().getString(R.string.seats_string));
         else{
-            seatsTextView.setVisibility(View.INVISIBLE);
+            seatsLL.setVisibility(View.GONE);
         }
-        if(!data.isEmpty()){
-        fillLayout(getActivity(),ll, data );
-        totalTextView.setText(getResources().getString(R.string.total)+" "+ String.valueOf(total)+" €");}
-        else ll.setVisibility(View.GONE);
+        if(data != null && !data.isEmpty()){
+            fillLayout(getActivity(),ll, data );
+            totalTextView.setText(String.valueOf(total)+" €");
+        }
+        else {
+            ll.setVisibility(View.GONE);
+            totalLL.setVisibility(View.GONE);
+        }
 
-        // Inflate and set the layout for the dialog
-        // Pass null as the parent view because its going in the dialog layout
         builder.setView(v)
-                .setTitle(getResources().getString(R.string.your_order_details))
                 // Add action buttons
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                     }
                 })
-        .setCancelable(true);
+                .setCancelable(true);
 
 
         return builder.create();

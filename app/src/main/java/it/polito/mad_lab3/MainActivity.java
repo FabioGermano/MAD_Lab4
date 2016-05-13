@@ -1,7 +1,6 @@
 package it.polito.mad_lab3;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,7 +9,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.SearchView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -22,9 +20,8 @@ import it.polito.mad_lab3.data.user.User;
 import it.polito.mad_lab3.elaborazioneRicerche.Oggetto_offerteVicine;
 import it.polito.mad_lab3.elaborazioneRicerche.Oggetto_risultatoRicerca;
 import it.polito.mad_lab3.elaborazioneRicerche.RecyclerAdapter_offerteVicine;
-import it.polito.mad_lab3.elaborazioneRicerche.RecyclerAdapter_risultatoRicerca;
 import it.polito.mad_lab3.elaborazioneRicerche.elaborazioneRicerche;
-import it.polito.mad_lab3.reservation.ReservationsHistoryActivity;
+import it.polito.mad_lab3.reservation.user_history.ReservationsHistoryActivity;
 import it.polito.mad_lab3.restaurant.reviews.add_review.AddReviewActivity;
 
 public class MainActivity extends BaseActivity {

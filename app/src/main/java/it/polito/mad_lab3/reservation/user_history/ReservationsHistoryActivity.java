@@ -1,4 +1,4 @@
-package it.polito.mad_lab3.reservation;
+package it.polito.mad_lab3.reservation.user_history;
 
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
