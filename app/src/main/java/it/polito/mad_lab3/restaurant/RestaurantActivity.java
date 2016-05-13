@@ -201,7 +201,7 @@ public class  RestaurantActivity extends BaseActivity {
             Intent i;
             switch (v.getId()) {
                 case R.id.add_photo:
-                    //TODO imp
+                    containerUserPhotoFragment.newPhoto();
                     break;
                 case R.id.add_review:
                     i= new Intent(getApplicationContext(), AddReviewActivity.class);
