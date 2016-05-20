@@ -48,7 +48,7 @@
                 />
         </LinearLayout>
 
-        <it.polito.mad_lab3.common.NumberPicker
+        <it.polito.mad_lab4.common.NumberPicker
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/numberPicker"

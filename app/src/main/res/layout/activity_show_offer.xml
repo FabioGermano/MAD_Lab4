@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="it.polito.mad_lab3.restaurant.ShowOfferActivity">
+    tools:context="it.polito.mad_lab4.restaurant.ShowOfferActivity">
 
     <include android:id="@+id/includedtoolbar" layout="@layout/toolbar_view" android:layout_height="wrap_content" android:layout_width="match_parent"></include>
     <ScrollView
@@ -25,9 +25,9 @@
                 android:background="@android:drawable/dialog_holo_light_frame"
                 android:layout_marginBottom="16dp">
                 <fragment
-                    xmlns:custom="http://schemas.android.com/apk/res/it.polito.mad_lab3"
+                    xmlns:custom="http://schemas.android.com/apk/res/it.polito.mad_lab4"
                     android:id="@+id/photoViewer"
-                    android:name="it.polito.mad_lab3.common.photo_viewer.PhotoViewer"
+                    android:name="it.polito.mad_lab4.common.photo_viewer.PhotoViewer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     custom:isEditable="false"

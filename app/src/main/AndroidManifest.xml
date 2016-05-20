@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="it.polito.mad_lab3">
+    package="it.polito.mad_lab4">
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -66,7 +66,7 @@
             android:windowSoftInputMode="stateAlwaysHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="it.polito.mad_lab3.reservation.ReservationActivity" />
+                android:value="it.polito.mad_lab4.reservation.ReservationActivity" />
         </activity>
         <activity
             android:name=".elaborazioneRicerche.elaborazioneRicerche"

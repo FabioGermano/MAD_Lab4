@@ -118,9 +118,9 @@
                 android:background="@android:drawable/dialog_holo_light_frame"
                 android:layout_marginBottom="16dp">
                 <fragment
-                    xmlns:custom="http://schemas.android.com/apk/res/it.polito.mad_lab3"
+                    xmlns:custom="http://schemas.android.com/apk/res/it.polito.mad_lab4"
                     android:id="@+id/photoViewer1"
-                    android:name="it.polito.mad_lab3.common.photo_viewer.PhotoViewer"
+                    android:name="it.polito.mad_lab4.common.photo_viewer.PhotoViewer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="2dp"
@@ -130,9 +130,9 @@
                     custom:widthInDP="100"
                     custom:initialBackground="@drawable/nothumb" />
                 <fragment
-                    xmlns:custom="http://schemas.android.com/apk/res/it.polito.mad_lab3"
+                    xmlns:custom="http://schemas.android.com/apk/res/it.polito.mad_lab4"
                     android:id="@+id/photoViewer2"
-                    android:name="it.polito.mad_lab3.common.photo_viewer.PhotoViewer"
+                    android:name="it.polito.mad_lab4.common.photo_viewer.PhotoViewer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="2dp"
@@ -145,7 +145,7 @@
                     xmlns:custom="http://schemas.android.com/apk/res/it.polito.mad_la
                     b3"
                     android:id="@+id/photoViewer3"
-                    android:name="it.polito.mad_lab3.common.photo_viewer.PhotoViewer"
+                    android:name="it.polito.mad_lab4.common.photo_viewer.PhotoViewer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="2dp"

@@ -67,7 +67,7 @@
 
             <fragment
                 android:id="@+id/basicinfo_fragment"
-                android:name="it.polito.mad_lab3.restaurant.BasicInfoFragment"
+                android:name="it.polito.mad_lab4.restaurant.BasicInfoFragment"
                 android:layout_marginBottom="@dimen/activity_vertical_margin"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
@@ -92,9 +92,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
                     <fragment
-                        xmlns:custom="http://schemas.android.com/apk/res/it.polito.mad_lab3"
+                        xmlns:custom="http://schemas.android.com/apk/res/it.polito.mad_lab4"
                         android:id="@+id/UserPhotoFragment"
-                        android:name="it.polito.mad_lab3.restaurant.foodPhoto.ContainerUserPhotoFragment"
+                        android:name="it.polito.mad_lab4.restaurant.foodPhoto.ContainerUserPhotoFragment"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentTop="true"
@@ -120,7 +120,7 @@
 
                         <fragment
                             android:id="@+id/menuPrevFragment"
-                            android:name="it.polito.mad_lab3.restaurant.menu_prev.MenuPrevFragment"
+                            android:name="it.polito.mad_lab4.restaurant.menu_prev.MenuPrevFragment"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             />
@@ -143,7 +143,7 @@
                     android:layout_height="wrap_content">
                     <fragment
                         android:id="@+id/offersPrevFragment"
-                        android:name="it.polito.mad_lab3.restaurant.offer_prev.OfferPrevFragment"
+                        android:name="it.polito.mad_lab4.restaurant.offer_prev.OfferPrevFragment"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/activity_horizontal_margin"
@@ -202,7 +202,7 @@
 
                 <fragment
                     android:id="@+id/reviewsPrevFragment"
-                    android:name="it.polito.mad_lab3.restaurant.reviews_prev.ReviewsPrevFragment"
+                    android:name="it.polito.mad_lab4.restaurant.reviews_prev.ReviewsPrevFragment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     />

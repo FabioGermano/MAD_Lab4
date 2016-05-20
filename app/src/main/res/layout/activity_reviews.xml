@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="it.polito.mad_lab3.restaurant.menu.MenuActivity">
+    tools:context="it.polito.mad_lab4.restaurant.menu.MenuActivity">
 
 
     <LinearLayout

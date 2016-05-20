@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <it.polito.mad_lab3.restaurant.gallery.SquareImageView
+    <it.polito.mad_lab4.restaurant.gallery.SquareImageView
         android:id="@+id/galleryPhoto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

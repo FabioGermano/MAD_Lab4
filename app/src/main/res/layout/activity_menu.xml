@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="it.polito.mad_lab3.restaurant.menu.MenuActivity">
+    tools:context="it.polito.mad_lab4.restaurant.menu.MenuActivity">
 
     <include android:id="@+id/toolbarLayout" layout="@layout/toolbar_view" android:layout_height="wrap_content" android:layout_width="match_parent"/>
     <LinearLayout

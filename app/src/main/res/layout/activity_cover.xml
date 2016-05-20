@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         >
 
-        <it.polito.mad_lab3.common.CustomViewPager
+        <it.polito.mad_lab4.common.CustomViewPager
             android:id="@+id/coverPager"
             android:gravity="center"
             android:layout_width="match_parent"

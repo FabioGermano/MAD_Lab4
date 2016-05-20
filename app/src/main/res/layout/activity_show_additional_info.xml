@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="it.polito.mad_lab3.restaurant.ShowOfferActivity">
+    tools:context="it.polito.mad_lab4.restaurant.ShowOfferActivity">
 
     <include android:id="@+id/includedtoolbar" layout="@layout/toolbar_view" android:layout_height="wrap_content" android:layout_width="match_parent"></include>
     <ScrollView

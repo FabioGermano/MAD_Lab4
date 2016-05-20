@@ -53,7 +53,7 @@
         android:text="@string/closed_restaurant"
         />
 
-    <it.polito.mad_lab3.common.ExpandableHeightGridView
+    <it.polito.mad_lab4.common.ExpandableHeightGridView
         android:focusable="true"
         android:id="@+id/gridView"
         android:layout_width="wrap_content"
