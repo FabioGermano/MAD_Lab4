@@ -143,5 +143,7 @@
     <string name="rate_it">Rate it</string>
     <string name="reservation_added">Reserevation sent! You will receive a notification about its state when it will be accepted</string>
     <string name="remove_photo">Remove</string>
-
+    <string name="save_manager_toolbar">Save</string>
+    <string name="calendar_manager_toolbar">Calendar</string>
+    <string name="notifications_manager_toolbar">Notifications</string>
 </resources>

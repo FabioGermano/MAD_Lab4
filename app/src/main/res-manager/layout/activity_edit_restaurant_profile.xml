@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="it.polito.mad_lab2.EditRestaurantProfile">
+
+    <include layout="@layout/toolbar_view" android:layout_height="wrap_content" android:layout_width="match_parent"></include>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/logo"
+                android:id="@+id/textView"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp" />
+
+            <fragment
+                xmlns:custom="http://schemas.android.com/apk/res/it.polito.mad_lab4"
+                android:id="@+id/logo_fragment"
+                android:name="it.polito.mad_lab4.manager.photo_viewer.PhotoViewer"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                custom:isEditable="true"
+                custom:isLogo="true"
+                custom:heightInDP="100"
+                custom:widthInDP="100"
+                custom:initialBackground="@drawable/default_dish_icon"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/covers"
+                android:id="@+id/cover"
+                android:paddingTop="20dp"
+                android:paddingBottom="10dp"
+                />
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
+
+                <fragment
+                    xmlns:custom="http://schemas.android.com/apk/res/it.polito.mad_lab4"
+                    android:id="@+id/cover_fragment1"
+                    android:name="it.polito.mad_lab4.manager.photo_viewer.PhotoViewer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    custom:isEditable="true"
+                    custom:isLogo="false"
+                    custom:heightInDP="100"
+                    custom:widthInDP="100"
+                    custom:initialBackground="@drawable/default_dish_icon"
+
+                    />
+
+
+
+                <fragment
+                    android:layout_toRightOf="@+id/cover_fragment1"
+                    xmlns:custom="http://schemas.android.com/apk/res/it.polito.mad_lab4"
+                    android:id="@+id/cover_fragment2"
+                    android:name="it.polito.mad_lab4.manager.photo_viewer.PhotoViewer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    custom:isEditable="true"
+                    custom:isLogo="false"
+                    custom:heightInDP="100"
+                    custom:widthInDP="100"
+                    android:layout_margin="5dp"
+                    custom:initialBackground="@drawable/default_dish_icon"
+                    />
+                <fragment
+                    xmlns:custom="http://schemas.android.com/apk/res/it.polito.mad_lab4"
+                    android:id="@+id/cover_fragment3"
+                    android:layout_below="@+id/cover_fragment1"
+                    android:name="it.polito.mad_lab4.manager.photo_viewer.PhotoViewer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    custom:isEditable="true"
+                    custom:isLogo="false"
+                    android:layout_margin="5dp"
+                    custom:heightInDP="100"
+                    custom:widthInDP="100"
+                    custom:initialBackground="@drawable/default_dish_icon"
+                    />
+                <fragment
+                    android:layout_toRightOf="@id/cover_fragment3"
+                    android:layout_below="@id/cover_fragment2"
+                    xmlns:custom="http://schemas.android.com/apk/res/it.polito.mad_lab4"
+                    android:id="@+id/cover_fragment4"
+                    android:name="it.polito.mad_lab4.manager.photo_viewer.PhotoViewer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    custom:isEditable="true"
+                    custom:isLogo="false"
+                    custom:heightInDP="100"
+                    custom:widthInDP="100"
+                    android:layout_margin="5dp"
+                    custom:initialBackground="@drawable/default_dish_icon"
+                    />
+
+            </RelativeLayout>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/restaurant_name"
+                android:id="@+id/restaurant_name"
+
+                android:paddingTop="10dp" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/edit_name"
+                android:textColor="@android:color/black"/>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/address"
+                android:id="@+id/address"
+                android:paddingTop="20dp"
+                />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/edit_address"
+                android:inputType="textPostalAddress"
+                android:textColor="@android:color/black"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/phone_number"
+                android:id="@+id/phone"
+                android:paddingTop="20dp"
+
+                />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/edit_phone"
+                android:inputType="phone"
+                android:textColor="@android:color/black"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/email"
+                android:id="@+id/email"
+                android:paddingTop="20dp"
+                android:layout_below="@id/edit_phone"
+                />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/edit_email"
+                android:inputType="textEmailAddress"
+                android:textColor="@android:color/black"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/description"
+                android:id="@+id/description"
+                android:paddingTop="20dp"
+                />
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/edit_description"
+                android:inputType="textMultiLine"
+                android:textColor="@android:color/black"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/opening_time"
+                android:id="@+id/opening_time"
+                android:paddingTop="20dp"
+                />
+            <fragment
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/timetable"
+                android:name="it.polito.mad_lab4.manager.TimeRangeSelecterActivityFragment"
+                tools:layout="@layout/fragment_time_range_selecter"
+                android:layout_width="match_parent"
+                android:layout_margin="10dp"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/features"
+                android:id="@+id/feature_header"
+                android:paddingTop="20dp"
+                />
+
+            <Switch
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/reservation"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/reservation"
+                android:switchPadding="50dp"
+                android:checked="false"
+                android:textOn="@string/yes"
+                android:textOff="@string/no"
+                android:padding="10dp"
+                />
+            <Switch
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/wifi"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/wifi"
+                android:switchPadding="50dp"
+                android:checked="false"
+                android:textOn="@string/yes"
+                android:textOff="@string/no"
+                android:padding="10dp"
+                />
+            <Switch
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/seatsoutside"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/seats"
+                android:switchPadding="50dp"
+                android:checked="false"
+                android:textOn="@string/yes"
+                android:textOff="@string/no"
+                android:padding="10dp"
+                />
+            <Switch
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/creditcard"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/creditcard"
+                android:switchPadding="50dp"
+                android:checked="false"
+                android:textOn="@string/yes"
+                android:textOff="@string/no"
+                android:padding="10dp"
+
+                />
+
+            <Switch
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/bancomat"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/bancomat"
+                android:switchPadding="50dp"
+                android:checked="false"
+                android:textOn="@string/yes"
+                android:textOff="@string/no"
+                android:padding="10dp"
+                />
+
+            <Switch
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/music"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/music"
+                android:switchPadding="50dp"
+                android:checked="false"
+                android:textOn="@string/yes"
+                android:textOff="@string/no"
+                android:padding="10dp"
+                />
+
+            <Switch
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/parking"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/parking"
+                android:switchPadding="50dp"
+                android:checked="false"
+                android:textOn="@string/yes"
+                android:textOff="@string/no"
+                android:padding="10dp"
+                />
+
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

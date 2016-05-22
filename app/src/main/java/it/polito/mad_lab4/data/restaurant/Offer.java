@@ -16,6 +16,7 @@ public class Offer implements Serializable{
     private String thumbPath, largePath;
 
     private ArrayList<Boolean> availableOn;
+    private boolean isAvailable;
 
     public Offer(String offerName, int offerId, float sumRank, int numRanks, float price, String thumbPath, String largePath, ArrayList<Boolean> availableOn, String resPhoto, String details) {
         this.offerName = offerName;
@@ -28,6 +29,10 @@ public class Offer implements Serializable{
         this.availableOn = availableOn;
         this.resPhoto = resPhoto;
         this.details = details;
+    }
+
+    public Offer(){
+
     }
 
     public String getResPhoto() {
@@ -50,6 +55,18 @@ public class Offer implements Serializable{
         this.availableOn = availableOn;
     }
 
+    public void setAvailableOn(boolean[] days) {
+        if(availableOn == null){
+            availableOn = new ArrayList<Boolean>();
+        }
+        this.availableOn.add(days[0]);
+        this.availableOn.add(days[1]);
+        this.availableOn.add(days[2]);
+        this.availableOn.add(days[3]);
+        this.availableOn.add(days[4]);
+        this.availableOn.add(days[5]);
+        this.availableOn.add(days[6]);
+    }
 
     public String getOfferName() {
         return offerName;
@@ -118,5 +135,13 @@ public class Offer implements Serializable{
 
     public void setOfferId(int offerId) {
         this.offerId = offerId;
+    }
+
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+
+    public void setIsAvailable(boolean checked) {
+        this.isAvailable = checked;
     }
 }

@@ -141,4 +141,24 @@ public class Restaurant {
     public int getNumReviews() {
         return this.numReviews;
     }
+
+    public Dish getDishById(int dishId) {
+        ArrayList<Dish> dishes = this.getDishes();
+        for(Dish d : dishes){
+            if(d.getDishId() == dishId)
+                return d;
+        }
+
+        return null;
+    }
+
+    public Offer getOfferById(int offerId) {
+        ArrayList<Offer> offers = this.getOffers();
+        for(Offer d : offers){
+            if(d.getOfferId() == offerId)
+                return d;
+        }
+
+        return null;
+    }
 }

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+ <android.support.v4.widget.DrawerLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        tools:openDrawer="start">
+    <LinearLayout
+        android:id="@+id/topLayout"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    <include layout="@layout/toolbar_view" android:layout_height="wrap_content" android:layout_width="match_parent"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="Work in progress.."
+                android:textSize="20sp"
+                android:layout_centerHorizontal="true"/>
+            <!--<ImageView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_wip"
+                />-->
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/nav_header_main"
+        app:menu="@menu/activity_main_drawer" />
+
+</android.support.v4.widget.DrawerLayout>
+<!-- <LinearLayout
+    android:id="@+id/topLayout"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+<include layout="@layout/toolbar_view" android:layout_height="wrap_content" android:layout_width="match_parent"/>
+
+    <RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:id="@+id/alertDetailsView"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_height="100dp"
+                android:layout_width="match_parent"
+                android:background="@color/primary_material_light">
+            </ImageView>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:background="@drawable/shadow" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        tools:context="it.polito.mad_lab2.MainActivity">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Test modifica menu"
+            android:id="@+id/button_testMM"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:onClick="eseguiActivityModificaMenu"
+            android:layout_alignRight="@+id/button_testMO"
+            android:layout_alignEnd="@+id/button_testMO" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Test modifica offerte"
+            android:id="@+id/button_testMO"
+            android:layout_below="@id/button_testMM"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:onClick="eseguiActivityModificaOfferte"
+            android:layout_alignRight="@+id/button_testMP"
+            android:layout_alignEnd="@+id/button_testMP" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Test modifica profilo"
+            android:id="@+id/button_testMP"
+            android:layout_below="@id/button_testMO"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:onClick="eseguiActivityModificaProfilo"
+            android:layout_alignRight="@+id/button_testMD"
+            android:layout_alignEnd="@+id/button_testMD" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Test modifica disponibilità"
+            android:id="@+id/button_testMD"
+            android:layout_below="@id/button_testMP"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:onClick="eseguiActivityModificaDisponibilita"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Test Reservations"
+            android:id="@+id/button_testRE"
+            android:layout_below="@id/button_testMD"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:onClick="eseguiActivityReservations"
+            android:layout_alignRight="@+id/button_testMD"
+            android:layout_alignEnd="@+id/button_testMD" />
+
+        //custom:addImageMode can be: clickOnButton, clickOnImage
+
+        <include  layout="@layout/fat_buttons" />
+    </RelativeLayout>
+</LinearLayout> -->

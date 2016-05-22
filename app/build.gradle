@@ -1,8 +1,15 @@
 apply plugin: 'com.android.application'
 
+
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
+
+    sourceSets {
+        main {
+            res.srcDirs = ['src/main/res', 'src/main/res-manager']
+        }
+    }
 
     defaultConfig {
         applicationId "it.polito.mad_lab4"
@@ -30,4 +37,7 @@ dependencies {
     compile 'com.google.code.gson:gson:2.3'
     compile 'com.soundcloud.android:android-crop:1.0.1@aar'
     compile 'de.hdodenhof:circleimageview:2.0.0'
+    compile 'com.google.firebase:firebase-database:9.0.0'
 }
+
+apply plugin: 'com.google.gms.google-services'

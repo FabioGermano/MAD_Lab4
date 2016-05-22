@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:showDividers="beginning|end">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:id="@+id/food_name"
+        android:text="Food name"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_marginTop="5dp"
+        android:textStyle="italic"
+        android:layout_gravity="center_vertical"
+        android:gravity="start"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:id="@+id/quantity"
+        android:inputType="number"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="5"
+        android:textStyle="italic"
+        android:layout_marginTop="5dp"
+        android:paddingRight="10dp"
+        android:gravity="end"
+        android:layout_gravity="center_vertical"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp" />
+
+</LinearLayout>

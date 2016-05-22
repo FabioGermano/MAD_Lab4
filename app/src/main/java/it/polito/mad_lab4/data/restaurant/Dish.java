@@ -14,6 +14,7 @@ public class Dish implements Serializable {
     private String thumbPath, largePath;
     private String type; // primi, secondi...
     private String resPhoto; // only in this prototic version of the app
+    private boolean isAvailable;
 
     public Dish(String dishName, int dishId,float sumRank, int numRanks, float price, String thumbPath, String largePath, String type) {
         this.dishName = dishName;
@@ -105,5 +106,13 @@ public class Dish implements Serializable {
 
     public void setSumRank(float sumRank) {
         this.sumRank = sumRank;
+    }
+
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+
+    public void setIsAvailable(boolean checked) {
+        this.isAvailable = checked;
     }
 }

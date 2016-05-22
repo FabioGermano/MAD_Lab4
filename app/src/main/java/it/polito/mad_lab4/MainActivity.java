@@ -22,7 +22,6 @@ import it.polito.mad_lab4.elaborazioneRicerche.Oggetto_risultatoRicerca;
 import it.polito.mad_lab4.elaborazioneRicerche.RecyclerAdapter_offerteVicine;
 import it.polito.mad_lab4.elaborazioneRicerche.elaborazioneRicerche;
 import it.polito.mad_lab4.reservation.user_history.ReservationsHistoryActivity;
-import it.polito.mad_lab4.restaurant.reviews.add_review.AddReviewActivity;
 
 public class MainActivity extends BaseActivity {
 

@@ -47,13 +47,11 @@
             android:name=".common.photo_viewer.PhotoViewActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
             android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
         <activity
             android:name=".restaurant.ChoosePhotoActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
             android:windowSoftInputMode="stateAlwaysHidden" />
         <activity android:name=".restaurant.gallery.GalleryPhotoViewActivity" />
-
         <activity
             android:name=".restaurant.gallery.PhotoGaleryActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
@@ -88,25 +86,86 @@
         <activity
             android:name=".restaurant.reviews.ReviewsActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
-            android:windowSoftInputMode="stateAlwaysHidden"/>
-
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity
             android:name=".restaurant.reviews.add_review.AddReviewActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
             android:windowSoftInputMode="stateAlwaysHidden" />
-
         <activity
             android:name=".reservation.user_history.ReservationsHistoryActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
             android:windowSoftInputMode="stateAlwaysHidden" />
-
         <activity
             android:name=".restaurant.reviews.add_review.RateDishesActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
             android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity android:name=".login.Login" />
+        <activity android:name=".restaurant.cover.CoverActivity" />
+        <activity android:name=".test.TestActivity">
+            <!--<intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-        <activity android:name=".login.Login"></activity>
-        <activity android:name=".restaurant.cover.CoverActivity"></activity>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
+        </activity>
+
+        <activity
+            android:name=".manager.GestioneMenu"
+            android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
+            android:label="GestioneMenu"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".manager.ModifyMenuDish"
+            android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
+            android:label="ModifyMenuDish"
+            android:parentActivityName=".manager.GestioneMenu"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity android:name=".manager.photo_viewer.PhotoViewActivity" />
+        <activity
+            android:name=".manager.GestioneOfferte"
+            android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
+            android:label="GestioneOfferte"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".manager.EditAvailability"
+            android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
+            android:label="EditAvailability"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".manager.AlertActivity"
+            android:label="AlertActivity"
+            android:theme="@style/Theme.Transparent" />
+        <activity
+            android:name=".manager.ModifyOfferDish"
+            android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
+            android:label="ModifyOfferDish"
+            android:parentActivityName=".manager.GestioneOfferte"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".manager.EditRestaurantProfile"
+            android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
+            android:label="EditRestaurantProfile"
+            android:parentActivityName=".MainActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
+        <activity
+            android:name=".manager.reservation.ReservationsActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
+            android:label="@string/title_activity_reservations"
+            android:parentActivityName=".MainActivity">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="it.polito.mad_lab4.manager.MainActivity" />
+        </activity>
+        <activity android:name=".manager.BaseBarraLaterale"></activity>
+        <activity android:name=".manager.MainActivity">
+            <!--<intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
+        </activity>
     </application>
 
 </manifest>

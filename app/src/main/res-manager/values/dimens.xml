@@ -1,0 +1,9 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="fab_button_diameter">74dp</dimen>
+    <dimen name="fab_button_margin_bottom">32dp</dimen>
+    <dimen name="fab_button_margin_right">32dp</dimen>
+    <dimen name="elevation_low">1dp</dimen>
+    <dimen name="elevation_high">8dp</dimen>
+    <dimen name="tabsHeight">48dp</dimen>
+</resources>

@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "187594925060",
+    "firebase_url": "https://mad-lab4-2ef30.firebaseio.com",
+    "project_id": "mad-lab4-2ef30",
+    "storage_bucket": "mad-lab4-2ef30.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:187594925060:android:0069e01ae2e23085",
+        "android_client_info": {
+          "package_name": "it.polito.mad_lab4"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "187594925060-8qm0ika58c3t6omkv8sfcdoevclllrok.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyConrT5T5IZtXv00NjD_rUOE4zjsGNnOKU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

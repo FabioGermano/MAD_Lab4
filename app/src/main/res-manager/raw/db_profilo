@@ -1,0 +1,43 @@
+{
+  "profilo":
+  [
+  {
+        "nome":"",
+        "indirizzo":"",
+        "telefono":"",
+        "email":"",
+        "descrizione":""
+  },
+  {
+        "lun":"CLOSED",
+        "mar":"CLOSED",
+        "mer":"CLOSED",
+        "gio":"CLOSED",
+        "ven":"CLOSED",
+        "sab":"CLOSED",
+        "dom":"CLOSED"
+  },
+    {
+      "Logo_thumb": "null"
+    } ,
+    {
+      "coversLargePath_1" : "null",
+      "coversThumbPath_1" : "null",
+      "coversLargePath_2" : "null",
+      "coversThumbPath_2" : "null",
+      "coversLargePath_3" : "null",
+      "coversThumbPath_3" : "null",
+      "coversLargePath_4" : "null",
+      "coversThumbPath_4" : "null"
+    },
+    {
+      "reservations": "false",
+      "wifi": "false",
+      "seats": "false",
+      "creditCard": "false",
+      "bancomat": "false",
+      "music": "false",
+      "parking": "false"
+    }
+
+]}

@@ -68,6 +68,16 @@ public class RestaurantBL {
         return restaurant.getUserPhotos().size()+1;
     }
 
+    public static int getNewMenuId(Restaurant restaurant)
+    {
+        return restaurant.getDishes().size()+1;
+    }
+
+    public static int getNewOfferId(Restaurant restaurant)
+    {
+        return restaurant.getOffers().size()+1;
+    }
+
     public static void saveChanges(Context _context){
         DBManager.serializeEntity(context, DB.Restaurants, restaurantEntity);
     }

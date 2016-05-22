@@ -1,0 +1,49 @@
+dichiaro come campo private: PhottoManager x;
+
+nel onCreate dell'activity che usa il PhotoViewer, scriviamo qualcosa di simile a:
+
+PhotoViewer currentFragment = (PhotoViewer)getSupportFragmentManager().findFragmentById(R.id.ad_fragment);
+String pathThumbPhoto = leggo da db (deve essre null se non c'è)
+String pathLargePhoto = leggo da db (deve essre null se non c'è)
+x= new PhotoManager(getApplicationContext(), PhotoType.PROFILE, pathThumbPhoto, pathLargePhoto); // secondo argomento può essere: PROFILE (se sono nell'activiy del profilo), MENU (se sono nel menu), OFFER (se sono nelle offete). Questo serve per mantenere sul file system una gerarchia di cartelle
+currentFragment.setThumbBitmap(BitmapFactory.decodeFile(x.getThumb("ID_PHOTO"))); // ogni foto deve avere un id (stringa) univoco. Nel caso del menu, può essere il suo id, nel caso di logo del ristoratore può essere "logo", nelle cover "cover1", "cover2"...
+
+Nel OnPhotoChanged scriviamo:
+
+@Override
+public void OnPhotoChanged(int fragmentId, Bitmap thumb, Bitmap large) {
+     ....
+
+     x.saveThumb(thumb, "ID_PHOTO");
+     x.saveLarge(large, "ID_PHOTO");
+
+     ....
+}
+
+...poi:
+
+@Override
+public Bitmap OnPhotoViewerActivityStarting(int fragmentId) {
+        // leggi bitmap "large" da db
+        return BitmapFactory.decodeFile(x.getLarge("ID_PHOTO"));
+}
+
+@Override
+public void OnPhotoRemoved(int fragmentId) {
+        x.removeThumb("ID_PHOTO");
+        x.removeLarge("ID_PHOTO");
+}
+
+@Override
+    public void onDestroy() { // quello dell'activity... importante non dimenticare questa funzione
+        super.onDestroy();
+       x.destroy("ID_PHOTO");
+    }
+
+
+...infine, nel metodo che salva le cose a db (ad esempio l'onclick sul tasto save), scriviamo:
+
+StrinString pathDefinitivoThumb = x.commitThumb("ID_PHOTO");
+StrinString pathDefinitivoLarge = x.commitLarge("ID_PHOTO");
+
+...salvo i due path a db. Se la foto non c'è più (ad es, è stata rimossa) allroa i valori resituiti sono due null
