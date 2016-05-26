@@ -9,4 +9,9 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="it.polito.mad_lab4.test.TestActivity">
 
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:id="@+id/iv"
+        android:src="@drawable/cibo1"/>
 </RelativeLayout>

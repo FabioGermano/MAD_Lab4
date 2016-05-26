@@ -1,7 +1,5 @@
 package it.polito.mad_lab4.manager.data.reservation;
 
-import it.polito.mad_lab4.manager.common.PhotoType;
-
 /**
  * Created by f.germano on 11/04/2016.
  */

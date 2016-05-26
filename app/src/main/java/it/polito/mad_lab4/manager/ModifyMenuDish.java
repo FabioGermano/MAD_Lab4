@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,25 +21,35 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageMetadata;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.jar.Manifest;
 
 import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.bl.RestaurantBL;
-import it.polito.mad_lab4.data.restaurant.Dish;
+import it.polito.mad_lab4.newData.restaurant.Dish;
 import it.polito.mad_lab4.data.restaurant.DishType;
 import it.polito.mad_lab4.data.restaurant.DishTypeConverter;
-import it.polito.mad_lab4.manager.common.PhotoManager;
-import it.polito.mad_lab4.manager.common.PhotoType;
 import it.polito.mad_lab4.manager.photo_viewer.PhotoViewer;
-import it.polito.mad_lab4.manager.photo_viewer.PhotoViewerListener;
 
-public class ModifyMenuDish extends EditableBaseActivity implements PhotoViewerListener {
+public class ModifyMenuDish extends EditableBaseActivity implements ValueEventListener, DatabaseReference.CompletionListener{
 
-    private Dish dish = null;
+    private Dish dish = new Dish();
     private Oggetto_menu dish_list= null;
     private int position = -1;
     private boolean newDish = false;
@@ -47,149 +58,93 @@ public class ModifyMenuDish extends EditableBaseActivity implements PhotoViewerL
 
     private String imageLarge = null;
     private String imageThumb = null;
-    private PhotoManager imageManager;
     private PhotoViewer imageViewer;
-    private String id_image;
-    private int restaurantId, dishId;
+    private String restaurantId, dishId;
 
-    private  Spinner spinner;
     private ArrayAdapter<String> adapter;
 
+    private Spinner spinner;
+    private EditText editName;
+    private EditText editPrice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         SetCalendarButtonVisibility(false);
-        //setTitleTextView(getResources().getString(R.string.title_activity_edit_dish));
-        //setContentView(R.layout.activity_modify_menu_dish);
 
         SetSaveButtonVisibility(true);
+
+        setContentView(R.layout.activity_modify_menu_dish);
+        getViews();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             checkStoragePermission();
 
-        readData();
-       // setToolbarColor();
-        initializePhotoManagement();
-
+        setData();
+        setToolbarColor();
     }
 
-    private void initializePhotoManagement()
-    {
+    private void getViews() {
+        creaSpinner();
+
+        editName = (EditText) findViewById(R.id.edit_dishName_modifyMenu);
+        editPrice = (EditText) findViewById(R.id.edit_dishPrice_modifyMenu);
+
         imageViewer = (PhotoViewer)getSupportFragmentManager().findFragmentById(R.id.imageDish_modifyMenu);
-        imageManager = new PhotoManager(getApplicationContext(), PhotoType.MENU, this.imageThumb, this.imageLarge);
-
-        id_image = "image_"+ dish.getDishId();
-
-        imageViewer.setThumbBitmap(BitmapFactory.decodeFile(imageManager.getThumb(id_image)));
-
-
     }
 
-    private void readData(){
+    private void  getDishById(final String restaurantId, final String dishId){
+        Thread t = new Thread() {
+            public void run() {
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference("menu/" + restaurantId+"/"+dishId);
+                myRef.addListenerForSingleValueEvent(ModifyMenuDish.this);
+            }
+        };
+        t.start();
+    }
+
+    private void saveDish(final String restaurantId, final String dishId, final boolean isNewDish){
+        Thread t = new Thread() {
+            public void run() {
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                if(!isNewDish) {
+                    DatabaseReference myRef = database.getReference("menu/" + restaurantId + "/" + dishId);
+                    myRef.setValue(dish, ModifyMenuDish.this);
+                }
+                else{
+                    DatabaseReference myRef = database.getReference("menu/" + restaurantId);
+                    String key = myRef.push().getKey();
+                    dish.setDishId(key);
+                    myRef.child(key).setValue(dish, ModifyMenuDish.this);
+                }
+            }
+        };
+        t.start();
+    }
+
+    private void setData(){
         try {
-            String spinnerType;
-            boolean error = false;
             //recupero il piatto da modificare
             Bundle extras = getIntent().getExtras();
 
+            boolean isEditing = (boolean)getIntent().getBooleanExtra("isEditing", false);
+            restaurantId = getIntent().getStringExtra("restaurantId");
+            dishId = getIntent().getStringExtra("dishId");
 
-            if (extras == null){
-                //ERRORE! Da verificare
-                this.finish();
+            if (!isEditing){
+                //è un nuovo piatto --> AGGIUNTA
+                setTitleTextView(getResources().getString(R.string.title_activity_new_dish));
+                creaSpinner();
+
+                newDish = true;
+                extras.clear();
             }
-            else {
+            else{
+                setTitleTextView(getResources().getString(R.string.title_activity_edit_dish));
 
-                boolean isEditing = (boolean)getIntent().getBooleanExtra("isEditing", false);
-                restaurantId = (int)getIntent().getIntExtra("restaurantId", -1);
-                dishId = (int)getIntent().getIntExtra("dishId", -1);
-
-                    if (!isEditing){
-                        //è un nuovo piatto --> AGGIUNTA
-
-                        setContentView(R.layout.activity_modify_menu_dish);
-                        setTitleTextView(getResources().getString(R.string.title_activity_new_dish));
-                        creaSpinner();
-
-                        dish = new Dish(null,
-                                RestaurantBL.getNewMenuId(RestaurantBL.getRestaurantById(getApplicationContext(), 1)),
-                                (float)0.0,
-                                0,
-                                (float)0.0,
-                                null,
-                                null,
-                                DishTypeConverter.fromEnumToString(DishType.MainCourses)
-                                );
-
-                        newDish = true;
-                        extras.clear();
-                        return;
-                    }
-                    else{
-                        /*
-                            settaggio dinamico del titolo
-                         */
-                        setContentView(R.layout.activity_modify_menu_dish);
-
-                        setTitleTextView(getResources().getString(R.string.title_activity_edit_dish));
-                        creaSpinner();
-
-                        dish = RestaurantBL.getRestaurantById(getApplicationContext(), restaurantId).getDishById(dishId);
-
-                        initialType = dish.getEnumType();
-
-                            switch (dish.getEnumType()) {
-                                case MainCourses:
-                                    spinnerType = getResources().getString(R.string.first);
-                                    break;
-                                case SecondCourses:
-                                    spinnerType = getResources().getString(R.string.second);
-                                    break;
-                                case Dessert:
-                                    spinnerType = getResources().getString(R.string.dessert);
-                                    break;
-                                case Other:
-                                    spinnerType = getResources().getString(R.string.other);
-                                    break;
-                                default:
-                                    System.out.println("Typology unknown");
-                                    error = true;
-                                    return;
-                            }
-
-                            modifiedType = dish.getEnumType(); //inizializzo al valore corrente del piatto da modificare
-
-                            if (!error) {
-                                //carico le informazioni nella pagina di modifica
-                                EditText editName = (EditText) findViewById(R.id.edit_dishName_modifyMenu);
-                                EditText editPrice = (EditText) findViewById(R.id.edit_dishPrice_modifyMenu);
-
-                                imageThumb = dish.getThumbPath();
-                                imageLarge = dish.getLargePath();
-
-                                if (editName != null) {
-                                    editName.setText(dish.getDishName());
-                                }
-
-                                if (editPrice != null) {
-                                    editPrice.setText(String.valueOf(dish.getPrice()));
-                                }
-
-                                //imposto lo spinner al valore corretto del piatto
-                                if (spinner != null)
-                                    spinner.setSelection(adapter.getPosition(spinnerType));
-
-                            }
-
-                    }
-
-            }
-
-            if (error){
-                //qualche errore durante la lettura/modifica
-                // DA VERIFICARE!!!
-                this.finish();
+                getDishById(restaurantId, dishId);
             }
         } catch(Exception e){
             System.out.println("Eccezione: " + e.getMessage());
@@ -244,9 +199,6 @@ public class ModifyMenuDish extends EditableBaseActivity implements PhotoViewerL
 
         // aggiorno l'oggetto piatto con tutte le nuove informazioni e passo indietro, all'activity di modifica menu principale, l'intere tabelle
         try {
-            EditText editName = (EditText) findViewById(R.id.edit_dishName_modifyMenu);
-            EditText editPrice = (EditText) findViewById(R.id.edit_dishPrice_modifyMenu);
-
             /*
                 piccola modifica per integrità codice, l'oggetto lo modifico solo se ho letto
                 correttamente tutti i campi, senza nessun errore.
@@ -297,14 +249,10 @@ public class ModifyMenuDish extends EditableBaseActivity implements PhotoViewerL
             dish.setDishName(nomeD);
             dish.setPrice(priceD);
             dish.setType(DishTypeConverter.fromEnumToString(modifiedType));
-            dish.setThumbPath(imageThumb);
-            dish.setLargePath(imageLarge);
+            //dish.setThumbPath(imageThumb);
+            //dish.setLargePath(imageLarge);
 
-            if(newDish){
-                RestaurantBL.getRestaurantById(getApplicationContext(), this.restaurantId).getDishes().add(dish);
-            }
-
-            RestaurantBL.saveChanges(getApplicationContext());
+            saveDish(restaurantId, dishId, newDish);
 
             return true;
 
@@ -343,30 +291,10 @@ public class ModifyMenuDish extends EditableBaseActivity implements PhotoViewerL
         messageView.setGravity(Gravity.CENTER);
     }
 
-    private void commitPhotos() {
-            this.imageThumb = this.imageManager.commitThumb(id_image);
-            this.imageLarge = this.imageManager.commitLarge(id_image);
-
-    }
-
     @Override
     protected void OnSaveButtonPressed() {
         //salvo le info e torno alla schermata di gestione menu principale
-        commitPhotos();
-        boolean ris = saveInfo();
-        if(ris) {
-            Toast toast = Toast.makeText(getApplicationContext(), R.string.dataSaved, Toast.LENGTH_SHORT);
-            toast.show();
-
-            this.imageManager.destroy(id_image);
-
-            Bundle b = new Bundle();
-            b.putSerializable("dish_list", dish_list);
-
-            Intent intent = new Intent(getApplicationContext(), GestioneMenu.class);
-            intent.putExtras(b);
-            startActivity(intent);
-        }
+        saveInfo();
     }
 
     @Override
@@ -398,37 +326,6 @@ public class ModifyMenuDish extends EditableBaseActivity implements PhotoViewerL
     protected void OnAddButtonPressed() {
         throw  new UnsupportedOperationException();
     }
-
-
-    @Override
-    public void OnPhotoChanged(int fragmentId, Bitmap thumb, Bitmap large) {
-        if (fragmentId == R.id.imageDish_modifyMenu){
-            this.imageManager.saveThumb(thumb, id_image);
-            this.imageManager.saveLarge(large, id_image);
-        }
-    }
-
-    @Override
-    public Bitmap OnPhotoViewerActivityStarting(int fragmentId) {
-        if (fragmentId == R.id.imageDish_modifyMenu){
-            return BitmapFactory.decodeFile(this.imageManager.getLarge(id_image));
-        }
-        return null;
-    }
-
-    @Override
-    public void OnPhotoRemoved(int fragmentId) {
-        if (fragmentId == R.id.imageDish_modifyMenu){
-            this.imageManager.removeThumb(id_image);
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        this.imageManager.destroy(id_image);
-    }
-
 
     private void checkPermessi(){
         int camera = ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) ;
@@ -463,8 +360,93 @@ public class ModifyMenuDish extends EditableBaseActivity implements PhotoViewerL
                     printAlert("Negando i permessi l'app non funzionerà correttamente");
 
                 }
-                return;
             }
+        }
+    }
+
+    @Override
+    public void onDataChange(DataSnapshot dataSnapshot) {
+        dish = dataSnapshot.getValue(Dish.class);
+        String spinnerType = null;
+
+        if(dish != null){
+            initialType = DishTypeConverter.fromStringToEnum(dish.getType());
+
+            if(dish.getType().equals(DishTypeConverter.fromEnumToString(DishType.MainCourses))){
+                spinnerType = getResources().getString(R.string.first);
+            }
+            else if(dish.getType().equals(DishTypeConverter.fromEnumToString(DishType.SecondCourses))){
+                spinnerType = getResources().getString(R.string.second);
+            }
+            else if(dish.getType().equals(DishTypeConverter.fromEnumToString(DishType.Dessert))){
+                spinnerType = getResources().getString(R.string.dessert);
+            }
+            else if(dish.getType().equals(DishTypeConverter.fromEnumToString(DishType.Other))){
+                spinnerType = getResources().getString(R.string.other);
+            }
+
+            modifiedType = DishTypeConverter.fromStringToEnum(dish.getType()); //inizializzo al valore corrente del piatto da modificare
+
+            //imageThumb = dish.getThumbPath();
+            //imageLarge = dish.getLargePath();
+
+            if (editName != null) {
+                editName.setText(dish.getDishName());
+            }
+
+            if (editPrice != null) {
+                editPrice.setText(String.valueOf(dish.getPrice()));
+            }
+
+            //imposto lo spinner al valore corretto del piatto
+            if (spinner != null)
+                spinner.setSelection(adapter.getPosition(spinnerType));
+        }
+    }
+
+    @Override
+    public void onCancelled(DatabaseError databaseError) {
+
+    }
+
+    @Override
+    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+        if(databaseError == null){
+
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            StorageReference storageRef = storage.getReferenceFromUrl("gs://mad-lab4-2ef30.appspot.com");
+            StorageReference thumbname = storageRef.child(dish.getDishId()+".jpg");
+
+            // Create file metadata including the content type
+            StorageMetadata metadata = new StorageMetadata.Builder()
+                    .setContentType("image/jpg")
+                    .build();
+
+
+            Bitmap bitmap = this.imageViewer.getThumb();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] data = baos.toByteArray();
+
+            UploadTask uploadTask = thumbname.putBytes(data, metadata);
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle unsuccessful uploads
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
+
+                    Toast toast = Toast.makeText(getApplicationContext(), R.string.dataSaved, Toast.LENGTH_SHORT);
+                    toast.show();
+
+                    Intent intent = new Intent(getApplicationContext(), GestioneMenu.class);
+                    startActivity(intent);
+                }
+            });
         }
     }
 }

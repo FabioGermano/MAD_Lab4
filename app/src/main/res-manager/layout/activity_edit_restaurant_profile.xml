@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="it.polito.mad_lab2.EditRestaurantProfile">
+    tools:context="it.polito.mad_lab4.manager.EditRestaurantProfile">
 
     <include layout="@layout/toolbar_view" android:layout_height="wrap_content" android:layout_width="match_parent"></include>
     <ScrollView

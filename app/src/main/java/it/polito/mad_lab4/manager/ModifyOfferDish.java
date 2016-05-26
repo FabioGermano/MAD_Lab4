@@ -28,15 +28,12 @@ import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.bl.RestaurantBL;
 import it.polito.mad_lab4.data.restaurant.Offer;
 import it.polito.mad_lab4.data.restaurant.RestaurantEntity;
-import it.polito.mad_lab4.manager.common.PhotoManager;
-import it.polito.mad_lab4.manager.common.PhotoType;
 import it.polito.mad_lab4.manager.photo_viewer.PhotoViewer;
-import it.polito.mad_lab4.manager.photo_viewer.PhotoViewerListener;
 
 /**
  * Created by Euge on 10/04/2016.
  */
-public class ModifyOfferDish extends EditableBaseActivity implements PhotoViewerListener{
+public class ModifyOfferDish extends EditableBaseActivity {
 
     private Offer offer = null;
     private ArrayList<Offer> offer_list = null;
@@ -47,11 +44,8 @@ public class ModifyOfferDish extends EditableBaseActivity implements PhotoViewer
 
     private String imageLarge = null;
     private String imageThumb = null;
-    private PhotoManager imageManager;
     private PhotoViewer imageViewer;
     private String id_image;
-
-    private int newID = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,18 +60,7 @@ public class ModifyOfferDish extends EditableBaseActivity implements PhotoViewer
         readData();
         setToolbarColor();
 
-        initializePhotoManagement();
-    }
-
-
-    private void initializePhotoManagement()
-    {
         imageViewer = (PhotoViewer)getSupportFragmentManager().findFragmentById(R.id.imageOffer_modifyOffer);
-        imageManager = new PhotoManager(getApplicationContext(), PhotoType.OFFER, this.imageThumb, this.imageLarge);
-
-        id_image = "image_"+ offer.getOfferId();
-
-        imageViewer.setThumbBitmap(BitmapFactory.decodeFile(imageManager.getThumb(id_image)));
     }
 
     private void readData(){
@@ -340,21 +323,13 @@ public class ModifyOfferDish extends EditableBaseActivity implements PhotoViewer
 
     }
 
-    private void commitPhotos() {
-        this.imageThumb = this.imageManager.commitThumb(id_image);
-        this.imageLarge = this.imageManager.commitLarge(id_image);
-    }
-
     @Override
     protected void OnSaveButtonPressed() {
 
-        commitPhotos();
         boolean ris = saveInfo();
         if(ris) {
             Toast toast = Toast.makeText(getApplicationContext(), R.string.dataSaved, Toast.LENGTH_SHORT);
             toast.show();
-
-            this.imageManager.destroy(id_image);
 
             Bundle b = new Bundle();
             b.putSerializable("offer_list", offer_list);
@@ -377,35 +352,6 @@ public class ModifyOfferDish extends EditableBaseActivity implements PhotoViewer
     @Override
     protected void OnBackButtonPressed() {
 
-    }
-
-    @Override
-    public void OnPhotoChanged(int fragmentId, Bitmap thumb, Bitmap large) {
-        if (fragmentId == R.id.imageOffer_modifyOffer){
-            this.imageManager.saveThumb(thumb, id_image);
-            this.imageManager.saveLarge(large, id_image);
-        }
-    }
-
-    @Override
-    public Bitmap OnPhotoViewerActivityStarting(int fragmentId) {
-        if (fragmentId == R.id.imageOffer_modifyOffer){
-            return BitmapFactory.decodeFile(this.imageManager.getLarge(id_image));
-        }
-        return null;
-    }
-
-    @Override
-    public void OnPhotoRemoved(int fragmentId) {
-        if (fragmentId == R.id.imageOffer_modifyOffer){
-            this.imageManager.removeThumb(id_image);
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        this.imageManager.destroy(id_image);
     }
 
     private void checkStoragePermission(){

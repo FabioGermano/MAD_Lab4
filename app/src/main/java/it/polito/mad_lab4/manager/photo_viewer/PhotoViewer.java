@@ -57,21 +57,27 @@ public class PhotoViewer extends Fragment  implements PhotoDialogListener {
     private boolean cameraAllowed = false;
     private boolean storageAllowed = false;
 
-    private PhotoViewerListener listener;
+    private Bitmap thumb, large;
+
+    public Bitmap getThumb() {
+        return thumb;
+    }
+
+    public void setThumb(Bitmap thumb) {
+        this.thumb = thumb;
+    }
+
+    public Bitmap getLarge() {
+        return large;
+    }
+
+    public void setLarge(Bitmap large) {
+        this.large = large;
+    }
 
     public PhotoViewer()
     {
 
-    }
-
-    private void notifyPhotoChanged(Bitmap thumb, Bitmap large)
-    {
-        listener.OnPhotoChanged(getId(), thumb, large);
-    }
-
-    private void notifyPhotoRemoved()
-    {
-        listener.OnPhotoRemoved(getId());
     }
 
     @Override
@@ -201,8 +207,6 @@ public class PhotoViewer extends Fragment  implements PhotoDialogListener {
         {
             this.isPhotoClicked = true;
 
-            Bitmap large = listener.OnPhotoViewerActivityStarting(getId());
-
             String path = Environment.getExternalStorageDirectory().toString();
             OutputStream fOut = null;
             File file = new File(path, "image-tran.jpg");
@@ -212,8 +216,6 @@ public class PhotoViewer extends Fragment  implements PhotoDialogListener {
                 large.compress(Bitmap.CompressFormat.JPEG, 85, fOut);
                 fOut.flush();
                 fOut.close();
-
-                MediaStore.Images.Media.insertImage(getActivity().getContentResolver(), file.getAbsolutePath(), file.getName(), file.getName());
 
                 Intent intent = new Intent(getActivity(), it.polito.mad_lab4.manager.photo_viewer.PhotoViewActivity.class);
                 intent.putExtra("photoPath", file.getAbsolutePath());
@@ -226,16 +228,6 @@ public class PhotoViewer extends Fragment  implements PhotoDialogListener {
             } catch (IOException e) {
                 Log.d(e.getMessage(), e.getMessage(), e);
             }
-        }
-    }
-
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            listener = (PhotoViewerListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must implement PhotoViewerListener");
         }
     }
 
@@ -281,16 +273,14 @@ public class PhotoViewer extends Fragment  implements PhotoDialogListener {
             Bitmap bitmap = null;
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), Crop.getOutput(data));
-                Bitmap thumb = resizeBitmap(bitmap, 196);
+                thumb = resizeBitmap(bitmap, 196);
                 if(!this.isLogo) {
-                    Bitmap large = resizeBitmap(bitmap, 1024);
+                    large = resizeBitmap(bitmap, 1024);
                     //bitmap.recycle();
                     this.setThumbBitmap(thumb);
-                    notifyPhotoChanged(thumb, large);
                 }
                 else{
                     this.setThumbBitmap(thumb);
-                    notifyPhotoChanged(thumb, null);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -300,7 +290,8 @@ public class PhotoViewer extends Fragment  implements PhotoDialogListener {
         if(requestCode == VIEW_PHOTO && resultCode == Activity.RESULT_OK){
             boolean toBeDeleted = data.getBooleanExtra("toBeDeteted", false);
             if(toBeDeleted) {
-                OnRemoveButtonListener();
+                SetIsBitmapSetted(false);
+                this.imgPhoto.setImageResource(initialImage);
             }
             return;
         }
@@ -379,7 +370,6 @@ public class PhotoViewer extends Fragment  implements PhotoDialogListener {
     public void OnRemoveButtonListener() {
         SetIsBitmapSetted(false);
         this.imgPhoto.setImageResource(initialImage);
-        notifyPhotoRemoved();
     }
     /* end dialog management */
 
