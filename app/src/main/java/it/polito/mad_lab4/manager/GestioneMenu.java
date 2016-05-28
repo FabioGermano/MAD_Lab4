@@ -285,7 +285,7 @@ public class  GestioneMenu extends EditableBaseActivity {
     protected void OnAddButtonPressed() {
 
         Bundle b = new Bundle();
-        b.putString("restaurantId", "-KIcTNUVIT-BIqARHq3P");
+        b.putString("restaurantId", "-KIrgaSxr9VhHllAjqmp");
         b.putBoolean("isEditing", false);
         Intent intent = new Intent(getApplicationContext(), ModifyMenuDish.class);
         intent.putExtras(b);

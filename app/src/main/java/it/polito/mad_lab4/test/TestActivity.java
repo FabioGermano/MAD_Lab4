@@ -38,25 +38,35 @@ public class TestActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
+/*
+                FirebaseStorage storage = FirebaseStorage.getInstance();
+                StorageReference storageRef = storage.getReferenceFromUrl("gs://mad-lab4-2ef30.appspot.com");
+                StorageReference thumbname = storageRef.child("prova.jpg");
 
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReferenceFromUrl("gs://mad-lab4-2ef30.appspot.com");
-        StorageReference islandRef = storageRef.child("screen.png");
 
-        final long ONE_MEGABYTE = 1024 * 1024;
-        islandRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-            @Override
-            public void onSuccess(byte[] bytes) {
-                // Data for "images/island.jpg" is returns, use this as needed
-                Log.d("a", "sdsd");
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
-            }
-        });
+                    ImageView imageView = (ImageView) findViewById(R.id.iv);
+                    // Get the data from an ImageView as bytes
+                    imageView.setDrawingCacheEnabled(true);
+                    imageView.buildDrawingCache();
+                    Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                    byte[] data = baos.toByteArray();
 
+                    UploadTask uploadTask = thumbname.putBytes(data);
+                    uploadTask.addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            // Handle unsuccessful uploads
+                        }
+                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                            Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                        }
+                    });
+*/
         /*FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("menu/-KIcTNUVIT-BIqARHq3P");
         Dish d = new Dish();
@@ -70,7 +80,7 @@ public class TestActivity extends AppCompatActivity {
         d.setDishId(key);
         myRef.child(key).setValue(d);*/
 
-        /*FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("restaurants");
 
         Restaurant restaurant = new Restaurant();
@@ -99,7 +109,7 @@ public class TestActivity extends AppCompatActivity {
         String key = myRef.push().getKey();
         restaurant.setRestaurantId(key);
         myRef.child(key).setValue(restaurant);
-*/
+
         /*myRef = database.getReference("restaurants/-KIInPY8YJc4zpP8UM0m");
         myRef.addValueEventListener(new ValueEventListener() {
             @Override

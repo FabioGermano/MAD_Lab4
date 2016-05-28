@@ -16,6 +16,8 @@ public class Dish {
     private float price;
     private Boolean isTodayAvailable;
     private String type; // primi, secondi...
+    private String thumbDownloadLink;
+    private String largeDownloadLink;
 
     public Dish(){
     }
@@ -74,5 +76,21 @@ public class Dish {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public void setThumbDownloadLink(String downloadLinkThumb) {
+        this.thumbDownloadLink = downloadLinkThumb;
+    }
+
+    public void setLargeDownloadLink(String downloadLinkLarge) {
+        this.largeDownloadLink = downloadLinkLarge;
+    }
+
+    public String getThumbDownloadLink() {
+        return thumbDownloadLink;
+    }
+
+    public String getLargeDownloadLink() {
+        return largeDownloadLink;
     }
 }

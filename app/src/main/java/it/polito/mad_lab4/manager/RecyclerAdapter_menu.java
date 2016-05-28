@@ -218,8 +218,8 @@ public class RecyclerAdapter_menu extends RecyclerView.Adapter<RecyclerAdapter_m
             context.startActivity(intent);*/
 
             Bundle b = new Bundle();
-            b.putString("restaurantId", "-KIcTNUVIT-BIqARHq3P");
-            b.putString("dishId",  "-KIdN3FNcbE5nOp1DKIJ");//current_list.get(position).getDishId());
+            b.putString("restaurantId", "-KIrgaSxr9VhHllAjqmp");
+            b.putString("dishId",  "-KIrijQkqg3gnmwMHzJs");//current_list.get(position).getDishId());
             b.putBoolean("isEditing", true);
             Intent intent = new Intent(context, ModifyMenuDish.class);
             intent.putExtras(b);
