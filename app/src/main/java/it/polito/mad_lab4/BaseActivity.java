@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.os.Build;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -15,18 +13,15 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import it.polito.mad_lab4.bl.UserBL;
-import it.polito.mad_lab4.common.UserSession;
+import it.polito.mad_lab4.data.user.UserSession;
 import it.polito.mad_lab4.data.user.User;
 import it.polito.mad_lab4.login.Login;
 
@@ -39,6 +34,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     String activityTitle =  "Titolo App";
     private View toolbarShadow;
     private boolean useToolbar=true;
+
     private User userInformation;
 
     //per visualizzare o meno, e abilitare, l'icona nella toolbar
@@ -116,10 +112,17 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
             NavigationView navigationView = (NavigationView) view.findViewById(R.id.nav_view);
 
             //controllo se l'utente è collegato e decido quale menu/header visualizzare
-            //userInformation = controlloLogin();
-            //boolean login = userInformation.getUserLoginInfo().isLogin();
             boolean login = UserSession.userId != null;
 
+            /*AuthData authData = ref.getAuth();
+                if(authData != null){
+                    login = true;
+                } else {
+                    login = false;
+                }
+            */
+
+            // controllo se non ho già le informazioni a disposizione, se non le ho le scarico dal server
             if(login){
                 userInformation = UserBL.getUserById(getApplicationContext(), UserSession.userId);
             }
@@ -300,6 +303,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     private void Logout(){
         //eseguo il logout e cancello eventualmente il file con le credenziali
         UserSession.userId = null;
+        //ref.unauth();
         Toast.makeText(getApplicationContext(), getResources().getString(R.string.logout_message), Toast.LENGTH_LONG).show();
         Intent i = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(i);

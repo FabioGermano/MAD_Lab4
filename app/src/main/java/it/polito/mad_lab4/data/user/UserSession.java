@@ -1,4 +1,4 @@
-package it.polito.mad_lab4.common;
+package it.polito.mad_lab4.data.user;
 
 /**
  * Created by f.germano on 11/05/2016.

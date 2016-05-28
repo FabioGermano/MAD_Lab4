@@ -3,16 +3,12 @@ package it.polito.mad_lab4.reservation;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -21,7 +17,7 @@ import it.polito.mad_lab4.MainActivity;
 import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.bl.UserBL;
 import it.polito.mad_lab4.common.Helper;
-import it.polito.mad_lab4.common.UserSession;
+import it.polito.mad_lab4.data.user.UserSession;
 import it.polito.mad_lab4.data.reservation.Reservation;
 import it.polito.mad_lab4.data.reservation.ReservationType;
 import it.polito.mad_lab4.data.reservation.ReservationTypeConverter;

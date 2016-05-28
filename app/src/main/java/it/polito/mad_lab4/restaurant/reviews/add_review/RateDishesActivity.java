@@ -15,11 +15,10 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import it.polito.mad_lab4.BaseActivity;
-import it.polito.mad_lab4.MainActivity;
 import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.bl.RestaurantBL;
 import it.polito.mad_lab4.bl.UserBL;
-import it.polito.mad_lab4.common.UserSession;
+import it.polito.mad_lab4.data.user.UserSession;
 import it.polito.mad_lab4.data.reservation.ReservedDish;
 import it.polito.mad_lab4.data.restaurant.Dish;
 import it.polito.mad_lab4.data.restaurant.DishType;

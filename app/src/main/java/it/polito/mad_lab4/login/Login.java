@@ -1,7 +1,6 @@
 package it.polito.mad_lab4.login;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -11,10 +10,11 @@ import it.polito.mad_lab4.BaseActivity;
 import it.polito.mad_lab4.MainActivity;
 import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.bl.UserBL;
-import it.polito.mad_lab4.common.UserSession;
+import it.polito.mad_lab4.data.user.UserSession;
 import it.polito.mad_lab4.data.user.User;
 
 public class Login extends BaseActivity {
+    //private Firebase ref = new Firebase("https://<YOUR-FIREBASE-APP>.firebaseio.com");;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,13 +57,23 @@ public class Login extends BaseActivity {
             return;
         }
 
-        //User userInfo = UserBL.getUserById(getBaseContext(), 1);
         /*
-        //if(userInfo != null) {
-            if(userInfo.getUserLoginInfo() != null){
-                userInfo.getUserLoginInfo().setLogin(true);
+        // Create a handler to handle the result of the authentication
+        Firebase.AuthResultHandler authResultHandler = new Firebase.AuthResultHandler() {
+            @Override
+            public void onAuthenticated(AuthData authData) {
+                // Authenticated successfully with payload authData
             }
-        //}*/
+            @Override
+            public void onAuthenticationError(FirebaseError firebaseError) {
+                // Authenticated failed with error firebaseError
+            }
+        };
+        // Or with an email/password combination
+        ref.authWithPassword(usernameET.getText().toString(), passwordET.getText().toString(), authResultHandler);
+        */
+
+        // Scarica info base utente e in base al tipo di utente ritorna alla schermata appropriata
 
         UserSession.userId = userInfo.getUserId();
 

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import it.polito.mad_lab4.BaseActivity;
 import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.bl.UserBL;
-import it.polito.mad_lab4.common.UserSession;
+import it.polito.mad_lab4.data.user.UserSession;
 import it.polito.mad_lab4.data.reservation.Reservation;
 import it.polito.mad_lab4.data.user.User;
 

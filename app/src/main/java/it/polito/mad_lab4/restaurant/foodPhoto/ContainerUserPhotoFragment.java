@@ -2,7 +2,6 @@ package it.polito.mad_lab4.restaurant.foodPhoto;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,7 +13,6 @@ import android.widget.TextView;
 
 import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.bl.RestaurantBL;
-import it.polito.mad_lab4.common.UserSession;
 import it.polito.mad_lab4.data.restaurant.Restaurant;
 import it.polito.mad_lab4.data.restaurant.UserPhoto;
 import it.polito.mad_lab4.restaurant.ChoosePhotoActivity;

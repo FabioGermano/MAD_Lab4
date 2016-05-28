@@ -16,14 +16,13 @@ import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 import it.polito.mad_lab4.BaseActivity;
 import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.bl.RestaurantBL;
 import it.polito.mad_lab4.bl.UserBL;
-import it.polito.mad_lab4.common.UserSession;
+import it.polito.mad_lab4.data.user.UserSession;
 import it.polito.mad_lab4.common.photo_viewer.PhotoViewer;
 import it.polito.mad_lab4.common.photo_viewer.PhotoViewerListener;
 import it.polito.mad_lab4.data.restaurant.Restaurant;
