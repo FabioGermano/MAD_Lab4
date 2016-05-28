@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="it.polito.mad_lab4.user.EditUserProfileActivity">
+
+    <include layout="@layout/toolbar_view" android:layout_height="wrap_content" android:layout_width="match_parent"></include>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                card_view:cardCornerRadius="4dp"
+                android:minHeight="64dp"
+                card_view:cardUseCompatPadding="true"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:clickable="true"
+                android:layout_height="wrap_content">
+            <fragment
+                xmlns:custom="http://schemas.android.com/apk/res/it.polito.mad_lab4"
+                android:id="@+id/logo_fragment"
+                android:name="it.polito.mad_lab4.manager.photo_viewer.PhotoViewer"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                custom:isEditable="true"
+                custom:isLogo="true"
+                custom:heightInDP="200"
+                custom:widthInDP="200"
+                custom:initialBackground="@drawable/ic_account_box_white_48dp"
+                />
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                card_view:cardCornerRadius="4dp"
+                android:minHeight="64dp"
+                card_view:cardUseCompatPadding="true"
+                android:layout_width="wrap_content"
+                android:clickable="true"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:padding="@dimen/activity_horizontal_margin"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="3"
+                android:paddingTop="10dp"
+                android:gravity="center"
+                >
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/male"
+                    android:layout_weight="1"
+                    android:id="@+id/male" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="@string/female"
+                    android:id="@+id/female" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="@string/other"
+                    android:id="@+id/other" />
+
+            </RadioGroup>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:id="@+id/usernameLL">
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:id="@+id/imageView2"
+                    android:src="@drawable/ic_account_circle_white_48dp" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/edit_name"
+                    android:textColor="@android:color/black"
+                    android:background="@android:color/transparent"
+                    android:hint="Username"
+                    android:padding="5dp" />
+
+            </LinearLayout>
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:background="#20000000"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:id="@+id/typeLL">
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_action_name" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/typeText"
+                    android:textColor="@android:color/black"
+                    android:background="@android:color/transparent"
+                    android:hint="Student"
+                    android:padding="5dp" />
+            </LinearLayout>
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:background="#20000000"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp" />
+            <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:id="@+id/universityLL"
+            android:longClickable="true">
+
+            <ImageView
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:id="@+id/imageView3"
+                android:src="@drawable/ic_university_white" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/universityText"
+                android:textColor="@android:color/black"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:clickable="true"
+                android:background="@android:color/transparent"
+                android:hint="Politecnico di Torino"
+                android:padding="5dp" />
+        </LinearLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:background="#20000000"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:id="@+id/phoneLL"
+                android:longClickable="true">
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_phone" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/phoneText"
+                    android:textColor="@android:color/black"
+                    android:background="@android:color/transparent"
+                    android:hint="333921382"
+                    android:padding="5dp"
+                    android:inputType="phone" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:background="#20000000"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:id="@+id/emailLL"
+                android:longClickable="true">
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_email_profile"
+                    android:cropToPadding="false"
+                    android:padding="2dp" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/emailText"
+                    android:textColor="@android:color/black"
+                    android:background="@android:color/transparent"
+                    android:hint="email@example.com"
+                    android:padding="5dp"
+                    android:inputType="textEmailAddress" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:background="#20000000"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:id="@+id/bioLL"
+                android:longClickable="true">
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_bio_lines"
+                    android:cropToPadding="false"
+                    android:padding="2dp" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/bioText"
+                    android:textColor="@android:color/black"
+                    android:background="@android:color/transparent"
+                    android:hint="Bio description"
+                    android:padding="5dp"
+                    android:inputType="textMultiLine" />
+            </LinearLayout>
+                </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

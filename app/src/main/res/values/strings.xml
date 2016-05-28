@@ -146,4 +146,9 @@
     <string name="save_manager_toolbar">Save</string>
     <string name="calendar_manager_toolbar">Calendar</string>
     <string name="notifications_manager_toolbar">Notifications</string>
+    <string name="username">Username</string>
+    <string name="bio">Bio</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="pick_your_university">Pick your university site</string>
 </resources>
