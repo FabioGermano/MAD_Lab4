@@ -45,8 +45,7 @@ public class UniversityPickerFragment extends DialogFragment {
         // Pass null as the parent view because its going in the dialog layout
         //builder.setView(inflater.inflate(R.layout.dialog_pick_university, null));
         builder.setSingleChoiceItems(items, 0,listener);
-        builder.setMessage(R.string.pick_your_university)
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // FIRE ZE MISSILES!
                     }
