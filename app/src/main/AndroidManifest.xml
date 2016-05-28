@@ -149,7 +149,13 @@
             android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
             android:label="EditRestaurantProfile"
             android:parentActivityName=".MainActivity"
-            android:windowSoftInputMode="stateAlwaysHidden" />
+            android:windowSoftInputMode="stateAlwaysHidden" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            </activity>
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
         <activity
             android:name=".manager.reservation.ReservationsActivity"
@@ -172,11 +178,7 @@
             -->
         </activity>
         <activity android:name=".user.EditUserProfileActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

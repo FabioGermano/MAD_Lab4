@@ -14,6 +14,12 @@
         <item>€€€</item>
     </string-array>
 
+    <string-array name="userType">
+        <item>@string/student</item>
+        <item>@string/professor</item>
+        <item>@string/adm_employee</item>
+    </string-array>
+
     <string-array name="valutazioneArray">
         <item>-</item>
         <item>★</item>

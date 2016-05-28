@@ -105,7 +105,8 @@
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:id="@+id/imageView2"
-                    android:src="@drawable/ic_account_circle_white_48dp" />
+                    android:src="@drawable/ic_user_grey"
+                    android:alpha="0.7" />
 
                 <EditText
                     android:layout_width="match_parent"
@@ -113,8 +114,10 @@
                     android:id="@+id/edit_name"
                     android:textColor="@android:color/black"
                     android:background="@android:color/transparent"
-                    android:hint="Username"
-                    android:padding="5dp" />
+                    android:hint="@string/username"
+                    android:padding="5dp"
+                    android:text="fabio.germano"
+                    android:singleLine="false" />
 
             </LinearLayout>
             <View
@@ -134,7 +137,7 @@
                 <ImageView
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:src="@drawable/ic_action_name" />
+                    android:src="@drawable/ic_student_type_grey" />
 
                 <EditText
                     android:layout_width="match_parent"
@@ -142,7 +145,10 @@
                     android:id="@+id/typeText"
                     android:textColor="@android:color/black"
                     android:background="@android:color/transparent"
-                    android:hint="Student"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:clickable="true"
+                    android:hint="Pick your category"
                     android:padding="5dp" />
             </LinearLayout>
             <View
@@ -163,7 +169,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:id="@+id/imageView3"
-                android:src="@drawable/ic_university_white" />
+                android:src="@drawable/ic_university_grey" />
 
             <EditText
                 android:layout_width="match_parent"
@@ -174,7 +180,7 @@
                 android:focusableInTouchMode="false"
                 android:clickable="true"
                 android:background="@android:color/transparent"
-                android:hint="Politecnico di Torino"
+                android:hint="Pick your university"
                 android:padding="5dp" />
         </LinearLayout>
 
@@ -195,7 +201,7 @@
                 <ImageView
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:src="@drawable/ic_phone" />
+                    android:src="@drawable/ic_phone_grey" />
 
                 <EditText
                     android:layout_width="match_parent"
@@ -203,7 +209,7 @@
                     android:id="@+id/phoneText"
                     android:textColor="@android:color/black"
                     android:background="@android:color/transparent"
-                    android:hint="333921382"
+                    android:hint="eg: 333921382"
                     android:padding="5dp"
                     android:inputType="phone" />
             </LinearLayout>
@@ -226,7 +232,7 @@
                 <ImageView
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:src="@drawable/ic_email_profile"
+                    android:src="@drawable/ic_email_profile_grey"
                     android:cropToPadding="false"
                     android:padding="2dp" />
 
@@ -251,24 +257,24 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center"
                 android:id="@+id/bioLL"
                 android:longClickable="true">
 
                 <ImageView
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:src="@drawable/ic_bio_lines"
+                    android:src="@drawable/ic_bio_lines_grey"
                     android:cropToPadding="false"
                     android:padding="2dp" />
 
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:id="@+id/bioText"
                     android:textColor="@android:color/black"
                     android:background="@android:color/transparent"
-                    android:hint="Bio description"
+                    android:hint="@string/bio_hint"
                     android:padding="5dp"
                     android:inputType="textMultiLine" />
             </LinearLayout>
