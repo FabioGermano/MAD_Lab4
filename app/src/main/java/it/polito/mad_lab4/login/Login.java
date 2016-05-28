@@ -63,13 +63,14 @@ public class Login extends BaseActivity {
             @Override
             public void onAuthenticated(AuthData authData) {
                 // Authenticated successfully with payload authData
+                authData.getUid();
             }
             @Override
             public void onAuthenticationError(FirebaseError firebaseError) {
                 // Authenticated failed with error firebaseError
             }
         };
-        // Or with an email/password combination
+        //with an email/password combination
         ref.authWithPassword(usernameET.getText().toString(), passwordET.getText().toString(), authResultHandler);
         */
 
