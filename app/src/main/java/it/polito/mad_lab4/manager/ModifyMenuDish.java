@@ -3,15 +3,13 @@ package it.polito.mad_lab4.manager;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,47 +19,34 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
-import java.util.jar.Manifest;
-
 import it.polito.mad_lab4.R;
-import it.polito.mad_lab4.bl.RestaurantBL;
+import it.polito.mad_lab4.firebase_manager.FirebaseGetDishManager;
+import it.polito.mad_lab4.firebase_manager.FirebaseSaveDishManager;
 import it.polito.mad_lab4.newData.restaurant.Dish;
 import it.polito.mad_lab4.data.restaurant.DishType;
 import it.polito.mad_lab4.data.restaurant.DishTypeConverter;
 import it.polito.mad_lab4.manager.photo_viewer.PhotoViewer;
 
-public class ModifyMenuDish extends EditableBaseActivity implements ValueEventListener, DatabaseReference.CompletionListener{
+public class ModifyMenuDish extends EditableBaseActivity {
 
     private Dish dish = new Dish();
-    private Oggetto_menu dish_list= null;
-    private int position = -1;
     private boolean newDish = false;
     private DishType initialType = null;
     private DishType modifiedType = null;
 
-    private String imageLarge = null;
-    private String imageThumb = null;
     private PhotoViewer imageViewer;
     private String restaurantId, dishId;
 
     private ArrayAdapter<String> adapter;
+    private String downloadLinkThumb, downloadLinkLarge;
 
     private Spinner spinner;
     private EditText editName;
@@ -94,34 +79,32 @@ public class ModifyMenuDish extends EditableBaseActivity implements ValueEventLi
         imageViewer = (PhotoViewer)getSupportFragmentManager().findFragmentById(R.id.imageDish_modifyMenu);
     }
 
-    private void  getDishById(final String restaurantId, final String dishId){
-        Thread t = new Thread() {
+    private void saveDish(final String restaurantId, final  boolean isNewDish) {
+        new Thread()
+        {
             public void run() {
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference myRef = database.getReference("menu/" + restaurantId+"/"+dishId);
-                myRef.addListenerForSingleValueEvent(ModifyMenuDish.this);
-            }
-        };
-        t.start();
-    }
+                FirebaseSaveDishManager firebaseMenuManager = new FirebaseSaveDishManager();
+                firebaseMenuManager.saveDish(restaurantId, isNewDish, dish, imageViewer.getThumb(), imageViewer.getLarge());
+                boolean res = firebaseMenuManager.waitForResult();
 
-    private void saveDish(final String restaurantId, final String dishId, final boolean isNewDish){
-        Thread t = new Thread() {
-            public void run() {
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                if(!isNewDish) {
-                    DatabaseReference myRef = database.getReference("menu/" + restaurantId + "/" + dishId);
-                    myRef.setValue(dish, ModifyMenuDish.this);
+                if(!res){
+                    Log.e("Error saving the dish", "Error saving the dish");
+                    return;
                 }
-                else{
-                    DatabaseReference myRef = database.getReference("menu/" + restaurantId);
-                    String key = myRef.push().getKey();
-                    dish.setDishId(key);
-                    myRef.child(key).setValue(dish, ModifyMenuDish.this);
-                }
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast toast = Toast.makeText(getApplicationContext(), R.string.dataSaved, Toast.LENGTH_SHORT);
+                        toast.show();
+
+                        Intent intent = new Intent(getApplicationContext(), GestioneMenu.class);
+                        startActivity(intent);
+                    }
+                });
+
             }
-        };
-        t.start();
+        }.start();
     }
 
     private void setData(){
@@ -144,13 +127,39 @@ public class ModifyMenuDish extends EditableBaseActivity implements ValueEventLi
             else{
                 setTitleTextView(getResources().getString(R.string.title_activity_edit_dish));
 
-                getDishById(restaurantId, dishId);
+                getDishOnFirebase();
+
             }
         } catch(Exception e){
             System.out.println("Eccezione: " + e.getMessage());
             Toast toast = Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT);
             toast.show();
         }
+    }
+
+    private void getDishOnFirebase(){
+        new Thread()
+        {
+            public void run() {
+                FirebaseGetDishManager firebaseMenuManager = new FirebaseGetDishManager();
+                firebaseMenuManager.getDish(restaurantId, dishId);
+                firebaseMenuManager.waitForResult();
+                dish = firebaseMenuManager.getResult();
+
+                if(dish == null){
+                    Log.e("returned null dish", "resturned null dish");
+                    return;
+                }
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        setDish();
+                    }
+                });
+
+            }
+        }.start();
     }
 
     private void creaSpinner(){
@@ -252,7 +261,7 @@ public class ModifyMenuDish extends EditableBaseActivity implements ValueEventLi
             //dish.setThumbPath(imageThumb);
             //dish.setLargePath(imageLarge);
 
-            saveDish(restaurantId, dishId, newDish);
+            saveDish(restaurantId, newDish);
 
             return true;
 
@@ -364,9 +373,7 @@ public class ModifyMenuDish extends EditableBaseActivity implements ValueEventLi
         }
     }
 
-    @Override
-    public void onDataChange(DataSnapshot dataSnapshot) {
-        dish = dataSnapshot.getValue(Dish.class);
+    public void setDish() {
         String spinnerType = null;
 
         if(dish != null){
@@ -404,49 +411,4 @@ public class ModifyMenuDish extends EditableBaseActivity implements ValueEventLi
         }
     }
 
-    @Override
-    public void onCancelled(DatabaseError databaseError) {
-
-    }
-
-    @Override
-    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-        if(databaseError == null){
-
-            FirebaseStorage storage = FirebaseStorage.getInstance();
-            StorageReference storageRef = storage.getReferenceFromUrl("gs://mad-lab4-2ef30.appspot.com");
-            StorageReference thumbname = storageRef.child(dish.getDishId()+".jpg");
-
-            // Create file metadata including the content type
-            StorageMetadata metadata = new StorageMetadata.Builder()
-                    .setContentType("image/jpg")
-                    .build();
-
-
-            Bitmap bitmap = this.imageViewer.getThumb();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-            byte[] data = baos.toByteArray();
-
-            UploadTask uploadTask = thumbname.putBytes(data, metadata);
-            uploadTask.addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    // Handle unsuccessful uploads
-                }
-            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
-                    Uri downloadUrl = taskSnapshot.getDownloadUrl();
-
-                    Toast toast = Toast.makeText(getApplicationContext(), R.string.dataSaved, Toast.LENGTH_SHORT);
-                    toast.show();
-
-                    Intent intent = new Intent(getApplicationContext(), GestioneMenu.class);
-                    startActivity(intent);
-                }
-            });
-        }
-    }
 }

@@ -30,6 +30,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -61,6 +62,18 @@ public class PhotoViewer extends Fragment  implements PhotoDialogListener {
 
     public Bitmap getThumb() {
         return thumb;
+    }
+
+    public byte[] getThumbAsByteArray() {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        thumb.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        return stream.toByteArray();
+    }
+
+    public byte[] getLargeAsByteArray() {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        large.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        return stream.toByteArray();
     }
 
     public void setThumb(Bitmap thumb) {

@@ -2,6 +2,7 @@ package it.polito.mad_lab4.common;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
@@ -180,6 +182,12 @@ public class Helper {
             default:
                 return null;
         }
+    }
+
+    public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        return stream.toByteArray();
     }
 
     public static int pxToDp(Context context, int px) {

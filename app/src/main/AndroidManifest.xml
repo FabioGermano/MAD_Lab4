@@ -103,11 +103,11 @@
         <activity android:name=".login.Login" />
         <activity android:name=".restaurant.cover.CoverActivity" />
         <activity android:name=".test.TestActivity">
-            <intent-filter>
+            <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
 
         <activity
@@ -161,11 +161,11 @@
         </activity>
         <activity android:name=".manager.BaseBarraLaterale"></activity>
         <activity android:name=".manager.MainActivity">
-            <!--<intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
         </activity>
     </application>
 

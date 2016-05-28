@@ -70,7 +70,7 @@
     <string name="reset">Reset</string>
 
     <!-- Errori e messaggi di default -->
-    <string name="dataSaved">DATA SAVED</string>
+    <string name="dataSaved">Data has been saved</string>
     <string name="error">Warning</string>
     <string name="exceptionError">Sorry, an error occurred</string>
     <string name="error_complete">Please, complete correctly all fields</string>
