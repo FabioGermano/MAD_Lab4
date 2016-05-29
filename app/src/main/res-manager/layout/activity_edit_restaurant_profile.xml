@@ -39,9 +39,11 @@
                 android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:clickable="true"
-                android:layout_height="wrap_content"><LinearLayout
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
+                <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                    android:orientation="vertical">
             <fragment
                 xmlns:custom="http://schemas.android.com/apk/res/it.polito.mad_lab4"
                 android:id="@+id/logo_fragment"
@@ -154,15 +156,14 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center"
-                android:id="@+id/usernameLL">
+                android:gravity="center">
 
                 <ImageView
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:id="@+id/imageView2"
-                    android:src="@drawable/ic_user_grey"
-                    android:alpha="0.7" />
+                    android:src="@drawable/ic_restaurant_grey"
+                     />
 
                 <EditText
                     android:layout_width="match_parent"

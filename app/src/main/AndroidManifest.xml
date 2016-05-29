@@ -19,13 +19,13 @@
         android:windowSoftInputMode="stateVisible|adjustResize">
         <activity android:name=".MainActivity">
 
-            <!--
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            -->
+
         </activity>
         <activity
             android:name=".reservation.ReservationActivity"
@@ -41,7 +41,10 @@
             android:name=".restaurant.RestaurantActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
             android:parentActivityName=".MainActivity"
-            android:windowSoftInputMode="stateAlwaysHidden" />
+            android:windowSoftInputMode="stateAlwaysHidden" >
+
+
+            </activity>
         <activity
             android:name=".restaurant.ShowOfferActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
@@ -106,11 +109,14 @@
         <activity android:name=".login.Login" />
         <activity android:name=".restaurant.cover.CoverActivity" />
         <activity android:name=".test.TestActivity">
-           <!-- <intent-filter>
+
+            <!--
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter> -->
+            </intent-filter>
+            -->
         </activity>
         <activity
             android:name=".manager.GestioneMenu"
@@ -149,13 +155,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
             android:label="EditRestaurantProfile"
             android:parentActivityName=".MainActivity"
-            android:windowSoftInputMode="stateAlwaysHidden" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            </activity>
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
         <activity
             android:name=".manager.reservation.ReservationsActivity"
@@ -177,8 +177,8 @@
             </intent-filter>
             -->
         </activity>
-        <activity android:name=".user.EditUserProfileActivity">
-
+        <activity android:name=".user.EditUserProfileActivity" />
+        <activity android:name=".user.ShowFavouritesActivity">
         </activity>
     </application>
 

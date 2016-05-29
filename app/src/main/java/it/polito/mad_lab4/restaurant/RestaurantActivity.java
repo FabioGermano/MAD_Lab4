@@ -1,10 +1,12 @@
 package it.polito.mad_lab4.restaurant;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,6 +68,15 @@ public class  RestaurantActivity extends BaseActivity {
         //FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.reservation);
         //reservation = (Button) findViewById(R.id.reservation);
 
+        android.support.design.widget.FloatingActionButton fab = (android.support.design.widget.FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+        fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.themeColor)));
 
         add = (FloatingActionMenu) findViewById(R.id.add);
 
