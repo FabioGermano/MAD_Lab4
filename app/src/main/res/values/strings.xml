@@ -245,4 +245,11 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="title_activity_notifications">Notifications</string>
+    <string name="sunday_abb">Su</string>
+    <string name="saturday_abb">Sa</string>
+    <string name="friday_abb">Fr</string>
+    <string name="thursday_abb">Th</string>
+    <string name="wednesday_abb">We</string>
+    <string name="tuesday_abb">Tu</string>
+    <string name="monday_abb">Mo</string>
 </resources>
