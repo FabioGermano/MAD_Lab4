@@ -18,11 +18,14 @@
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="stateVisible|adjustResize">
         <activity android:name=".MainActivity">
-            <!--<intent-filter>
+
+            <!--
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter>
+            -->
         </activity>
         <activity
             android:name=".reservation.ReservationActivity"
@@ -103,13 +106,12 @@
         <activity android:name=".login.Login" />
         <activity android:name=".restaurant.cover.CoverActivity" />
         <activity android:name=".test.TestActivity">
-            <!--<intent-filter>
+           <!-- <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter> -->
         </activity>
-
         <activity
             android:name=".manager.GestioneMenu"
             android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
@@ -147,25 +149,36 @@
             android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
             android:label="EditRestaurantProfile"
             android:parentActivityName=".MainActivity"
-            android:windowSoftInputMode="stateAlwaysHidden" />
+            android:windowSoftInputMode="stateAlwaysHidden" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            </activity>
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
         <activity
             android:name=".manager.reservation.ReservationsActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
             android:label="@string/title_activity_reservations"
             android:parentActivityName=".MainActivity">
-
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="it.polito.mad_lab4.manager.MainActivity" />
         </activity>
-        <activity android:name=".manager.BaseBarraLaterale"></activity>
+        <activity android:name=".manager.BaseBarraLaterale" />
         <activity android:name=".manager.MainActivity">
+
+            <!--
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            -->
+        </activity>
+        <activity android:name=".user.EditUserProfileActivity">
+
         </activity>
     </application>
 

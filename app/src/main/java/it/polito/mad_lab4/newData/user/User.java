@@ -6,8 +6,9 @@ package it.polito.mad_lab4.newData.user;
 public class User {
     private String userId; // not mapped in firebase
     private String userName;
-    private String tipoUser;
+    private String tipoUser; // eg teacher , phd student, student ...
     private String phoneNumber;
+    private boolean isMale;
     private String email;
     private String facolta;
     private Object posizioneFacolta; //to be defined
@@ -70,5 +71,13 @@ public class User {
 
     public void setPosizioneFacolta(Object posizioneFacolta) {
         this.posizioneFacolta = posizioneFacolta;
+    }
+
+    public boolean isMale() {
+        return isMale;
+    }
+
+    public void setMale(boolean male) {
+        isMale = male;
     }
 }
