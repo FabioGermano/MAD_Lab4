@@ -4,10 +4,12 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutCompat;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -37,7 +39,7 @@ import it.polito.mad_lab4.restaurant.reviews.ReviewsActivity;
 import it.polito.mad_lab4.restaurant.reviews.add_review.AddReviewActivity;
 import it.polito.mad_lab4.restaurant.reviews_prev.ReviewsPrevFragment;
 
-public class  RestaurantActivity extends BaseActivity {
+public class  RestaurantActivity extends BaseActivity implements AppBarLayout.OnOffsetChangedListener{
 
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private ContainerUserPhotoFragment containerUserPhotoFragment;
@@ -50,15 +52,17 @@ public class  RestaurantActivity extends BaseActivity {
     private ReviewsPrevFragment reviewsPrevFragment;
     private ImageView coverImage;
     private FloatingActionMenu add;
+    private android.support.design.widget.FloatingActionButton fab;
     private FloatingActionButton add_review, add_photo, add_reservation;
-
+    private AppBarLayout appbar;
+    private boolean favourite=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant);
-
+        setVisibilityAlert(false);
+        invalidateOptionsMenu();
         useToolbar(false);
-
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -68,12 +72,17 @@ public class  RestaurantActivity extends BaseActivity {
         //FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.reservation);
         //reservation = (Button) findViewById(R.id.reservation);
 
-        android.support.design.widget.FloatingActionButton fab = (android.support.design.widget.FloatingActionButton) findViewById(R.id.fab);
+        fab = (android.support.design.widget.FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                //TODO if the user doesn't have the restaurant in his favourites
+                if(!favourite)
+                    fab.setImageDrawable(getResources().getDrawable(R.drawable.ic_star));
+                // add to the favourite list
+                else
+                 fab.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_disabled));
+                // remove from the favourites list
             }
         });
         fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.themeColor)));
@@ -110,6 +119,7 @@ public class  RestaurantActivity extends BaseActivity {
         //System.out.println("Ristorante: " + restaurant.getRestaurantName());
 
         collapsingToolbarLayout.setTitle(restaurant.getRestaurantName());
+        appbar= (AppBarLayout) findViewById(R.id.app_bar_layout);
 
         containerUserPhotoFragment = (ContainerUserPhotoFragment)getSupportFragmentManager().findFragmentById(R.id.UserPhotoFragment);
         containerUserPhotoFragment.init(restaurant);
@@ -178,10 +188,7 @@ public class  RestaurantActivity extends BaseActivity {
         startActivity(i);
     }
 
-    @Override
-    protected void filterButton() {
 
-    }
 
     @Override
     protected User controlloLogin() {
@@ -236,4 +243,31 @@ public class  RestaurantActivity extends BaseActivity {
     protected void ShowPrenotazioni() {
 
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        appbar.addOnOffsetChangedListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        appbar.removeOnOffsetChangedListener(this);
+    }
+
+    @Override
+    public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                Log.w("appbar", String.valueOf(verticalOffset));
+                if(verticalOffset ==-680 && !getVisibilityAlert()){
+                    setVisibilityAlert(true);
+                    invalidateOptionsMenu();
+                }
+                else if(verticalOffset !=-680 && getVisibilityAlert()==true){
+                    setVisibilityAlert(false);
+                    invalidateOptionsMenu();
+                }
+
+            }
+
+
 }

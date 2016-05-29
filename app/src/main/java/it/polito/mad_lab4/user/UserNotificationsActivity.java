@@ -4,34 +4,31 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import java.util.ArrayList;
 
 import it.polito.mad_lab4.BaseActivity;
 import it.polito.mad_lab4.R;
-import it.polito.mad_lab4.data.reservation.Reservation;
+import it.polito.mad_lab4.data.user.Notification;
 import it.polito.mad_lab4.data.user.User;
 import it.polito.mad_lab4.newData.restaurant.Restaurant;
-import it.polito.mad_lab4.reservation.user_history.ReservationsHistoryAdapter;
 
-public class ShowFavouritesActivity extends BaseActivity {
+public class UserNotificationsActivity extends BaseActivity {
 
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private ArrayList<Restaurant> favourites;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_show_favourites);
+        setContentView(R.layout.activity_user_notifications);
 
         setToolbarColor();
 
-        setActivityTitle(getResources().getString(R.string.title_activity_show_favourites));
+        setActivityTitle(getResources().getString(R.string.title_activity_notifications));
+        setVisibilityAlert(false);
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
 
         // use this setting to improve performance if you know that changes
@@ -39,20 +36,27 @@ public class ShowFavouritesActivity extends BaseActivity {
         //mRecyclerView.setHasFixedSize(true);
 
         //TODO recuperare i dati dal db
-        favourites= new ArrayList<>();
-        Restaurant r= new Restaurant();
-        r.setRestaurantName("Alma Ratina");
-        r.setAddress("Via Dalmazia");
-        r.setCity("Torino");
-        r.setTotRanking(42);
-        r.setNumReviews(16);
-        favourites.add(r);
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
+        ArrayList<Notification> notifications = new ArrayList<>();
+        Notification n1 = new Notification("dsFds0", false , "Anna we can't wait to see you here!");
+        n1.setAccepted(true);
+        n1.setRestaurantName("Alma Latina");
+        Notification n2 = new Notification("dsFddfs0", false , "Sorry Anna! We do not have available seats at that time! Hope to see you soon");
+        n2.setAccepted(false);
+        n2.setRestaurantName("Da Franceschino");
+        Notification n3 = new Notification("dsFddfs0", true , "Only for today a new offer for you! Mozzarella from Puglia for your perfect caprese!");
+        n3.setRestaurantName("Yokoshima");
+        Notification n4 = new Notification("dsFddfs0", true , null);
+        n4.setRestaurantName("Yokoshima");
 
+        notifications.add(n1);
+        notifications.add(n2);
+        notifications.add(n3);
+        notifications.add(n4);
         // specify an adapter (see also next example)
-        mAdapter = new FavouritesAdapter(getBaseContext(), favourites);
+        mAdapter = new NotificationsAdapter(getBaseContext(), this, notifications);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -61,12 +65,10 @@ public class ShowFavouritesActivity extends BaseActivity {
         return null;
     }
 
-
     @Override
     protected void ModificaProfilo() {
 
     }
-
 
     @Override
     protected void ShowPrenotazioni() {

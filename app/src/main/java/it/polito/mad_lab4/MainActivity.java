@@ -137,10 +137,6 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    @Override
-    protected void filterButton() {
-
-    }
 
     @Override
     protected void ModificaProfilo() {

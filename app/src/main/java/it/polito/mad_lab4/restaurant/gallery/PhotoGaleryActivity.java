@@ -45,10 +45,7 @@ public class PhotoGaleryActivity extends BaseActivity implements PhotoGalleryLis
         return new User(null, null, -1);
     }
 
-    @Override
-    protected void filterButton() {
 
-    }
 
     @Override
     protected void ModificaProfilo() {

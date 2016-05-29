@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -46,27 +47,20 @@ public class EditUserProfileActivity extends BaseActivity implements UniversityP
 
         setActivityTitle(getResources().getString(R.string.edit_user_profile_activity_title));
         setToolbarColor();
-
+        setVisibilitySave(true);
+        invalidateOptionsMenu();
 
 
     }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
 
-        toolbar.inflateMenu(R.menu.action_bar);
-        final MenuItem filter = menu.findItem(R.id.menu_calendar);
-        filter.setVisible(false);
-
-        return super.onCreateOptionsMenu(menu);
-    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
         int id = item.getItemId();
         switch (id) {
-            case android.R.id.home:
-                finish();
-                break;
             case R.id.menu_save:
+                Toast toast = Toast.makeText(getApplicationContext(), "Save pressed", Toast.LENGTH_SHORT);
+                toast.show();
                 saveData();
                 break;
             default:
@@ -80,10 +74,7 @@ public class EditUserProfileActivity extends BaseActivity implements UniversityP
         return null;
     }
 
-    @Override
-    protected void filterButton() {
 
-    }
 
     @Override
     protected void ModificaProfilo() {

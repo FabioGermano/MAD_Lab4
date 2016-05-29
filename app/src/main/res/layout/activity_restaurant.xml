@@ -217,7 +217,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
         app:borderWidth="0dp"
-        android:src="@drawable/ic_star"
+        android:src="@drawable/ic_star_disabled"
         app:layout_anchor="@id/app_bar_layout"
         app:layout_anchorGravity="bottom|end" />
 

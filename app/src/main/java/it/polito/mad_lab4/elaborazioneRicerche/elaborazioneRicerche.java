@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.FrameLayout;
@@ -27,18 +29,18 @@ public class elaborazioneRicerche extends BaseActivity implements fragment_ricer
     private  boolean finderOpen = false;
     private RecyclerAdapter_risultatoRicerca myAdapter;
     private User userInfo;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setVisibilityFilter();
+        //setVisibilityFilter();
         setContentView(R.layout.activity_elaborazione_ricerche);
 
         hideToolbar(true);
         hideToolbarShadow(true);
         setTitleVisible();
-
         setActivityTitle(getResources().getString(R.string.titolo_elaborazioneRicerche));
+        setVisibilityFilter(true);
+        invalidateOptionsMenu();
 
         try {
             //ottengo i risultati della ricerca
@@ -69,8 +71,21 @@ public class elaborazioneRicerche extends BaseActivity implements fragment_ricer
         }
 
     }
-
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+        int itemId = item.getItemId();
+        switch (itemId) {
+            case R.id.menu_find:
+                filterButton();
+                break;
+            default:
+                break;
+        }
+
+        return true;
+    }
+
     protected void filterButton() {
         if(!finderOpen){
             //apro il fragment

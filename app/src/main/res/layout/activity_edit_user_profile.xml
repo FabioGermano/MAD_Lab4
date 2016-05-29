@@ -69,7 +69,7 @@
                 android:weightSum="3"
                 android:paddingTop="10dp"
                 android:gravity="center"
-                >
+                android:layout_gravity="center_horizontal">
 
                 <RadioButton
                     android:layout_width="wrap_content"

@@ -63,10 +63,6 @@ public class PhotoViewActivity  extends BaseActivity {
         return true;
     }
 
-    @Override
-    protected void filterButton() {
-
-    }
 
     private void setDeleteVisibility(Bundle savedInstanceState)
     {
