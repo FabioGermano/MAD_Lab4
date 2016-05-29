@@ -5,7 +5,7 @@ import org.json.JSONObject;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import it.polito.mad_lab4.data.restaurant.Dish;
+import it.polito.mad_lab4.newData.restaurant.Dish;
 
 public class Oggetto_menu implements Serializable {
     private ArrayList<Dish> primi = null;
@@ -66,6 +66,21 @@ public class Oggetto_menu implements Serializable {
         }
 
         this.altro.add(obj);
+    }
+
+    public ArrayList<Dish> getDishListByIndex(int i){
+        switch (i){
+            case 0:
+                return primi;
+            case 1:
+                return secondi;
+            case 2:
+                return dessert;
+            case 3:
+                return altro;
+            default:
+                return null;
+        }
     }
 }
 /**

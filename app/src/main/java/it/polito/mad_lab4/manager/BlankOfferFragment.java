@@ -17,7 +17,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import it.polito.mad_lab4.R;
-import it.polito.mad_lab4.data.restaurant.Offer;
+import it.polito.mad_lab4.newData.restaurant.Offer;
 
 public class BlankOfferFragment extends Fragment {
     private ArrayList<Offer> offer_list;

@@ -29,9 +29,10 @@ import java.util.ArrayList;
 
 import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.bl.RestaurantBL;
-import it.polito.mad_lab4.data.restaurant.Dish;
+import it.polito.mad_lab4.data.restaurant.DishTypeConverter;
+import it.polito.mad_lab4.newData.restaurant.Dish;
 import it.polito.mad_lab4.data.restaurant.DishType;
-import it.polito.mad_lab4.data.restaurant.Offer;
+import it.polito.mad_lab4.newData.restaurant.Offer;
 import it.polito.mad_lab4.newData.restaurant.Restaurant;
 
 /**
@@ -61,11 +62,8 @@ public class EditAvailability extends EditableBaseActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             checkStoragePermission();
 
-        //boolean ris = readMenuData();
         readMenu();
         readOffers();
-
-        //ris = readOfferData();
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager_menu);
         MyPageAdapter pagerAdapter = new MyPageAdapter(getSupportFragmentManager(), EditAvailability.this);
@@ -78,37 +76,29 @@ public class EditAvailability extends EditableBaseActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout_menu);
         if (tabLayout != null) {
             tabLayout.setupWithViewPager(viewPager);
-
-            // Iterate over all tabs and set the custom view
-            /*for (int i = 0; i < tabLayout.getTabCount(); i++) {
-                TabLayout.Tab tab = tabLayout.getTabAt(i);
-                if (tab != null) {
-                    tab.setCustomView(pagerAdapter.getTabView(i));
-                }
-            }*/
         }
 
     }
 
     private void readOffers() {
 
-        lista_offerte = RestaurantBL.getRestaurantById(getApplicationContext(), 1).getOffers();
+        lista_offerte = new ArrayList<Offer>();//RestaurantBL.getRestaurantById(getApplicationContext(), 1).getOffers();
     }
 
     private void readMenu() {
         this.lista_menu = new Oggetto_menu();
-        ArrayList<Dish> dishes = RestaurantBL.getRestaurantById(getApplicationContext(), 1).getDishes();
+        ArrayList<Dish> dishes = new ArrayList<Dish>();//RestaurantBL.getRestaurantById(getApplicationContext(), 1).getDishes();
         for(Dish d : dishes){
-            if(d.getEnumType() == DishType.MainCourses){
+            if(DishTypeConverter.fromStringToEnum(d.getType()) == DishType.MainCourses){
                 this.lista_menu.addPrimo(d);
             }
-            if(d.getEnumType() == DishType.SecondCourses){
+            if(DishTypeConverter.fromStringToEnum(d.getType()) == DishType.SecondCourses){
                 this.lista_menu.addSecondo(d);
             }
-            if(d.getEnumType() == DishType.Dessert){
+            if(DishTypeConverter.fromStringToEnum(d.getType()) == DishType.Dessert){
                 this.lista_menu.addDessert(d);
             }
-            if(d.getEnumType() == DishType.Other){
+            if(DishTypeConverter.fromStringToEnum(d.getType()) == DishType.Other){
                 this.lista_menu.addAltro(d);
             }
         }
@@ -116,14 +106,6 @@ public class EditAvailability extends EditableBaseActivity {
 
     @Override
     protected void OnSaveButtonPressed() {
-        /*boolean ris = saveInfo();
-        if(ris) {
-            Toast toast = Toast.makeText(getApplicationContext(), R.string.dataSaved, Toast.LENGTH_SHORT);
-            toast.show();
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(intent);
-        }*/
-
         RestaurantBL.saveChanges(getApplicationContext());
 
         Toast toast = Toast.makeText(getApplicationContext(), R.string.dataSaved, Toast.LENGTH_SHORT);
@@ -131,94 +113,6 @@ public class EditAvailability extends EditableBaseActivity {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
     }
-
-    /*
-    private boolean saveInfo(){
-        GestioneDB db = new GestioneDB();
-
-        String menu = db.leggiDB(this, "db_menu");
-        String offerte = db.leggiDB(this, "db_offerte");
-
-        try {
-            JSONObject jsonRootObject = new JSONObject(menu);
-            JSONArray jsonArray = jsonRootObject.optJSONArray("lista_piatti");
-
-            for (Oggetto_piatto o : lista_menu.getPrimi()) {
-                if (o.isAvailable() != o.getTmpAv()) {
-                    //disponiblità cambiata!
-                    int id = o.getId();
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject jsonObj = jsonArray.getJSONObject(i);
-                        if (id == Integer.parseInt(jsonObj.optString("id")))
-                            jsonObj.put("available", o.getTmpAv());
-                    }
-                    o.setAvailability(o.getTmpAv());
-                }
-            }
-            for (Oggetto_piatto o : lista_menu.getSecondi()) {
-                if (o.isAvailable() != o.getTmpAv()) {
-                    //disponiblità cambiata!
-                    int id = o.getId();
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject jsonObj = jsonArray.getJSONObject(i);
-                        if (id == Integer.parseInt(jsonObj.optString("id")))
-                            jsonObj.put("available", o.getTmpAv());
-                    }
-                    o.setAvailability(o.getTmpAv());
-                }
-            }
-            for (Oggetto_piatto o : lista_menu.getDessert()) {
-                if (o.isAvailable() != o.getTmpAv()) {
-                    //disponiblità cambiata!
-                    int id = o.getId();
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject jsonObj = jsonArray.getJSONObject(i);
-                        if (id == Integer.parseInt(jsonObj.optString("id")))
-                            jsonObj.put("available", o.getTmpAv());
-                    }
-                    o.setAvailability(o.getTmpAv());
-                }
-            }
-            for (Oggetto_piatto o : lista_menu.getAltro()) {
-                if (o.isAvailable() != o.getTmpAv()) {
-                    //disponiblità cambiata!
-                    int id = o.getId();
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject jsonObj = jsonArray.getJSONObject(i);
-                        if (id == Integer.parseInt(jsonObj.optString("id")))
-                            jsonObj.put("available", o.getTmpAv());
-                    }
-                    o.setAvailability(o.getTmpAv());
-                }
-            }
-            db.updateDB(this, jsonRootObject, "db_menu");
-
-            jsonRootObject = new JSONObject(offerte);
-            jsonArray = jsonRootObject.optJSONArray("lista_offerte");
-
-            for (Oggetto_offerta o : lista_offerte) {
-                if (o.isAvailable() != o.getTmpAv()) {
-                    //disponiblità cambiata!
-                    int id = o.getId();
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject jsonObj = jsonArray.getJSONObject(i);
-                        if (id == Integer.parseInt(jsonObj.optString("id")))
-                            jsonObj.put("available", o.getTmpAv());
-                    }
-                    o.setAvailability(o.getTmpAv());
-                }
-            }
-            db.updateDB(this, jsonRootObject, "db_offerte");
-
-            return true;
-        }
-        catch (JSONException e)
-        {
-            //errore
-            printAlert(getResources().getString(R.string.exceptionError));
-            return false;
-        }
-    }*/
 
     private void printAlert(String msg){
         System.out.println(msg);
@@ -298,25 +192,25 @@ public class EditAvailability extends EditableBaseActivity {
                     // sono nei primi
                     menuFragment = new BlankMenuFragment();
                     menuFragment.setArguments(bundle);
-                    menuFragment.setValue(lista_menu, DishType.MainCourses, this.context);
+                    menuFragment.setValue(lista_menu.getPrimi(), DishType.MainCourses, this.context);
                     return menuFragment;
                 case 2:
                     // sono nei secondi
                     menuFragment = new BlankMenuFragment();
                     menuFragment.setArguments(bundle);
-                    menuFragment.setValue(lista_menu, DishType.SecondCourses, this.context);
+                    menuFragment.setValue(lista_menu.getSecondi(), DishType.SecondCourses, this.context);
                     return menuFragment;
                 case 3:
                     // sono nei contorni
                     menuFragment = new BlankMenuFragment();
                     menuFragment.setArguments(bundle);
-                    menuFragment.setValue(lista_menu, DishType.Dessert, this.context);
+                    menuFragment.setValue(lista_menu.getDessert(), DishType.Dessert, this.context);
                     return menuFragment;
                 case 4:
                     // sono in altro
                     menuFragment = new BlankMenuFragment();
                     menuFragment.setArguments(bundle);
-                    menuFragment.setValue(lista_menu, DishType.Other, this.context);
+                    menuFragment.setValue(lista_menu.getAltro(), DishType.Other, this.context);
                     return menuFragment;
                 case 0:
                     offerFragment = new BlankOfferFragment();

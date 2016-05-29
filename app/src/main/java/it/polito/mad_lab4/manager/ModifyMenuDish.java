@@ -52,6 +52,9 @@ public class ModifyMenuDish extends EditableBaseActivity {
     private EditText editName;
     private EditText editPrice;
 
+    private FirebaseSaveDishManager firebaseSaveDishManager;
+    private FirebaseGetDishManager firebaseGetDishManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,9 +86,23 @@ public class ModifyMenuDish extends EditableBaseActivity {
         new Thread()
         {
             public void run() {
-                FirebaseSaveDishManager firebaseMenuManager = new FirebaseSaveDishManager();
-                firebaseMenuManager.saveDish(restaurantId, isNewDish, dish, imageViewer.getThumb(), imageViewer.getLarge());
-                boolean res = firebaseMenuManager.waitForResult();
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showProgressBar();
+                    }
+                });
+
+                firebaseSaveDishManager = new FirebaseSaveDishManager();
+                firebaseSaveDishManager.saveDish(restaurantId,
+                        isNewDish,
+                        dish,
+                        !imageViewer.isImageTobeSetted(),
+                        imageViewer.getThumb(),
+                        imageViewer.getLarge());
+
+                boolean res = firebaseSaveDishManager.waitForResult();
 
                 if(!res){
                     Log.e("Error saving the dish", "Error saving the dish");
@@ -95,6 +112,9 @@ public class ModifyMenuDish extends EditableBaseActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+
+                        dismissProgressDialog();
+
                         Toast toast = Toast.makeText(getApplicationContext(), R.string.dataSaved, Toast.LENGTH_SHORT);
                         toast.show();
 
@@ -141,10 +161,18 @@ public class ModifyMenuDish extends EditableBaseActivity {
         new Thread()
         {
             public void run() {
-                FirebaseGetDishManager firebaseMenuManager = new FirebaseGetDishManager();
-                firebaseMenuManager.getDish(restaurantId, dishId);
-                firebaseMenuManager.waitForResult();
-                dish = firebaseMenuManager.getResult();
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showProgressBar();
+                    }
+                });
+
+                firebaseGetDishManager = new FirebaseGetDishManager();
+                firebaseGetDishManager.getDish(restaurantId, dishId);
+                firebaseGetDishManager.waitForResult();
+                dish = firebaseGetDishManager.getResult();
 
                 if(dish == null){
                     Log.e("returned null dish", "resturned null dish");
@@ -155,6 +183,7 @@ public class ModifyMenuDish extends EditableBaseActivity {
                     @Override
                     public void run() {
                         setDish();
+                        dismissProgressDialog();
                     }
                 });
 
@@ -394,8 +423,10 @@ public class ModifyMenuDish extends EditableBaseActivity {
 
             modifiedType = DishTypeConverter.fromStringToEnum(dish.getType()); //inizializzo al valore corrente del piatto da modificare
 
-            //imageThumb = dish.getThumbPath();
-            //imageLarge = dish.getLargePath();
+            if(dish.getThumbDownloadLink() != null) {
+                this.imageViewer.setThumbBitmapByURI(dish.getThumbDownloadLink());
+                this.imageViewer.setLargePhotoDownloadLink(dish.getLargeDownloadLink());
+            }
 
             if (editName != null) {
                 editName.setText(dish.getDishName());
@@ -411,4 +442,9 @@ public class ModifyMenuDish extends EditableBaseActivity {
         }
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+    }
 }

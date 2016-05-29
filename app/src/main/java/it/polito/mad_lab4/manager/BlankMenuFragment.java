@@ -11,16 +11,20 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;;import org.json.JSONObject;
+import android.view.ViewGroup;
+
+import java.util.ArrayList;
 
 import it.polito.mad_lab4.R;
+import it.polito.mad_lab4.newData.restaurant.Dish;
 import it.polito.mad_lab4.data.restaurant.DishType;
 
 public class BlankMenuFragment extends Fragment {
-    private Oggetto_menu m_list;
+    private ArrayList<Dish> m_list;
     private DishType type;
     private Context context;
     private boolean mode;
+    private RecyclerAdapter_menu myAdapter;
 
     //TODO utilizzare setArgument nel fragment invece del costruttore con passaggio di paramentri
 
@@ -29,7 +33,7 @@ public class BlankMenuFragment extends Fragment {
 
     }
 
-    public void setValue(Oggetto_menu obj, DishType e, Context c){
+    public void setValue(ArrayList<Dish> obj, DishType e, Context c){
         this.m_list = obj;
         this.type = e;
         this.context = c;
@@ -49,7 +53,7 @@ public class BlankMenuFragment extends Fragment {
             View rootView = inflater.inflate(R.layout.fragment_blank_menu, container, false);
 
             RecyclerView rView = (RecyclerView) rootView.findViewById(R.id.recyclerView_menu);
-            RecyclerAdapter_menu myAdapter = new RecyclerAdapter_menu(context, m_list, type, mode);
+            myAdapter = new RecyclerAdapter_menu(context, m_list, type, mode);
             if (rView != null) {
                 rView.setAdapter(myAdapter);
 
@@ -67,4 +71,7 @@ public class BlankMenuFragment extends Fragment {
         }
     }
 
+    public RecyclerAdapter_menu getAdapter() {
+        return myAdapter;
+    }
 }

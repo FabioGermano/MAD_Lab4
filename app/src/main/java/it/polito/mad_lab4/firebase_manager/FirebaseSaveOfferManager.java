@@ -4,13 +4,9 @@ import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.MutableData;
-import com.google.firebase.database.Transaction;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -21,13 +17,12 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import it.polito.mad_lab4.common.Helper;
 import it.polito.mad_lab4.newData.restaurant.Dish;
-import it.polito.mad_lab4.newData.restaurant.Restaurant;
-import it.polito.mad_lab4.restaurant.RestaurantActivity;
+import it.polito.mad_lab4.newData.restaurant.Offer;
 
 /**
  * Created by f.germano on 28/05/2016.
  */
-public class FirebaseSaveDishManager implements DatabaseReference.CompletionListener {
+public class FirebaseSaveOfferManager implements DatabaseReference.CompletionListener {
 
     final Lock lock = new ReentrantLock();
     final Condition cv  = lock.newCondition();
@@ -37,26 +32,26 @@ public class FirebaseSaveDishManager implements DatabaseReference.CompletionList
     private boolean firebaseReturnedResult = false;
     private DatabaseError databaseError;
 
-    public void saveDish(final String restaurantId,
-                         final boolean isNewDish,
-                         final Dish dish,
+    public void saveOffer(final String restaurantId,
+                         final boolean isNewOffer,
+                         final Offer offer,
                          boolean isImageSetted,
                          final Bitmap thumb,
                          final Bitmap large) {
 
         this.restaurantId = restaurantId;
-        if(isNewDish){
+        if(isNewOffer){
             FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference myRef = database.getReference("menu/" + restaurantId);
+            DatabaseReference myRef = database.getReference("offers/" + restaurantId);
             String key = myRef.push().getKey();
 
-            dish.setDishId(key);
+            offer.setOfferId(key);
         }
 
         if(thumb != null && large != null) {
             FirebaseStorage storage = FirebaseStorage.getInstance();
             final StorageReference storageRef = storage.getReferenceFromUrl("gs://project-9122886501087922816.appspot.com");
-            StorageReference thumbNameRef = storageRef.child(dish.getDishId() + "_thumb.jpg");
+            StorageReference thumbNameRef = storageRef.child(offer.getOfferId() + "_thumb.jpg");
 
             UploadTask uploadTask = thumbNameRef.putBytes(Helper.getBitmapAsByteArray(thumb));
             uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -64,19 +59,19 @@ public class FirebaseSaveDishManager implements DatabaseReference.CompletionList
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     downloadLinkThumb = taskSnapshot.getDownloadUrl().toString();
 
-                    StorageReference largeNameRef = storageRef.child(dish.getDishId() + "_large.jpg");
+                    StorageReference largeNameRef = storageRef.child(offer.getOfferId() + "_large.jpg");
                     UploadTask uploadTask = largeNameRef.putBytes(Helper.getBitmapAsByteArray(large));
                     uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             downloadLinkLarge = taskSnapshot.getDownloadUrl().toString();
 
-                            dish.setThumbDownloadLink(downloadLinkThumb);
-                            dish.setLargeDownloadLink(downloadLinkLarge);
+                            offer.setThumbDownloadLink(downloadLinkThumb);
+                            offer.setLargeDownloadLink(downloadLinkLarge);
 
                             FirebaseDatabase database = FirebaseDatabase.getInstance();
-                            DatabaseReference myRef = database.getReference("menu/" + restaurantId + "/" + dish.getDishId());
-                            myRef.setValue(dish, FirebaseSaveDishManager.this);
+                            DatabaseReference myRef = database.getReference("offers/" + restaurantId + "/" + offer.getOfferId());
+                            myRef.setValue(offer, FirebaseSaveOfferManager.this);
                         }
                     });
                 }
@@ -85,13 +80,13 @@ public class FirebaseSaveDishManager implements DatabaseReference.CompletionList
         else {
 
             if(!isImageSetted) {
-                dish.setLargeDownloadLink(null);
-                dish.setThumbDownloadLink(null);
+                offer.setLargeDownloadLink(null);
+                offer.setThumbDownloadLink(null);
             }
 
             FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference myRef = database.getReference("menu/" + restaurantId + "/" + dish.getDishId());
-            myRef.setValue(dish, FirebaseSaveDishManager.this);
+            DatabaseReference myRef = database.getReference("offers/" + restaurantId + "/" + offer.getOfferId());
+            myRef.setValue(offer, FirebaseSaveOfferManager.this);
         }
     }
 

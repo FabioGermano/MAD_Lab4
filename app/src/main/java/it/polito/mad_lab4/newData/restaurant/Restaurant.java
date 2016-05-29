@@ -176,10 +176,6 @@ public class Restaurant {
         return totRanking;
     }
 
-    public void setTotRanking(int totRanking) {
-        this.totRanking = totRanking;
-    }
-
     public int getNumDishesAndOffers() {
         return numDishesAndOffers;
     }
@@ -210,5 +206,9 @@ public class Restaurant {
 
     public void setRestaurantId(String restaurantId) {
         this.restaurantId = restaurantId;
+    }
+
+    public void setTotRanking(float totRanking) {
+        this.totRanking = totRanking;
     }
 }

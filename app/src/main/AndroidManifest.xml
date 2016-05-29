@@ -18,11 +18,14 @@
         android:theme="@style/AppTheme"
         android:windowSoftInputMode="stateVisible|adjustResize">
         <activity android:name=".MainActivity">
-            <intent-filter>
+
+
+           <!-- <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
+
         </activity>
         <activity
             android:name=".reservation.ReservationActivity"
@@ -38,7 +41,10 @@
             android:name=".restaurant.RestaurantActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
             android:parentActivityName=".MainActivity"
-            android:windowSoftInputMode="stateAlwaysHidden"></activity>
+            android:windowSoftInputMode="stateAlwaysHidden" >
+
+
+            </activity>
         <activity
             android:name=".restaurant.ShowOfferActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
@@ -149,7 +155,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
             android:label="EditRestaurantProfile"
             android:parentActivityName=".MainActivity"
-            android:windowSoftInputMode="stateAlwaysHidden" />
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
         <activity
             android:name=".manager.reservation.ReservationsActivity"
@@ -162,18 +168,15 @@
         </activity>
         <activity android:name=".manager.BaseBarraLaterale" />
         <activity android:name=".manager.MainActivity">
-
-            <!--
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            -->
         </activity>
         <activity android:name=".user.EditUserProfileActivity" />
-        <activity android:name=".user.ShowFavouritesActivity"></activity>
-        <activity android:name=".user.UserNotificationsActivity"></activity>
+        <activity android:name=".user.ShowFavouritesActivity">
+        </activity>
     </application>
 
 </manifest>

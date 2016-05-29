@@ -16,32 +16,27 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.bumptech.glide.Glide;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.List;
 
 import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.bl.RestaurantBL;
-import it.polito.mad_lab4.data.restaurant.Dish;
+import it.polito.mad_lab4.firebase_manager.FirebaseRemoveDishManager;
+import it.polito.mad_lab4.newData.restaurant.Dish;
 import it.polito.mad_lab4.data.restaurant.DishType;
 
 /**
  * Created by Euge on 05/04/2016.
  */
 public class RecyclerAdapter_menu extends RecyclerView.Adapter<RecyclerAdapter_menu.MyViewHolder> {
-
-    private Oggetto_menu dish_list;
     private LayoutInflater myInflater;
     private DishType menu_type;
     //accesso veloce alla lista in esame ??
@@ -49,28 +44,11 @@ public class RecyclerAdapter_menu extends RecyclerView.Adapter<RecyclerAdapter_m
     private boolean availability_mode;
 
 
-    public RecyclerAdapter_menu(Context context, Oggetto_menu data, DishType type, boolean availability_mode){
-        this.dish_list = data;
+    public RecyclerAdapter_menu(Context context, ArrayList<Dish> data, DishType type, boolean availability_mode){
+        this.current_list = data;
         this.availability_mode=availability_mode;
         myInflater = LayoutInflater.from(context);
         this.menu_type = type;
-        switch(type){
-            case MainCourses:
-                current_list= data.getPrimi();
-                break;
-            case SecondCourses:
-                current_list = data.getSecondi();
-                break;
-            case Dessert:
-                current_list = data.getDessert();
-                break;
-            case Other:
-                current_list = data.getAltro();
-                break;
-            default:
-                System.out.println("Typology unknown");
-                break;
-        }
     }
 
     @Override
@@ -136,22 +114,12 @@ public class RecyclerAdapter_menu extends RecyclerView.Adapter<RecyclerAdapter_m
 
             if(availability_mode){
                 if(dish_availability != null){
-                    dish_availability.setChecked(currentObj.isAvailable());
+                    dish_availability.setChecked(currentObj.getTodayAvailable());
                 }
             }
-            //carico foto
-            if(dish_img != null){
-                String path = currentObj.getThumbPath();
-                if (path != null){
-                    try {
-                        Bitmap bmp = BitmapFactory.decodeFile(path);
-                        if(bmp != null)
-                            dish_img.setImageBitmap(bmp);
-                    } catch (Exception e){
-                        System.out.println("Errore creazione bitmap");
-                    }
-                }
 
+            if(currentObj.getThumbDownloadLink() != null) {
+                Glide.with(context).load(currentObj.getThumbDownloadLink()).into(dish_img);
             }
         }
 
@@ -181,7 +149,7 @@ public class RecyclerAdapter_menu extends RecyclerView.Adapter<RecyclerAdapter_m
 
         private void updateAvailability(){
             try {
-                current_list.get(position).setIsAvailable(dish_availability.isChecked());
+                current_list.get(position).setTodayAvailable(dish_availability.isChecked());
             }
             catch (Exception e){
                 System.out.println("Eccezione: " + e.getMessage());
@@ -190,16 +158,11 @@ public class RecyclerAdapter_menu extends RecyclerView.Adapter<RecyclerAdapter_m
 
         }
 
-
         //rimuovo piatto
         private void removeItem(){
             try {
-                current_list.remove(position);
-
-                RestaurantBL.saveChanges(context);
-
-                notifyItemRemoved(position);
-                notifyItemRangeChanged(position, dish_list.getPrimi().size());
+                FirebaseRemoveDishManager firebaseRemoveDishManager = new FirebaseRemoveDishManager();
+                firebaseRemoveDishManager.removeDish("-KIrgaSxr9VhHllAjqmp", current_list.get(position).getDishId());
             } catch (Exception e){
                 System.out.println("Eccezione: " + e.getMessage());
             }
@@ -207,19 +170,10 @@ public class RecyclerAdapter_menu extends RecyclerView.Adapter<RecyclerAdapter_m
 
         //modifico piatto
         private void modifyItem(){
-            /*Bundle b = new Bundle();
-            b.putSerializable("dish_list", dish_list);
-            b.putInt("position", position);
-
-            Intent intent = new Intent(context, ModifyMenuDish.class);
-            intent.putExtras(b);
-            intent.putExtra("type_enum", menu_type);
-            //per leggerlo: result = (type_enum) intent.getSerializableExtra("type_enum");
-            context.startActivity(intent);*/
 
             Bundle b = new Bundle();
             b.putString("restaurantId", "-KIrgaSxr9VhHllAjqmp");
-            b.putString("dishId",  "-KIrijQkqg3gnmwMHzJs");//current_list.get(position).getDishId());
+            b.putString("dishId",  current_list.get(position).getDishId());//current_list.get(position).getDishId());
             b.putBoolean("isEditing", true);
             Intent intent = new Intent(context, ModifyMenuDish.class);
             intent.putExtras(b);

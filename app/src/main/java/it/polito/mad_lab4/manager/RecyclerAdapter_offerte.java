@@ -16,6 +16,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,7 +26,7 @@ import java.util.ArrayList;
 
 import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.bl.RestaurantBL;
-import it.polito.mad_lab4.data.restaurant.Offer;
+import it.polito.mad_lab4.newData.restaurant.Offer;
 
 /**
  * Created by Euge on 08/04/2016.
@@ -101,21 +103,11 @@ public class RecyclerAdapter_offerte extends RecyclerView.Adapter<RecyclerAdapte
             }
             if(availability_mode){
                 if(dish_availability != null){
-                    dish_availability.setChecked(currentObj.isAvailable());
+                    dish_availability.setChecked(currentObj.getTodayAvailable());
                 }
             }
-            //carico foto
-            if(dish_img != null){
-                String path = currentObj.getThumbPath();
-                if (path != null){
-                    try {
-                        Bitmap bmp = BitmapFactory.decodeFile(path);
-                        if(bmp != null)
-                            dish_img.setImageBitmap(bmp);
-                    } catch (Exception e){
-                        System.out.println("Errore creazione bitmap");
-                    }
-                }
+            if(currentObj.getThumbDownloadLink() != null) {
+                Glide.with(context).load(currentObj.getThumbDownloadLink()).into(dish_img);
             }
 
         }
@@ -145,7 +137,7 @@ public class RecyclerAdapter_offerte extends RecyclerView.Adapter<RecyclerAdapte
         }
 
         private void updateAvailability(){
-            lista_offerte.get(position).setIsAvailable(dish_availability.isChecked());
+            lista_offerte.get(position).setTodayAvailable(dish_availability.isChecked());
         }
 
         //rimuovo offerta
@@ -161,8 +153,8 @@ public class RecyclerAdapter_offerte extends RecyclerView.Adapter<RecyclerAdapte
         //modifico offerta
         private void modifyItem(){
             Bundle b = new Bundle();
-            b.putInt("restaurantId", 1);
-            b.putInt("offerId", lista_offerte.get(position).getOfferId());
+            b.putString("restaurantId", "-KIrgaSxr9VhHllAjqmp");
+            b.putString("offerId", lista_offerte.get(position).getOfferId());
             b.putBoolean("isEditing", true);
 
             Intent intent = new Intent(context, ModifyOfferDish.class);

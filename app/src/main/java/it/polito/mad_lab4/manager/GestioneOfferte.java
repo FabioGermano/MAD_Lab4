@@ -18,6 +18,13 @@ import android.view.KeyEvent;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,12 +38,15 @@ import java.util.ArrayList;
 
 import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.bl.RestaurantBL;
-import it.polito.mad_lab4.data.restaurant.Offer;
+import it.polito.mad_lab4.data.restaurant.DishTypeConverter;
+import it.polito.mad_lab4.newData.restaurant.Dish;
+import it.polito.mad_lab4.newData.restaurant.Offer;
 
 public class GestioneOfferte extends EditableBaseActivity {
     private ArrayList<Offer> lista_offerte = null;
     private JSONObject jsonRootObject;
     private boolean availability_mode = false;
+    private RecyclerAdapter_offerte myAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,20 +66,6 @@ public class GestioneOfferte extends EditableBaseActivity {
             checkStoragePermission();
 
         try {
-            //recupero eventuali modifiche apportate ad un piatto
-            /*Bundle extras = getIntent().getExtras();
-            if (extras != null) {
-                lista_offerte = (ArrayList<Oggetto_offerta>) extras.getSerializable("lista_offerte");
-                extras.clear();
-                if (lista_offerte == null) {
-                    boolean ris = readData();
-                }
-
-            } else {
-                //altrimenti carico info dal server (o da locale)
-                boolean ris = readData();
-            }*/
-
             readOffers();
 
             setUpRecyclerView();
@@ -79,75 +75,81 @@ public class GestioneOfferte extends EditableBaseActivity {
     }
 
     private void readOffers() {
+        lista_offerte = new ArrayList<Offer>();// RestaurantBL.getRestaurantById(getApplicationContext(), 1).getOffers();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        showProgressBar();
 
-        lista_offerte = RestaurantBL.getRestaurantById(getApplicationContext(), 1).getOffers();
+        DatabaseReference myRef = database.getReference("offers/" + "-KIrgaSxr9VhHllAjqmp");
+        myRef.limitToFirst(1).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getValue() == null){
+                    dismissProgressDialog();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        myRef = database.getReference("offers/" + "-KIrgaSxr9VhHllAjqmp");
+        myRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                dismissProgressDialog();
+
+                Offer o = dataSnapshot.getValue(Offer.class);
+                lista_offerte.add(o);
+                myAdapter.notifyItemInserted(lista_offerte.size() - 1);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                Offer o = dataSnapshot.getValue(Offer.class);
+
+                int position = findPositionOnList(lista_offerte, o.getOfferId());
+                lista_offerte.remove(position);
+                myAdapter.notifyItemRemoved(position);
+                myAdapter.notifyItemRangeChanged(position, lista_offerte.size());
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
-    /*private boolean readData(){
-        try{
-
-            lista_offerte = new ArrayList<>();
-
-            GestioneDB DB = new GestioneDB();
-            String db = DB.leggiDB(this, "db_offerte");
-
-            if (db != null){
-                System.out.println("Leggo le offerte");
-                jsonRootObject = new JSONObject(db);
-
-                //Get the instance of JSONArray that contains JSONObjects
-                JSONArray arrayDebug = jsonRootObject.optJSONArray("lista_offerte");
-
-                //Iterate the jsonArray and print the info of JSONObjects
-                for(int i=0; i < arrayDebug.length(); i++) {
-                    JSONObject jsonObject = arrayDebug.getJSONObject(i);
-
-                    String nome = jsonObject.optString("nome");
-                    int prezzo = Integer.parseInt(jsonObject.optString("prezzo"));
-                    String note = jsonObject.optString("note");
-                    String thumb = jsonObject.optString("foto_thumb");
-                    String large = jsonObject.optString("foto_large");
-
-                    boolean days[] = new boolean[7];
-                    days[0] = jsonObject.optBoolean("lun");
-                    days[1] = jsonObject.optBoolean("mar");
-                    days[2] = jsonObject.optBoolean("mer");
-                    days[3] = jsonObject.optBoolean("gio");
-                    days[4] = jsonObject.optBoolean("ven");
-                    days[5] = jsonObject.optBoolean("sab");
-                    days[6] = jsonObject.optBoolean("dom");
-
-                    //creo la lista delle offerte
-                    Oggetto_offerta obj = new Oggetto_offerta(nome, prezzo, days);
-                    obj.setId(Integer.parseInt(jsonObject.optString("id")));
-                    obj.setNote(note);
-                    obj.setPhoto(thumb, large);
-                    lista_offerte.add(obj);
-                    System.out.println("Offerta aggiunta");
-                }
-                if(lista_offerte.isEmpty())
-                    System.out.println("La lista è vuota");
-                return true;
+    private int findPositionOnList(ArrayList<Offer> lista_offerte, String offerId) {
+        int i = 0;
+        for(Offer d : lista_offerte){
+            if(d.getOfferId().equals(offerId)){
+                return i;
             }
-            else {
-                return false;
-            }
-
-        }catch (JSONException e){
-            System.out.println("Eccezione: " + e.getMessage());
-            return false;
-        } catch (Exception e){
-            System.out.println("Eccezione: " + e.getMessage());
-            return false;
+            i++;
         }
-    }*/
+
+        return i;
+    }
 
     //imposto la lista di tutte le offerte
     private void setUpRecyclerView(){
-        System.out.println("Imposto CardView e adapter");
         RecyclerView rView = (RecyclerView) findViewById(R.id.recyclerView_offerte);
 
-        RecyclerAdapter_offerte myAdapter = new RecyclerAdapter_offerte(this, lista_offerte, availability_mode);
+        myAdapter = new RecyclerAdapter_offerte(this, lista_offerte, availability_mode);
         if(rView != null) {
             rView.setAdapter(myAdapter);
 
@@ -204,7 +206,7 @@ public class GestioneOfferte extends EditableBaseActivity {
     protected void OnAddButtonPressed() {
         Intent intent = new Intent(getApplicationContext(), ModifyOfferDish.class);
         Bundle b = new Bundle();
-        b.putInt("restaurantId", 1);
+        b.putString("restaurantId", "-KIrgaSxr9VhHllAjqmp");
         b.putBoolean("isEditing", false);
         intent.putExtras(b);
         startActivity(intent);

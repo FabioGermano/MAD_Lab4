@@ -13,30 +13,31 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import it.polito.mad_lab4.newData.restaurant.Dish;
+import it.polito.mad_lab4.newData.restaurant.Offer;
 
 /**
  * Created by f.germano on 28/05/2016.
  */
-public class FirebaseGetDishManager implements ValueEventListener {
+public class FirebaseGetOfferManager implements ValueEventListener {
 
     final Lock lock = new ReentrantLock();
     final Condition cv  = lock.newCondition();
 
-    private Dish dish;
+    private Offer offer;
     private boolean resultReturned = false;
 
     private DatabaseReference myRef;
 
-    public void getDish(final String restaurantId, final String dishId){
+    public void getOffer(final String restaurantId, final String offerId){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        myRef = database.getReference("menu/" + restaurantId + "/" + dishId);
+        myRef = database.getReference("offers/" + restaurantId + "/" + offerId);
         myRef.addListenerForSingleValueEvent(this);
     }
 
     @Override
     public void onDataChange(DataSnapshot dataSnapshot) {
         lock.lock();
-        this.dish = dataSnapshot.getValue(Dish.class);
+        this.offer = dataSnapshot.getValue(Offer.class);
         resultReturned = true;
         this.cv.signal();
         lock.unlock();
@@ -51,8 +52,8 @@ public class FirebaseGetDishManager implements ValueEventListener {
         lock.unlock();
     }
 
-    public Dish getResult() {
-        return dish;
+    public Offer getResult() {
+        return offer;
     }
 
     public void waitForResult() {

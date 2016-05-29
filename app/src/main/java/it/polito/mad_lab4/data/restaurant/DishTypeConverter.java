@@ -49,4 +49,19 @@ public class DishTypeConverter {
                 return null;
         }
     }
+
+    public static int fromEnumToIndex(DishType dishType){
+        switch (dishType){
+            case MainCourses:
+                return 0;
+            case SecondCourses:
+                return 1;
+            case Dessert:
+                return 2;
+            case Other:
+                return 3;
+            default:
+                return -1;
+        }
+    }
 }

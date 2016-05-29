@@ -1,6 +1,7 @@
 package it.polito.mad_lab4.manager;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -15,31 +16,34 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
 import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.bl.RestaurantBL;
-import it.polito.mad_lab4.data.restaurant.Dish;
+import it.polito.mad_lab4.data.restaurant.DishTypeConverter;
+import it.polito.mad_lab4.newData.restaurant.Dish;
 import it.polito.mad_lab4.data.restaurant.DishType;
 
 public class  GestioneMenu extends EditableBaseActivity {
 
     //private ArrayList<Oggetto_piatto> list_piatti = new ArrayList<>();
     private Oggetto_menu lista_menu = null;
-    private String fileName = "database";
-    private JSONObject  jsonRootObject;
     private boolean availability_mode=false;
+    private BlankMenuFragment[] fragments = new BlankMenuFragment[4];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,19 +62,6 @@ public class  GestioneMenu extends EditableBaseActivity {
             checkStoragePermission();
 
         try {
-            /*
-            //recupero eventuali modifiche apportate ad un piatto
-            Bundle extras = getIntent().getExtras();
-            if (extras != null) {
-                lista_menu = (Oggetto_menu) extras.getSerializable("dish_list");
-                extras.clear();
-
-            } else {
-                //altrimenti carico info dal server (o da locale)
-                boolean ris = readData();
-            }
-            */
-
             readMenu();
 
             // Get the ViewPager and set it's PagerAdapter so that it can display items
@@ -119,13 +110,6 @@ public class  GestioneMenu extends EditableBaseActivity {
             if (tabLayout != null) {
                 tabLayout.setupWithViewPager(viewPager);
 
-                // Iterate over all tabs and set the custom view
-                /*for (int i = 0; i < tabLayout.getTabCount(); i++) {
-                    TabLayout.Tab tab = tabLayout.getTabAt(i);
-                    if (tab != null) {
-                        tab.setCustomView(pagerAdapter.getTabView(i));
-                    }
-                }*/
             }
         } catch (NullPointerException e_null){
             System.out.println("Eccezione: " + e_null.getMessage());
@@ -135,22 +119,81 @@ public class  GestioneMenu extends EditableBaseActivity {
     }
 
     private void readMenu() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        showProgressBar();
+
+        DatabaseReference myRef = database.getReference("menu/" + "-KIrgaSxr9VhHllAjqmp");
+        myRef.limitToFirst(1).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getValue() == null){
+                    dismissProgressDialog();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         this.lista_menu = new Oggetto_menu();
-        ArrayList<Dish> dishes = RestaurantBL.getRestaurantById(getApplicationContext(), 1).getDishes();
-        for(Dish d : dishes){
-            if(d.getEnumType() == DishType.MainCourses){
-                this.lista_menu.addPrimo(d);
+        myRef = database.getReference("menu/" + "-KIrgaSxr9VhHllAjqmp");
+        myRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                dismissProgressDialog();
+
+                Dish d = dataSnapshot.getValue(Dish.class);
+                int index = DishTypeConverter.fromEnumToIndex(DishTypeConverter.fromStringToEnum(d.getType()));
+                lista_menu.getDishListByIndex(index).add(d);
+                if(fragments[index] != null){
+                    fragments[index].getAdapter().notifyItemInserted(lista_menu.getDishListByIndex(index).size() - 1);
+                }
             }
-            if(d.getEnumType() == DishType.SecondCourses){
-                this.lista_menu.addSecondo(d);
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
             }
-            if(d.getEnumType() == DishType.Dessert){
-                this.lista_menu.addDessert(d);
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                Dish d = dataSnapshot.getValue(Dish.class);
+
+                int index = DishTypeConverter.fromEnumToIndex(DishTypeConverter.fromStringToEnum(d.getType()));
+                if(fragments[index] != null){
+                    int position = findPositionOnList(lista_menu.getDishListByIndex(index), d.getDishId());
+                    lista_menu.getDishListByIndex(index).remove(position);
+                    fragments[index].getAdapter().notifyItemRemoved(position);
+                    fragments[index].getAdapter().notifyItemRangeChanged(position, lista_menu.getDishListByIndex(index).size());
+                }
             }
-            if(d.getEnumType() == DishType.Other){
-                this.lista_menu.addAltro(d);
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
             }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private int findPositionOnList(ArrayList<Dish> list, String dishId){
+        int i = 0;
+        for(Dish d : list){
+            if(d.getDishId().equals(dishId)){
+                return i;
+            }
+            i++;
         }
+
+        return i;
     }
 
     private void modificaSchermata(ArrayList<Dish> list){
@@ -186,79 +229,6 @@ public class  GestioneMenu extends EditableBaseActivity {
         TextView messageView = (TextView)alert.findViewById(android.R.id.message);
         messageView.setGravity(Gravity.CENTER);
     }
-
-    /*private boolean readData(){
-        try{
-            Oggetto_piatto obj;
-            lista_menu = new Oggetto_menu();
-
-
-            GestioneDB DB = new GestioneDB();
-            String db = DB.leggiDB(this, "db_menu");
-
-            jsonRootObject = new JSONObject(db);
-
-            //Get the instance of JSONArray that contains JSONObjects
-            JSONArray arrayDebug = jsonRootObject.optJSONArray("lista_piatti");
-
-            //Iterate the jsonArray and print the info of JSONObjects
-            for(int i=0; i < arrayDebug.length(); i++){
-                JSONObject jsonObject = arrayDebug.getJSONObject(i);
-
-                String nome = jsonObject.optString("nome");
-                int prezzo = Integer.parseInt(jsonObject.optString("prezzo"));
-                String type = jsonObject.optString("tipo");
-                String thumb = jsonObject.optString("foto_thumb");
-                String large = jsonObject.optString("foto_large");
-
-                if (thumb.compareTo("null")== 0 || thumb.compareTo("") == 0)
-                    thumb = null;
-                if (large.compareTo("null")==0 || large.compareTo("") == 0)
-                    large = null;
-
-                //creo le differenti liste
-                switch(type){
-                    case "Primo":
-                        obj = new Oggetto_piatto(nome, prezzo, Oggetto_piatto.type_enum.PRIMI);
-                        obj.setId(Integer.parseInt(jsonObject.optString("id").toString()));
-                        obj.setPhoto(thumb, large);
-                        lista_menu.addPrimo(obj);
-                        System.out.println("Aggiunto primo");
-                        break;
-                    case "Secondo":
-                        obj = new Oggetto_piatto(nome, prezzo, Oggetto_piatto.type_enum.SECONDI);
-                        obj.setId(Integer.parseInt(jsonObject.optString("id").toString()));
-                        obj.setPhoto(thumb, large);
-                        lista_menu.addSecondo(obj);
-                        System.out.println("Aggiunto secondo");
-                        break;
-                    case "Dessert":
-                        obj = new Oggetto_piatto(nome, prezzo, Oggetto_piatto.type_enum.DESSERT);
-                        obj.setId(Integer.parseInt(jsonObject.optString("id").toString()));
-                        obj.setPhoto(thumb, large);
-                        lista_menu.addDessert(obj);
-                        System.out.println("Aggiunto dessert");
-                        break;
-                    case "Altro":
-                        obj = new Oggetto_piatto(nome, prezzo, Oggetto_piatto.type_enum.ALTRO);
-                        obj.setId(Integer.parseInt(jsonObject.optString("id").toString()));
-                        obj.setPhoto(thumb, large);
-                        lista_menu.addAltro(obj);
-                        System.out.println("Aggiunto altro");
-                        break;
-                    default:
-                        System.out.println("Typology unknown");
-                        break;
-                }
-
-            }
-            return true;
-        } catch (JSONException e)
-        {
-            System.out.println("Eccezione: " + e.getMessage());
-            return false;
-        }
-    }*/
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -301,9 +271,7 @@ public class  GestioneMenu extends EditableBaseActivity {
     protected void OnAlertButtonPressed() {
         //vai alla lista delle prenotazioni
     }
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////prova pageAdapter/////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     private class MyPageAdapter extends FragmentPagerAdapter {
         private int NumOfPage = 4;
         String tabTitles[] = new String[] { getResources().getString(R.string.first), getResources().getString(R.string.second), getResources().getString(R.string.dessert), getResources().getString(R.string.other)};
@@ -317,35 +285,33 @@ public class  GestioneMenu extends EditableBaseActivity {
 
         @Override
         public Fragment getItem(int position) {
-            BlankMenuFragment menuFragment;
             Bundle bundle = new Bundle();
             bundle.putBoolean("availability", availability_mode);
             switch (position) {
                 case 0:
                     // sono nei primi
-                    menuFragment = new BlankMenuFragment();
-                    menuFragment.setArguments(bundle);
-                    menuFragment.setValue(lista_menu, DishType.MainCourses, this.context);
-                    return menuFragment;
+                    fragments[0] = new BlankMenuFragment();
+                    fragments[0].setArguments(bundle);
+                    fragments[0].setValue(lista_menu.getPrimi(), DishType.MainCourses, this.context);
+                    return fragments[0];
                 case 1:
                     // sono nei secondi
-                    menuFragment = new BlankMenuFragment();
-                    menuFragment.setArguments(bundle);
-                    menuFragment.setValue(lista_menu, DishType.SecondCourses, this.context);
-                    return menuFragment;
+                    fragments[1] = new BlankMenuFragment();
+                    fragments[1].setArguments(bundle);
+                    fragments[1].setValue(lista_menu.getSecondi(), DishType.SecondCourses, this.context);
+                    return fragments[1];
                 case 2:
                     // sono nei dessert
-                    menuFragment = new BlankMenuFragment();
-                    menuFragment.setArguments(bundle);
-                    menuFragment.setValue(lista_menu, DishType.Dessert, this.context);
-                    return menuFragment;
+                    fragments[2] = new BlankMenuFragment();
+                    fragments[2].setArguments(bundle);
+                    fragments[2].setValue(lista_menu.getDessert(), DishType.Dessert, this.context);
+                    return fragments[2];
                 case 3:
                     // sono in altro
-                    menuFragment = new BlankMenuFragment();
-                    menuFragment.setArguments(bundle);
-                    menuFragment.setValue(lista_menu, DishType.Other, this.context);
-                    return menuFragment;
-
+                    fragments[3] = new BlankMenuFragment();
+                    fragments[3].setArguments(bundle);
+                    fragments[3].setValue(lista_menu.getAltro(), DishType.Other, this.context);
+                    return fragments[3];
             }
 
             return null;

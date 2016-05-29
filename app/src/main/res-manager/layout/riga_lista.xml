@@ -18,13 +18,13 @@
             android:layout_gravity="center_vertical"/>
 
         <LinearLayout android:orientation="vertical" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" android:layout_weight="1">
+        android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginLeft="8dp">
             <TextView
                 android:layout_width="wrap_content"
                 android:id="@+id/dish_name_menu"
                 android:textSize="16sp"
                 android:layout_marginTop="5dp"
-                android:layout_gravity="center_horizontal"
+                android:layout_gravity="left"
                 android:layout_height="wrap_content" />
 
             <TextView
@@ -32,7 +32,7 @@
                 android:id="@+id/dish_price_menu"
                 android:textSize="14sp"
                 android:layout_marginBottom="5dp"
-                android:layout_gravity="center_horizontal"
+                android:layout_gravity="left"
                 android:layout_height="wrap_content" />
 
         </LinearLayout>
