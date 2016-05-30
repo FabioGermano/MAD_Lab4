@@ -13,6 +13,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -27,6 +28,7 @@ import java.util.ArrayList;
 
 import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.bl.RestaurantBL;
+import it.polito.mad_lab4.data.user.User;
 import it.polito.mad_lab4.firebase_manager.FirebaseSaveDishManager;
 import it.polito.mad_lab4.firebase_manager.FirebaseSaveOfferManager;
 import it.polito.mad_lab4.newData.restaurant.Offer;
@@ -57,21 +59,41 @@ public class ModifyOfferDish extends EditableBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        SetCalendarButtonVisibility(false);
-        SetSaveButtonVisibility(true);
 
         setContentView(R.layout.activity_modify_offer);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             checkStoragePermission();
 
-        readData();
+        if(readData()){
+            setActivityTitle(getResources().getString(R.string.title_activity_new_offer));
+        }
+        else{
+            setActivityTitle(getResources().getString(R.string.title_activity_edit_offer));
+        }
         setToolbarColor();
+        setVisibilitySave(true);
+        invalidateOptionsMenu();
 
         imageViewer = (PhotoViewer)getSupportFragmentManager().findFragmentById(R.id.imageOffer_modifyOffer);
     }
 
-    private void readData(){
+    @Override
+    protected User controlloLogin() {
+        return null;
+    }
+
+    @Override
+    protected void ModificaProfilo() {
+
+    }
+
+    @Override
+    protected void ShowPrenotazioni() {
+
+    }
+
+    private boolean readData(){ //return false if editing
         try {
             Bundle extras = getIntent().getExtras();
 
@@ -80,13 +102,13 @@ public class ModifyOfferDish extends EditableBaseActivity {
                 offerId = extras.getString("offerId");
 
                     if (!isEditing){
-                        setTitleTextView(getResources().getString(R.string.title_activity_new_offer));
+                        //setTitleTextView(getResources().getString(R.string.title_activity_new_offer));
                         newOffer = true;
                         extras.clear();
-                        return;
+                        return true;
                     }
                     else{
-                        setTitleTextView(getResources().getString(R.string.title_activity_edit_offer));
+                        //setTitleTextView(getResources().getString(R.string.title_activity_edit_offer));
 
                         getOfferOnFirebase();
                     }
@@ -94,6 +116,20 @@ public class ModifyOfferDish extends EditableBaseActivity {
         } catch (Exception e){
             System.out.print("Eccezione: " + e.getMessage());
         }
+        return false;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.menu_save:
+                saveInfo();
+                break;
+            default:
+                break;
+        }
+        return true;
     }
 
     private void getOfferOnFirebase() {
@@ -367,26 +403,6 @@ public class ModifyOfferDish extends EditableBaseActivity {
 
     @Override
     protected void OnAddButtonPressed() {
-
-    }
-
-    @Override
-    protected void OnSaveButtonPressed() {
-        saveInfo();
-    }
-
-    @Override
-    protected void OnAlertButtonPressed() {
-
-    }
-
-    @Override
-    protected void OnCalendarButtonPressed() {
-
-    }
-
-    @Override
-    protected void OnBackButtonPressed() {
 
     }
 

@@ -57,6 +57,9 @@ public class AddReviewActivity extends BaseActivity implements PhotoViewerListen
         hideToolbarShadow(true);
         setActivityTitle(getResources().getString(R.string.add_review_activity_title));
 
+        setVisibilityAlert(false);
+        invalidateOptionsMenu();
+
         editText= (EditText) findViewById(R.id.review);
         cover = (ImageView)findViewById(R.id.cover) ;
         restaurantNameTextView = (TextView) findViewById(R.id.restaurant_name);

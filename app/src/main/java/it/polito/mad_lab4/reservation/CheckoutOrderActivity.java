@@ -53,6 +53,8 @@ public class CheckoutOrderActivity extends BaseActivity {
 
         setActivityTitle(getResources().getString(R.string.your_reservation));
 
+        setVisibilityAlert(false);
+        invalidateOptionsMenu();
         Bundle extras = getIntent().getExtras();
         if (extras == null) {
             date = null;

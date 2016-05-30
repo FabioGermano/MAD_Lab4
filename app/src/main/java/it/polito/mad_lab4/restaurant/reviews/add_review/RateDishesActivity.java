@@ -58,6 +58,9 @@ public class RateDishesActivity extends BaseActivity{
         hideToolbar(true);
         hideToolbarShadow(true);
 
+        setVisibilityAlert(false);
+        invalidateOptionsMenu();
+
         //retrieve values from intent extras
         this.restaurantId = getIntent().getExtras().getInt("restaurantId");
         this.review = getIntent().getExtras().getString("review");

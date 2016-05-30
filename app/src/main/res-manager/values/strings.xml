@@ -15,7 +15,7 @@
     <string name="dishPhoto">Photo</string>
     <string name="dishName">Name of the dish</string>
     <string name="dishPrice">Price</string>
-    <string name="dishType">Typology</string>
+    <string name="dishType">Dish type</string>
 
     <!--- Edit offer activity strings-->
     <string name="offer_image">Offer image</string>

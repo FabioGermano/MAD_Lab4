@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import com.bumptech.glide.Glide;
 
+import it.polito.mad_lab4.data.user.User;
 import it.polito.mad_lab4.manager.EditableBaseActivity;
 import it.polito.mad_lab4.R;
 
@@ -19,11 +20,8 @@ public class PhotoViewActivity extends EditableBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        SetSaveButtonVisibility(false);
-        SetCalendarButtonVisibility(false);
-        SetAlertButtonVisibility(false);
         hideToolbar(true);
-        hideShadow(true);
+        hideToolbarShadow(true);
 
         setContentView(R.layout.activity_photo_view_manager);
 
@@ -33,6 +31,21 @@ public class PhotoViewActivity extends EditableBaseActivity {
 
         getBitmap(getIntent().getExtras());
         setDeleteVisibility(getIntent().getExtras());
+
+    }
+
+    @Override
+    protected User controlloLogin() {
+        return null;
+    }
+
+    @Override
+    protected void ModificaProfilo() {
+
+    }
+
+    @Override
+    protected void ShowPrenotazioni() {
 
     }
 
@@ -58,25 +71,7 @@ public class PhotoViewActivity extends EditableBaseActivity {
         }
     }
 
-    @Override
-    protected void OnSaveButtonPressed() {
 
-    }
-
-    @Override
-    protected void OnAlertButtonPressed() {
-
-    }
-
-    @Override
-    protected void OnCalendarButtonPressed() {
-
-    }
-
-    @Override
-    protected void OnBackButtonPressed() {
-        finish();
-    }
 
     @Override
     protected void OnDeleteButtonPressed() {

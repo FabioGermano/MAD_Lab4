@@ -3,25 +3,18 @@ package it.polito.mad_lab4.manager;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
-import android.view.KeyEvent;
-import android.view.View;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -30,16 +23,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 
-import it.polito.mad_lab4.R;
+import it.polito.mad_lab4.*;
+import it.polito.mad_lab4.data.user.User;
 import it.polito.mad_lab4.manager.photo_viewer.PhotoViewer;
 import it.polito.mad_lab4.newData.restaurant.Restaurant;
 
-public class EditRestaurantProfile extends BaseActivity implements ValueEventListener, DatabaseReference.CompletionListener {
+public class EditRestaurantProfile extends it.polito.mad_lab4.BaseActivity implements ValueEventListener, DatabaseReference.CompletionListener {
 
     private String logoThumbPath;
     private String[] coversThumbPath, coversLargePath;
@@ -80,15 +71,14 @@ public class EditRestaurantProfile extends BaseActivity implements ValueEventLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        SetSaveButtonVisibility(true);
-        SetCalendarButtonVisibility(false);
 
         setContentView(R.layout.activity_edit_restaurant_profile);
         getViews();
 
         setToolbarColor();
-
-        setTitleTextView(getResources().getString(R.string.title_activity_edit_restaurant_profile));
+        setVisibilitySave(true);
+        invalidateOptionsMenu();
+        setActivityTitle(getResources().getString(R.string.title_activity_edit_restaurant_profile));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             checkStoragePermission();
 
@@ -98,6 +88,21 @@ public class EditRestaurantProfile extends BaseActivity implements ValueEventLis
         gerRestaurantByRestaurantId("-KIcTNUVIT-BIqARHq3P");
 
         initializePhotoManagement();
+    }
+
+    @Override
+    protected User controlloLogin() {
+        return null;
+    }
+
+    @Override
+    protected void ModificaProfilo() {
+
+    }
+
+    @Override
+    protected void ShowPrenotazioni() {
+
     }
 
     private void getViews() {
@@ -208,29 +213,22 @@ public class EditRestaurantProfile extends BaseActivity implements ValueEventLis
         TextView messageView = (TextView)alert.findViewById(android.R.id.message);
         messageView.setGravity(Gravity.CENTER);
     }
-
-
     @Override
-    protected void OnSaveButtonPressed() {
-        if(this.restaurant != null) {
-            saveRestaurant(this.restaurant);
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.menu_save:
+                if(this.restaurant != null) {
+                    saveRestaurant(this.restaurant);
+                }
+                break;
+            default:
+                break;
         }
+        return true;
     }
 
-    @Override
-    protected void OnAlertButtonPressed() {
-
-    }
-
-    @Override
-    protected void OnCalendarButtonPressed() {
-
-    }
-
-    @Override
-    protected void OnBackButtonPressed() {
-
-    }
 
     private void checkStoragePermission(){
         int storage = ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -303,7 +301,7 @@ public class EditRestaurantProfile extends BaseActivity implements ValueEventLis
             Toast toast = Toast.makeText(getApplicationContext(), R.string.dataSaved, Toast.LENGTH_SHORT);
             toast.show();
 
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            Intent intent = new Intent(getApplicationContext(), MainActivityManager.class);
             startActivity(intent);
         }
     }

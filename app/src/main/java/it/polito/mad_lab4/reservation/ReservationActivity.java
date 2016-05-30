@@ -54,6 +54,9 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
         hideToolbar(true);
         hideToolbarShadow(true);
 
+        setVisibilityAlert(false);
+        invalidateOptionsMenu();
+
         nestedScrollView = (NestedScrollView)findViewById(R.id.reservationsNestedScrollView);
 
         calendarFragment = (CalendarFragment) getSupportFragmentManager().findFragmentById(R.id.date_time);

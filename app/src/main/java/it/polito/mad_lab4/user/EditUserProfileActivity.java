@@ -34,14 +34,14 @@ public class EditUserProfileActivity extends BaseActivity implements UniversityP
         universityText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pickUniversity();
+                showDialogUniversity();
             }
         });
         typeText = (EditText) findViewById(R.id.typeText);
         typeText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pickType();
+                showDialogType();
             }
         });
 
@@ -111,5 +111,45 @@ public class EditUserProfileActivity extends BaseActivity implements UniversityP
     public void updateType(int n, String type) {
         if(n!=-1)
         this.typeText.setText(type);
+    }
+
+    private void showDialogType(){
+        android.support.v7.app.AlertDialog dialog;
+
+        // Strings to Show
+        final String[] items = getResources().getStringArray(R.array.userType);
+
+        // Creating and Building the Dialog
+        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
+        builder.setTitle(getResources().getString(R.string.pick_type)).setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int item) {
+                typeText.setText(items[item]);
+                dialog.dismiss();
+            }
+        });
+        dialog = builder.create();
+        dialog.getListView().setDividerHeight(1);
+        dialog.show();
+    }
+
+    private void showDialogUniversity(){
+        android.support.v7.app.AlertDialog dialog;
+
+        // Strings to Show
+        final String[] items = getResources().getStringArray(R.array.Polito);
+
+        // Creating and Building the Dialog
+        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
+        builder.setTitle(getResources().getString(R.string.pick_your_university)).setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int item) {
+                universityText.setText(items[item]);
+                dialog.dismiss();
+            }
+        });
+        dialog = builder.create();
+        dialog.getListView().setDividerHeight(1);
+        dialog.show();
     }
 }

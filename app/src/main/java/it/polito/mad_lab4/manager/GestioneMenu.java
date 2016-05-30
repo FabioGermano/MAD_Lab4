@@ -1,7 +1,6 @@
 package it.polito.mad_lab4.manager;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -16,7 +15,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -33,8 +31,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import it.polito.mad_lab4.R;
-import it.polito.mad_lab4.bl.RestaurantBL;
 import it.polito.mad_lab4.data.restaurant.DishTypeConverter;
+import it.polito.mad_lab4.data.user.User;
 import it.polito.mad_lab4.newData.restaurant.Dish;
 import it.polito.mad_lab4.data.restaurant.DishType;
 
@@ -48,14 +46,11 @@ public class  GestioneMenu extends EditableBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        SetSaveButtonVisibility(false);
-        SetCalendarButtonVisibility(false);
-        hideShadow(true);
-
         setContentView(R.layout.activity_gestione_menu);
+
         setToolbarColor();
-        setTitleTextView(getResources().getString(R.string.title_activity_edit_menu));
+        setActivityTitle(getResources().getString(R.string.title_activity_edit_menu));
+        hideToolbarShadow(true);
         InitializeFABButtons(false, false, true);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
@@ -116,6 +111,21 @@ public class  GestioneMenu extends EditableBaseActivity {
         } catch (Exception e){
             System.out.println("Eccezione: " + e.getMessage());
         }
+    }
+
+    @Override
+    protected User controlloLogin() {
+        return null;
+    }
+
+    @Override
+    protected void ModificaProfilo() {
+
+    }
+
+    @Override
+    protected void ShowPrenotazioni() {
+
     }
 
     private void readMenu() {
@@ -234,7 +244,7 @@ public class  GestioneMenu extends EditableBaseActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (Integer.parseInt(Build.VERSION.SDK) > 5  && keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0)
         {
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            Intent intent = new Intent(getApplicationContext(), MainActivityManager.class);
             startActivity(intent);
             return true;
         }
@@ -262,15 +272,6 @@ public class  GestioneMenu extends EditableBaseActivity {
         startActivity(intent);
     }
 
-    @Override
-    protected void OnSaveButtonPressed() {
-        //in questa schermata è disabilitato
-    }
-
-    @Override
-    protected void OnAlertButtonPressed() {
-        //vai alla lista delle prenotazioni
-    }
 
     private class MyPageAdapter extends FragmentPagerAdapter {
         private int NumOfPage = 4;
@@ -346,15 +347,6 @@ public class  GestioneMenu extends EditableBaseActivity {
         }
     }
 
-    @Override
-    protected void OnCalendarButtonPressed() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    protected void OnBackButtonPressed() {
-
-    }
 
     private void checkStoragePermission(){
         int storage = ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);

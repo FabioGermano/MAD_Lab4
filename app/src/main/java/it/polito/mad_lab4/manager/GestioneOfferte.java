@@ -8,7 +8,6 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,7 +15,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -25,21 +23,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import it.polito.mad_lab4.R;
-import it.polito.mad_lab4.bl.RestaurantBL;
-import it.polito.mad_lab4.data.restaurant.DishTypeConverter;
-import it.polito.mad_lab4.newData.restaurant.Dish;
+import it.polito.mad_lab4.data.user.User;
 import it.polito.mad_lab4.newData.restaurant.Offer;
 
 public class GestioneOfferte extends EditableBaseActivity {
@@ -52,14 +41,10 @@ public class GestioneOfferte extends EditableBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        SetSaveButtonVisibility(false);
-        SetCalendarButtonVisibility(false);
-        SetSaveButtonVisibility(false);
-        SetAlertButtonVisibility(true);
 
         setContentView(R.layout.activity_gestione_offerte);
         setToolbarColor();
-        setTitleTextView(getResources().getString(R.string.title_activity_edit_offers));
+        setActivityTitle(getResources().getString(R.string.title_activity_edit_offers));
         InitializeFABButtons(false, false, true);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
@@ -72,6 +57,21 @@ public class GestioneOfferte extends EditableBaseActivity {
         } catch(Exception e){
             System.out.println("Eccezione: " + e.getMessage());
         }
+    }
+
+    @Override
+    protected User controlloLogin() {
+        return null;
+    }
+
+    @Override
+    protected void ModificaProfilo() {
+
+    }
+
+    @Override
+    protected void ShowPrenotazioni() {
+
     }
 
     private void readOffers() {
@@ -165,31 +165,11 @@ public class GestioneOfferte extends EditableBaseActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (Integer.parseInt(Build.VERSION.SDK) > 5  && keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0)
         {
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            Intent intent = new Intent(getApplicationContext(), MainActivityManager.class);
             startActivity(intent);
             return true;
         }
         return super.onKeyDown(keyCode, event);
-    }
-
-    @Override
-    protected void OnSaveButtonPressed() {
-        //in questa schermata è disabilitato
-    }
-
-    @Override
-    protected void OnAlertButtonPressed() {
-        //vai alla lista delle prenotazioni
-    }
-
-    @Override
-    protected void OnCalendarButtonPressed() {
-        //in questa schermata è disabilitato
-    }
-
-    @Override
-    protected void OnBackButtonPressed() {
-
     }
 
     @Override

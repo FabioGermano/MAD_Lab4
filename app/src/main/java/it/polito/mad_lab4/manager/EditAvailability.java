@@ -17,12 +17,11 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -30,10 +29,10 @@ import java.util.ArrayList;
 import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.bl.RestaurantBL;
 import it.polito.mad_lab4.data.restaurant.DishTypeConverter;
+import it.polito.mad_lab4.data.user.User;
 import it.polito.mad_lab4.newData.restaurant.Dish;
 import it.polito.mad_lab4.data.restaurant.DishType;
 import it.polito.mad_lab4.newData.restaurant.Offer;
-import it.polito.mad_lab4.newData.restaurant.Restaurant;
 
 /**
  * Created by Giovanna on 11/04/2016.
@@ -51,14 +50,13 @@ public class EditAvailability extends EditableBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        SetSaveButtonVisibility(true);
-        SetCalendarButtonVisibility(false);
-        hideShadow(true);
+
         setContentView(R.layout.activity_gestione_menu);
         setToolbarColor();
-
-        setTitleTextView(getResources().getString(R.string.title_activity_edit_availability));
-
+        hideToolbarShadow(true);
+        setActivityTitle(getResources().getString(R.string.title_activity_edit_availability));
+        setVisibilitySave(true);
+        invalidateOptionsMenu();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             checkStoragePermission();
 
@@ -78,6 +76,11 @@ public class EditAvailability extends EditableBaseActivity {
             tabLayout.setupWithViewPager(viewPager);
         }
 
+    }
+
+    @Override
+    protected User controlloLogin() {
+        return null;
     }
 
     private void readOffers() {
@@ -103,14 +106,36 @@ public class EditAvailability extends EditableBaseActivity {
             }
         }
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.menu_save:
+                saveInfo();
+                break;
+            default:
+                break;
+        }
+        return true;
+    }
 
     @Override
-    protected void OnSaveButtonPressed() {
+    protected void ModificaProfilo() {
+
+    }
+
+    @Override
+    protected void ShowPrenotazioni() {
+
+    }
+
+    void saveInfo() {
         RestaurantBL.saveChanges(getApplicationContext());
 
         Toast toast = Toast.makeText(getApplicationContext(), R.string.dataSaved, Toast.LENGTH_SHORT);
         toast.show();
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        Intent intent = new Intent(getApplicationContext(), MainActivityManager.class);
         startActivity(intent);
     }
 
@@ -135,21 +160,6 @@ public class EditAvailability extends EditableBaseActivity {
         //centrare il messaggio
         TextView messageView = (TextView)alert.findViewById(android.R.id.message);
         messageView.setGravity(Gravity.CENTER);
-    }
-
-    @Override
-    protected void OnAlertButtonPressed() {
-
-    }
-
-    @Override
-    protected void OnCalendarButtonPressed() {
-
-    }
-
-    @Override
-    protected void OnBackButtonPressed() {
-
     }
 
     @Override

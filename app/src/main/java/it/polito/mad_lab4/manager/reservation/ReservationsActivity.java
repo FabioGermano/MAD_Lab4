@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import it.polito.mad_lab4.manager.BaseActivity;
+import it.polito.mad_lab4.data.user.User;
 import it.polito.mad_lab4.manager.GestioneDB;
 import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.manager.data.reservation.Reservation;
@@ -25,7 +26,7 @@ import it.polito.mad_lab4.manager.data.reservation.ReservationEntity;
 import it.polito.mad_lab4.manager.data.reservation.ReservationType;
 import it.polito.mad_lab4.manager.data.reservation.ReservationTypeConverter;
 
-public class ReservationsActivity extends BaseActivity {
+public class ReservationsActivity extends it.polito.mad_lab4.BaseActivity {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -55,11 +56,12 @@ public class ReservationsActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        SetCalendarButtonVisibility(true);
-        hideShadow(true);
+
         setContentView(R.layout.activity_reservations);
         setToolbarColor();
-
+        hideToolbarShadow(true);
+        setVisibilityCalendar(true);
+        invalidateOptionsMenu();
         getReservations();
 
         dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -82,7 +84,7 @@ public class ReservationsActivity extends BaseActivity {
         datePickerDialog.setCanceledOnTouchOutside(true);
         datePickerDialog.getDatePicker().setCalendarViewShown(false);
 
-        setTitleTextView(getResources().getString(R.string.title_activity_reservations));
+        setActivityTitle(getResources().getString(R.string.title_activity_reservations));
         dateText = (TextView) findViewById(R.id.date);
         dateText.setText(selectedDate);
 
@@ -98,25 +100,39 @@ public class ReservationsActivity extends BaseActivity {
         tabLayout.setupWithViewPager(mViewPager);
     }
 
+    @Override
+    protected User controlloLogin() {
+        return null;
+    }
+
     void getReservations(){
         GestioneDB db = new GestioneDB();
         this.res_entity = db.getAllReservations(getApplicationContext());
     }
+
+
     @Override
-    protected void OnSaveButtonPressed() {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.menu_calendar:
+                datePickerDialog.show();
+                break;
+            default:
+                break;
+        }
+        return true;
+    }
+
+    @Override
+    protected void ModificaProfilo() {
 
     }
 
     @Override
-    protected void OnAlertButtonPressed() {
+    protected void ShowPrenotazioni() {
 
-    }
-
-    @Override
-    protected void OnCalendarButtonPressed() {
-        //Intent intent = new Intent(getApplicationContext(), it.polito.mad_lab2.reservation.CalendarActivity.class);
-        //startActivity(intent);Calendar newCalendar = Calendar.getInstance();
-        datePickerDialog.show();
     }
 
     private void changeDate(String newDate){
@@ -132,12 +148,6 @@ public class ReservationsActivity extends BaseActivity {
             pos++;
         }
     }
-
-    @Override
-    protected void OnBackButtonPressed() {
-
-    }
-
 
     /**
      * A placeholder fragment containing a simple view.

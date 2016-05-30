@@ -1,5 +1,6 @@
 package it.polito.mad_lab4;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -35,12 +36,13 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     protected Toolbar toolbar;
 
     private boolean hideToolbar=false, hideShadow=false, save_visibility=false,
-            calendar_visibility=false, alert_visibility = true, backbutton_visibility=true, filter_visibility=false;
+            calendar_visibility=false,orderby_visibility=false, alert_visibility = true, backbutton_visibility=true, filter_visibility=false;
     private TextView titleTextView, alertCountView;
     String activityTitle =  "Titolo App";
     private View toolbarShadow;
     private boolean useToolbar=true;
     private User userInformation;
+    private ProgressDialog pd;
     private int alertCount = 0;
     private ImageButton saveImageButton, alertButton, calendarButton;
     //per visualizzare o meno, e abilitare, l'icona nella toolbar
@@ -98,6 +100,10 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
 
     protected void setVisibilityFilter(boolean visible){
         this.filter_visibility = visible;
+    }
+
+    protected void setVisibilityOrderBy(boolean visible){
+        this.orderby_visibility = visible;
     }
     protected void setVisibilitySave(boolean visible){
         this.save_visibility = visible;
@@ -237,10 +243,12 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         final MenuItem calendar = menu.findItem(R.id.menu_calendar);
         final MenuItem save = menu.findItem(R.id.menu_save);
         final MenuItem notify = menu.findItem(R.id.menu_notify);
+        final MenuItem order = menu.findItem(R.id.menu_orderBy);
         filter.setVisible(filter_visibility);
         calendar.setVisible(calendar_visibility);
         save.setVisible(save_visibility);
         notify.setVisible(alert_visibility);
+        order.setVisible(orderby_visibility);
         if(alert_visibility){
 
             RelativeLayout notificationLayout = (RelativeLayout) notify.getActionView();
@@ -361,4 +369,15 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
      */
     protected abstract void ModificaProfilo();
     protected abstract void ShowPrenotazioni();
+    public void showProgressBar(){
+        pd = new ProgressDialog(BaseActivity.this,R.style.DialogTheme);
+        pd.setCancelable(false);
+        pd.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
+        pd.show();
+    }
+
+    public void dismissProgressDialog(){
+        if(pd.isShowing())
+            pd.dismiss();
+    }
 }

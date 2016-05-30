@@ -98,7 +98,8 @@
                     android:hint="@string/offerName"
                     android:padding="5dp"
                     android:id="@+id/edit_offerName_modifyOffer"
-                    android:singleLine="false" />
+                    android:singleLine="false"
+                    android:inputType="textShortMessage" />
 
             </LinearLayout>
             <View
@@ -126,9 +127,9 @@
                     android:background="@android:color/transparent"
                     android:padding="5dp"
                     android:hint="@string/offerPrice"
-                    android:inputType="number"
                     android:id="@+id/edit_offerPrice_modifyOffer"
-                    android:singleLine="false" />
+                    android:singleLine="false"
+                    android:inputType="numberDecimal" />
 
             </LinearLayout>
             <View
@@ -185,7 +186,6 @@
                     android:layout_height="30dp"
                     android:layout_margin="3dp"
                     android:text="New ToggleButton"
-                    android:clickable="false"
                     android:checked="false"
                     android:textOn="@string/monday_abb"
                     android:textOff="@string/monday_abb"
@@ -196,7 +196,6 @@
                     android:layout_height="30dp"
                     android:layout_margin="3dp"
                     android:text="New ToggleButton"
-                    android:clickable="false"
                     android:checked="false"
                     android:textOn="@string/tuesday_abb"
                     android:textOff="@string/tuesday_abb"
@@ -207,7 +206,6 @@
                     android:layout_height="30dp"
                     android:layout_margin="3dp"
                     android:text="New ToggleButton"
-                    android:clickable="false"
                     android:checked="false"
                     android:textOn="@string/wednesday_abb"
                     android:textOff="@string/wednesday_abb"
@@ -218,7 +216,6 @@
                     android:layout_height="30dp"
                     android:layout_margin="3dp"
                     android:text="New ToggleButton"
-                    android:clickable="false"
                     android:checked="false"
                     android:textOn="@string/thursday_abb"
                     android:textOff="@string/thursday_abb"
@@ -229,7 +226,6 @@
                     android:layout_height="30dp"
                     android:layout_margin="3dp"
                     android:text="New ToggleButton"
-                    android:clickable="false"
                     android:checked="false"
                     android:textOn="@string/friday_abb"
                     android:textOff="@string/friday_abb"
@@ -240,7 +236,6 @@
                     android:layout_height="30dp"
                     android:layout_margin="3dp"
                     android:text="New ToggleButton"
-                    android:clickable="false"
                     android:checked="false"
                     android:textOn="@string/saturday_abb"
                     android:textOff="@string/saturday_abb"
@@ -251,7 +246,6 @@
                     android:layout_height="30dp"
                     android:layout_margin="3dp"
                     android:text="New ToggleButton"
-                    android:clickable="false"
                     android:checked="false"
                     android:textOn="@string/sunday_abb"
                     android:textOff="@string/sunday_abb"

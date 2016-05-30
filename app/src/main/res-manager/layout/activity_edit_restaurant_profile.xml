@@ -20,7 +20,37 @@
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:paddingTop="@dimen/activity_vertical_margin"
+            android:gravity="center"
             android:orientation="vertical">
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                card_view:cardCornerRadius="4dp"
+
+                android:gravity="center"
+                android:minHeight="64dp"
+                card_view:cardUseCompatPadding="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:padding="@dimen/activity_horizontal_margin"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <fragment
+                        xmlns:custom="http://schemas.android.com/apk/res/it.polito.mad_lab4"
+                        android:id="@+id/logo_fragment"
+                        android:name="it.polito.mad_lab4.manager.photo_viewer.PhotoViewer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        custom:isEditable="true"
+                        custom:isLogo="false"
+                        custom:heightInDP="200"
+                        custom:widthInDP="200"
+                        custom:initialBackground="@drawable/ic_account_circle_white_48dp"
+                        />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
 
             <!--<TextView
                 android:layout_width="wrap_content"
@@ -30,36 +60,7 @@
                 android:id="@+id/textView"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp" />-->
-            <android.support.v7.widget.CardView
-                xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                card_view:cardCornerRadius="4dp"
-                android:minHeight="64dp"
-                card_view:cardUseCompatPadding="true"
-                android:layout_gravity="center"
-                android:layout_width="wrap_content"
-                android:clickable="true"
-                android:layout_height="wrap_content">
-                <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                    android:orientation="vertical">
-            <fragment
-                xmlns:custom="http://schemas.android.com/apk/res/it.polito.mad_lab4"
-                android:id="@+id/logo_fragment"
-                android:name="it.polito.mad_lab4.manager.photo_viewer.PhotoViewer"
-                android:layout_gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                custom:isEditable="true"
-                custom:isLogo="true"
-                custom:heightInDP="100"
-                custom:widthInDP="100"
-                custom:initialBackground="@drawable/default_dish_icon"
-                />
-            </LinearLayout>
 
-            </android.support.v7.widget.CardView>
             <android.support.v7.widget.CardView
                 xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 xmlns:android="http://schemas.android.com/apk/res/android"
@@ -172,7 +173,7 @@
                     android:textColor="@android:color/black"
                     android:background="@android:color/transparent"
                     android:padding="5dp"
-                    android:text="Alma Latina"
+                    android:hint="@string/restaurant_name"
                     android:singleLine="false" />
 
             </LinearLayout>
@@ -202,8 +203,7 @@
                     android:textColor="@android:color/black"
                     android:background="@android:color/transparent"
                     android:padding="5dp"
-                    android:text="Via Germanasca 32"
-
+                    android:hint="@string/restaurant_address"
                     android:singleLine="false" />
 
             </LinearLayout>
@@ -218,7 +218,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:id="@+id/phoneLL"
                 android:longClickable="true">
 
                 <ImageView

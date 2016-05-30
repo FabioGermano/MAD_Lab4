@@ -8,14 +8,16 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import it.polito.mad_lab4.MainActivity;
 import it.polito.mad_lab4.manager.reservation.ReservationsActivity;
 import it.polito.mad_lab4.R;
 
-public class MainActivity extends BaseBarraLaterale{
+public class MainActivityManager extends BaseBarraLaterale{
 
     /*private PhotoViewer photoViewer;
     private Bitmap largeBitmap;*/
@@ -58,7 +60,14 @@ public class MainActivity extends BaseBarraLaterale{
                 header = navigationView.getHeaderView(0);
             }
         }
-
+        Button btn = (Button) findViewById(R.id.button);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+            }
+        });
         checkDB();
                  
         if(header != null){

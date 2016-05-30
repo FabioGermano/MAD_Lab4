@@ -26,7 +26,8 @@ public class PhotoViewActivity  extends BaseActivity {
         setContentView(R.layout.activity_photo_view);
         hideToolbar(true);
         hideToolbarShadow(true);
-
+        setVisibilityAlert(false);
+    invalidateOptionsMenu();
         touchImageView = (TouchImageView)findViewById(R.id.photoView);
 
         getBitmap(getIntent().getExtras());
