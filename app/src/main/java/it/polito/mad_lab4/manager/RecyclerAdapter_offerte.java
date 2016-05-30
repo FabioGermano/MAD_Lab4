@@ -27,6 +27,7 @@ import java.util.ArrayList;
 
 import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.bl.RestaurantBL;
+import it.polito.mad_lab4.firebase_manager.FirebaseRemoveOfferManager;
 import it.polito.mad_lab4.newData.restaurant.Offer;
 
 /**
@@ -107,7 +108,7 @@ public class RecyclerAdapter_offerte extends RecyclerView.Adapter<RecyclerAdapte
             }
             if(availability_mode){
                 if(dish_availability != null){
-                    dish_availability.setChecked(currentObj.getTodayAvailable());
+                    dish_availability.setChecked(currentObj.getIsTodayAvailable());
                 }
             }
             if(currentObj.getThumbDownloadLink() != null) {
@@ -143,17 +144,15 @@ public class RecyclerAdapter_offerte extends RecyclerView.Adapter<RecyclerAdapte
         }
 
         private void updateAvailability(){
-            lista_offerte.get(position).setTodayAvailable(dish_availability.isChecked());
+            lista_offerte.get(position).setIsTodayAvailable(dish_availability.isChecked());
         }
 
         //rimuovo offerta
         private void removeItem(){
-            lista_offerte.remove(position);
 
-            RestaurantBL.saveChanges(context);
+            FirebaseRemoveOfferManager firebaseRemoveOfferManager = new FirebaseRemoveOfferManager();
 
-            notifyItemRemoved(position);
-            notifyItemRangeChanged(position, lista_offerte.size());
+            firebaseRemoveOfferManager.removeOffer("-KIrgaSxr9VhHllAjqmp", lista_offerte.get(position).getOfferId());
         }
 
         //modifico offerta

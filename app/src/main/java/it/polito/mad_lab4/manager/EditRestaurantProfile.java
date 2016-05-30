@@ -303,6 +303,8 @@ public class EditRestaurantProfile extends it.polito.mad_lab4.BaseActivity imple
 
             Intent intent = new Intent(getApplicationContext(), MainActivityManager.class);
             startActivity(intent);
+
+            finish();
         }
     }
 }

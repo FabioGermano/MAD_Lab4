@@ -31,13 +31,16 @@ import java.util.ArrayList;
 import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.common.EmptyRecyclerView;
 import it.polito.mad_lab4.data.user.User;
+import it.polito.mad_lab4.firebase_manager.FirebaseOfferListManager;
 import it.polito.mad_lab4.newData.restaurant.Offer;
 
 public class GestioneOfferte extends EditableBaseActivity {
-    private ArrayList<Offer> lista_offerte = null;
+    private ArrayList<Offer> lista_offerte = new ArrayList<>();;
     private JSONObject jsonRootObject;
     private boolean availability_mode = false;
     private RecyclerAdapter_offerte myAdapter;
+    private DatabaseReference offersReference;
+    private FirebaseOfferListManager firebaseOfferListManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,14 +54,25 @@ public class GestioneOfferte extends EditableBaseActivity {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             checkStoragePermission();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
 
         try {
-            readOffers();
-
             setUpRecyclerView();
+            readOffers();
         } catch(Exception e){
             System.out.println("Eccezione: " + e.getMessage());
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        firebaseOfferListManager.detachListeners();
     }
 
     @Override
@@ -77,75 +91,27 @@ public class GestioneOfferte extends EditableBaseActivity {
     }
 
     private void readOffers() {
-        lista_offerte = new ArrayList<Offer>();// RestaurantBL.getRestaurantById(getApplicationContext(), 1).getOffers();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
         showProgressBar();
 
-        DatabaseReference myRef = database.getReference("offers/" + "-KIrgaSxr9VhHllAjqmp");
-        myRef.limitToFirst(1).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.getValue() == null){
-                    dismissProgressDialog();
-                }
+        new Thread() {
+            public void run() {
+
+                firebaseOfferListManager = new FirebaseOfferListManager();
+                firebaseOfferListManager.setAdapter(myAdapter);
+                firebaseOfferListManager.startGetList(lista_offerte, "-KIrgaSxr9VhHllAjqmp");
+                firebaseOfferListManager.waitForResult();
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        dismissProgressDialog();
+                    }
+                });
             }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        myRef = database.getReference("offers/" + "-KIrgaSxr9VhHllAjqmp");
-        myRef.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-                dismissProgressDialog();
-
-                Offer o = dataSnapshot.getValue(Offer.class);
-                lista_offerte.add(o);
-                myAdapter.notifyItemInserted(lista_offerte.size() - 1);
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                Offer o = dataSnapshot.getValue(Offer.class);
-
-                int position = findPositionOnList(lista_offerte, o.getOfferId());
-                lista_offerte.remove(position);
-                myAdapter.notifyItemRemoved(position);
-                myAdapter.notifyItemRangeChanged(position, lista_offerte.size());
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        }.start();
     }
 
-    private int findPositionOnList(ArrayList<Offer> lista_offerte, String offerId) {
-        int i = 0;
-        for(Offer d : lista_offerte){
-            if(d.getOfferId().equals(offerId)){
-                return i;
-            }
-            i++;
-        }
-
-        return i;
-    }
 
     //imposto la lista di tutte le offerte
     private void setUpRecyclerView(){
@@ -172,6 +138,7 @@ public class GestioneOfferte extends EditableBaseActivity {
         {
             Intent intent = new Intent(getApplicationContext(), MainActivityManager.class);
             startActivity(intent);
+            finish();
             return true;
         }
         return super.onKeyDown(keyCode, event);

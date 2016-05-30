@@ -118,7 +118,7 @@ public class RecyclerAdapter_menu extends RecyclerView.Adapter<RecyclerAdapter_m
 
             if(availability_mode){
                 if(dish_availability != null){
-                    dish_availability.setChecked(currentObj.getTodayAvailable());
+                    dish_availability.setChecked(currentObj.getIsTodayAvailable());
                 }
             }
 
@@ -157,7 +157,7 @@ public class RecyclerAdapter_menu extends RecyclerView.Adapter<RecyclerAdapter_m
 
         private void updateAvailability(){
             try {
-                current_list.get(position).setTodayAvailable(dish_availability.isChecked());
+                current_list.get(position).setIsTodayAvailable(dish_availability.isChecked());
             }
             catch (Exception e){
                 System.out.println("Eccezione: " + e.getMessage());

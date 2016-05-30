@@ -361,6 +361,8 @@ public class ModifyOfferDish extends EditableBaseActivity {
 
                         Intent intent = new Intent(getApplicationContext(), GestioneOfferte.class);
                         startActivity(intent);
+
+                        finish();
                     }
                 });
 

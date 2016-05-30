@@ -15,6 +15,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -22,14 +23,24 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.bl.RestaurantBL;
 import it.polito.mad_lab4.data.restaurant.DishTypeConverter;
 import it.polito.mad_lab4.data.user.User;
+import it.polito.mad_lab4.firebase_manager.FirebaseSaveAvailabilityManager;
 import it.polito.mad_lab4.newData.restaurant.Dish;
 import it.polito.mad_lab4.data.restaurant.DishType;
 import it.polito.mad_lab4.newData.restaurant.Offer;
@@ -38,13 +49,12 @@ import it.polito.mad_lab4.newData.restaurant.Offer;
  * Created by Giovanna on 11/04/2016.
  */
 public class EditAvailability extends EditableBaseActivity {
-
-    //private ArrayList<Oggetto_piatto> list_piatti = new ArrayList<>();
     private Oggetto_menu lista_menu = null;
-    private String fileName = "database";
-    private JSONObject jsonRootObject;
     private ArrayList<Offer> lista_offerte = null;
     private boolean availability_mode=true;
+
+    private BlankOfferFragment blankOfferFragment;
+    private BlankMenuFragment[] fragments = new BlankMenuFragment[4];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,27 +95,123 @@ public class EditAvailability extends EditableBaseActivity {
 
     private void readOffers() {
 
-        lista_offerte = new ArrayList<Offer>();//RestaurantBL.getRestaurantById(getApplicationContext(), 1).getOffers();
+        lista_offerte = new ArrayList<Offer>();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        DatabaseReference myRef = database.getReference("offers/" + "-KIrgaSxr9VhHllAjqmp");
+        myRef.limitToFirst(1).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getValue() == null){
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        myRef = database.getReference("offers/" + "-KIrgaSxr9VhHllAjqmp");
+        myRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                Offer o = dataSnapshot.getValue(Offer.class);
+                lista_offerte.add(o);
+                if(blankOfferFragment != null) {
+                    blankOfferFragment.getAdapter().notifyItemInserted(lista_offerte.size() - 1);
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void readMenu() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        DatabaseReference myRef = database.getReference("menu/" + "-KIrgaSxr9VhHllAjqmp");
+        myRef.limitToFirst(1).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getValue() == null){
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         this.lista_menu = new Oggetto_menu();
-        ArrayList<Dish> dishes = new ArrayList<Dish>();//RestaurantBL.getRestaurantById(getApplicationContext(), 1).getDishes();
-        for(Dish d : dishes){
-            if(DishTypeConverter.fromStringToEnum(d.getType()) == DishType.MainCourses){
-                this.lista_menu.addPrimo(d);
+        myRef = database.getReference("menu/" + "-KIrgaSxr9VhHllAjqmp");
+        myRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                Dish d = dataSnapshot.getValue(Dish.class);
+                int index = DishTypeConverter.fromEnumToIndex(DishTypeConverter.fromStringToEnum(d.getType()));
+                lista_menu.getDishListByIndex(index).add(d);
+                if(fragments[index] != null){
+                    fragments[index].getAdapter().notifyItemInserted(lista_menu.getDishListByIndex(index).size() - 1);
+                }
             }
-            if(DishTypeConverter.fromStringToEnum(d.getType()) == DishType.SecondCourses){
-                this.lista_menu.addSecondo(d);
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
             }
-            if(DishTypeConverter.fromStringToEnum(d.getType()) == DishType.Dessert){
-                this.lista_menu.addDessert(d);
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
             }
-            if(DishTypeConverter.fromStringToEnum(d.getType()) == DishType.Other){
-                this.lista_menu.addAltro(d);
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
             }
-        }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
+
+    private int findPositionOnList(ArrayList<Dish> list, String dishId){
+        int i = 0;
+        for(Dish d : list){
+            if(d.getDishId().equals(dishId)){
+                return i;
+            }
+            i++;
+        }
+
+        return i;
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
@@ -131,12 +237,33 @@ public class EditAvailability extends EditableBaseActivity {
     }
 
     void saveInfo() {
-        RestaurantBL.saveChanges(getApplicationContext());
+        new Thread()
+        {
+            public void run() {
+                FirebaseSaveAvailabilityManager firebaseSaveAvailabilityManager = new FirebaseSaveAvailabilityManager();
+                firebaseSaveAvailabilityManager.saveAvailability(lista_menu, lista_offerte);
 
-        Toast toast = Toast.makeText(getApplicationContext(), R.string.dataSaved, Toast.LENGTH_SHORT);
-        toast.show();
-        Intent intent = new Intent(getApplicationContext(), MainActivityManager.class);
-        startActivity(intent);
+                boolean res = firebaseSaveAvailabilityManager.waitForResult();
+
+                if(!res){
+                    Log.e("Error saving the avail.", "Error saving the avail.");
+                    return;
+                }
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        Toast toast = Toast.makeText(getApplicationContext(), R.string.dataSaved, Toast.LENGTH_SHORT);
+                        toast.show();
+                        Intent intent = new Intent(getApplicationContext(), MainActivityManager.class);
+                        startActivity(intent);
+
+                        finish();
+                    }
+                });
+            }
+        }.start();
     }
 
     private void printAlert(String msg){
@@ -194,39 +321,38 @@ public class EditAvailability extends EditableBaseActivity {
         @Override
         public Fragment getItem(int position) {
             BlankMenuFragment menuFragment;
-            BlankOfferFragment offerFragment;
             Bundle bundle = new Bundle();
             bundle.putBoolean("availability", availability_mode);
             switch (position) {
                 case 1:
                     // sono nei primi
-                    menuFragment = new BlankMenuFragment();
-                    menuFragment.setArguments(bundle);
-                    menuFragment.setValue(lista_menu.getPrimi(), DishType.MainCourses, this.context);
-                    return menuFragment;
+                    fragments[0] = new BlankMenuFragment();
+                    fragments[0].setArguments(bundle);
+                    fragments[0].setValue(lista_menu.getPrimi(), DishType.MainCourses, this.context);
+                    return fragments[0];
                 case 2:
                     // sono nei secondi
-                    menuFragment = new BlankMenuFragment();
-                    menuFragment.setArguments(bundle);
-                    menuFragment.setValue(lista_menu.getSecondi(), DishType.SecondCourses, this.context);
-                    return menuFragment;
+                    fragments[1] = new BlankMenuFragment();
+                    fragments[1].setArguments(bundle);
+                    fragments[1].setValue(lista_menu.getSecondi(), DishType.SecondCourses, this.context);
+                    return fragments[1];
                 case 3:
                     // sono nei contorni
-                    menuFragment = new BlankMenuFragment();
-                    menuFragment.setArguments(bundle);
-                    menuFragment.setValue(lista_menu.getDessert(), DishType.Dessert, this.context);
-                    return menuFragment;
+                    fragments[2] = new BlankMenuFragment();
+                    fragments[2].setArguments(bundle);
+                    fragments[2].setValue(lista_menu.getDessert(), DishType.Dessert, this.context);
+                    return fragments[2];
                 case 4:
                     // sono in altro
-                    menuFragment = new BlankMenuFragment();
-                    menuFragment.setArguments(bundle);
-                    menuFragment.setValue(lista_menu.getAltro(), DishType.Other, this.context);
-                    return menuFragment;
+                    fragments[3] = new BlankMenuFragment();
+                    fragments[3].setArguments(bundle);
+                    fragments[3].setValue(lista_menu.getAltro(), DishType.Other, this.context);
+                    return fragments[3];
                 case 0:
-                    offerFragment = new BlankOfferFragment();
-                    offerFragment.setArguments(bundle);
-                    offerFragment.setValue(lista_offerte, this.context);
-                    return offerFragment;
+                    blankOfferFragment = new BlankOfferFragment();
+                    blankOfferFragment.setArguments(bundle);
+                    blankOfferFragment.setValue(lista_offerte, this.context);
+                    return blankOfferFragment;
 
             }
 
@@ -264,137 +390,6 @@ public class EditAvailability extends EditableBaseActivity {
         }
 
     }
-    /*private boolean readMenuData(){
-        try{
-            Oggetto_piatto obj;
-            lista_menu = new Oggetto_menu();
-
-            GestioneDB DB = new GestioneDB();
-            String db = DB.leggiDB(this, "db_menu");
-
-            jsonRootObject = new JSONObject(db);
-
-            //Get the instance of JSONArray that contains JSONObjects
-            JSONArray arrayDebug = jsonRootObject.optJSONArray("lista_piatti");
-
-            //Iterate the jsonArray and print the info of JSONObjects
-            for(int i=0; i < arrayDebug.length(); i++){
-                JSONObject jsonObject = arrayDebug.getJSONObject(i);
-
-                String nome = jsonObject.optString("nome").toString();
-                int prezzo = Integer.parseInt(jsonObject.optString("prezzo").toString());
-                String type = jsonObject.optString("tipo").toString();
-                boolean av = jsonObject.optBoolean("available");
-                //creo le differenti liste
-                switch(type){
-                    case "Primo":
-                        obj = new Oggetto_piatto(nome, prezzo, Oggetto_piatto.type_enum.PRIMI);
-                        obj.setId(Integer.parseInt(jsonObject.optString("id").toString()));
-                        obj.setAvailability(av);
-                        obj.setTmpAv(av);
-                        lista_menu.addPrimo(obj);
-                        System.out.println("Aggiunto primo");
-                        break;
-                    case "Secondo":
-                        obj = new Oggetto_piatto(nome, prezzo, Oggetto_piatto.type_enum.SECONDI);
-                        obj.setId(Integer.parseInt(jsonObject.optString("id").toString()));
-                        obj.setAvailability(av);
-                        obj.setTmpAv(av);
-                        lista_menu.addSecondo(obj);
-                        System.out.println("Aggiunto secondo");
-                        break;
-                    case "Dessert":
-                        obj = new Oggetto_piatto(nome, prezzo, Oggetto_piatto.type_enum.DESSERT);
-                        obj.setId(Integer.parseInt(jsonObject.optString("id").toString()));
-                        obj.setAvailability(av);
-                        obj.setTmpAv(av);
-                        lista_menu.addDessert(obj);
-                        System.out.println("Aggiunto dessert");
-                        break;
-                    case "Altro":
-                        obj = new Oggetto_piatto(nome, prezzo, Oggetto_piatto.type_enum.ALTRO);
-                        obj.setId(Integer.parseInt(jsonObject.optString("id").toString()));
-                        obj.setAvailability(av);
-                        obj.setTmpAv(av);
-                        lista_menu.addAltro(obj);
-                        System.out.println("Aggiunto altro");
-                        break;
-                    default:
-                        System.out.println("Typology unknown");
-                        break;
-                }
-
-                //lista_menu.setJson(jsonRootObject);
-
-            }
-            return true;
-        } catch (JSONException e)
-        {
-            System.out.println("Eccezione: " + e.getMessage());
-            return false;
-        }
-    }
-    private boolean readOfferData(){
-        try{
-
-            lista_offerte = new ArrayList<>();
-
-            GestioneDB DB = new GestioneDB();
-            String db = DB.leggiDB(this, "db_offerte");
-
-            if (db != null){
-                System.out.println("Leggo le offerte");
-                jsonRootObject = new JSONObject(db);
-
-                //Get the instance of JSONArray that contains JSONObjects
-                JSONArray arrayDebug = jsonRootObject.optJSONArray("lista_offerte");
-
-                //Iterate the jsonArray and print the info of JSONObjects
-                for(int i=0; i < arrayDebug.length(); i++) {
-                    JSONObject jsonObject = arrayDebug.getJSONObject(i);
-
-                    String nome = jsonObject.optString("nome").toString();
-                    int prezzo = Integer.parseInt(jsonObject.optString("prezzo").toString());
-                    String note = jsonObject.optString("note".toString());
-                    boolean av = jsonObject.optBoolean("available");
-
-                    boolean[] days= new boolean[7];
-                    days[0] = jsonObject.optBoolean("lun");
-                    days[1] = jsonObject.optBoolean("mar");
-                    days[2] = jsonObject.optBoolean("mer");
-                    days[3] = jsonObject.optBoolean("gio");
-                    days[4] = jsonObject.optBoolean("ven");
-                    days[5] = jsonObject.optBoolean("sab");
-                    days[6] = jsonObject.optBoolean("dom");
-
-
-                    //creo la lista delle offerte
-
-                    //<DA CONTROLLARE IN SEGUITO ALL'AGGIUNTA DEI GIORNI DELLE OFFERTE
-                    Oggetto_offerta obj = new Oggetto_offerta(nome, prezzo, days);
-                    obj.setId(Integer.parseInt(jsonObject.optString("id").toString()));
-                    obj.setAvailability(av);
-                    obj.setTmpAv(av);
-                    obj.setNote(note);
-                    lista_offerte.add(obj);
-                    System.out.println("Offerta aggiunta");
-                }
-                if(lista_offerte.isEmpty())
-                    System.out.println("La lista è vuota");
-                return true;
-            }
-            else {
-                return false;
-            }
-
-        }catch (JSONException e){
-            System.out.println("Eccezione: " + e.getMessage());
-            return false;
-        } catch (Exception e){
-            System.out.println("Eccezione: " + e.getMessage());
-            return false;
-        }
-    }*/
 
     private void checkStoragePermission(){
         int storage = ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);

@@ -73,6 +73,7 @@ public class FirebaseSaveDishManager implements DatabaseReference.CompletionList
 
                             dish.setThumbDownloadLink(downloadLinkThumb);
                             dish.setLargeDownloadLink(downloadLinkLarge);
+                            dish.setIsTodayAvailable(true);
 
                             FirebaseDatabase database = FirebaseDatabase.getInstance();
                             DatabaseReference myRef = database.getReference("menu/" + restaurantId + "/" + dish.getDishId());
@@ -88,6 +89,8 @@ public class FirebaseSaveDishManager implements DatabaseReference.CompletionList
                 dish.setLargeDownloadLink(null);
                 dish.setThumbDownloadLink(null);
             }
+
+            dish.setIsTodayAvailable(true);
 
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             DatabaseReference myRef = database.getReference("menu/" + restaurantId + "/" + dish.getDishId());

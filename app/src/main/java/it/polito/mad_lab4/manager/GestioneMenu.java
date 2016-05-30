@@ -246,6 +246,7 @@ public class  GestioneMenu extends EditableBaseActivity {
         {
             Intent intent = new Intent(getApplicationContext(), MainActivityManager.class);
             startActivity(intent);
+            finish();
             return true;
         }
         return super.onKeyDown(keyCode, event);

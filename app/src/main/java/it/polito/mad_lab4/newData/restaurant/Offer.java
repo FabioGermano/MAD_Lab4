@@ -22,11 +22,11 @@ public class Offer {
     public Offer(){
     }
 
-    public Boolean getTodayAvailable() {
+    public Boolean getIsTodayAvailable() {
         return isTodayAvailable;
     }
 
-    public void setTodayAvailable(Boolean todayAvailable) {
+    public void setIsTodayAvailable(Boolean todayAvailable) {
         isTodayAvailable = todayAvailable;
     }
 

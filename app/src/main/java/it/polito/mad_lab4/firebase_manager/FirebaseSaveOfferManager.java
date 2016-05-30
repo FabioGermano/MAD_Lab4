@@ -68,6 +68,7 @@ public class FirebaseSaveOfferManager implements DatabaseReference.CompletionLis
 
                             offer.setThumbDownloadLink(downloadLinkThumb);
                             offer.setLargeDownloadLink(downloadLinkLarge);
+                            offer.setIsTodayAvailable(true);
 
                             FirebaseDatabase database = FirebaseDatabase.getInstance();
                             DatabaseReference myRef = database.getReference("offers/" + restaurantId + "/" + offer.getOfferId());
@@ -78,6 +79,8 @@ public class FirebaseSaveOfferManager implements DatabaseReference.CompletionLis
             });
         }
         else {
+
+            offer.setIsTodayAvailable(true);
 
             if(!isImageSetted) {
                 offer.setLargeDownloadLink(null);

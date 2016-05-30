@@ -142,6 +142,8 @@ public class ModifyMenuDish extends EditableBaseActivity {
 
                         Intent intent = new Intent(getApplicationContext(), GestioneMenu.class);
                         startActivity(intent);
+
+                        finish();
                     }
                 });
 
@@ -254,47 +256,6 @@ public class ModifyMenuDish extends EditableBaseActivity {
         dialog = builder.create();
         dialog.show();
     }
-    /*private void creaSpinner(){
-        //gestisco il menu a tendina per la tipologia del piatto
-        spinner = (Spinner)findViewById(R.id.list_dishType_modifyMenu);
-        adapter = new ArrayAdapter<>(
-                this,
-                android.R.layout.simple_spinner_item,
-                new String[]{getResources().getString(R.string.first), getResources().getString(R.string.second), getResources().getString(R.string.dessert), getResources().getString(R.string.other)}
-        );
-        if(spinner != null) {
-            spinner.setAdapter(adapter);
-
-            //listener per salvare la selezione dell'utente
-            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                public void onItemSelected(AdapterView<?> adapter, View view, int pos, long id) {
-                    if(dish != null) {
-                        String selezione = (String) adapter.getItemAtPosition(pos);
-
-                        if(selezione.compareTo(getResources().getString(R.string.first)) == 0){
-                            //dish.setDishType(Oggetto_piatto.type_enum.PRIMI);
-                            modifiedType = DishType.MainCourses;
-                        }
-                        else  if(selezione.compareTo(getResources().getString(R.string.second)) == 0){
-                            //dish.setDishType(Oggetto_piatto.type_enum.SECONDI);
-                            modifiedType = DishType.SecondCourses;
-                        }
-                        else  if(selezione.compareTo(getResources().getString(R.string.dessert)) == 0){
-                            //dish.setDishType(Oggetto_piatto.type_enum.DESSERT);
-                            modifiedType = DishType.Dessert;
-                        }
-                        else  if(selezione.compareTo(getResources().getString(R.string.other)) == 0){
-                            //dish.setDishType(Oggetto_piatto.type_enum.ALTRO);
-                            modifiedType = DishType.Other;
-                        }
-                    }
-                }
-
-                public void onNothingSelected(AdapterView<?> arg0) {
-                }
-            });
-        }
-    }*/
 
     private boolean saveInfo(){
 
@@ -350,8 +311,6 @@ public class ModifyMenuDish extends EditableBaseActivity {
             dish.setDishName(nomeD);
             dish.setPrice(priceD);
             dish.setType(DishTypeConverter.fromEnumToString(modifiedType));
-            //dish.setThumbPath(imageThumb);
-            //dish.setLargePath(imageLarge);
 
             saveDish(restaurantId, newDish);
 
@@ -364,6 +323,7 @@ public class ModifyMenuDish extends EditableBaseActivity {
 
             Intent intent = new Intent(getApplicationContext(), GestioneMenu.class);
             startActivity(intent);
+            finish();
             return false;
         }
 
