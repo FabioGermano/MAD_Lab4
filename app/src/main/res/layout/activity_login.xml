@@ -378,7 +378,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/card_login"
-        android:text="(Username rappresenta la propria mail di registrazione)\nLog in with one of the following:\nUsername: fgermano; Password: pass\nUsername: ggaleano; Password: pass1"/>
+        android:text="(Username rappresenta la propria mail di registrazione)\nUsername: group9madlab4@gmail.com\nPassword: madlab"/>
 
 
 
