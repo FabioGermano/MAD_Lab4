@@ -100,10 +100,10 @@ public class ContainerUserPhotoFragment extends Fragment  {
 
     private void setPhotosNumber(Restaurant restaurant){
         if(this.restaurant.getUserPhotos().size() == 0) {
-            this.availablePhotosTV.setText("No photos until now");
+            this.availablePhotosTV.setText(R.string.no_photos);
         }
         else{
-            this.availablePhotosTV.setText(this.restaurant.getUserPhotos().size()+" available photos");
+            this.availablePhotosTV.setText(this.restaurant.getUserPhotos().size()+" "+getResources().getString(R.string.available_photos));
         }
     }
 

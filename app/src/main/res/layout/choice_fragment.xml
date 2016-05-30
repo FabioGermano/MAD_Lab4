@@ -145,7 +145,7 @@
                 android:textColor="@color/white"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:background="@drawable/mybutton"
-                android:text="Order now"/>
+                android:text="@string/order_now"/>
 
             <Button
                 android:layout_width="wrap_content"
@@ -155,7 +155,7 @@
                 android:textColor="@color/white"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:background="@drawable/mybutton"
-                android:text="Check Out"/>
+                android:text="@string/check_out"/>
         </LinearLayout>
 
     </LinearLayout>

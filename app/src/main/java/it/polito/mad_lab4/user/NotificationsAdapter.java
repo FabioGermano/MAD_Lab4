@@ -57,17 +57,17 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
             String s = new String();
             if(notification.isNewOffer()){
                 icon.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_local_offer_holo_light));
-                s = "The restaurant '"+notification.getRestaurantName()+"' has added a new offer today";
+                s = context.getResources().getString(R.string.the_restaurant)+notification.getRestaurantName()+context.getResources().getString(R.string.new_offer_added);
 
             }
             else {
                 if(notification.isAccepted()){
                     icon.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_event_available_holo_light));
-                    s= "The restaurant '"+notification.getRestaurantName()+"' accepted your reservation";
+                    s= context.getResources().getString(R.string.the_restaurant)+notification.getRestaurantName()+context.getResources().getString(R.string.accepted_your_reserv);
                 }
                 else{
                     icon.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_event_busy_holo_light));
-                    s= "The restaurant '"+notification.getRestaurantName()+"' rejected your reservation";
+                    s= context.getResources().getString(R.string.the_restaurant)+notification.getRestaurantName()+context.getResources().getString(R.string.rejected_your_reserv);
                 }
             }
             if (notification.getMessage()!=null && !notification.getMessage().equals("")){
@@ -103,6 +103,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
 
             Notification n = data.get(position);
             Intent i= new Intent(context, RestaurantActivity.class);
+            //TODO hard code
             i.putExtra("restaurantId", 2);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(i);

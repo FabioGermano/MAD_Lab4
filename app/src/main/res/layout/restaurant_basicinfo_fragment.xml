@@ -68,8 +68,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/show_more"
             android:background="@android:color/transparent"
-            android:text="SHOW OTHER..."
-            />
+            android:text="@string/show_other"            />
 
         <TextView
             android:layout_width="match_parent"

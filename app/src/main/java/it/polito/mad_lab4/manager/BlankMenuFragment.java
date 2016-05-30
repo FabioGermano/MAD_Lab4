@@ -50,14 +50,19 @@ public class BlankMenuFragment extends Fragment {
                              Bundle savedInstanceState) {
         try {
             // Inflate the layout for this fragment
-            View rootView = inflater.inflate(R.layout.fragment_blank_menu, container, false);
-
-
+            View rootView;
+            if(!mode)
+                rootView= inflater.inflate(R.layout.fragment_blank_menu, container, false);
+            else
+                rootView = inflater.inflate(R.layout.fragment_availability, container, false);
             EmptyRecyclerView rView = (EmptyRecyclerView) rootView.findViewById(R.id.recyclerView_menu);
             myAdapter = new RecyclerAdapter_menu(context, m_list, type, mode);
+            View emptyView;
+            emptyView = rootView.findViewById(R.id.empty_view);
+            rView.setEmptyView(emptyView);
+
             if (rView != null) {
-                View emptyView = rootView.findViewById(R.id.empty_view);
-                rView.setEmptyView(emptyView);
+
                 rView.setAdapter(myAdapter);
 
                 LinearLayoutManager myLLM_vertical = new LinearLayoutManager(getActivity());

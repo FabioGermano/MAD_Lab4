@@ -185,7 +185,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="Time table:"
+                        android:text="@string/time_table"
                         android:textStyle="bold"
                         android:layout_marginBottom="8dp"/>
 
@@ -199,7 +199,7 @@
                             <TextView
                                 android:layout_column="1"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:text="Mon:"
+                                android:text="@string/mon"
                                 android:layout_marginBottom="3dp" />
                             <TextView
                                 android:layout_width="wrap_content"
@@ -214,7 +214,7 @@
                             <TextView
                                 android:layout_column="1"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:text="Tue:"
+                                android:text="@string/tue"
                                 android:layout_marginBottom="3dp"/>
                             <TextView
                                 android:layout_width="wrap_content"
@@ -229,7 +229,7 @@
                             <TextView
                                 android:layout_column="1"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:text="Wed:"
+                                android:text="@string/wed"
                                 android:layout_marginBottom="3dp" />
                             <TextView
                                 android:layout_width="wrap_content"
@@ -244,7 +244,7 @@
                             <TextView
                                 android:layout_column="1"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:text="Thu:"
+                                android:text="@string/thu"
                                 android:layout_marginBottom="3dp" />
                             <TextView
                                 android:layout_width="wrap_content"
@@ -258,7 +258,7 @@
                         <TextView
                             android:layout_column="1"
                             android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:text="Fri:"
+                            android:text="@string/fri"
                             android:layout_marginBottom="3dp" />
                         <TextView
                             android:layout_width="wrap_content"
@@ -272,7 +272,7 @@
                             <TextView
                                 android:layout_column="1"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:text="Sat:"
+                                android:text="@string/sat"
                                 android:layout_marginBottom="3dp" />
                             <TextView
                                 android:layout_width="wrap_content"
@@ -287,7 +287,7 @@
                             <TextView
                                 android:layout_column="1"
                                 android:textAppearance="?android:attr/textAppearanceMedium"
-                                android:text="Sun:"
+                                android:text="@string/sun"
                                 android:layout_marginBottom="3dp"/>
                             <TextView
                                 android:layout_width="wrap_content"

@@ -19,7 +19,7 @@
             android:textSize="18sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Menu"/>
+            android:text="@string/Menu"/>
     </LinearLayout>
     <android.support.design.widget.TabLayout
         android:id="@+id/menuPrevTabs"
@@ -48,6 +48,6 @@
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
         android:clickable="true"
-        android:text="SHOW ALL MENU"
+        android:text="@string/show_all"
         />
 </LinearLayout>

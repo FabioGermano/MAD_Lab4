@@ -365,7 +365,7 @@ public class  GestioneMenu extends EditableBaseActivity {
                     startActivity(getIntent());
 
                 } else {
-                    printAlert("Negando i permessi l'app non funzionerà correttamente");
+                    printAlert(getString(R.string.permission_denied_message));
 
                 }
                 return;

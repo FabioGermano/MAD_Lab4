@@ -97,7 +97,7 @@ public class MainActivity extends BaseActivity {
         caricaDati();
 
         ricerca = (SearchView) findViewById(R.id.searchView_main);
-        ricerca.setQueryHint("Search by Restaurant");
+        ricerca.setQueryHint(getString(R.string.search_byrestaurant));
         ricerca.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -268,7 +268,7 @@ public class MainActivity extends BaseActivity {
             if (!ricerca_luogo) {
                 ricercaLuogoBtn.setImageResource(R.drawable.ic_ricerca_luogo_selezione);
                 ricerca_luogo = true;
-                ricerca.setQueryHint("Search by Place");
+                ricerca.setQueryHint(getString(R.string.search_byplace));
                 /*if (ricerca_piatto) {
                     ricerca_piatto = false;
                     ricercaPiattoBtn.setImageResource(R.drawable.ic_ricerca_luogo);
@@ -289,7 +289,7 @@ public class MainActivity extends BaseActivity {
             if (!ricerca_ristorante) {
                 ricercaRistoranteBtn.setImageResource(R.drawable.ic_ricerca_ristorante_selezione);
                 ricerca_ristorante = true;
-                ricerca.setQueryHint("Search by Restaurant");
+                ricerca.setQueryHint(getString(R.string.search_byrestaurant));
                 /*if (ricerca_piatto) {
                     ricerca_piatto = false;
                     ricercaPiattoBtn.setImageResource(R.drawable.ic_ricerca_luogo);

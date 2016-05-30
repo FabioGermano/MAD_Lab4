@@ -130,7 +130,7 @@ public class ReviewsActivity extends BaseActivity {
         AlertDialog dialog;
 
         // Strings to Show In Dialog with Radio Buttons
-        final CharSequence[] items = {"Ordina dal più recente", "Ordina per valutazione"};
+        final CharSequence[] items = {getString(R.string.orderbydate), getString(R.string.orderbyranking)};
 
         // Creating and Building the Dialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

@@ -62,7 +62,7 @@
             android:layout_marginTop="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Short description"/>
+            android:text="@string/short_description"/>
         <EditText
             android:id="@+id/descriptionET"
             android:layout_width="match_parent"

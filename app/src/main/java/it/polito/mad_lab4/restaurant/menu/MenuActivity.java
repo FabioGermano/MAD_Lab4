@@ -70,7 +70,17 @@ public class MenuActivity extends BaseActivity {
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return DishTypeConverter.fromEnumToString(DishTypeConverter.fromIndexToEnum(position));
+            switch (position) {
+                case 0:
+                    return getResources().getString(R.string.first);
+                case 1:
+                    return getResources().getString(R.string.second);
+                case 2:
+                    return getResources().getString(R.string.dessert);
+                case 3:
+                    return getResources().getString(R.string.other);
+            }
+            return null;
         }
     }
 }

@@ -1,5 +1,95 @@
 <resources>
-    <string name="app_name">FERG Food</string>
+    <string name="app_name" translatable="false">FERG Food</string>
+    <!-- Activity names -->
+
+    <string name="edit_user_profile_activity_title">Edit profile</string>
+    <string name="title_activity_show_favourites">Favourites</string>
+    <string name="title_activity_notifications">Notifications</string>
+    <string name="title_activity_reservations">Reservations</string>
+    <string name="title_activity_edit_availability">Today availability</string>
+    <string name="title_activity_edit_restaurant_profile">Edit profile</string>
+    <string name="title_activity_edit_menu">Edit menu</string>
+    <string name="title_activity_edit_dish">Edit dish</string>
+    <string name="title_activity_new_dish">New dish</string>
+    <string name="title_activity_edit_offer">Edit offer</string>
+    <string name="title_activity_edit_offers">Edit offers</string>
+    <string name="title_activity_new_offer">New offer</string>
+
+    <!-- Edit menu dish activity strings-->
+    <string name="dishPhoto">Photo</string>
+    <string name="dishName">Name of the dish</string>
+    <string name="dishPrice">Price</string>
+    <string name="dishType">Dish type</string>
+
+    <!--- Edit offer activity strings-->
+    <string name="offer_image">Offer image</string>
+    <string name="offerName">Name of the offer</string>
+    <string name="notesOffer">Notes</string>
+    <string name="money_value" translatable="false">euro</string>
+    <string name="offerPrice">Price</string>
+    <string name="weeklyreapeted">Apply on</string>
+
+    <string name="day_monday">Mo</string>
+    <string name="day_tuedsday">Tu</string>
+    <string name="day_wednesday">We</string>
+    <string name="day_thursday">Th</string>
+    <string name="day_friday">Fr</string>
+    <string name="day_saturday">Sa</string>
+    <string name="day_sunday">Su</string>
+
+    <!-- Edit Restaurant profile activity -->
+    <string name="email" translatable="false">Email</string>
+    <string name="phone_number">Phone number</string>
+    <string name="phone_number_with_col">&#8226; Phone number:</string>
+    <string name="address">Address</string>
+    <string name="restaurant_name">Restaurant name</string>
+    <string name="covers">Covers</string>
+    <string name="logo" translatable="false">Logo</string>
+    <string name="done">Done</string>
+    <string name="closed">Closed</string>
+    <string name="opening_time">Opening time</string>
+    <string name="orarioApertura">Start Time</string>
+    <string name="orarioChiusura">End Time</string>
+    <string name="available">Available</string>
+    <string name="not_available">Not available</string>
+
+
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="listaVuota">Empty List</string>
+    <string name="msgListaVuotaPiatti">Add here new dishes</string>
+    <string name="msgListaVuotaOfferte">Add here new offers</string>
+    <string name="attenzione">Attention</string>
+
+    <!-- toolbar strings -->
+    <string name="notifications">Notifications</string>
+    <string name="save">Save</string>
+    <string name="calendar">Calendar</string>
+
+    <!-- reservations types -->
+    <string name="table">Table</string>
+    <string name="table_with_orders">Table with orders</string>
+    <string name="takeaway" translatable="false">Take-away</string>
+
+    <string name="seats">&#8226; Reserved seats:</string>
+    <string name="dishes">Dishes details</string>
+    <string name="dishes_details">&#8226; Dishes details:</string>
+    <string name="offers_details">&#8226; Offers details:</string>
+    <string name="reject">Reject</string>
+    <string name="accept">Accept</string>
+    <string name="accepted">Accepted</string>
+    <string name="rejected">Rejected</string>
+    <string name="pending">Pending</string>
+    <string name="deleted">Deleted</string>
+    <string name="verified">VERIFIED</string>
+    <string name="reservationExpired">This reservation is expired</string>
+    <string name="reservationVerified">This reservation is verified</string>
+    <string name="rejectReasonText">Please indicate a reason:</string>
+    <string name="yournotes">&#8226; Your notes:</string>
+
+    <!--- user Profile -->
+    <string name="student">Student</string>
+    <string name="professor">Professor</string>
+    <string name="adm_employee">Administrative employee</string>
 
     <string name="pick_date">Pick a date!</string>
     <string name="pick_time">Pick a time!</string>
@@ -33,26 +123,24 @@
     <!--<string name="ricerca">research ...</string>-->
     <string name="titolo_main_activity">Restaurant finder</string>
     <string name="titolo_ricerca">Find your restaurant:</string>
-    <string name="info_ricerca">(make searches by name of restaurant, dish or by place)</string>
+    <string name="info_ricerca">(make searches by name of restaurant, dish or by address)</string>
     <string name="titolo_offerte_vicine">Some offers near you ...</string>
 
     <!-- navigation drawer -->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="eseguireLogin">Please, log in</string>
-    <string name="modifica_profilo">Modifica Profilo</string>
-    <string name="prenotazioni">Prenotazioni</string>
-    <string name="contattaci">Contattaci</string>
+    <string name="prenotazioni">Reservations</string>
+    <string name="contattaci">Contact us</string>
     <string name="segnala_problema">Segnala Problema</string>
-    <string name="esegui_login">Esegui Login</string>
     <string name="favoriti">Favourites</string>
     <string name="title_activity_scrolling">ScrollingActivity</string>
-    <string name="logout">Logout</string>
+    <string name="logout" translatable="false">Logout</string>
 
     <!--  menu  strings -->
     <string name="first">Main courses</string>
     <string name="second">Second courses</string>
-    <string name="dessert">Dessert</string>
+    <string name="dessert" translatable="false">Dessert</string>
     <string name="other">Other</string>
     <string name="offers">Offers</string>
     <string name="otherDishesAvailable">(other dishes are available)</string>
@@ -61,20 +149,20 @@
     <string name="titolo_elaborazioneRicerche">Search Results</string>
     <string name="risultati_ricerca">Search results:</string>
     <string name="search">Search</string>
-    <string name="titoloLocaleDefault">Nome Locale Non Disponibile</string>
+    <string name="titoloLocaleDefault">Name unavailable</string>
     <string name="tipoLocaleFinder">Type of local:</string>
     <string name="costoFinder">Cost:</string>
     <string name="valutazioneFinder">Rating:</string>
     <string name="ricercaAvanzata">Advanced Search:</string>
-    <string name="takeAway">Take Away</string>
+    <string name="takeAway" translatable="false">Take Away</string>
     <string name="restaurant">Restaurant</string>
     <string name="takeAway_Restaurant">Take Away &amp; Restaurant</string>
     <string name="noServices">No Services</string>
-    <string name="reset">Reset</string>
+    <string name="reset" translatable="false">Reset</string>
 
     <!-- Errori e messaggi di default -->
     <string name="dataSaved">Data has been saved</string>
-    <string name="error">Warning</string>
+    <string name="error" translatable="false">Warning</string>
     <string name="exceptionError">Sorry, an error occurred</string>
     <string name="error_complete">Please, complete correctly all fields</string>
     <string name="gallery_activity_title">Gallery</string>
@@ -101,6 +189,13 @@
     <string name="offer_name">Offer name:</string>
     <string name="details">Details:</string>
     <string name="available_on">Available on:</string>
+    <string name="sunday_abb">Su</string>
+    <string name="saturday_abb">Sa</string>
+    <string name="friday_abb">Fr</string>
+    <string name="thursday_abb">Th</string>
+    <string name="wednesday_abb">We</string>
+    <string name="tuesday_abb">Tu</string>
+    <string name="monday_abb">Mo</string>
     <string name="no_item_in_order">Please, select a dish</string>
     <string name="today_not_available">The offer is not available today</string>
     <string name="open_restaurant">Now the restaurant is open!</string>
@@ -108,13 +203,13 @@
 
     <!-- Basic info strings -->
     <string name="yes">Yes</string>
-    <string name="no">No</string>
+    <string name="no" translatable="false">No</string>
     <string name="features">Features:</string>
-    <string name="wifi">WiFi</string>
+    <string name="wifi" translatable="false">WiFi</string>
     <string name="creditcard">Creditcard payment</string>
     <string name="reservation">Reservations</string>
     <string name="parking">Parking</string>
-    <string name="bancomat">Bancomat</string>
+    <string name="bancomat" translatable="false">Bancomat</string>
     <string name="seatsoutside">Seats outside</string>
     <string name="music">Music</string>
     <string name="reviews_activity_title">Reviews</string>
@@ -131,13 +226,13 @@
     <string name="review">Review:</string>
     <string name="reviewsStrPrev">% reviews</string>
     <string name="click_stars">Touch the stars to rate this restaurant</string>
-    <string name="ok">Ok</string>
+    <string name="ok" translatable="false">Ok</string>
     <string name="cancel">Cancel</string>
     <string name="would_you_rate_dishes">Would you like to rate a dish?</string>
-    <string name="rate_dishes_message">If you say YES you can assign a rate to any dish or offer of this restaurant, otherwise only your review will be published</string>
+    <string name="rate_dishes_message">Choose YES if you want to rate the offers and dishes, NO to send only your review </string>
     <string name="review_published">Your review has been published, thank you!</string>
     <string name="insert_review">Fill in your review, please</string>
-    <string name="login_title">Login</string>
+    <string name="login_title" translatable="false">Login</string>
     <string name="logout_message">You are now logged out</string>
     <string name="add_review">Add review</string>
     <string name="make_reservation">Make a reservation</string>
@@ -146,119 +241,66 @@
     <string name="your_order_details">Your order details</string>
     <string name="reserved_seats">Reserved seats:</string>
     <string name="rate_it">Rate it</string>
-    <string name="reservation_added">Reserevation sent! You will receive a notification about its state when it will be accepted</string>
+    <string name="reservation_added">Reserevation sent! You will receive a notification about its state as soon as possible</string>
     <string name="remove_photo">Remove</string>
     <string name="save_manager_toolbar">Save</string>
     <string name="calendar_manager_toolbar">Calendar</string>
     <string name="notifications_manager_toolbar">Notifications</string>
-    <string name="username">Username</string>
-    <string name="bio">Bio</string>
+    <string name="username" translatable="false">Username</string>
+    <string name="bio" translatable="false">Bio</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="pick_your_university">Pick your university site</string>
     <string name="pick_type">Pick your category</string>
     <string name="pick_dish_type">Pick the dish type</string>
     <string name="bio_hint">Write something about yourself, your interests and hobbies</string>
-    <string name="edit_user_profile_activity_title">Edit profile</string>
-    <string name="title_activity_show_favourites">Favourites</string>
-    <string name="large_text">
-        "Material is the metaphor.\n\n"
 
-        "A material metaphor is the unifying theory of a rationalized space and a system of motion."
-        "The material is grounded in tactile reality, inspired by the study of paper and ink, yet "
-        "technologically advanced and open to imagination and magic.\n"
-        "Surfaces and edges of the material provide visual cues that are grounded in reality. The "
-        "use of familiar tactile attributes helps users quickly understand affordances. Yet the "
-        "flexibility of the material creates new affordances that supercede those in the physical "
-        "world, without breaking the rules of physics.\n"
-        "The fundamentals of light, surface, and movement are key to conveying how objects move, "
-        "interact, and exist in space and in relation to each other. Realistic lighting shows "
-        "seams, divides space, and indicates moving parts.\n\n"
-
-        "Bold, graphic, intentional.\n\n"
-
-        "The foundational elements of print based design typography, grids, space, scale, color, "
-        "and use of imagery guide visual treatments. These elements do far more than please the "
-        "eye. They create hierarchy, meaning, and focus. Deliberate color choices, edge to edge "
-        "imagery, large scale typography, and intentional white space create a bold and graphic "
-        "interface that immerse the user in the experience.\n"
-        "An emphasis on user actions makes core functionality immediately apparent and provides "
-        "waypoints for the user.\n\n"
-
-        "Motion provides meaning.\n\n"
-
-        "Motion respects and reinforces the user as the prime mover. Primary user actions are "
-        "inflection points that initiate motion, transforming the whole design.\n"
-        "All action takes place in a single environment. Objects are presented to the user without "
-        "breaking the continuity of experience even as they transform and reorganize.\n"
-        "Motion is meaningful and appropriate, serving to focus attention and maintain continuity. "
-        "Feedback is subtle yet clear. Transitions are efﬁcient yet coherent.\n\n"
-
-        "3D world.\n\n"
-
-        "The material environment is a 3D space, which means all objects have x, y, and z "
-        "dimensions. The z-axis is perpendicularly aligned to the plane of the display, with the "
-        "positive z-axis extending towards the viewer. Every sheet of material occupies a single "
-        "position along the z-axis and has a standard 1dp thickness.\n"
-        "On the web, the z-axis is used for layering and not for perspective. The 3D world is "
-        "emulated by manipulating the y-axis.\n\n"
-
-        "Light and shadow.\n\n"
-
-        "Within the material environment, virtual lights illuminate the scene. Key lights create "
-        "directional shadows, while ambient light creates soft shadows from all angles.\n"
-        "Shadows in the material environment are cast by these two light sources. In Android "
-        "development, shadows occur when light sources are blocked by sheets of material at "
-        "various positions along the z-axis. On the web, shadows are depicted by manipulating the "
-        "y-axis only. The following example shows the card with a height of 6dp.\n\n"
-
-        "Resting elevation.\n\n"
-
-        "All material objects, regardless of size, have a resting elevation, or default elevation "
-        "that does not change. If an object changes elevation, it should return to its resting "
-        "elevation as soon as possible.\n\n"
-
-        "Component elevations.\n\n"
-
-        "The resting elevation for a component type is consistent across apps (e.g., FAB elevation "
-        "does not vary from 6dp in one app to 16dp in another app).\n"
-        "Components may have different resting elevations across platforms, depending on the depth "
-        "of the environment (e.g., TV has a greater depth than mobile or desktop).\n\n"
-
-        "Responsive elevation and dynamic elevation offsets.\n\n"
-
-        "Some component types have responsive elevation, meaning they change elevation in response "
-        "to user input (e.g., normal, focused, and pressed) or system events. These elevation "
-        "changes are consistently implemented using dynamic elevation offsets.\n"
-        "Dynamic elevation offsets are the goal elevation that a component moves towards, relative "
-        "to the component’s resting state. They ensure that elevation changes are consistent "
-        "across actions and component types. For example, all components that lift on press have "
-        "the same elevation change relative to their resting elevation.\n"
-        "Once the input event is completed or cancelled, the component will return to its resting "
-        "elevation.\n\n"
-
-        "Avoiding elevation interference.\n\n"
-
-        "Components with responsive elevations may encounter other components as they move between "
-        "their resting elevations and dynamic elevation offsets. Because material cannot pass "
-        "through other material, components avoid interfering with one another any number of ways, "
-        "whether on a per component basis or using the entire app layout.\n"
-        "On a component level, components can move or be removed before they cause interference. "
-        "For example, a floating action button (FAB) can disappear or move off screen before a "
-        "user picks up a card, or it can move if a snackbar appears.\n"
-        "On the layout level, design your app layout to minimize opportunities for interference. "
-        "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
-        "when a user tries to pick up one of cards.\n\n"
-    </string>
-    <string name="title_activity_notifications">Notifications</string>
-    <string name="sunday_abb">Su</string>
-    <string name="saturday_abb">Sa</string>
-    <string name="friday_abb">Fr</string>
-    <string name="thursday_abb">Th</string>
-    <string name="wednesday_abb">We</string>
-    <string name="tuesday_abb">Tu</string>
-    <string name="monday_abb">Mo</string>
     <string name="restaurant_address">Restaurant address</string>
     <string name="add_dish">This section is empty now. Click on the plus button to add a new dish.</string>
     <string name="add_offer">This section is empty now. Click on the plus button to add a new offer.</string>
+
+    <!-- Login e registrazione -->
+    <string name="username_login" translatable="false">Username:</string>
+    <string name="password" translatable="false">Password:</string>
+    <string name="password_ripeat">Repeat password:</string>
+    <string name="newAccount"><u>Create a new account</u></string>
+    <string name="createAccount">Create new account</string>
+    <string name="nome_registrazione">Name:</string>
+    <string name="email_registrazione" translatable="false">Email:</string>
+    <string name="università_registrazione">University:</string>
+    <string name="telefono_registrazione"></string>
+    <string name="client_registrazione">Client</string>
+    <string name="manager_registrazione" translatable="false">Manager</string>
+    <string name="user_type_registrazione">What type of user do you want create?</string>
+    <string name="service_type_manager_registrazione">Service:</string>
+    <string name="ritorna_al_login">Return to login</string>
+    <string name="esegui_login">Login</string>
+    <string name="modifica_profilo">Edit profile</string>
+    <string name="show_all">SHOW ALL</string>
+    <string name="show_other">SHOW OTHER...</string>
+    <string name="mon">Mon:</string>
+    <string name="tue">Tue:</string>
+    <string name="wed">Wed:</string>
+    <string name="thu">Thu:</string>
+    <string name="fri">Fri:</string>
+    <string name="sat">Sat:</string>
+    <string name="sun">Sun:</string>
+    <string name="time_table">Time table:</string>
+    <string name="Menu">Menu</string>
+    <string name="show_all_menu">SHOW ALL MENU</string>
+    <string name="available_photos">available photos</string>
+    <string name="no_photos">No photos until now</string>
+    <string name="the_restaurant">The restaurant \'</string>
+    <string name="new_offer_added">\' has added a new offer today</string>
+    <string name="accepted_your_reserv">\' accepted your reservation</string>
+    <string name="rejected_your_reserv">\' rejected your reservation</string>
+    <string name="today_available">Today available!</string>
+    <string name="orderbydate">Order by date</string>
+    <string name="orderbyranking">Order by ranking</string>
+    <string name="order_now">Order now</string>
+    <string name="check_out" translatable="false">Check Out</string>
+    <string name="short_description">Short description</string>
+    <string name="search_byrestaurant">Search by Restaurant</string>
+    <string name="search_byplace">Search by Place</string>
+    <string name="permission_denied_message">The app won\'t work properly if you deny the permission</string>
 </resources>
