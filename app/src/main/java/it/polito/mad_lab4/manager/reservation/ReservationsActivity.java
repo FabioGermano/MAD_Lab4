@@ -100,11 +100,6 @@ public class ReservationsActivity extends it.polito.mad_lab4.BaseActivity {
         tabLayout.setupWithViewPager(mViewPager);
     }
 
-    @Override
-    protected User controlloLogin() {
-        return null;
-    }
-
     void getReservations(){
         GestioneDB db = new GestioneDB();
         this.res_entity = db.getAllReservations(getApplicationContext());

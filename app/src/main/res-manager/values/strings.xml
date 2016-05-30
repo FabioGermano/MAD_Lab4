@@ -87,4 +87,20 @@
     <string name="professor">Professor</string>
     <string name="adm_employee">Administrative employee</string>
 
+    <!-- Login e registrazione -->
+    <string name="username_login">Username:</string>
+    <string name="password">Password:</string>
+    <string name="password_ripeat">Ripeat password:</string>
+    <string name="newAccount"><u>Create a new account</u></string>
+    <string name="createAccount">Create new account</string>
+    <string name="nome_registrazione">Name:</string>
+    <string name="email_registrazione">Email:</string>
+    <string name="università_registrazione">University:</string>
+    <string name="telefono_registrazione"></string>
+    <string name="client_registrazione">Client</string>
+    <string name="manager_registrazione">Manager</string>
+    <string name="user_type_registrazione">Wath type of user do you want create?</string>
+    <string name="service_type_manager_registrazione">Service:</string>
+    <string name="ritorna_al_login">Return to login</string>
+
 </resources>

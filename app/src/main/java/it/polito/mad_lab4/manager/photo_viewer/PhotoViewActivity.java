@@ -35,11 +35,6 @@ public class PhotoViewActivity extends EditableBaseActivity {
     }
 
     @Override
-    protected User controlloLogin() {
-        return null;
-    }
-
-    @Override
     protected void ModificaProfilo() {
 
     }

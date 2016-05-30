@@ -107,13 +107,6 @@ public class ShowOfferActivity extends BaseActivity implements PhotoViewerListen
     }
 
     @Override
-    protected User controlloLogin() {
-        return new User(null, null, -1);
-    }
-
-
-
-    @Override
     protected void ModificaProfilo() {
 
     }

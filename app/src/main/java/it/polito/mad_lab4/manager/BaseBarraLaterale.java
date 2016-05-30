@@ -192,19 +192,19 @@ public abstract class BaseBarraLaterale extends AppCompatActivity implements Nav
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.mod_profilo) {
+        if (id == R.id.mod_profilo_manager) {
             ModificaProfilo();
             // Handle the camera action
-        } else if (id == R.id.mod_menu) {
+        } else if (id == R.id.mod_menu_manager) {
             ModificaMenu();
 
-        } else if (id == R.id.mod_offerte) {
+        } else if (id == R.id.mod_offerte_manager) {
             ModificaOfferte();
 
-        } else if (id == R.id.mod_disponibilità) {
+        } else if (id == R.id.mod_disponibilità_manager) {
             ModificaDisponibilità();
 
-        } else if (id == R.id.gest_prenotazioni) {
+        } else if (id == R.id.prenotazioni_manager) {
             TestPrenotazioni();
 
         } else if (id == R.id.nav_contact) {

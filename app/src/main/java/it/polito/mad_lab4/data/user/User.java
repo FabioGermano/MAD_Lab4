@@ -20,17 +20,17 @@ public class User implements Serializable{
     {
         this.name = name;
         this.userType = type;
-        this.userLoginInfo = loginInfo;
-    }
-    public void setUserLoginInfo(UserLoginInformation loginInfo){
+        //this.userLoginInfo = loginInfo;
+    }*/
+    /*public void setUserLoginInfo(UserLoginInformation loginInfo){
         this.userLoginInfo = loginInfo;
     }
 
     public UserLoginInformation getUserLoginInfo(){
         return this.userLoginInfo;
-    }
+    }*/
 
-    public String getName() {
+   /* public String getName() {
         return name;
     }
 
@@ -44,8 +44,7 @@ public class User implements Serializable{
 
     public void setUserType(String type) {
         this.userType = type;
-    }
-    */
+    }*/
 
 
     /// da rimuovere ///

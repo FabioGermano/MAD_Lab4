@@ -10,10 +10,10 @@
     <item android:title="Comunicazioni">
         <menu>
             <item
-                android:id="@+id/nav_contact_no_login"
+                android:id="@+id/nav_contact"
                 android:title="@string/contattaci" />
             <item
-                android:id="@+id/nav_bugs_no_login"
+                android:id="@+id/nav_bugs"
                 android:title="@string/segnala_problema" />
         </menu>
     </item>

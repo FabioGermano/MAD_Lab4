@@ -25,7 +25,6 @@ import it.polito.mad_lab4.MainActivity;
 import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.bl.RestaurantBL;
 import it.polito.mad_lab4.common.Helper;
-import it.polito.mad_lab4.common.UserSession;
 import it.polito.mad_lab4.data.restaurant.Cover;
 import it.polito.mad_lab4.data.restaurant.Restaurant;
 import it.polito.mad_lab4.data.user.User;
@@ -93,10 +92,6 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
         add_photo = (FloatingActionButton) findViewById(R.id.add_photo);
         add_reservation = (FloatingActionButton) findViewById(R.id.add_reservation);
         add.setClosedOnTouchOutside(true);
-
-        if(UserSession.userId == null){
-            add.setVisibility(View.GONE);
-        }
 
         add_photo.setOnClickListener(clickListener);
         add_reservation.setOnClickListener(clickListener);
@@ -189,11 +184,6 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
     }
 
 
-
-    @Override
-    protected User controlloLogin() {
-        return new User(null, null, -1);
-    }
 
     private void showAllReviewsButtonPressed() {
         Intent i = new Intent(getApplicationContext(), ReviewsActivity.class);

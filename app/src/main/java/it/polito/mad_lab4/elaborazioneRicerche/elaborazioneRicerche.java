@@ -98,14 +98,6 @@ public class elaborazioneRicerche extends BaseActivity implements fragment_ricer
         }
     }
 
-    @Override
-    protected User controlloLogin() {
-        if(userInfo == null || userInfo.getUserLoginInfo() == null)
-            userInfo = new User(null, null , -1);
-
-        return this.userInfo;
-    }
-
     private void stampaMessaggioErrore(){
         Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.exceptionError), Toast.LENGTH_SHORT);
         toast.show();

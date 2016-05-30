@@ -3,10 +3,10 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/mod_profilo_user"
+            android:id="@+id/mod_profilo_client"
             android:title="@string/modifica_profilo" />
         <item
-            android:id="@+id/prenotazioni_user"
+            android:id="@+id/prenotazioni_client"
             android:title="@string/prenotazioni" />
         <item
             android:id="@+id/favourites_user"
@@ -19,10 +19,10 @@
     <item android:title="Comunicazioni">
         <menu>
             <item
-                android:id="@+id/nav_contact_user"
+                android:id="@+id/nav_contact"
                 android:title="@string/contattaci" />
             <item
-                android:id="@+id/nav_bugs_user"
+                android:id="@+id/nav_bugs"
                 android:title="@string/segnala_problema" />
         </menu>
     </item>

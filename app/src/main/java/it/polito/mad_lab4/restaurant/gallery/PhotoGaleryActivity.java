@@ -41,13 +41,6 @@ public class PhotoGaleryActivity extends BaseActivity implements PhotoGalleryLis
     }
 
     @Override
-    protected User controlloLogin() {
-        return new User(null, null, -1);
-    }
-
-
-
-    @Override
     protected void ModificaProfilo() {
 
     }

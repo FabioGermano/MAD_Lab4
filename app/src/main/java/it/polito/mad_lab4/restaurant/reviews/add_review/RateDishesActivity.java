@@ -147,13 +147,6 @@ public class RateDishesActivity extends BaseActivity{
     }
 
     @Override
-    protected User controlloLogin() {
-        return new User(null, null, -1);
-    }
-
-
-
-    @Override
     protected void ModificaProfilo() {
 
     }

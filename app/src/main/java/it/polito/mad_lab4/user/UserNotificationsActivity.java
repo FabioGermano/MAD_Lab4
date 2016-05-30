@@ -61,11 +61,6 @@ public class UserNotificationsActivity extends BaseActivity {
     }
 
     @Override
-    protected User controlloLogin() {
-        return null;
-    }
-
-    @Override
     protected void ModificaProfilo() {
 
     }

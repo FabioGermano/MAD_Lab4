@@ -166,7 +166,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".manager.MainActivityManager" />
         </activity>
-        <activity android:name=".manager.BaseBarraLaterale" />
         <activity android:name=".manager.MainActivityManager">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

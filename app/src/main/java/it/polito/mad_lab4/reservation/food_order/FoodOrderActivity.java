@@ -41,12 +41,6 @@ public class FoodOrderActivity extends BaseActivity {
     private Restaurant restaurant;
 
     @Override
-    protected User controlloLogin() {
-        return new User(null, null, -1);
-    }
-
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_order);

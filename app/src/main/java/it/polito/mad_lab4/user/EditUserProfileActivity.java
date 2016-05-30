@@ -77,13 +77,6 @@ public class EditUserProfileActivity extends BaseActivity implements UniversityP
     }
 
     @Override
-    protected User controlloLogin() {
-        return null;
-    }
-
-
-
-    @Override
     protected void ModificaProfilo() {
 
     }

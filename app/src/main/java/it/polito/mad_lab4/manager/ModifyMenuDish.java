@@ -81,11 +81,6 @@ public class ModifyMenuDish extends EditableBaseActivity {
         setToolbarColor();
     }
 
-    @Override
-    protected User controlloLogin() {
-        return null;
-    }
-
     private void getViews() {
         //creaSpinner();
 
@@ -469,7 +464,7 @@ public class ModifyMenuDish extends EditableBaseActivity {
     }
 
     @Override
-    protected void onStop() {
+    public void onStop() {
         super.onStop();
 
     }

@@ -3,20 +3,23 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/mod_profilo"
+            android:id="@+id/mod_profilo_manager"
             android:title="Modifica Profilo" />
         <item
-            android:id="@+id/mod_menu"
+            android:id="@+id/mod_menu_manager"
             android:title="Modifica Menu" />
         <item
-            android:id="@+id/mod_offerte"
+            android:id="@+id/mod_offerte_manager"
             android:title="Modifica Offerte" />
         <item
-            android:id="@+id/mod_disponibilità"
+            android:id="@+id/mod_disponibilità_manager"
             android:title="Modifica Disponibilità" />
         <item
-            android:id="@+id/gest_prenotazioni"
+            android:id="@+id/prenotazioni_manager"
             android:title="Gestione Prenotazioni" />
+        <item
+            android:id="@+id/logout_user"
+            android:title="@string/logout" />
     </group>
 
     <item android:title="Comunicazioni">

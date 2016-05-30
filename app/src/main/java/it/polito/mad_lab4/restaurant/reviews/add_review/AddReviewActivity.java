@@ -136,13 +136,6 @@ public class AddReviewActivity extends BaseActivity implements PhotoViewerListen
     }
 
     @Override
-    protected User controlloLogin() {
-        return new User(null, null, -1);
-    }
-
-
-
-    @Override
     protected void ModificaProfilo() {
 
     }

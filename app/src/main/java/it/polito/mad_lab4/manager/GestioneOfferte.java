@@ -57,7 +57,7 @@ public class GestioneOfferte extends EditableBaseActivity {
     }
 
     @Override
-    protected void onStart() {
+    public void onStart() {
         super.onStart();
 
         try {
@@ -69,15 +69,10 @@ public class GestioneOfferte extends EditableBaseActivity {
     }
 
     @Override
-    protected void onStop() {
+    public void onStop() {
         super.onStop();
 
         firebaseOfferListManager.detachListeners();
-    }
-
-    @Override
-    protected User controlloLogin() {
-        return null;
     }
 
     @Override

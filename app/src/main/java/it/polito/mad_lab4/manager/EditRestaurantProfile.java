@@ -91,11 +91,6 @@ public class EditRestaurantProfile extends it.polito.mad_lab4.BaseActivity imple
     }
 
     @Override
-    protected User controlloLogin() {
-        return null;
-    }
-
-    @Override
     protected void ModificaProfilo() {
 
     }

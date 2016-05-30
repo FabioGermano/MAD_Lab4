@@ -134,12 +134,6 @@ public class CheckoutOrderActivity extends BaseActivity {
     }
 
     @Override
-    protected User controlloLogin() {
-        return new User(null, null, -1);
-    }
-
-
-    @Override
     protected void ModificaProfilo() {
 
     }

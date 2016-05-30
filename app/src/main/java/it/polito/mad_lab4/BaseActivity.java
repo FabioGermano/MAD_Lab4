@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -17,14 +18,22 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import it.polito.mad_lab4.bl.UserBL;
-import it.polito.mad_lab4.data.user.UserSession;
-import it.polito.mad_lab4.data.user.User;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import it.polito.mad_lab4.login.Login;
+import it.polito.mad_lab4.newData.user.User;
 import it.polito.mad_lab4.user.ShowFavouritesActivity;
 import it.polito.mad_lab4.user.UserNotificationsActivity;
 
@@ -44,6 +53,11 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     private ImageButton saveImageButton, alertButton, calendarButton;
     //per visualizzare o meno, e abilitare, l'icona nella toolbar
     private boolean icona_toolbar = false;
+
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+
+    private User infoUser = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +88,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     @Override
     public void setContentView(int layoutResID) {
         View view = getLayoutInflater().inflate(layoutResID, null);
+        mAuth = FirebaseAuth.getInstance();
         configureToolbar(view);
         super.setContentView(view);
         configureBarraLaterale(view);
@@ -116,74 +131,158 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     protected boolean getVisibilityAlert(){
         return alert_visibility;
     }
+
     protected void configureBarraLaterale(View view) {
-        View header = null;
+        //View header = null;
         //inizializzo menu laterale
         DrawerLayout drawer = (DrawerLayout) view.findViewById(R.id.drawer_layout);
 
-        if(drawer != null) {
-            // se sono nella pagina principale abilito il tasto nella toolbar per visualizzare il menu
-            // se no lascio il tasto indietro
-            if(icona_toolbar) {
-                ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                        this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-                drawer.setDrawerListener(toggle);
-                toggle.syncState();
-            }
+        try {
 
-            NavigationView navigationView = (NavigationView) view.findViewById(R.id.nav_view);
+            if (drawer != null) {
+                // se sono nella pagina principale abilito il tasto nella toolbar per visualizzare il menu
+                // se no lascio il tasto indietro
+                if (icona_toolbar) {
+                    ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                            this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                    drawer.setDrawerListener(toggle);
+                    toggle.syncState();
+                }
 
-            //controllo se l'utente è collegato e decido quale menu/header visualizzare
-            boolean login = UserSession.userId != null;
+                final NavigationView navigationView = (NavigationView) view.findViewById(R.id.nav_view);
 
-            /*AuthData authData = ref.getAuth();
-                if(authData != null){
+                //controllo se l'utente è collegato e decido quale menu/header visualizzare
+                /*boolean login;
+                FirebaseUser user = mAuth.getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    System.out.println("--------------------------> utente connesso");
                     login = true;
                 } else {
+                    System.out.println("--------------------------> utente non connesso");
                     login = false;
+                }*/
+                if(navigationView != null) {
+                    mAuthListener = new FirebaseAuth.AuthStateListener() {
+                        @Override
+                        public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                            FirebaseUser user = firebaseAuth.getCurrentUser();
+                            if (user != null) {
+                                // User is signed in
+                                System.out.println("--------------------------> utente connesso");
+                                caricaUtenteLoggato(user, navigationView);
+                            } else {
+                                caricaUtenteDefault(navigationView);
+                                System.out.println("--------------------------> utente non connesso");
+                            }
+                        }
+                    };
                 }
-            */
 
-            // controllo se non ho già le informazioni a disposizione, se non le ho le scarico dal server
-            if(login){
-                userInformation = UserBL.getUserById(getApplicationContext(), UserSession.userId);
-            }
+                /*if (login) {
+                    // scarico info dal server e imposto evento per riempire la schermata con i dati utente
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference mDatabase = database.getReference();
+                    final String userId = user.getUid();
+                    mDatabase.child("users").child(userId).addListenerForSingleValueEvent(
+                            new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    // Get user value e utilizzo i dati
+                                    infoUser = dataSnapshot.getValue(User.class);
+                                    riempiBarraLaterale(navigationView);
+                                }
 
-            if(navigationView != null) {
-                if (login) {
-                    navigationView.inflateMenu(R.menu.activity_drawer_login);
-                    navigationView.setNavigationItemSelectedListener(this);
-                    header = navigationView.getHeaderView(0);
-                } else {
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                }
+                            });
+                }
+
+                if (navigationView != null && !login) {
                     navigationView.inflateMenu(R.menu.activity_drawer_no_login);
                     navigationView.setNavigationItemSelectedListener(this);
-                    header = navigationView.getHeaderView(0);
-                }
+                    //header = navigationView.getHeaderView(0); //non serve
+                }*/
+            }
+        } catch(Exception e){
+            System.out.println(e.getMessage());
+            return;
+        }
+    }
 
+    private void caricaUtenteDefault(final NavigationView navigationView) {
+        navigationView.inflateMenu(R.menu.activity_drawer_no_login);
+        navigationView.setNavigationItemSelectedListener(this);
+    }
 
-                //riempio l'header della barra laterale
-                if (header != null && login) {
-                    ImageView user_logo = (ImageView) header.findViewById(R.id.nav_drawer_logo);
-                    TextView user_name = (TextView) header.findViewById(R.id.nav_drawer_name);
+    private void caricaUtenteLoggato(FirebaseUser user, final NavigationView navigationView) {
+        // scarico info dal server e imposto evento per riempire la schermata con i dati utente
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference mDatabase = database.getReference();
+        final String userId = user.getUid();
+        mDatabase.child("users").child(userId).addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        // Get user value e utilizzo i dati
+                        infoUser = dataSnapshot.getValue(User.class);
+                        riempiBarraLaterale(navigationView);
+                    }
 
-                    //setto il nome dell'utente
-                    if(user_name != null)
-                        user_name.setText(userInformation.getName());
-                    //setto la foto dell'utente
-                    if (user_logo != null){
-                        String path = userInformation.getPhoto_path();
-                        if (path != null){
-                            try {
-                                Bitmap bitmap = BitmapFactory.decodeFile(path);
-                                if(bitmap != null)
-                                    user_logo.setImageBitmap(bitmap);
-                            } catch (Exception e){
-                                System.out.println("Errore creazione bitmap"); //debug
-                            }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
+    }
+
+    private void riempiBarraLaterale(NavigationView navigationView){
+        View header;
+        System.out.println("--------------------------> Aggiungo il menu della barra laterale");
+        try {
+            if (infoUser.getUserType().compareTo("C") == 0) {
+                //CLIENT
+                navigationView.inflateMenu(R.menu.activity_drawer_login_client);
+
+            } else if (infoUser.getUserType().compareTo("M") == 0) {
+                //MANAGER
+                navigationView.inflateMenu(R.menu.activity_drawer_login_manager);
+            }
+
+            // gestore dei tasti del menù laterale e dati nell'header uguali per entrambi
+            navigationView.setNavigationItemSelectedListener(this);
+            header = navigationView.getHeaderView(0);
+
+            //riempio l'header della barra laterale
+            if (header != null) {
+                final ImageView user_logo = (ImageView) header.findViewById(R.id.nav_drawer_logo);
+                final TextView user_name = (TextView) header.findViewById(R.id.nav_drawer_name);
+
+                //setto il nome dell'utente
+                if (user_name != null)
+                    user_name.setText(infoUser.getName());
+                //setto la foto dell'utente
+                if (user_logo != null) {
+                    ///////
+                    //////
+                        /*
+                            Prendo la foto dell'utente dalla cartella delle foto con nome idUtente_logo
+                        */
+                    String path = null;
+                    if (path != null) {
+                        try {
+                            Bitmap bitmap = BitmapFactory.decodeFile(path);
+                            if (bitmap != null)
+                                user_logo.setImageBitmap(bitmap);
+                        } catch (Exception e) {
+                            System.out.println("Errore creazione bitmap"); //debug
                         }
                     }
                 }
             }
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+            return;
         }
     }
 
@@ -236,8 +335,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         if(title!=null)
             titleTextView.setText(title);
     }
-
-    protected abstract User controlloLogin();
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -302,25 +399,48 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
-
-        if (id == R.id.mod_profilo_user) {
-            ModificaProfilo();
-        } else if (id == R.id.prenotazioni_user) {
-            ShowPrenotazioni();
-        } else if (id == R.id.nav_contact_user) {
-            Contattaci();
-        } else if (id == R.id.nav_bugs_user) {
-            SegnalaBug();
-        } else if(id == R.id.esegui_login) {
-            Login();
-        } else if(id == R.id.logout_user){
-            Logout();
-        } else if(id == R.id.nav_contact_no_login){
-            Contattaci();
-        } else if(id == R.id.nav_bugs_no_login){
-            SegnalaBug();
-        } else if(id== R.id.favourites_user){
-            showFavourites();
+        switch (id){
+            //CLIENT
+            case R.id.mod_profilo_client:
+                //ModificaProfilo();
+                Toast.makeText(getApplicationContext(), "profilo client", Toast.LENGTH_LONG).show();
+                break;
+            case R.id.prenotazioni_client:
+                Toast.makeText(getApplicationContext(), "prenotazioni client", Toast.LENGTH_LONG).show();
+                //ShowPrenotazioni();
+                break;
+            //MANAGER
+            case R.id.mod_profilo_manager:
+                Toast.makeText(getApplicationContext(), "profilo manager", Toast.LENGTH_LONG).show();
+                break;
+            case R.id.mod_menu_manager:
+                Toast.makeText(getApplicationContext(), "menu manager", Toast.LENGTH_LONG).show();
+                break;
+            case R.id.mod_offerte_manager:
+                Toast.makeText(getApplicationContext(), "offerte manager", Toast.LENGTH_LONG).show();
+                break;
+            case R.id.mod_disponibilità_manager:
+                Toast.makeText(getApplicationContext(), "disponibilità manager", Toast.LENGTH_LONG).show();
+                break;
+            case R.id.prenotazioni_manager:
+                Toast.makeText(getApplicationContext(), "prenotazioni manager", Toast.LENGTH_LONG).show();
+                break;
+            //DEFAULT
+            case R.id.esegui_login:
+                Login();
+                break;
+            case R.id.logout_user:
+                Logout();
+                break;
+            case R.id.nav_contact:
+                Contattaci();
+                break;
+            case R.id.nav_bugs:
+                SegnalaBug();
+                break;
+            case R.id.favourites_user:
+                showFavourites();
+                break;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -359,8 +479,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
 
     private void Logout(){
         //eseguo il logout e cancello eventualmente il file con le credenziali
-        UserSession.userId = null;
-        //ref.unauth();
+        FirebaseAuth.getInstance().signOut();
+
         Toast.makeText(getApplicationContext(), getResources().getString(R.string.logout_message), Toast.LENGTH_LONG).show();
         Intent i = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(i);
@@ -372,6 +492,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     }
 
     /******************/
+    // Ora con firebase sono inutili, possiamo farli qui globali che rimandano alle apposite pagine
+    // poi li tramite firebase ci ricaviamo tutti i dati necessari
 
     /*
         Questi invece sono personali per ogni utente e quindi è meglio gestirli nella schermata
@@ -389,5 +511,21 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     public void dismissProgressDialog(){
         if(pd.isShowing())
             pd.dismiss();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if(mAuth!= null && mAuthListener!=null)
+            mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        System.out.println("-------------> OnStop chiamato!!!!");
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
     }
 }

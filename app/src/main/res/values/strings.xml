@@ -67,6 +67,8 @@
     <string name="ricercaAvanzata">Advanced Search:</string>
     <string name="takeAway">Take Away</string>
     <string name="restaurant">Restaurant</string>
+    <string name="takeAway_Restaurant">Take Away &amp; Restaurant</string>
+    <string name="noServices">No Services</string>
     <string name="reset">Reset</string>
 
     <!-- Errori e messaggi di default -->
@@ -79,6 +81,8 @@
     <string name="query_troppo_lunga">Search key too long!</string>
     <string name="query_troppo_corta">Search key too short!</string>
     <string name="nessun_risultato">No restaurants found</string>
+    <string name="timeout_expired">Timeout expired</string>
+    <string name="login_failed">Incorrect username or password, please retry</string>
 
 
     <string name="seats_string">seats</string>

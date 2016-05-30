@@ -88,11 +88,6 @@ public class EditAvailability extends EditableBaseActivity {
 
     }
 
-    @Override
-    protected User controlloLogin() {
-        return null;
-    }
-
     private void readOffers() {
 
         lista_offerte = new ArrayList<Offer>();
