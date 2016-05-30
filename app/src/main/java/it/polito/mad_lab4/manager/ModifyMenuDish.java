@@ -44,7 +44,7 @@ public class ModifyMenuDish extends EditableBaseActivity {
     private boolean newDish = false;
     private DishType initialType = null;
     private DishType modifiedType = null;
-
+    private int typeInt=-1;
     private PhotoViewer imageViewer;
     private String restaurantId, dishId;
 
@@ -95,7 +95,10 @@ public class ModifyMenuDish extends EditableBaseActivity {
         editType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialogType();
+                if(typeInt!=-1)
+                    showDialogType(typeInt);
+                else
+                    showDialogType(0);
             }
         });
         imageViewer = (PhotoViewer)getSupportFragmentManager().findFragmentById(R.id.imageDish_modifyMenu);
@@ -211,7 +214,7 @@ public class ModifyMenuDish extends EditableBaseActivity {
             }
         }.start();
     }
-    private void showDialogType(){
+    private void showDialogType(int i){
         android.support.v7.app.AlertDialog dialog;
 
         // Strings to Show In Dialog with Radio Buttons
@@ -219,24 +222,28 @@ public class ModifyMenuDish extends EditableBaseActivity {
 
         // Creating and Building the Dialog
         android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
-        builder.setTitle(getResources().getString(R.string.pick_dish_type)).setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
+        builder.setTitle(getResources().getString(R.string.pick_dish_type)).setSingleChoiceItems(items, i, new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int item) {
                 editType.setText(items[item]);
                 switch (item){
                     //dish.setDishType(Oggetto_piatto.type_enum.PRIMI);
                     case 0:
+                        typeInt=0;
                         modifiedType = DishType.MainCourses;
                         break;
                     case 1:
+                        typeInt=1;
                         //dish.setDishType(Oggetto_piatto.type_enum.SECONDI);
                         modifiedType = DishType.SecondCourses;
                         break;
                     case 2:
+                        typeInt=2;
                         //dish.setDishType(Oggetto_piatto.type_enum.DESSERT);
                         modifiedType = DishType.Dessert;
                         break;
                     case 3:
+                        typeInt=3;
                         //dish.setDishType(Oggetto_piatto.type_enum.ALTRO);
                         modifiedType = DishType.Other;
                         break;

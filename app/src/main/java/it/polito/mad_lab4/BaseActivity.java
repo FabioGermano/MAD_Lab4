@@ -30,6 +30,7 @@ import it.polito.mad_lab4.bl.UserBL;
 import it.polito.mad_lab4.common.UserSession;
 import it.polito.mad_lab4.data.user.User;
 import it.polito.mad_lab4.login.Login;
+import it.polito.mad_lab4.user.ShowFavouritesActivity;
 import it.polito.mad_lab4.user.UserNotificationsActivity;
 
 public abstract class BaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -315,6 +316,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
             Contattaci();
         } else if(id == R.id.nav_bugs_no_login){
             SegnalaBug();
+        } else if(id== R.id.favourites_user){
+            showFavourites();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -326,7 +329,10 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     /*
         Questi metodi, essendo uguali sempre possiamo definirli qui
      */
-
+    private void showFavourites(){
+        Intent i = new Intent(getBaseContext(), ShowFavouritesActivity.class);
+        startActivity(i);
+    }
     private void Contattaci(){
         Toast toast = Toast.makeText(getApplicationContext(), "Contattaci pressed", Toast.LENGTH_SHORT);
         toast.show();

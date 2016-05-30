@@ -35,7 +35,8 @@ public class CoverActivity extends BaseActivity {
 
         hideToolbar(true);
         hideToolbarShadow(true);
-
+        setVisibilityAlert(false);
+        invalidateOptionsMenu();
         shapesIndicator[0] = (ImageView)findViewById(R.id.shape1);
         shapesIndicator[1] = (ImageView)findViewById(R.id.shape2);
         shapesIndicator[2] = (ImageView)findViewById(R.id.shape3);

@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardUseCompatPadding="true"
-    card_view:cardMaxElevation="5dp"
+    android:layout_margin="3dp"
     app:cardPreventCornerOverlap="false"
     card_view:cardBackgroundColor="@android:color/white"
     card_view:cardCornerRadius="5dp"
@@ -24,7 +24,7 @@
             android:layout_gravity="center_vertical"/>
 
         <LinearLayout android:orientation="vertical" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginLeft="8dp">
+            android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginLeft="8dp">
             <TextView
                 android:layout_width="wrap_content"
                 android:id="@+id/dish_name_menu"

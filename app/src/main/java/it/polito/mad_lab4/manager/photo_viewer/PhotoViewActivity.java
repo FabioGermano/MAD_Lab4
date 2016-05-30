@@ -19,12 +19,12 @@ public class PhotoViewActivity extends EditableBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_photo_view_manager);
 
         hideToolbar(true);
         hideToolbarShadow(true);
-
-        setContentView(R.layout.activity_photo_view_manager);
-
+        setVisibilityAlert(false);
+        invalidateOptionsMenu();
         InitializeFABButtons(false, true, false);
 
         touchImageView = (TouchImageView)findViewById(R.id.photoView);

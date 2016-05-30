@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,7 +37,7 @@ import it.polito.mad_lab4.data.restaurant.DishType;
 /**
  * Created by Euge on 05/04/2016.
  */
-public class RecyclerAdapter_menu extends RecyclerView.Adapter<RecyclerAdapter_menu.MyViewHolder> {
+public class RecyclerAdapter_menu extends RecyclerView.Adapter<RecyclerAdapter_menu.MyViewHolder>{
     private LayoutInflater myInflater;
     private DishType menu_type;
     //accesso veloce alla lista in esame ??
@@ -82,6 +83,7 @@ public class RecyclerAdapter_menu extends RecyclerView.Adapter<RecyclerAdapter_m
         private ImageButton dish_delete;
         private ImageButton dish_modify;
         private Switch dish_availability;
+        private CardView cardView;
         private Context context;
 
 
@@ -93,6 +95,8 @@ public class RecyclerAdapter_menu extends RecyclerView.Adapter<RecyclerAdapter_m
             dish_delete = (ImageButton) itemView.findViewById(R.id.img_delete_menu);
             dish_modify = (ImageButton) itemView.findViewById(R.id.img_modify_menu);
             dish_availability = (Switch) itemView.findViewById(R.id.switch1);
+            cardView = (CardView) itemView.findViewById(R.id.cardView);
+            dish_modify.setVisibility(View.GONE);
             if(availability_mode){
                 dish_delete.setVisibility(View.GONE);
                 dish_modify.setVisibility(View.GONE);
@@ -128,7 +132,8 @@ public class RecyclerAdapter_menu extends RecyclerView.Adapter<RecyclerAdapter_m
                 dish_availability.setOnClickListener(MyViewHolder.this);
             else {
                 dish_delete.setOnClickListener(MyViewHolder.this);
-                dish_modify.setOnClickListener(MyViewHolder.this);
+                //dish_modify.setOnClickListener(MyViewHolder.this);
+                cardView.setOnClickListener(MyViewHolder.this);
             }
         }
 
@@ -138,7 +143,10 @@ public class RecyclerAdapter_menu extends RecyclerView.Adapter<RecyclerAdapter_m
                 case R.id.img_delete_menu:
                     removeItem();
                     break;
-                case R.id.img_modify_menu:
+                //case R.id.img_modify_menu:
+                  //  modifyItem();
+                    //break;
+                case R.id.cardView:
                     modifyItem();
                     break;
                 case R.id.switch1:

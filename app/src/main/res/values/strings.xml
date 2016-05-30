@@ -254,4 +254,6 @@
     <string name="tuesday_abb">Tu</string>
     <string name="monday_abb">Mo</string>
     <string name="restaurant_address">Restaurant address</string>
+    <string name="add_dish">This section is empty now. Click on the plus button to add a new dish.</string>
+    <string name="add_offer">This section is empty now. Click on the plus button to add a new offer.</string>
 </resources>

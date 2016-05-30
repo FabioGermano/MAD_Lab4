@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -73,6 +74,7 @@ public class RecyclerAdapter_offerte extends RecyclerView.Adapter<RecyclerAdapte
         private ImageButton dish_modify;
         private Switch dish_availability;
         private Context context;
+        private CardView cardView;
 
         public MyViewHolder_offerta(View itemView) {
             super(itemView);
@@ -82,6 +84,8 @@ public class RecyclerAdapter_offerte extends RecyclerView.Adapter<RecyclerAdapte
             dish_delete = (ImageButton) itemView.findViewById(R.id.img_delete_menu);
             dish_modify = (ImageButton) itemView.findViewById(R.id.img_modify_menu);
             dish_availability = (Switch) itemView.findViewById(R.id.switch1);
+            cardView = (CardView) itemView.findViewById(R.id.cardView);
+            dish_modify.setVisibility(View.GONE);
             if(availability_mode){
                 dish_delete.setVisibility(View.GONE);
                 dish_modify.setVisibility(View.GONE);
@@ -117,7 +121,8 @@ public class RecyclerAdapter_offerte extends RecyclerView.Adapter<RecyclerAdapte
                 dish_availability.setOnClickListener(MyViewHolder_offerta.this);
             } else {
                 dish_delete.setOnClickListener(MyViewHolder_offerta.this);
-                dish_modify.setOnClickListener(MyViewHolder_offerta.this);
+                //dish_modify.setOnClickListener(MyViewHolder.this);
+                cardView.setOnClickListener(MyViewHolder_offerta.this);
             }
         }
 
@@ -127,9 +132,10 @@ public class RecyclerAdapter_offerte extends RecyclerView.Adapter<RecyclerAdapte
                 case R.id.img_delete_menu:
                     removeItem();
                     break;
-                case R.id.img_modify_menu:
+                case R.id.cardView:
                     modifyItem();
                     break;
+
                 case R.id.switch1:
                     updateAvailability();
                     break;

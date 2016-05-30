@@ -32,36 +32,23 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true" />
     -->
-            <android.support.v7.widget.CardView
-            xmlns:card_view="http://schemas.android.com/apk/res-auto"
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            card_view:cardCornerRadius="4dp"
-
-            android:gravity="center"
-            android:minHeight="64dp"
-            card_view:cardUseCompatPadding="true"
-            android:layout_width="wrap_content"
-            android:clickable="true"
-            android:layout_height="wrap_content">
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="wrap_content"
-                android:padding="@dimen/activity_horizontal_margin"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:gravity="center"
+                android:background="@android:drawable/dialog_holo_light_frame">
             <fragment
                 xmlns:custom="http://schemas.android.com/apk/res/it.polito.mad_lab4"
                 android:id="@+id/imageOffer_modifyOffer"
                 android:name="it.polito.mad_lab4.manager.photo_viewer.PhotoViewer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
                 custom:isEditable="true"
                 custom:isLogo="false"
                 custom:heightInDP="200"
                 custom:widthInDP="200"
                 custom:initialBackground="@drawable/default_dish_icon" />
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
+            </RelativeLayout>
 
         <android.support.v7.widget.CardView
             xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -70,7 +57,6 @@
             android:minHeight="64dp"
             card_view:cardUseCompatPadding="true"
             android:layout_width="match_parent"
-            android:clickable="true"
             android:layout_height="wrap_content">
         <LinearLayout
             android:layout_width="match_parent"
@@ -86,7 +72,6 @@
                 <ImageView
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:id="@+id/imageView2"
                     android:src="@drawable/ic_restaurant_holo_light"
                     />
 

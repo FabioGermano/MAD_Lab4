@@ -23,6 +23,7 @@ import it.polito.mad_lab4.data.user.User;
 public class EditUserProfileActivity extends BaseActivity implements UniversityPickerFragment.OnSelectionListener{
 
     private EditText universityText, typeText;
+    private int typeChoice =-1, universityChoice=-1;
 
 
     @Override
@@ -34,14 +35,20 @@ public class EditUserProfileActivity extends BaseActivity implements UniversityP
         universityText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialogUniversity();
+                if(universityChoice!=-1)
+                    showDialogUniversity(universityChoice);
+                else
+                    showDialogUniversity(0);
             }
         });
         typeText = (EditText) findViewById(R.id.typeText);
         typeText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialogType();
+                if(typeChoice!=-1)
+                    showDialogType(typeChoice);
+                else
+                    showDialogType(0);
             }
         });
 
@@ -113,7 +120,7 @@ public class EditUserProfileActivity extends BaseActivity implements UniversityP
         this.typeText.setText(type);
     }
 
-    private void showDialogType(){
+    private void showDialogType(int i){
         android.support.v7.app.AlertDialog dialog;
 
         // Strings to Show
@@ -121,10 +128,11 @@ public class EditUserProfileActivity extends BaseActivity implements UniversityP
 
         // Creating and Building the Dialog
         android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
-        builder.setTitle(getResources().getString(R.string.pick_type)).setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
+        builder.setTitle(getResources().getString(R.string.pick_type)).setSingleChoiceItems(items, i, new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int item) {
                 typeText.setText(items[item]);
+                typeChoice=item;
                 dialog.dismiss();
             }
         });
@@ -133,7 +141,7 @@ public class EditUserProfileActivity extends BaseActivity implements UniversityP
         dialog.show();
     }
 
-    private void showDialogUniversity(){
+    private void showDialogUniversity(int i){
         android.support.v7.app.AlertDialog dialog;
 
         // Strings to Show
@@ -141,10 +149,11 @@ public class EditUserProfileActivity extends BaseActivity implements UniversityP
 
         // Creating and Building the Dialog
         android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
-        builder.setTitle(getResources().getString(R.string.pick_your_university)).setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
+        builder.setTitle(getResources().getString(R.string.pick_your_university)).setSingleChoiceItems(items, i, new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int item) {
                 universityText.setText(items[item]);
+                universityChoice=item;
                 dialog.dismiss();
             }
         });

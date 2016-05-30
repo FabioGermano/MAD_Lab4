@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import it.polito.mad_lab4.R;
+import it.polito.mad_lab4.common.EmptyRecyclerView;
 import it.polito.mad_lab4.newData.restaurant.Dish;
 import it.polito.mad_lab4.data.restaurant.DishType;
 
@@ -26,7 +27,6 @@ public class BlankMenuFragment extends Fragment {
     private boolean mode;
     private RecyclerAdapter_menu myAdapter;
 
-    //TODO utilizzare setArgument nel fragment invece del costruttore con passaggio di paramentri
 
     public BlankMenuFragment() {
         // Required empty public constructor
@@ -52,9 +52,12 @@ public class BlankMenuFragment extends Fragment {
             // Inflate the layout for this fragment
             View rootView = inflater.inflate(R.layout.fragment_blank_menu, container, false);
 
-            RecyclerView rView = (RecyclerView) rootView.findViewById(R.id.recyclerView_menu);
+
+            EmptyRecyclerView rView = (EmptyRecyclerView) rootView.findViewById(R.id.recyclerView_menu);
             myAdapter = new RecyclerAdapter_menu(context, m_list, type, mode);
             if (rView != null) {
+                View emptyView = rootView.findViewById(R.id.empty_view);
+                rView.setEmptyView(emptyView);
                 rView.setAdapter(myAdapter);
 
                 LinearLayoutManager myLLM_vertical = new LinearLayoutManager(getActivity());

@@ -51,7 +51,8 @@ public class GalleryPhotoViewActivity extends BaseActivity {
         setContentView(R.layout.activity_gallery_photo_view);
         hideToolbar(true);
         hideToolbarShadow(true);
-
+        setVisibilityAlert(false);
+        invalidateOptionsMenu();
         getRestaurant(getIntent().getExtras());
 
         touchImageView = (TouchImageView)findViewById(R.id.photoView);

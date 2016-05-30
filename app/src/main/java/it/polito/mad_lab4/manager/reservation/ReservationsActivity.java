@@ -64,7 +64,7 @@ public class ReservationsActivity extends it.polito.mad_lab4.BaseActivity {
         invalidateOptionsMenu();
         getReservations();
 
-        dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+        dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
         Calendar c = Calendar.getInstance();
         Date newDate = c.getTime();
         //set to show actual date

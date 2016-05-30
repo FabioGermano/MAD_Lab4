@@ -14,6 +14,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.View;
 import android.widget.TextView;
 
 import com.google.firebase.database.ChildEventListener;
@@ -28,6 +29,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import it.polito.mad_lab4.R;
+import it.polito.mad_lab4.common.EmptyRecyclerView;
 import it.polito.mad_lab4.data.user.User;
 import it.polito.mad_lab4.newData.restaurant.Offer;
 
@@ -147,10 +149,13 @@ public class GestioneOfferte extends EditableBaseActivity {
 
     //imposto la lista di tutte le offerte
     private void setUpRecyclerView(){
-        RecyclerView rView = (RecyclerView) findViewById(R.id.recyclerView_offerte);
+        EmptyRecyclerView rView = (EmptyRecyclerView) findViewById(R.id.recyclerView_offerte);
 
         myAdapter = new RecyclerAdapter_offerte(this, lista_offerte, availability_mode);
         if(rView != null) {
+
+            View emptyView = findViewById(R.id.empty_view);
+            rView.setEmptyView(emptyView);
             rView.setAdapter(myAdapter);
 
             LinearLayoutManager myLLM_vertical = new LinearLayoutManager(this);
