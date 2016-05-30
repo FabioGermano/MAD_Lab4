@@ -57,6 +57,9 @@ public class RateDishesActivity extends BaseActivity{
         hideToolbar(true);
         hideToolbarShadow(true);
 
+        setVisibilityAlert(false);
+        invalidateOptionsMenu();
+
         //retrieve values from intent extras
         this.restaurantId = getIntent().getExtras().getInt("restaurantId");
         this.review = getIntent().getExtras().getString("review");
@@ -148,10 +151,7 @@ public class RateDishesActivity extends BaseActivity{
         return new User(null, null, -1);
     }
 
-    @Override
-    protected void filterButton() {
 
-    }
 
     @Override
     protected void ModificaProfilo() {

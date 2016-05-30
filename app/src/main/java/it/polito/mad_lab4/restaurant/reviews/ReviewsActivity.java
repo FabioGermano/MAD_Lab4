@@ -43,7 +43,8 @@ public class ReviewsActivity extends BaseActivity {
 
         hideToolbarShadow(true);
         setToolbarColor();
-
+        setVisibilityOrderBy(true);
+        invalidateOptionsMenu();
         setActivityTitle(getResources().getString(R.string.reviews_activity_title));
 
         reviewsListView = (ListView) findViewById(R.id.reviewsListView);
@@ -75,10 +76,7 @@ public class ReviewsActivity extends BaseActivity {
         return new User(null, null, -1);
     }
 
-    @Override
-    protected void filterButton() {
 
-    }
 
     @Override
     protected void ModificaProfilo() {
@@ -90,19 +88,9 @@ public class ReviewsActivity extends BaseActivity {
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
 
-        toolbar.inflateMenu(R.menu.order_button_toolbar);
-        final MenuItem orderButton = menu.findItem(R.id.menu_orderBy);
-        orderButton.setVisible(true);
-
-        return super.onCreateOptionsMenu(menu);
-    }
-
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
         int id = item.getItemId();
         switch (id) {
             case R.id.menu_orderBy:
@@ -111,7 +99,6 @@ public class ReviewsActivity extends BaseActivity {
             default:
                 break;
         }
-
         return true;
     }
 

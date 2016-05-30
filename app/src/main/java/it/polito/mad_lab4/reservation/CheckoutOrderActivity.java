@@ -49,6 +49,8 @@ public class CheckoutOrderActivity extends BaseActivity {
 
         setActivityTitle(getResources().getString(R.string.your_reservation));
 
+        setVisibilityAlert(false);
+        invalidateOptionsMenu();
         Bundle extras = getIntent().getExtras();
         if (extras == null) {
             date = null;
@@ -136,10 +138,6 @@ public class CheckoutOrderActivity extends BaseActivity {
         return new User(null, null, -1);
     }
 
-    @Override
-    protected void filterButton() {
-
-    }
 
     @Override
     protected void ModificaProfilo() {

@@ -17,13 +17,13 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import it.polito.mad_lab4.R;
-import it.polito.mad_lab4.data.restaurant.Offer;
+import it.polito.mad_lab4.newData.restaurant.Offer;
 
 public class BlankOfferFragment extends Fragment {
     private ArrayList<Offer> offer_list;
     private Context context;
     private boolean mode;
-
+    private RecyclerAdapter_offerte myAdapter;
 
     public BlankOfferFragment() {
         // Required empty public constructor
@@ -48,7 +48,7 @@ public class BlankOfferFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_blank_offer, container, false);
         
         RecyclerView rView = (RecyclerView) rootView.findViewById(R.id.recyclerView_offerte);
-        RecyclerAdapter_offerte myAdapter = new RecyclerAdapter_offerte(context,offer_list, mode);
+        myAdapter = new RecyclerAdapter_offerte(context,offer_list, mode);
         if(rView != null) {
             rView.setAdapter(myAdapter);
 
@@ -62,4 +62,7 @@ public class BlankOfferFragment extends Fragment {
         return rootView;
     }
 
+    public RecyclerView.Adapter getAdapter() {
+        return myAdapter;
+    }
 }

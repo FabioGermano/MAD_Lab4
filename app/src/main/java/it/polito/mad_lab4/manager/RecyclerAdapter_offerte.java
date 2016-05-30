@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,7 +27,8 @@ import java.util.ArrayList;
 
 import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.bl.RestaurantBL;
-import it.polito.mad_lab4.data.restaurant.Offer;
+import it.polito.mad_lab4.firebase_manager.FirebaseRemoveOfferManager;
+import it.polito.mad_lab4.newData.restaurant.Offer;
 
 /**
  * Created by Euge on 08/04/2016.
@@ -71,6 +75,7 @@ public class RecyclerAdapter_offerte extends RecyclerView.Adapter<RecyclerAdapte
         private ImageButton dish_modify;
         private Switch dish_availability;
         private Context context;
+        private CardView cardView;
 
         public MyViewHolder_offerta(View itemView) {
             super(itemView);
@@ -80,6 +85,8 @@ public class RecyclerAdapter_offerte extends RecyclerView.Adapter<RecyclerAdapte
             dish_delete = (ImageButton) itemView.findViewById(R.id.img_delete_menu);
             dish_modify = (ImageButton) itemView.findViewById(R.id.img_modify_menu);
             dish_availability = (Switch) itemView.findViewById(R.id.switch1);
+            cardView = (CardView) itemView.findViewById(R.id.cardView);
+            dish_modify.setVisibility(View.GONE);
             if(availability_mode){
                 dish_delete.setVisibility(View.GONE);
                 dish_modify.setVisibility(View.GONE);
@@ -101,21 +108,11 @@ public class RecyclerAdapter_offerte extends RecyclerView.Adapter<RecyclerAdapte
             }
             if(availability_mode){
                 if(dish_availability != null){
-                    dish_availability.setChecked(currentObj.isAvailable());
+                    dish_availability.setChecked(currentObj.getIsTodayAvailable());
                 }
             }
-            //carico foto
-            if(dish_img != null){
-                String path = currentObj.getThumbPath();
-                if (path != null){
-                    try {
-                        Bitmap bmp = BitmapFactory.decodeFile(path);
-                        if(bmp != null)
-                            dish_img.setImageBitmap(bmp);
-                    } catch (Exception e){
-                        System.out.println("Errore creazione bitmap");
-                    }
-                }
+            if(currentObj.getThumbDownloadLink() != null) {
+                Glide.with(context).load(currentObj.getThumbDownloadLink()).into(dish_img);
             }
 
         }
@@ -125,7 +122,8 @@ public class RecyclerAdapter_offerte extends RecyclerView.Adapter<RecyclerAdapte
                 dish_availability.setOnClickListener(MyViewHolder_offerta.this);
             } else {
                 dish_delete.setOnClickListener(MyViewHolder_offerta.this);
-                dish_modify.setOnClickListener(MyViewHolder_offerta.this);
+                //dish_modify.setOnClickListener(MyViewHolder.this);
+                cardView.setOnClickListener(MyViewHolder_offerta.this);
             }
         }
 
@@ -135,9 +133,10 @@ public class RecyclerAdapter_offerte extends RecyclerView.Adapter<RecyclerAdapte
                 case R.id.img_delete_menu:
                     removeItem();
                     break;
-                case R.id.img_modify_menu:
+                case R.id.cardView:
                     modifyItem();
                     break;
+
                 case R.id.switch1:
                     updateAvailability();
                     break;
@@ -145,24 +144,22 @@ public class RecyclerAdapter_offerte extends RecyclerView.Adapter<RecyclerAdapte
         }
 
         private void updateAvailability(){
-            lista_offerte.get(position).setIsAvailable(dish_availability.isChecked());
+            lista_offerte.get(position).setIsTodayAvailable(dish_availability.isChecked());
         }
 
         //rimuovo offerta
         private void removeItem(){
-            lista_offerte.remove(position);
 
-            RestaurantBL.saveChanges(context);
+            FirebaseRemoveOfferManager firebaseRemoveOfferManager = new FirebaseRemoveOfferManager();
 
-            notifyItemRemoved(position);
-            notifyItemRangeChanged(position, lista_offerte.size());
+            firebaseRemoveOfferManager.removeOffer("-KIrgaSxr9VhHllAjqmp", lista_offerte.get(position).getOfferId());
         }
 
         //modifico offerta
         private void modifyItem(){
             Bundle b = new Bundle();
-            b.putInt("restaurantId", 1);
-            b.putInt("offerId", lista_offerte.get(position).getOfferId());
+            b.putString("restaurantId", "-KIrgaSxr9VhHllAjqmp");
+            b.putString("offerId", lista_offerte.get(position).getOfferId());
             b.putBoolean("isEditing", true);
 
             Intent intent = new Intent(context, ModifyOfferDish.class);

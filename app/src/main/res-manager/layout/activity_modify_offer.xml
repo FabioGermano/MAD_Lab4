@@ -13,10 +13,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-
+            android:orientation="vertical"
+            android:gravity="center"
             android:paddingBottom="@dimen/activity_vertical_margin"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
@@ -31,176 +32,220 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true" />
     -->
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="@android:drawable/dialog_holo_light_frame">
             <fragment
                 xmlns:custom="http://schemas.android.com/apk/res/it.polito.mad_lab4"
                 android:id="@+id/imageOffer_modifyOffer"
                 android:name="it.polito.mad_lab4.manager.photo_viewer.PhotoViewer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
                 custom:isEditable="true"
                 custom:isLogo="false"
                 custom:heightInDP="200"
                 custom:widthInDP="200"
                 custom:initialBackground="@drawable/default_dish_icon" />
+            </RelativeLayout>
+
+        <android.support.v7.widget.CardView
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            card_view:cardCornerRadius="4dp"
+            android:minHeight="64dp"
+            card_view:cardUseCompatPadding="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_restaurant_holo_light"
+                    />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/offerName"
+                    android:padding="5dp"
+                    android:id="@+id/edit_offerName_modifyOffer"
+                    android:singleLine="false"
+                    android:inputType="textShortMessage" />
+
+            </LinearLayout>
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:background="#20000000"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_euro_holo_right"
+                    />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:background="@android:color/transparent"
+                    android:padding="5dp"
+                    android:hint="@string/offerPrice"
+                    android:id="@+id/edit_offerPrice_modifyOffer"
+                    android:singleLine="false"
+                    android:inputType="numberDecimal" />
+
+            </LinearLayout>
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:background="#20000000"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_bio_lines_grey"
+                    />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/black"
+                    android:background="@android:color/transparent"
+                    android:padding="5dp"
+                    android:hint="@string/notesOffer"
+                    android:inputType="textMultiLine"
+                    android:id="@+id/edit_offerNote_modifyOffer"
+                    android:singleLine="false"
+                    android:layout_gravity="center" />
+
+            </LinearLayout>
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:background="#20000000"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp" />
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:text="@string/offerName"
-                android:id="@+id/text_offerName_modifyOffer"
-                android:layout_below="@+id/imageOffer_modifyOffer"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:paddingTop="20dp" />
-
-            <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/edit_offerName_modifyOffer"
-                android:layout_below="@+id/text_offerName_modifyOffer"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:text="@string/offerPrice"
-                android:id="@+id/text_offerPrice_modifyOffer"
-                android:layout_below="@+id/edit_offerName_modifyOffer"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:paddingTop="20dp" />
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:id="@+id/edit_offerPrice_modifyOffer"
-                android:layout_below="@+id/text_offerPrice_modifyOffer"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:text="@string/notesOffer"
-                android:id="@+id/text_offerNote_modifyOffer"
-                android:layout_below="@+id/edit_offerPrice_modifyOffer"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:paddingTop="20dp" />
-
-            <EditText
-                android:id="@+id/edit_offerNote_modifyOffer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/text_offerNote_modifyOffer"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:textColor="#000000" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:text="@string/weeklyreapeted"
-                android:id="@+id/weeklyrepeat"
-                android:layout_below="@+id/edit_offerNote_modifyOffer"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:paddingTop="20dp" />
-
+                android:textStyle="bold"
+                android:layout_marginBottom="8dp"
+                android:text="@string/available_on"/>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="horizontal"
-                android:layout_below="@+id/weeklyrepeat">
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
 
                 <ToggleButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:id="@+id/lun_Button"
-                    android:textOff= "@string/day_monday"
-                    android:textOn= "@string/day_monday"
-                    android:text="LUN"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="3dp"
+                    android:text="New ToggleButton"
                     android:checked="false"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"/>
+                    android:textOn="@string/monday_abb"
+                    android:textOff="@string/monday_abb"
+                    android:background="@drawable/toggle_selector"
+                    android:id="@+id/lun_Button" />
                 <ToggleButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:id="@+id/mar_Button"
-                    android:textOff= "@string/day_tuedsday"
-                    android:textOn= "@string/day_tuedsday"
-                    android:text="MAR"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="3dp"
+                    android:text="New ToggleButton"
                     android:checked="false"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"/>
+                    android:textOn="@string/tuesday_abb"
+                    android:textOff="@string/tuesday_abb"
+                    android:background="@drawable/toggle_selector"
+                    android:id="@+id/mar_Button" />
                 <ToggleButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:id="@+id/mer_Button"
-                    android:textOff= "@string/day_wednesday"
-                    android:textOn= "@string/day_wednesday"
-                    android:text="MER"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="3dp"
+                    android:text="New ToggleButton"
                     android:checked="false"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"/>
+                    android:textOn="@string/wednesday_abb"
+                    android:textOff="@string/wednesday_abb"
+                    android:background="@drawable/toggle_selector"
+                    android:id="@+id/mer_Button" />
                 <ToggleButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:id="@+id/gio_Button"
-                    android:textOff= "@string/day_thursday"
-                    android:textOn= "@string/day_thursday"
-                    android:text="GIO"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="3dp"
+                    android:text="New ToggleButton"
                     android:checked="false"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"/>
+                    android:textOn="@string/thursday_abb"
+                    android:textOff="@string/thursday_abb"
+                    android:background="@drawable/toggle_selector"
+                    android:id="@+id/gio_Button" />
                 <ToggleButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:id="@+id/ven_Button"
-                    android:textOff= "@string/day_friday"
-                    android:textOn= "@string/day_friday"
-                    android:text="VEN"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="3dp"
+                    android:text="New ToggleButton"
                     android:checked="false"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"/>
+                    android:textOn="@string/friday_abb"
+                    android:textOff="@string/friday_abb"
+                    android:background="@drawable/toggle_selector"
+                    android:id="@+id/ven_Button" />
                 <ToggleButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:id="@+id/sab_Button"
-                    android:textOff= "@string/day_saturday"
-                    android:textOn= "@string/day_saturday"
-                    android:text="SAB"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="3dp"
+                    android:text="New ToggleButton"
                     android:checked="false"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true" />
+                    android:textOn="@string/saturday_abb"
+                    android:textOff="@string/saturday_abb"
+                    android:background="@drawable/toggle_selector"
+                    android:id="@+id/sab_Button" />
                 <ToggleButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:id="@+id/dom_Button"
-                    android:layout_weight="1"
-                    android:textOff= "@string/day_sunday"
-                    android:textOn= "@string/day_sunday"
-                    android:text="DOM"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="3dp"
+                    android:text="New ToggleButton"
                     android:checked="false"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true" />
+                    android:textOn="@string/sunday_abb"
+                    android:textOff="@string/sunday_abb"
+                    android:background="@drawable/toggle_selector"
+                    android:id="@+id/dom_Button" />
+
 
             </LinearLayout>
 
-        </RelativeLayout>
+
+        </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+
+
+        </LinearLayout>
     </ScrollView>
 </LinearLayout>

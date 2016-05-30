@@ -16,15 +16,17 @@ public class Offer {
     private String details;
     private ArrayList<Boolean> availableOn;
     private Boolean isTodayAvailable;
+    private String thumbDownloadLink;
+    private String largeDownloadLink;
 
     public Offer(){
     }
 
-    public Boolean getTodayAvailable() {
+    public Boolean getIsTodayAvailable() {
         return isTodayAvailable;
     }
 
-    public void setTodayAvailable(Boolean todayAvailable) {
+    public void setIsTodayAvailable(Boolean todayAvailable) {
         isTodayAvailable = todayAvailable;
     }
 
@@ -82,5 +84,21 @@ public class Offer {
 
     public void setAvailableOn(ArrayList<Boolean> availableOn) {
         this.availableOn = availableOn;
+    }
+
+    public void setThumbDownloadLink(String downloadLinkThumb) {
+        this.thumbDownloadLink = downloadLinkThumb;
+    }
+
+    public void setLargeDownloadLink(String downloadLinkLarge) {
+        this.largeDownloadLink = downloadLinkLarge;
+    }
+
+    public String getThumbDownloadLink() {
+        return thumbDownloadLink;
+    }
+
+    public String getLargeDownloadLink() {
+        return largeDownloadLink;
     }
 }

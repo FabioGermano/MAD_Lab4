@@ -1,5 +1,6 @@
 package it.polito.mad_lab4.manager;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -47,6 +48,7 @@ public abstract class BaseActivity extends AppCompatActivity{
     private int alertCount = 0;
     private boolean isAlertExpanded = false;
     Toolbar toolbar;
+    private ProgressDialog pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -201,5 +203,17 @@ public abstract class BaseActivity extends AppCompatActivity{
     {
         findViewById(id).bringToFront();
         this.alertDetailsView =(RelativeLayout)findViewById(id);
+    }
+
+    public void showProgressBar(){
+        pd = new ProgressDialog(BaseActivity.this,R.style.DialogTheme);
+        pd.setCancelable(false);
+        pd.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
+        pd.show();
+    }
+
+    public void dismissProgressDialog(){
+        if(pd.isShowing())
+            pd.dismiss();
     }
 }

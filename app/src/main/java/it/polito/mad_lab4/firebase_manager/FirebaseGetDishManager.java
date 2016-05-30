@@ -25,9 +25,11 @@ public class FirebaseGetDishManager implements ValueEventListener {
     private Dish dish;
     private boolean resultReturned = false;
 
+    private DatabaseReference myRef;
+
     public void getDish(final String restaurantId, final String dishId){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("menu/" + restaurantId + "/" + dishId);
+        myRef = database.getReference("menu/" + restaurantId + "/" + dishId);
         myRef.addListenerForSingleValueEvent(this);
     }
 
@@ -62,5 +64,9 @@ public class FirebaseGetDishManager implements ValueEventListener {
                 Log.e(e.getMessage(), e.getMessage());
             }
         }
+    }
+
+    public void terminate() {
+        myRef.removeEventListener(this);
     }
 }

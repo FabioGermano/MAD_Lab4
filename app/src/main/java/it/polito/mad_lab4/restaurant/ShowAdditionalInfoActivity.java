@@ -125,10 +125,6 @@ public class ShowAdditionalInfoActivity extends BaseActivity{
         return new User(null, null, -1);
     }
 
-    @Override
-    protected void filterButton() {
-
-    }
 
     @Override
     protected void ModificaProfilo() {

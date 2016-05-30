@@ -31,10 +31,6 @@ public class Login extends BaseActivity {
         return null;
     }
 
-    @Override
-    protected void filterButton() {
-
-    }
 
     @Override
     protected void ModificaProfilo() {

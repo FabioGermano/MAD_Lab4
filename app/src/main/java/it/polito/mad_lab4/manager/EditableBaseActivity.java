@@ -6,14 +6,14 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
-import it.polito.mad_lab4.R;
+import it.polito.mad_lab4.*;
 
 /**
  * To be extended if actvoty works with floating action buttons (add, edit, delete)
  *
  * @author f.germano
  */
-public abstract class EditableBaseActivity extends BaseActivity {
+public abstract class EditableBaseActivity extends it.polito.mad_lab4.BaseActivity {
 
     private LinearLayout FAB_layout;
     private ImageButton fab_edit, fab_remove, fab_add;

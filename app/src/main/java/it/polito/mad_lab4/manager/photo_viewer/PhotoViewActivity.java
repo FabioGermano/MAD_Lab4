@@ -6,6 +6,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
+import com.bumptech.glide.Glide;
+
+import it.polito.mad_lab4.data.user.User;
 import it.polito.mad_lab4.manager.EditableBaseActivity;
 import it.polito.mad_lab4.R;
 
@@ -16,21 +19,33 @@ public class PhotoViewActivity extends EditableBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        SetSaveButtonVisibility(false);
-        SetCalendarButtonVisibility(false);
-        SetAlertButtonVisibility(false);
-        hideToolbar(true);
-        hideShadow(true);
-
         setContentView(R.layout.activity_photo_view_manager);
 
+        hideToolbar(true);
+        hideToolbarShadow(true);
+        setVisibilityAlert(false);
+        invalidateOptionsMenu();
         InitializeFABButtons(false, true, false);
 
         touchImageView = (TouchImageView)findViewById(R.id.photoView);
 
         getBitmap(getIntent().getExtras());
         setDeleteVisibility(getIntent().getExtras());
+
+    }
+
+    @Override
+    protected User controlloLogin() {
+        return null;
+    }
+
+    @Override
+    protected void ModificaProfilo() {
+
+    }
+
+    @Override
+    protected void ShowPrenotazioni() {
 
     }
 
@@ -42,35 +57,21 @@ public class PhotoViewActivity extends EditableBaseActivity {
 
     private void getBitmap(Bundle savedInstanceState)
     {
+        String largePhotoDownloadLink = savedInstanceState.getString("largePhotoDownloadLink");
         String path = savedInstanceState.getString("photoPath");
 
-        if(path != null) {
+        if(largePhotoDownloadLink == null && path != null) {
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inPreferredConfig = Bitmap.Config.ARGB_8888;
             Bitmap bitmap = BitmapFactory.decodeFile(path, options);
             touchImageView.setImageBitmap(bitmap);
         }
+        else if(largePhotoDownloadLink != null){
+            Glide.with(this).load(largePhotoDownloadLink).into(touchImageView);
+        }
     }
 
-    @Override
-    protected void OnSaveButtonPressed() {
 
-    }
-
-    @Override
-    protected void OnAlertButtonPressed() {
-
-    }
-
-    @Override
-    protected void OnCalendarButtonPressed() {
-
-    }
-
-    @Override
-    protected void OnBackButtonPressed() {
-        finish();
-    }
 
     @Override
     protected void OnDeleteButtonPressed() {

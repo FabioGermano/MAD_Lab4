@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_activity_show_favourites">Preferiti</string>
+    <string name="title_activity_notifications">Notifiche</string>
+    <string name="sunday_abb">D</string>
+    <string name="saturday_abb">S</string>
+    <string name="friday_abb">V</string>
+    <string name="thursday_abb">G</string>
+    <string name="wednesday_abb">M</string>
+    <string name="tuesday_abb">M</string>
+    <string name="monday_abb">L</string>
+    <string name="restaurant_address">Restaurant address</string>
+</resources>

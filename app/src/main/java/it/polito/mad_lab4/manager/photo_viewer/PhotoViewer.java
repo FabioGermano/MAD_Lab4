@@ -1,5 +1,7 @@
 package it.polito.mad_lab4.manager.photo_viewer;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
 import com.soundcloud.android.crop.Crop;
 
 import android.Manifest;
@@ -59,21 +61,10 @@ public class PhotoViewer extends Fragment  implements PhotoDialogListener {
     private boolean storageAllowed = false;
 
     private Bitmap thumb, large;
+    private String largePhotoDownloadLink;
 
     public Bitmap getThumb() {
         return thumb;
-    }
-
-    public byte[] getThumbAsByteArray() {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        thumb.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-        return stream.toByteArray();
-    }
-
-    public byte[] getLargeAsByteArray() {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        large.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-        return stream.toByteArray();
     }
 
     public void setThumb(Bitmap thumb) {
@@ -218,28 +209,37 @@ public class PhotoViewer extends Fragment  implements PhotoDialogListener {
         }
         else if(!this.isLogo && this.isBitmapSetted && !this.isPhotoClicked)
         {
-            this.isPhotoClicked = true;
+            if(largePhotoDownloadLink == null) {
+                this.isPhotoClicked = true;
 
-            String path = Environment.getExternalStorageDirectory().toString();
-            OutputStream fOut = null;
-            File file = new File(path, "image-tran.jpg");
-            try {
-                fOut = new FileOutputStream(file);
+                String path = Environment.getExternalStorageDirectory().toString();
+                OutputStream fOut = null;
+                File file = new File(path, "image-tran.jpg");
+                try {
+                    fOut = new FileOutputStream(file);
 
-                large.compress(Bitmap.CompressFormat.JPEG, 85, fOut);
-                fOut.flush();
-                fOut.close();
+                    large.compress(Bitmap.CompressFormat.JPEG, 85, fOut);
+                    fOut.flush();
+                    fOut.close();
 
+                    Intent intent = new Intent(getActivity(), it.polito.mad_lab4.manager.photo_viewer.PhotoViewActivity.class);
+                    intent.putExtra("photoPath", file.getAbsolutePath());
+                    intent.putExtra("isEditable", this.isEditable);
+
+                    startActivityForResult(intent, VIEW_PHOTO);
+
+                } catch (FileNotFoundException e) {
+                    Log.d(e.getMessage(), e.getMessage(), e);
+                } catch (IOException e) {
+                    Log.d(e.getMessage(), e.getMessage(), e);
+                }
+            }
+            else{
                 Intent intent = new Intent(getActivity(), it.polito.mad_lab4.manager.photo_viewer.PhotoViewActivity.class);
-                intent.putExtra("photoPath", file.getAbsolutePath());
+                intent.putExtra("largePhotoDownloadLink", largePhotoDownloadLink);
                 intent.putExtra("isEditable", this.isEditable);
 
                 startActivityForResult(intent, VIEW_PHOTO);
-
-            } catch (FileNotFoundException e) {
-                Log.d(e.getMessage(), e.getMessage(), e);
-            } catch (IOException e) {
-                Log.d(e.getMessage(), e.getMessage(), e);
             }
         }
     }
@@ -250,14 +250,6 @@ public class PhotoViewer extends Fragment  implements PhotoDialogListener {
      * @param bitmap
      */
     public void setThumbBitmap(Bitmap bitmap) {
-        /*Drawable oldDrawable = this.imgPhoto.getDrawable();
-        if (oldDrawable != null) {
-            Bitmap old = ((BitmapDrawable)oldDrawable).getBitmap();
-            if(old != null)
-            {
-                old.recycle();
-            }
-        }*/
         if(bitmap == null && this.initialImage != -1)
         {
             this.imgPhoto.setImageResource(this.initialImage);
@@ -267,6 +259,17 @@ public class PhotoViewer extends Fragment  implements PhotoDialogListener {
             this.imgPhoto.setImageBitmap(bitmap);
             SetIsBitmapSetted(true);
         }
+    }
+
+    /**
+     * To be called in order to set the bitmap (to be intended as a thumb one - of little dimensions) to the ImageView
+     * given the download image link
+     *
+     * @param url
+     */
+    public void setThumbBitmapByURI(String url) {
+        SetIsBitmapSetted(true);
+        Glide.with(this).load(url).into(this.imgPhoto);
     }
 
     public void setSizeInDP(int DP_width, int DP_height)
@@ -295,6 +298,8 @@ public class PhotoViewer extends Fragment  implements PhotoDialogListener {
                 else{
                     this.setThumbBitmap(thumb);
                 }
+
+                this.largePhotoDownloadLink = null;
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -314,12 +319,16 @@ public class PhotoViewer extends Fragment  implements PhotoDialogListener {
             if(imgFile.exists()){
                 Uri destination = Uri.fromFile(new File(getActivity().getExternalCacheDir(), "cropped"));
                 Crop.of(Uri.parse( imgFile.toURI().toString()), destination).asSquare().start(getActivity(), this);
+
+                this.largePhotoDownloadLink = null;
             }
         }
         else if (requestCode == SELECT_FILE && resultCode == Activity.RESULT_OK) {
             Uri imageUri = data.getData();
             Uri destination = Uri.fromFile(new File(getActivity().getExternalCacheDir(), "cropped"));
             Crop.of(imageUri, destination).asSquare().start(getActivity(), this);
+
+            this.largePhotoDownloadLink = null;
         }
     }
 
@@ -391,7 +400,12 @@ public class PhotoViewer extends Fragment  implements PhotoDialogListener {
     {
         super.onSaveInstanceState(outState);
 
-        outState.putParcelable("thumbImage", ((BitmapDrawable) this.imgPhoto.getDrawable()).getBitmap());
+        if(this.imgPhoto.getDrawable() instanceof BitmapDrawable ){
+            outState.putParcelable("thumbImage", ((BitmapDrawable) this.imgPhoto.getDrawable()).getBitmap());
+        }
+        else {
+            outState.putParcelable("thumbImage", ((GlideBitmapDrawable) this.imgPhoto.getDrawable().getCurrent()).getBitmap());
+        }
     }
 
     private void SetIsBitmapSetted(boolean setted)
@@ -429,6 +443,9 @@ public class PhotoViewer extends Fragment  implements PhotoDialogListener {
 
     }
 
+    public boolean isImageTobeSetted(){
+        return !this.isBitmapSetted;
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -458,4 +475,7 @@ public class PhotoViewer extends Fragment  implements PhotoDialogListener {
         }
     }
 
+    public void setLargePhotoDownloadLink(String largePhotoDownloadLink) {
+        this.largePhotoDownloadLink = largePhotoDownloadLink;
+    }
 }

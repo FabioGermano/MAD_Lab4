@@ -21,7 +21,9 @@ import it.polito.mad_lab4.elaborazioneRicerche.Oggetto_offerteVicine;
 import it.polito.mad_lab4.elaborazioneRicerche.Oggetto_risultatoRicerca;
 import it.polito.mad_lab4.elaborazioneRicerche.RecyclerAdapter_offerteVicine;
 import it.polito.mad_lab4.elaborazioneRicerche.elaborazioneRicerche;
+import it.polito.mad_lab4.manager.MainActivityManager;
 import it.polito.mad_lab4.reservation.user_history.ReservationsHistoryActivity;
+import it.polito.mad_lab4.user.EditUserProfileActivity;
 
 public class MainActivity extends BaseActivity {
 
@@ -66,6 +68,15 @@ public class MainActivity extends BaseActivity {
 
 
         setActivityTitle(getResources().getString(R.string.titolo_main_activity));
+        Button btn = (Button) findViewById(R.id.button2);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent i= new Intent(getApplicationContext(), MainActivityManager.class);
+                startActivity(i);
+            }
+        });
 
         /*
         addReview = (Button) findViewById(R.id.addReview);
@@ -137,15 +148,12 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    @Override
-    protected void filterButton() {
-
-    }
 
     @Override
     protected void ModificaProfilo() {
-        Toast toast = Toast.makeText(getApplicationContext(), "Modifica profilo", Toast.LENGTH_SHORT);
-        toast.show();
+
+        Intent i= new Intent(this, EditUserProfileActivity.class);
+        startActivity(i);
     }
 
     @Override

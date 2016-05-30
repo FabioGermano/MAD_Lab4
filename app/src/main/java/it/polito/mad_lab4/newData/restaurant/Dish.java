@@ -62,11 +62,11 @@ public class Dish {
         this.price = price;
     }
 
-    public Boolean getTodayAvailable() {
+    public Boolean getIsTodayAvailable() {
         return isTodayAvailable;
     }
 
-    public void setTodayAvailable(Boolean todayAvailable) {
+    public void setIsTodayAvailable(Boolean todayAvailable) {
         isTodayAvailable = todayAvailable;
     }
 

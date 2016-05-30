@@ -13,6 +13,25 @@
         <item>€€</item>
         <item>€€€</item>
     </string-array>
+    <string-array name="dishType">
+        <item>@string/first</item>
+        <item>@string/second</item>
+        <item>@string/dessert</item>
+        <item>@string/other</item>
+    </string-array>
+
+    <string-array name="Polito">
+        <item>POLITECNICO di TORINO - Alessandria</item>
+        <item>POLITECNICO di TORINO - Biella</item>
+        <item>POLITECNICO di TORINO - Mondovì</item>
+        <item>POLITECNICO di TORINO - Verrès</item>
+        <item>POLITECNICO di TORINO - Torino - Castello del Valentino</item>
+        <item>POLITECNICO di TORINO - Torino - Lingotto</item>
+        <item>POLITECNICO di TORINO - Torino - Mirafiori</item>
+        <item>POLITECNICO di TORINO - Torino - Sede Centrale, Cittadella Politecnica</item>
+        <item>POLITECNICO di TORINO - Torino - Sede Centrale, Corso Duca degli Abruzzi</item>
+        <item>POLITECNICO di TORINO - Torino - Via Morgari</item>
+    </string-array>
 
     <string-array name="userType">
         <item>@string/student</item>

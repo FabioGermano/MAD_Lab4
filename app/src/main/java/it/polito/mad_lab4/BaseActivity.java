@@ -1,5 +1,6 @@
 package it.polito.mad_lab4;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -24,19 +25,23 @@ import it.polito.mad_lab4.bl.UserBL;
 import it.polito.mad_lab4.data.user.UserSession;
 import it.polito.mad_lab4.data.user.User;
 import it.polito.mad_lab4.login.Login;
+import it.polito.mad_lab4.user.ShowFavouritesActivity;
+import it.polito.mad_lab4.user.UserNotificationsActivity;
 
 public abstract class BaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     protected Toolbar toolbar;
 
     private boolean hideToolbar=false, hideShadow=false, save_visibility=false,
-            calendar_visibility=false, alert_visibility = true, backbutton_visibility=true, filter_visibility=false;
+            calendar_visibility=false,orderby_visibility=false, alert_visibility = true, backbutton_visibility=true, filter_visibility=false;
     private TextView titleTextView, alertCountView;
     String activityTitle =  "Titolo App";
     private View toolbarShadow;
     private boolean useToolbar=true;
 
     private User userInformation;
-
+    private ProgressDialog pd;
+    private int alertCount = 0;
+    private ImageButton saveImageButton, alertButton, calendarButton;
     //per visualizzare o meno, e abilitare, l'icona nella toolbar
     private boolean icona_toolbar = false;
 
@@ -90,10 +95,27 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         this.icona_toolbar = flag;
     }
 
-    protected void setVisibilityFilter(){
-        this.filter_visibility = true;
+    protected void setVisibilityFilter(boolean visible){
+        this.filter_visibility = visible;
     }
 
+    protected void setVisibilityOrderBy(boolean visible){
+        this.orderby_visibility = visible;
+    }
+    protected void setVisibilitySave(boolean visible){
+        this.save_visibility = visible;
+    }
+
+    protected void setVisibilityCalendar(boolean visible){
+        this.calendar_visibility = visible;
+    }
+
+    protected void setVisibilityAlert(boolean visible){
+        this.alert_visibility = visible;
+    }
+    protected boolean getVisibilityAlert(){
+        return alert_visibility;
+    }
     protected void configureBarraLaterale(View view) {
         View header = null;
         //inizializzo menu laterale
@@ -220,12 +242,42 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        toolbar.inflateMenu(R.menu.filter_button_toolbar);
+        toolbar.inflateMenu(R.menu.action_bar);
         final MenuItem filter = menu.findItem(R.id.menu_find);
+        final MenuItem calendar = menu.findItem(R.id.menu_calendar);
+        final MenuItem save = menu.findItem(R.id.menu_save);
+        final MenuItem notify = menu.findItem(R.id.menu_notify);
+        final MenuItem order = menu.findItem(R.id.menu_orderBy);
         filter.setVisible(filter_visibility);
+        calendar.setVisible(calendar_visibility);
+        save.setVisible(save_visibility);
+        notify.setVisible(alert_visibility);
+        order.setVisible(orderby_visibility);
+        if(alert_visibility){
+
+            RelativeLayout notificationLayout = (RelativeLayout) notify.getActionView();
+            alertButton = (ImageButton) notificationLayout.findViewById(R.id.alertButton);
+            alertCountView = (TextView) notificationLayout.findViewById(R.id.alertCountView);
+            View.OnClickListener listener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onOptionsItemSelected(notify);
+                }
+            };
+            alertButton.setOnClickListener(listener);
+            notificationLayout.setOnClickListener(listener);
+            SetAlertCount(4);
+            if(alertCount==0){
+                alertButton.setImageResource(R.drawable.ic_bell_white_48dp);
+            }
+
+
+        }
 
         return super.onCreateOptionsMenu(menu);
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -234,8 +286,10 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
             case android.R.id.home:
                 finish();
                 break;
-            case R.id.menu_find:
-                filterButton();
+            case R.id.menu_notify:
+                //TODO un controllo se sono utente o gestore e recuperare dati diversi
+                Intent i = new Intent(getBaseContext(), UserNotificationsActivity.class);
+                startActivity(i);
                 break;
             default:
                 break;
@@ -244,8 +298,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         return true;
     }
 
-    //serve solo nel menù ricerca per eseguire una ricerca aggiuntiva, lasciatelo quindi pure vuoto
-    protected abstract void filterButton();
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -267,6 +319,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
             Contattaci();
         } else if(id == R.id.nav_bugs_no_login){
             SegnalaBug();
+        } else if(id== R.id.favourites_user){
+            showFavourites();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -278,7 +332,10 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     /*
         Questi metodi, essendo uguali sempre possiamo definirli qui
      */
-
+    private void showFavourites(){
+        Intent i = new Intent(getBaseContext(), ShowFavouritesActivity.class);
+        startActivity(i);
+    }
     private void Contattaci(){
         Toast toast = Toast.makeText(getApplicationContext(), "Contattaci pressed", Toast.LENGTH_SHORT);
         toast.show();
@@ -308,6 +365,11 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         Intent i = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(i);
     }
+    protected void SetAlertCount(int count)
+    {
+        this.alertCount = count;
+        this.alertCountView.setText(String.valueOf(count));
+    }
 
     /******************/
 
@@ -317,4 +379,15 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
      */
     protected abstract void ModificaProfilo();
     protected abstract void ShowPrenotazioni();
+    public void showProgressBar(){
+        pd = new ProgressDialog(BaseActivity.this,R.style.DialogTheme);
+        pd.setCancelable(false);
+        pd.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
+        pd.show();
+    }
+
+    public void dismissProgressDialog(){
+        if(pd.isShowing())
+            pd.dismiss();
+    }
 }

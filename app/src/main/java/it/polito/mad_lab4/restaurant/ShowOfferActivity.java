@@ -111,10 +111,7 @@ public class ShowOfferActivity extends BaseActivity implements PhotoViewerListen
         return new User(null, null, -1);
     }
 
-    @Override
-    protected void filterButton() {
 
-    }
 
     @Override
     protected void ModificaProfilo() {

@@ -62,6 +62,9 @@ public class FoodOrderActivity extends BaseActivity {
         hideToolbar(true);
         hideToolbarShadow(true);
 
+        setVisibilityAlert(false);
+        invalidateOptionsMenu();
+
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
             if(extras == null) {
@@ -183,10 +186,6 @@ public class FoodOrderActivity extends BaseActivity {
 
     }
 
-    @Override
-    protected void filterButton() {
-
-    }
 
     @Override
     protected void ModificaProfilo() {

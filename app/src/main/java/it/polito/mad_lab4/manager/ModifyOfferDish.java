@@ -11,7 +11,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -26,8 +28,11 @@ import java.util.ArrayList;
 
 import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.bl.RestaurantBL;
-import it.polito.mad_lab4.data.restaurant.Offer;
-import it.polito.mad_lab4.data.restaurant.RestaurantEntity;
+import it.polito.mad_lab4.data.user.User;
+import it.polito.mad_lab4.firebase_manager.FirebaseSaveDishManager;
+import it.polito.mad_lab4.firebase_manager.FirebaseSaveOfferManager;
+import it.polito.mad_lab4.newData.restaurant.Offer;
+import it.polito.mad_lab4.firebase_manager.FirebaseGetOfferManager;
 import it.polito.mad_lab4.manager.photo_viewer.PhotoViewer;
 
 /**
@@ -35,122 +40,173 @@ import it.polito.mad_lab4.manager.photo_viewer.PhotoViewer;
  */
 public class ModifyOfferDish extends EditableBaseActivity {
 
-    private Offer offer = null;
+    private Offer offer = new Offer();
     private ArrayList<Offer> offer_list = null;
 
     private int position = -1;
     private boolean newOffer = false;
-    private int restaurantId, offerId;
+    private String restaurantId, offerId;
 
     private String imageLarge = null;
     private String imageThumb = null;
     private PhotoViewer imageViewer;
     private String id_image;
 
+    private FirebaseSaveOfferManager firebaseSaveOfferManager;
+    private FirebaseGetOfferManager firebaseGetOfferManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        SetCalendarButtonVisibility(false);
-        SetSaveButtonVisibility(true);
+
+        setContentView(R.layout.activity_modify_offer);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             checkStoragePermission();
 
-        readData();
+        if(readData()){
+            setActivityTitle(getResources().getString(R.string.title_activity_new_offer));
+        }
+        else{
+            setActivityTitle(getResources().getString(R.string.title_activity_edit_offer));
+        }
         setToolbarColor();
+        setVisibilitySave(true);
+        invalidateOptionsMenu();
 
         imageViewer = (PhotoViewer)getSupportFragmentManager().findFragmentById(R.id.imageOffer_modifyOffer);
     }
 
-    private void readData(){
+    @Override
+    protected User controlloLogin() {
+        return null;
+    }
+
+    @Override
+    protected void ModificaProfilo() {
+
+    }
+
+    @Override
+    protected void ShowPrenotazioni() {
+
+    }
+
+    private boolean readData(){ //return false if editing
         try {
-            boolean error = false;
-            //recupero l'offerta da modificare
             Bundle extras = getIntent().getExtras();
 
-            if (extras == null){
-                //ERRORE! Da verificare
-                this.finish();
-            }
-            else {
+                restaurantId = extras.getString("restaurantId");
+                boolean isEditing = extras.getBoolean("isEditing");
+                offerId = extras.getString("offerId");
 
-                restaurantId = extras.getInt("restaurantId");
-                newOffer = !extras.getBoolean("isEditing");
-
-                    if (newOffer){
-                        //è una nuova offerta --> AGGIUNTA
-                        /*
-                            settaggio dinamico del titolo
-                         */
-                        setContentView(R.layout.activity_modify_offer);
-                        setTitleTextView(getResources().getString(R.string.title_activity_new_offer));
-                        offer = new Offer();
-                        offer.setOfferId(RestaurantBL.getNewOfferId(RestaurantBL.getRestaurantById(getApplicationContext(), restaurantId)));
+                    if (!isEditing){
+                        //setTitleTextView(getResources().getString(R.string.title_activity_new_offer));
+                        newOffer = true;
                         extras.clear();
-                        return;
+                        return true;
                     }
                     else{
-                        //è una modifica
-                        /*
-                            settaggio dinamico del titolo
-                         */
+                        //setTitleTextView(getResources().getString(R.string.title_activity_edit_offer));
 
-                        setContentView(R.layout.activity_modify_offer);
-                        setTitleTextView(getResources().getString(R.string.title_activity_edit_offer));
-
-                        int offerId = extras.getInt("offerId");
-                        extras.clear();
-
-                            offer = RestaurantBL.getRestaurantById(getApplicationContext(), restaurantId).getOfferById(offerId);
-
-                            EditText editName = (EditText) findViewById(R.id.edit_offerName_modifyOffer);
-                            EditText editPrice = (EditText) findViewById(R.id.edit_offerPrice_modifyOffer);
-                            EditText editNotes = (EditText) findViewById(R.id.edit_offerNote_modifyOffer);
-
-                            ToggleButton lunBtn = (ToggleButton) findViewById(R.id.lun_Button);
-                            ToggleButton marBtn = (ToggleButton) findViewById(R.id.mar_Button);
-                            ToggleButton merBtn = (ToggleButton) findViewById(R.id.mer_Button);
-                            ToggleButton gioBtn = (ToggleButton) findViewById(R.id.gio_Button);
-                            ToggleButton venBtn = (ToggleButton) findViewById(R.id.ven_Button);
-                            ToggleButton sabBtn = (ToggleButton) findViewById(R.id.sab_Button);
-                            ToggleButton domBtn = (ToggleButton) findViewById(R.id.dom_Button);
-
-
-                            if (editName != null) {
-                                editName.setText(offer.getOfferName());
-                            }
-
-                            if (editPrice != null) {
-                                editPrice.setText(String.valueOf(offer.getPrice()));
-                            }
-
-                            if (editNotes != null){
-                                editNotes.setText(offer.getDetails());
-                            }
-
-                            if (lunBtn != null){ lunBtn.setChecked(offer.getAvailableOn().get(0)); }
-                            if (marBtn != null){ marBtn.setChecked(offer.getAvailableOn().get(1)); }
-                            if (merBtn != null){ merBtn.setChecked(offer.getAvailableOn().get(2)); }
-                            if (gioBtn != null){ gioBtn.setChecked(offer.getAvailableOn().get(3)); }
-                            if (venBtn != null){ venBtn.setChecked(offer.getAvailableOn().get(4)); }
-                            if (sabBtn != null){ sabBtn.setChecked(offer.getAvailableOn().get(5)); }
-                            if (domBtn != null){ domBtn.setChecked(offer.getAvailableOn().get(6)); }
-
-                            imageThumb = offer.getThumbPath();
-                            imageLarge = offer.getLargePath();
-
+                        getOfferOnFirebase();
                     }
-            }
+
         } catch (Exception e){
             System.out.print("Eccezione: " + e.getMessage());
         }
+        return false;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.menu_save:
+                saveInfo();
+                break;
+            default:
+                break;
+        }
+        return true;
     }
 
+    private void getOfferOnFirebase() {
+        new Thread()
+        {
+            public void run() {
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showProgressBar();
+                    }
+                });
+
+                firebaseGetOfferManager = new FirebaseGetOfferManager();
+                firebaseGetOfferManager.getOffer(restaurantId, offerId);
+                firebaseGetOfferManager.waitForResult();
+                offer = firebaseGetOfferManager.getResult();
+
+                if(offer == null){
+                    Log.e("returned null offer", "resturned null offer");
+                    return;
+                }
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        setOffer();
+                        dismissProgressDialog();
+                    }
+                });
+
+            }
+        }.start();
+    }
+
+    private void setOffer(){
+        EditText editName = (EditText) findViewById(R.id.edit_offerName_modifyOffer);
+        EditText editPrice = (EditText) findViewById(R.id.edit_offerPrice_modifyOffer);
+        EditText editNotes = (EditText) findViewById(R.id.edit_offerNote_modifyOffer);
+
+        ToggleButton lunBtn = (ToggleButton) findViewById(R.id.lun_Button);
+        ToggleButton marBtn = (ToggleButton) findViewById(R.id.mar_Button);
+        ToggleButton merBtn = (ToggleButton) findViewById(R.id.mer_Button);
+        ToggleButton gioBtn = (ToggleButton) findViewById(R.id.gio_Button);
+        ToggleButton venBtn = (ToggleButton) findViewById(R.id.ven_Button);
+        ToggleButton sabBtn = (ToggleButton) findViewById(R.id.sab_Button);
+        ToggleButton domBtn = (ToggleButton) findViewById(R.id.dom_Button);
+
+
+        if (editName != null) {
+            editName.setText(offer.getOfferName());
+        }
+
+        if (editPrice != null) {
+            editPrice.setText(String.valueOf(offer.getPrice()));
+        }
+
+        if (editNotes != null){
+            editNotes.setText(offer.getDetails());
+        }
+
+        if (lunBtn != null){ lunBtn.setChecked(offer.getAvailableOn().get(0)); }
+        if (marBtn != null){ marBtn.setChecked(offer.getAvailableOn().get(1)); }
+        if (merBtn != null){ merBtn.setChecked(offer.getAvailableOn().get(2)); }
+        if (gioBtn != null){ gioBtn.setChecked(offer.getAvailableOn().get(3)); }
+        if (venBtn != null){ venBtn.setChecked(offer.getAvailableOn().get(4)); }
+        if (sabBtn != null){ sabBtn.setChecked(offer.getAvailableOn().get(5)); }
+        if (domBtn != null){ domBtn.setChecked(offer.getAvailableOn().get(6)); }
+
+        if(offer.getThumbDownloadLink() != null) {
+            this.imageViewer.setThumbBitmapByURI(offer.getThumbDownloadLink());
+            this.imageViewer.setLargePhotoDownloadLink(offer.getLargeDownloadLink());
+        }
+    }
 
     private boolean saveInfo(){
-
-        // aggiorno l'oggetto offerta con tutte le nuove informazioni e passo indietro, all'activity di modifica offerta principale, l'intera lista
         try {
             EditText editName = (EditText) findViewById(R.id.edit_offerName_modifyOffer);
             EditText editPrice = (EditText) findViewById(R.id.edit_offerPrice_modifyOffer);
@@ -163,19 +219,10 @@ public class ModifyOfferDish extends EditableBaseActivity {
             ToggleButton sabBtn = (ToggleButton) findViewById(R.id.sab_Button);
             ToggleButton domBtn = (ToggleButton) findViewById(R.id.dom_Button);
 
-            /*
-                piccola modifica per integrità codice, l'oggetto lo modifico solo se ho letto
-                correttamente tutti i campi, senza nessun errore.
-                Altrimenti, teoricamente, posso riempire alcuni campi si e altri no (nulla di che)
-             */
             String nomeO;
             int priceO;
             String notesO;
 
-            /* ##################################
-                 Lettura campi dalla schermata
-               ##################################
-             */
             if (editName != null) {
                 nomeO = editName.getText().toString();
                 if(nomeO.compareTo("")==0){
@@ -183,8 +230,6 @@ public class ModifyOfferDish extends EditableBaseActivity {
                     printAlert(getResources().getString(R.string.error_complete));
                     return false;
                 }
-                //else
-                    //offer.setName(text);
             } else {
                 //errore
                 printAlert(getResources().getString(R.string.exceptionError));
@@ -195,7 +240,6 @@ public class ModifyOfferDish extends EditableBaseActivity {
                 String price =  editPrice.getText().toString();
                 if (price.compareTo("") != 0) {
                     priceO = Integer.parseInt(price);
-                    //offer.setCost(cost);
                 }
                 else {
                     //campo vuoto
@@ -216,47 +260,44 @@ public class ModifyOfferDish extends EditableBaseActivity {
                     printAlert(getResources().getString(R.string.error_complete));
                     return false;
                 }
-                //else
-                    //offer.setNote(notes);
             } else {
-                //errore
                 printAlert(getResources().getString(R.string.exceptionError));
                 return false;
             }
 
-            boolean[] days = new boolean[7];
+            ArrayList<Boolean> days = new ArrayList<>();
 
-            if (lunBtn != null){ days[0] = lunBtn.isChecked(); } else {
+            if (lunBtn != null){ days.add(lunBtn.isChecked()); } else {
                 //errore
                 printAlert(getResources().getString(R.string.exceptionError));
                 return false;
             }
-            if (marBtn != null){ days[1] = marBtn.isChecked(); } else {
+            if (marBtn != null){ days.add(marBtn.isChecked()); } else {
                 //errore
                 printAlert(getResources().getString(R.string.exceptionError));
                 return false;
             }
-            if (merBtn != null){ days[2] = merBtn.isChecked(); } else {
+            if (merBtn != null){ days.add(merBtn.isChecked()); } else {
                 //errore
                 printAlert(getResources().getString(R.string.exceptionError));
                 return false;
             }
-            if (gioBtn != null){ days[3] = gioBtn.isChecked(); } else {
+            if (gioBtn != null){ days.add(gioBtn.isChecked()); } else {
                 //errore
                 printAlert(getResources().getString(R.string.exceptionError));
                 return false;
             }
-            if (venBtn != null){ days[4] = venBtn.isChecked(); } else {
+            if (venBtn != null){ days.add(venBtn.isChecked()); } else {
                 //errore
                 printAlert(getResources().getString(R.string.exceptionError));
                 return false;
             }
-            if (sabBtn != null){ days[5] = sabBtn.isChecked(); } else {
+            if (sabBtn != null){ days.add(sabBtn.isChecked()); } else {
                 //errore
                 printAlert(getResources().getString(R.string.exceptionError));
                 return false;
             }
-            if (domBtn != null){ days[6] = domBtn.isChecked(); } else {
+            if (domBtn != null){ days.add(domBtn.isChecked()); } else {
                 //errore
                 printAlert(getResources().getString(R.string.exceptionError));
                 return false;
@@ -267,14 +308,11 @@ public class ModifyOfferDish extends EditableBaseActivity {
             offer.setDetails(notesO);
 
             offer.setAvailableOn(days);
-            offer.setThumbPath(imageThumb);
-            offer.setLargePath(imageLarge);
+            //offer.setThumbPath(imageThumb);
+            //offer.setLargePath(imageLarge);
 
-            if(newOffer){
-                RestaurantBL.getRestaurantById(getApplicationContext(), restaurantId).getOffers().add(offer);
-            }
+            saveOffer(restaurantId, newOffer);
 
-            RestaurantBL.saveChanges(getApplicationContext());
             return true;
 
         } catch (Exception e){
@@ -283,6 +321,53 @@ public class ModifyOfferDish extends EditableBaseActivity {
 
             return false;
         }
+    }
+
+    private void saveOffer(final String restaurantId, final boolean newOffer) {
+        new Thread()
+        {
+            public void run() {
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showProgressBar();
+                    }
+                });
+
+                firebaseSaveOfferManager = new FirebaseSaveOfferManager();
+                firebaseSaveOfferManager.saveOffer(restaurantId,
+                        newOffer,
+                        offer,
+                        !imageViewer.isImageTobeSetted(),
+                        imageViewer.getThumb(),
+                        imageViewer.getLarge());
+
+                boolean res = firebaseSaveOfferManager.waitForResult();
+
+                if(!res){
+                    Log.e("Error saving the dish", "Error saving the dish");
+                    return;
+                }
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        dismissProgressDialog();
+
+                        Toast toast = Toast.makeText(getApplicationContext(), R.string.dataSaved, Toast.LENGTH_SHORT);
+                        toast.show();
+
+                        Intent intent = new Intent(getApplicationContext(), GestioneOfferte.class);
+                        startActivity(intent);
+
+                        finish();
+                    }
+                });
+
+            }
+        }.start();
     }
 
     private void printAlert(String msg){
@@ -320,37 +405,6 @@ public class ModifyOfferDish extends EditableBaseActivity {
 
     @Override
     protected void OnAddButtonPressed() {
-
-    }
-
-    @Override
-    protected void OnSaveButtonPressed() {
-
-        boolean ris = saveInfo();
-        if(ris) {
-            Toast toast = Toast.makeText(getApplicationContext(), R.string.dataSaved, Toast.LENGTH_SHORT);
-            toast.show();
-
-            Bundle b = new Bundle();
-            b.putSerializable("offer_list", offer_list);
-            Intent intent = new Intent(getApplicationContext(), GestioneOfferte.class);
-            intent.putExtras(b);
-            startActivity(intent);
-        }
-    }
-
-    @Override
-    protected void OnAlertButtonPressed() {
-
-    }
-
-    @Override
-    protected void OnCalendarButtonPressed() {
-
-    }
-
-    @Override
-    protected void OnBackButtonPressed() {
 
     }
 

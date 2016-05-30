@@ -13,6 +13,16 @@
         app:showAsAction="always"
         android:icon="@drawable/ic_date_range_white_48dp"/>
 
+    <item android:id="@+id/menu_find"
+        android:title="@string/search"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_filter_white"
+        />
+
+    <item android:id="@+id/menu_orderBy"
+        android:title="@string/orderBy"
+        app:showAsAction="always"
+        android:icon="@android:drawable/ic_menu_sort_by_size" />
     <item android:id="@+id/menu_notify"
         app:actionLayout="@layout/ab_notification_icon"
         app:showAsAction="always"

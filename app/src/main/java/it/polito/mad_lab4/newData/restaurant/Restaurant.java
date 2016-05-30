@@ -24,7 +24,8 @@ public class Restaurant {
     private boolean wifi, reservations, seatsOutside, parking, music, creditCard, bancomat;
     private boolean isTakeAway, isOnPlace;
     private int distance;
-    private int numReviews, totRanking;
+    private int numReviews;
+    private float totRanking;
     private int numDishesAndOffers, totDishesAndOffers;
     private String restaurantName;
     private String restaurantId;
@@ -32,7 +33,9 @@ public class Restaurant {
     public Restaurant(){
 
     }
-
+    public float getRanking(){
+        return totRanking/numReviews;
+    }
     public String getAddress() {
         return address;
     }
@@ -169,12 +172,8 @@ public class Restaurant {
         this.numReviews = numReviews;
     }
 
-    public int getTotRanking() {
+    public float getTotRanking() {
         return totRanking;
-    }
-
-    public void setTotRanking(int totRanking) {
-        this.totRanking = totRanking;
     }
 
     public int getNumDishesAndOffers() {
@@ -207,5 +206,9 @@ public class Restaurant {
 
     public void setRestaurantId(String restaurantId) {
         this.restaurantId = restaurantId;
+    }
+
+    public void setTotRanking(float totRanking) {
+        this.totRanking = totRanking;
     }
 }

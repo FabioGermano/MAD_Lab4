@@ -8,147 +8,120 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import it.polito.mad_lab4.R;
-import it.polito.mad_lab4.bl.RestaurantBL;
-import it.polito.mad_lab4.data.restaurant.Offer;
+import it.polito.mad_lab4.common.EmptyRecyclerView;
+import it.polito.mad_lab4.data.user.User;
+import it.polito.mad_lab4.firebase_manager.FirebaseOfferListManager;
+import it.polito.mad_lab4.newData.restaurant.Offer;
 
 public class GestioneOfferte extends EditableBaseActivity {
-    private ArrayList<Offer> lista_offerte = null;
+    private ArrayList<Offer> lista_offerte = new ArrayList<>();;
     private JSONObject jsonRootObject;
     private boolean availability_mode = false;
+    private RecyclerAdapter_offerte myAdapter;
+    private DatabaseReference offersReference;
+    private FirebaseOfferListManager firebaseOfferListManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        SetSaveButtonVisibility(false);
-        SetCalendarButtonVisibility(false);
-        SetSaveButtonVisibility(false);
-        SetAlertButtonVisibility(true);
 
         setContentView(R.layout.activity_gestione_offerte);
         setToolbarColor();
-        setTitleTextView(getResources().getString(R.string.title_activity_edit_offers));
+        setActivityTitle(getResources().getString(R.string.title_activity_edit_offers));
         InitializeFABButtons(false, false, true);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             checkStoragePermission();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
 
         try {
-            //recupero eventuali modifiche apportate ad un piatto
-            /*Bundle extras = getIntent().getExtras();
-            if (extras != null) {
-                lista_offerte = (ArrayList<Oggetto_offerta>) extras.getSerializable("lista_offerte");
-                extras.clear();
-                if (lista_offerte == null) {
-                    boolean ris = readData();
-                }
-
-            } else {
-                //altrimenti carico info dal server (o da locale)
-                boolean ris = readData();
-            }*/
-
-            readOffers();
-
             setUpRecyclerView();
+            readOffers();
         } catch(Exception e){
             System.out.println("Eccezione: " + e.getMessage());
         }
     }
 
-    private void readOffers() {
+    @Override
+    protected void onStop() {
+        super.onStop();
 
-        lista_offerte = RestaurantBL.getRestaurantById(getApplicationContext(), 1).getOffers();
+        firebaseOfferListManager.detachListeners();
     }
 
-    /*private boolean readData(){
-        try{
+    @Override
+    protected User controlloLogin() {
+        return null;
+    }
 
-            lista_offerte = new ArrayList<>();
+    @Override
+    protected void ModificaProfilo() {
 
-            GestioneDB DB = new GestioneDB();
-            String db = DB.leggiDB(this, "db_offerte");
+    }
 
-            if (db != null){
-                System.out.println("Leggo le offerte");
-                jsonRootObject = new JSONObject(db);
+    @Override
+    protected void ShowPrenotazioni() {
 
-                //Get the instance of JSONArray that contains JSONObjects
-                JSONArray arrayDebug = jsonRootObject.optJSONArray("lista_offerte");
+    }
 
-                //Iterate the jsonArray and print the info of JSONObjects
-                for(int i=0; i < arrayDebug.length(); i++) {
-                    JSONObject jsonObject = arrayDebug.getJSONObject(i);
+    private void readOffers() {
+        showProgressBar();
 
-                    String nome = jsonObject.optString("nome");
-                    int prezzo = Integer.parseInt(jsonObject.optString("prezzo"));
-                    String note = jsonObject.optString("note");
-                    String thumb = jsonObject.optString("foto_thumb");
-                    String large = jsonObject.optString("foto_large");
+        new Thread() {
+            public void run() {
 
-                    boolean days[] = new boolean[7];
-                    days[0] = jsonObject.optBoolean("lun");
-                    days[1] = jsonObject.optBoolean("mar");
-                    days[2] = jsonObject.optBoolean("mer");
-                    days[3] = jsonObject.optBoolean("gio");
-                    days[4] = jsonObject.optBoolean("ven");
-                    days[5] = jsonObject.optBoolean("sab");
-                    days[6] = jsonObject.optBoolean("dom");
+                firebaseOfferListManager = new FirebaseOfferListManager();
+                firebaseOfferListManager.setAdapter(myAdapter);
+                firebaseOfferListManager.startGetList(lista_offerte, "-KIrgaSxr9VhHllAjqmp");
+                firebaseOfferListManager.waitForResult();
 
-                    //creo la lista delle offerte
-                    Oggetto_offerta obj = new Oggetto_offerta(nome, prezzo, days);
-                    obj.setId(Integer.parseInt(jsonObject.optString("id")));
-                    obj.setNote(note);
-                    obj.setPhoto(thumb, large);
-                    lista_offerte.add(obj);
-                    System.out.println("Offerta aggiunta");
-                }
-                if(lista_offerte.isEmpty())
-                    System.out.println("La lista è vuota");
-                return true;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        dismissProgressDialog();
+                    }
+                });
             }
-            else {
-                return false;
-            }
+        }.start();
+    }
 
-        }catch (JSONException e){
-            System.out.println("Eccezione: " + e.getMessage());
-            return false;
-        } catch (Exception e){
-            System.out.println("Eccezione: " + e.getMessage());
-            return false;
-        }
-    }*/
 
     //imposto la lista di tutte le offerte
     private void setUpRecyclerView(){
-        System.out.println("Imposto CardView e adapter");
-        RecyclerView rView = (RecyclerView) findViewById(R.id.recyclerView_offerte);
+        EmptyRecyclerView rView = (EmptyRecyclerView) findViewById(R.id.recyclerView_offerte);
 
-        RecyclerAdapter_offerte myAdapter = new RecyclerAdapter_offerte(this, lista_offerte, availability_mode);
+        myAdapter = new RecyclerAdapter_offerte(this, lista_offerte, availability_mode);
         if(rView != null) {
+
+            View emptyView = findViewById(R.id.empty_view);
+            rView.setEmptyView(emptyView);
             rView.setAdapter(myAdapter);
 
             LinearLayoutManager myLLM_vertical = new LinearLayoutManager(this);
@@ -163,31 +136,12 @@ public class GestioneOfferte extends EditableBaseActivity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (Integer.parseInt(Build.VERSION.SDK) > 5  && keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0)
         {
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            Intent intent = new Intent(getApplicationContext(), MainActivityManager.class);
             startActivity(intent);
+            finish();
             return true;
         }
         return super.onKeyDown(keyCode, event);
-    }
-
-    @Override
-    protected void OnSaveButtonPressed() {
-        //in questa schermata è disabilitato
-    }
-
-    @Override
-    protected void OnAlertButtonPressed() {
-        //vai alla lista delle prenotazioni
-    }
-
-    @Override
-    protected void OnCalendarButtonPressed() {
-        //in questa schermata è disabilitato
-    }
-
-    @Override
-    protected void OnBackButtonPressed() {
-
     }
 
     @Override
@@ -204,7 +158,7 @@ public class GestioneOfferte extends EditableBaseActivity {
     protected void OnAddButtonPressed() {
         Intent intent = new Intent(getApplicationContext(), ModifyOfferDish.class);
         Bundle b = new Bundle();
-        b.putInt("restaurantId", 1);
+        b.putString("restaurantId", "-KIrgaSxr9VhHllAjqmp");
         b.putBoolean("isEditing", false);
         intent.putExtras(b);
         startActivity(intent);
