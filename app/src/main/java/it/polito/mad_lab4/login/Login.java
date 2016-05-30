@@ -95,12 +95,6 @@ public class Login extends BaseActivity {
             final EditText passwordET = (EditText) findViewById(R.id.passwordET);
             final EditText usernameET = (EditText) findViewById(R.id.usernameET);
 
-        /*User userInfo = UserBL.findUserByUsernamePassword(getApplicationContext(), usernameET.getText().toString(), passwordET.getText().toString());
-        if(userInfo == null){
-            Toast.makeText(getApplicationContext(), "Incorrect credentials", Toast.LENGTH_LONG).show();
-            return;
-        }*/
-
             //Eseguire controlli su stringhe
             if (passwordET != null && usernameET != null) {
                 String userN = usernameET.getText().toString();
@@ -155,17 +149,6 @@ public class Login extends BaseActivity {
             // imposto un timeout per ogni evenienza
             timerDelayRemoveDialog(6000);
 
-            /*
-            // Scarica info base utente e in base al tipo di utente ritorna alla schermata appropriata
-
-            UserSession.userId = userInfo.getUserId();
-
-            Bundle b = new Bundle();
-            b.putSerializable("userInfo", userInfo);
-
-            Intent i = new Intent(getApplicationContext(), MainActivity.class);
-            i.putExtras(b);
-            startActivity(i);*/
         } catch (Exception e){
             if(progressDialog != null){
                 progressDialog.dismiss();

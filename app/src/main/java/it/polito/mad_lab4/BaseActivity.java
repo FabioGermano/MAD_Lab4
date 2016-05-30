@@ -151,17 +151,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
 
                 final NavigationView navigationView = (NavigationView) view.findViewById(R.id.nav_view);
 
-                //controllo se l'utente è collegato e decido quale menu/header visualizzare
-                /*boolean login;
-                FirebaseUser user = mAuth.getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                    System.out.println("--------------------------> utente connesso");
-                    login = true;
-                } else {
-                    System.out.println("--------------------------> utente non connesso");
-                    login = false;
-                }*/
                 if(navigationView != null) {
                     mAuthListener = new FirebaseAuth.AuthStateListener() {
                         @Override
@@ -178,32 +167,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                         }
                     };
                 }
-
-                /*if (login) {
-                    // scarico info dal server e imposto evento per riempire la schermata con i dati utente
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    DatabaseReference mDatabase = database.getReference();
-                    final String userId = user.getUid();
-                    mDatabase.child("users").child(userId).addListenerForSingleValueEvent(
-                            new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    // Get user value e utilizzo i dati
-                                    infoUser = dataSnapshot.getValue(User.class);
-                                    riempiBarraLaterale(navigationView);
-                                }
-
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-                                }
-                            });
-                }
-
-                if (navigationView != null && !login) {
-                    navigationView.inflateMenu(R.menu.activity_drawer_no_login);
-                    navigationView.setNavigationItemSelectedListener(this);
-                    //header = navigationView.getHeaderView(0); //non serve
-                }*/
             }
         } catch(Exception e){
             System.out.println(e.getMessage());
@@ -409,6 +372,9 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                 Toast.makeText(getApplicationContext(), "prenotazioni client", Toast.LENGTH_LONG).show();
                 //ShowPrenotazioni();
                 break;
+            case R.id.favourites_client:
+                showFavourites();
+                break;
             //MANAGER
             case R.id.mod_profilo_manager:
                 Toast.makeText(getApplicationContext(), "profilo manager", Toast.LENGTH_LONG).show();
@@ -437,9 +403,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                 break;
             case R.id.nav_bugs:
                 SegnalaBug();
-                break;
-            case R.id.favourites_user:
-                showFavourites();
                 break;
         }
 

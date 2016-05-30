@@ -45,6 +45,7 @@
     <string name="contattaci">Contattaci</string>
     <string name="segnala_problema">Segnala Problema</string>
     <string name="esegui_login">Esegui Login</string>
+    <string name="favoriti">Favourites</string>
     <string name="title_activity_scrolling">ScrollingActivity</string>
     <string name="logout">Logout</string>
 

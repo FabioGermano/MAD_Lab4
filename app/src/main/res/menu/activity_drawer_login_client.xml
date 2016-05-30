@@ -9,8 +9,8 @@
             android:id="@+id/prenotazioni_client"
             android:title="@string/prenotazioni" />
         <item
-            android:id="@+id/favourites_user"
-            android:title="@string/prenotazioni" />
+            android:id="@+id/favourites_client"
+            android:title="@string/favoriti" />
         <item
             android:id="@+id/logout_user"
             android:title="@string/logout" />
