@@ -400,11 +400,15 @@ public class PhotoViewer extends Fragment  implements PhotoDialogListener {
     {
         super.onSaveInstanceState(outState);
 
-        if(this.imgPhoto.getDrawable() instanceof BitmapDrawable ){
-            outState.putParcelable("thumbImage", ((BitmapDrawable) this.imgPhoto.getDrawable()).getBitmap());
+        try {
+            if (this.imgPhoto.getDrawable() instanceof BitmapDrawable) {
+                outState.putParcelable("thumbImage", ((BitmapDrawable) this.imgPhoto.getDrawable()).getBitmap());
+            } else {
+                outState.putParcelable("thumbImage", ((GlideBitmapDrawable) this.imgPhoto.getDrawable().getCurrent()).getBitmap());
+            }
         }
-        else {
-            outState.putParcelable("thumbImage", ((GlideBitmapDrawable) this.imgPhoto.getDrawable().getCurrent()).getBitmap());
+        catch(Exception e){
+           Log.e(e.getMessage(), e.getMessage());
         }
     }
 

@@ -54,9 +54,12 @@ public class GestioneOfferte extends EditableBaseActivity {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             checkStoragePermission();
+
+        setUpRecyclerView();
+        readOffers();
     }
 
-    @Override
+    /*@Override
     public void onStart() {
         super.onStart();
 
@@ -73,7 +76,7 @@ public class GestioneOfferte extends EditableBaseActivity {
         super.onStop();
 
         firebaseOfferListManager.detachListeners();
-    }
+    }*/
 
     @Override
     protected void ModificaProfilo() {

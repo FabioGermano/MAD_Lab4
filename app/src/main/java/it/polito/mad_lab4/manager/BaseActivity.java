@@ -205,15 +205,5 @@ public abstract class BaseActivity extends AppCompatActivity{
         this.alertDetailsView =(RelativeLayout)findViewById(id);
     }
 
-    public void showProgressBar(){
-        pd = new ProgressDialog(BaseActivity.this,R.style.DialogTheme);
-        pd.setCancelable(false);
-        pd.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
-        pd.show();
-    }
 
-    public void dismissProgressDialog(){
-        if(pd.isShowing())
-            pd.dismiss();
-    }
 }
