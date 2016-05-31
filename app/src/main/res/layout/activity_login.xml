@@ -237,6 +237,7 @@
                 style="?android:attr/borderlessButtonStyle"
                 android:background="@drawable/mybutton"
                 android:textColor="@color/white"
+                android:padding="10dp"
                 />
         </LinearLayout>
     </android.support.v7.widget.CardView>
@@ -369,6 +370,8 @@
                 style="?android:attr/borderlessButtonStyle"
                 android:background="@drawable/mybutton"
                 android:textColor="@color/white"
+                android:padding="10dp"
+
                 />
         </LinearLayout>
     </android.support.v7.widget.CardView>

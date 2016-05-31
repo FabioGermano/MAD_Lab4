@@ -59,9 +59,14 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
 
     private User infoUser = null;
 
+    private boolean alreadyNotified;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mAuth = FirebaseAuth.getInstance();
+        alreadyNotified = false;
 
         /*if (isLargeDevice(getBaseContext())) {
             this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
@@ -69,6 +74,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
             this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }*/
     }
+
     public boolean isLargeDevice(Context context) {
         int screenLayout = context.getResources().getConfiguration().screenLayout;
         screenLayout &= Configuration.SCREENLAYOUT_SIZE_MASK;
@@ -88,7 +94,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     @Override
     public void setContentView(int layoutResID) {
         View view = getLayoutInflater().inflate(layoutResID, null);
-        mAuth = FirebaseAuth.getInstance();
         configureToolbar(view);
         super.setContentView(view);
         configureBarraLaterale(view);
@@ -156,13 +161,17 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                         @Override
                         public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                             FirebaseUser user = firebaseAuth.getCurrentUser();
-                            if (user != null) {
+                            if (user != null && !alreadyNotified) {
                                 // User is signed in
                                 System.out.println("--------------------------> utente connesso");
+                                alreadyNotified = true;
+                                mAuth.removeAuthStateListener(mAuthListener);
                                 caricaUtenteLoggato(user, navigationView);
-                            } else {
-                                caricaUtenteDefault(navigationView);
+                            } else if (!alreadyNotified){
                                 System.out.println("--------------------------> utente non connesso");
+                                alreadyNotified = true;
+                                mAuth.removeAuthStateListener(mAuthListener);
+                                caricaUtenteDefault(navigationView);
                             }
                         }
                     };
@@ -175,6 +184,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     }
 
     private void caricaUtenteDefault(final NavigationView navigationView) {
+        navigationView.getMenu().clear();
         navigationView.inflateMenu(R.menu.activity_drawer_no_login);
         navigationView.setNavigationItemSelectedListener(this);
     }
@@ -205,10 +215,12 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         try {
             if (infoUser.getUserType().compareTo("C") == 0) {
                 //CLIENT
+                navigationView.getMenu().clear();
                 navigationView.inflateMenu(R.menu.activity_drawer_login_client);
 
             } else if (infoUser.getUserType().compareTo("M") == 0) {
                 //MANAGER
+                navigationView.getMenu().clear();
                 navigationView.inflateMenu(R.menu.activity_drawer_login_manager);
             }
 
@@ -448,6 +460,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         Intent i = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(i);
     }
+
     protected void SetAlertCount(int count)
     {
         this.alertCount = count;

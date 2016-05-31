@@ -34,7 +34,7 @@
     <string name="cancel">Annulla</string>
     <string name="chose_library">Scegli dalla galleria</string>
     <string name="click_stars">Tocca le stelle per valutare il ritorante</string>
-    <string name="client_registrazione"></string>
+    <string name="client_registrazione">Cliente</string>
     <string name="closed">Chiuso</string>
     <string name="closed_restaurant">Il ristorante è chiuso</string>
     <string name="contattaci">Contattaci</string>
@@ -86,7 +86,7 @@
     <string name="logout_message">Non sei più loggato</string>
     <string name="make_reservation">Nuova prenotazione</string>
     <string name="male">Maschio</string>
-    <string name="manager_registrazione"></string>
+    <string name="manager_registrazione">Manager</string>
     <string name="march">Marzo</string>
     <string name="may">Maggio</string>
     <string name="modifica_profilo">Modifica profilo</string>

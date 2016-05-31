@@ -35,11 +35,14 @@ public class Login extends BaseActivity {
 
     private TextView msgLoginFallito;
 
+    private boolean alreadyNotified;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        alreadyNotified = false;
 
         setActivityTitle(getResources().getString(R.string.login_title));
         setToolbarColor();
@@ -54,14 +57,17 @@ public class Login extends BaseActivity {
                 @Override
                 public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                     FirebaseUser user = firebaseAuth.getCurrentUser();
-                    if (user != null) {
+
+                    if (user != null && !alreadyNotified) {
                         // User is signed in
+                        alreadyNotified = true;
                         if (progressDialog != null) {
                             progressDialog.dismiss();
                             progressDialog = null;
                         }
-                        Toast.makeText(getApplicationContext(), "authentication succed", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "authentication succeed", Toast.LENGTH_SHORT).show();
                         Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                        mAuth.removeAuthStateListener(mAuthListener);
                         startActivity(i);
                     }
                 }
@@ -177,13 +183,14 @@ public class Login extends BaseActivity {
 
     public void nuovaRegistrazione(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
         builder.setMessage(getResources().getString(R.string.user_type_registrazione))
-                .setCancelable(false)
                 .setPositiveButton(getResources().getString(R.string.client_registrazione), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         Toast.makeText(Login.this, "Client", Toast.LENGTH_SHORT).show();
                         defaultLogin.setVisibility(View.GONE);
                         newClient.setVisibility(View.VISIBLE);
+                        setActivityTitle("Registrazione Cliente");
                     }
                 })
                 .setNegativeButton(getResources().getString(R.string.manager_registrazione), new DialogInterface.OnClickListener() {
@@ -191,6 +198,8 @@ public class Login extends BaseActivity {
                         Toast.makeText(Login.this, "Manager", Toast.LENGTH_SHORT).show();
                         defaultLogin.setVisibility(View.GONE);
                         newManager.setVisibility(View.VISIBLE);
+                        setActivityTitle("Registrazione Ristorante");
+
                     }
                 });
         AlertDialog alert = builder.create();
@@ -227,13 +236,12 @@ public class Login extends BaseActivity {
         switch (view.getId()){
             case R.id.loginReturn_client:
                 newClient.setVisibility(View.GONE);
-                defaultLogin.setVisibility(View.VISIBLE);
                 break;
             case R.id.loginReturn_manager:
                 newManager.setVisibility(View.GONE);
-                defaultLogin.setVisibility(View.VISIBLE);
                 break;
-
         }
+        defaultLogin.setVisibility(View.VISIBLE);
+        setActivityTitle("Login");
     }
 }
