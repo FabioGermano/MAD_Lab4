@@ -211,7 +211,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
 
     private void riempiBarraLaterale(NavigationView navigationView){
         View header;
-        System.out.println("--------------------------> Aggiungo il menu della barra laterale");
         try {
             if (infoUser.getUserType().compareTo("C") == 0) {
                 //CLIENT

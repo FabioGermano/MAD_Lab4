@@ -10,6 +10,12 @@ public class User {
     public User(){
     }
 
+    public User(String name, String userType) {
+        this.name = name;
+        this.userType = userType;
+    }
+
+
     public String getName() {
         return name;
     }

@@ -172,6 +172,9 @@
     <string name="nessun_risultato">No restaurants found</string>
     <string name="timeout_expired">Timeout expired</string>
     <string name="login_failed">Incorrect username or password, please retry</string>
+    <string name="check_pwd">Passwords doesn\'t correspond!</string>
+    <string name="wrong_email_format">Wrong email format!</string>
+    <string name="pwd_too_short">Password too short! Use at least 6 characters.</string>
 
 
     <string name="seats_string">seats</string>

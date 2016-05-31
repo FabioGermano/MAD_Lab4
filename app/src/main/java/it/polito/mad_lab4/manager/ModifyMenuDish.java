@@ -211,6 +211,7 @@ public class ModifyMenuDish extends EditableBaseActivity {
             }
         }.start();
     }
+
     private void showDialogType(int i){
         android.support.v7.app.AlertDialog dialog;
 

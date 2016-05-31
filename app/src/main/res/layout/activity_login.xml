@@ -207,11 +207,20 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/università_registrazione"/>
+                            <Spinner
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/spinner_university_client"
+                                android:popupBackground="@color/white"
+                                android:layout_weight="1">
+                            </Spinner>
+                            <!--
                             <EditText
                                 android:id="@+id/univerityNA_client"
                                 android:layout_marginLeft="8dp"
                                 android:layout_width="200dp"
                                 android:layout_height="wrap_content" />
+                                -->
                         </TableRow>
 
                     </TableLayout>
