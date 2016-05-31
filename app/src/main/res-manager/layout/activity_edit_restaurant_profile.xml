@@ -34,7 +34,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         custom:isEditable="true"
-                        custom:isLogo="false"
+                        custom:isLogo="true"
                         custom:heightInDP="200"
                         custom:widthInDP="200"
                         custom:initialBackground="@drawable/ic_account_circle_white_48dp"

@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -33,15 +34,17 @@ import java.util.ArrayList;
 import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.data.restaurant.DishTypeConverter;
 import it.polito.mad_lab4.data.user.User;
+import it.polito.mad_lab4.firebase_manager.FirebaseMenuListManager;
 import it.polito.mad_lab4.newData.restaurant.Dish;
 import it.polito.mad_lab4.data.restaurant.DishType;
 
 public class  GestioneMenu extends EditableBaseActivity {
 
     //private ArrayList<Oggetto_piatto> list_piatti = new ArrayList<>();
-    private Oggetto_menu lista_menu = null;
+    private Oggetto_menu lista_menu = new Oggetto_menu();
     private boolean availability_mode=false;
     private BlankMenuFragment[] fragments = new BlankMenuFragment[4];
+    private FirebaseMenuListManager firebaseMenuListManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,47 +60,13 @@ public class  GestioneMenu extends EditableBaseActivity {
             checkStoragePermission();
 
         try {
-            readMenu();
+            //readMenu();
 
             // Get the ViewPager and set it's PagerAdapter so that it can display items
             ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager_menu);
             MyPageAdapter pagerAdapter = new MyPageAdapter(getSupportFragmentManager(), GestioneMenu.this);
             if (viewPager != null) {
                 viewPager.setAdapter(pagerAdapter);
-
-                viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-
-                    public void onPageScrollStateChanged(int arg0) {
-                    }
-
-                    public void onPageScrolled(int arg0, float arg1, int arg2) {
-                    }
-
-                    public void onPageSelected(int currentPage) {
-                        //currentPage is the position that is currently displayed.
-                        switch(currentPage){
-                            case 0:
-                                // sono nei primi
-                                modificaSchermata(lista_menu.getPrimi());
-
-                                break;
-                            case 1:
-                                // sono nei secondi
-                                modificaSchermata(lista_menu.getSecondi());
-                                break;
-                            case 2:
-                                // sono nei dessert
-                                modificaSchermata(lista_menu.getDessert());
-                                break;
-                            case 3:
-                                // sono in altro
-                                modificaSchermata(lista_menu.getAltro());
-                                break;
-
-                        }
-                    }
-
-                });
             }
 
             // Give the TabLayout the ViewPager
@@ -114,6 +83,18 @@ public class  GestioneMenu extends EditableBaseActivity {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        readMenu();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        firebaseMenuListManager.detachListeners();
+    }
+
+    @Override
     protected void ModificaProfilo() {
 
     }
@@ -124,95 +105,38 @@ public class  GestioneMenu extends EditableBaseActivity {
     }
 
     private void readMenu() {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        lista_menu.clearAll();
+        for(int i = 0; i<4; i++) {
+            if(fragments[i] != null) {
+                fragments[i].getAdapter().notifyDataSetChanged();
+            }
+        }
 
         showProgressBar();
 
-        DatabaseReference myRef = database.getReference("menu/" + "-KIrgaSxr9VhHllAjqmp");
-        myRef.limitToFirst(1).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.getValue() == null){
-                    dismissProgressDialog();
-                }
+        new Thread() {
+            public void run() {
+
+                firebaseMenuListManager = new FirebaseMenuListManager();
+                firebaseMenuListManager.setFragments(fragments);
+                firebaseMenuListManager.startGetList(lista_menu, "-KIrgaSxr9VhHllAjqmp");
+                final boolean timeout = firebaseMenuListManager.waitForResult();
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(timeout){
+                            Snackbar.make(findViewById(android.R.id.content), "Connection error", Snackbar.LENGTH_LONG)
+                                    .show();
+                        }
+
+                        dismissProgressDialog();
+                    }
+                });
             }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        this.lista_menu = new Oggetto_menu();
-        myRef = database.getReference("menu/" + "-KIrgaSxr9VhHllAjqmp");
-        myRef.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-                dismissProgressDialog();
-
-                Dish d = dataSnapshot.getValue(Dish.class);
-                int index = DishTypeConverter.fromEnumToIndex(DishTypeConverter.fromStringToEnum(d.getType()));
-                lista_menu.getDishListByIndex(index).add(d);
-                if(fragments[index] != null){
-                    fragments[index].getAdapter().notifyItemInserted(lista_menu.getDishListByIndex(index).size() - 1);
-                }
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-                Dish d = dataSnapshot.getValue(Dish.class);
-
-                int index = DishTypeConverter.fromEnumToIndex(DishTypeConverter.fromStringToEnum(d.getType()));
-                if(fragments[index] != null){
-                    int position = findPositionOnList(lista_menu.getDishListByIndex(index), d.getDishId());
-                    lista_menu.getDishListByIndex(index).remove(position);
-                    fragments[index].getAdapter().notifyItemRemoved(position);
-                    fragments[index].getAdapter().notifyItemRangeChanged(position, lista_menu.getDishListByIndex(index).size());
-                }
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        }.start();
     }
 
-    private int findPositionOnList(ArrayList<Dish> list, String dishId){
-        int i = 0;
-        for(Dish d : list){
-            if(d.getDishId().equals(dishId)){
-                return i;
-            }
-            i++;
-        }
-
-        return i;
-    }
-
-    private void modificaSchermata(ArrayList<Dish> list){
-        if(list.size() == 0){
-            //printAlertEmpty();
-            //resetAddButton();
-
-        } else if(list.size() > 7) {
-            //moveAddButton();
-        }
-        else{
-            //resetAddButton();
-        }
-    }
 
     private void printAlertEmpty(){
         AlertDialog.Builder miaAlert = new AlertDialog.Builder(this);

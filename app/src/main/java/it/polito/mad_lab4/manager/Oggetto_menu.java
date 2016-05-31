@@ -82,4 +82,11 @@ public class Oggetto_menu implements Serializable {
                 return null;
         }
     }
+
+    public void clearAll() {
+        primi.clear();
+        secondi.clear();
+        dessert.clear();
+        altro.clear();
+    }
 }

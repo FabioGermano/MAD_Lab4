@@ -10,14 +10,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import it.polito.mad_lab4.manager.BlankOfferFragment;
+import it.polito.mad_lab4.data.restaurant.DishTypeConverter;
+import it.polito.mad_lab4.manager.BlankMenuFragment;
 import it.polito.mad_lab4.manager.Oggetto_menu;
+import it.polito.mad_lab4.manager.RecyclerAdapter_menu;
 import it.polito.mad_lab4.manager.RecyclerAdapter_offerte;
 import it.polito.mad_lab4.newData.restaurant.Dish;
 import it.polito.mad_lab4.newData.restaurant.Offer;
@@ -25,31 +25,30 @@ import it.polito.mad_lab4.newData.restaurant.Offer;
 /**
  * Created by f.germano on 28/05/2016.
  */
-public class FirebaseOfferListManager implements ValueEventListener, ChildEventListener {
+public class FirebaseMenuListManager implements ValueEventListener, ChildEventListener {
 
     final Lock lock = new ReentrantLock();
     final Condition cv  = lock.newCondition();
 
     private boolean toReturn = false;
-    private RecyclerAdapter_offerte adapter;
-    private ArrayList<Offer> lista_offerte;
+    private BlankMenuFragment[] fragments = new BlankMenuFragment[4];
+    private Oggetto_menu lista_menu;
     private DatabaseReference myRef;
     private boolean timeout;
-    private BlankOfferFragment[] fragments = new BlankOfferFragment[1];
 
-    public void setAdapter(RecyclerAdapter_offerte adapter){
-        this.adapter = adapter;
+    public void setFragments(BlankMenuFragment[] fragments){
+        this.fragments = fragments;
     }
 
-    public void startGetList(ArrayList<Offer> lista_offerte, String restaurantId){
-        this.lista_offerte = lista_offerte;
+    public void startGetList(Oggetto_menu lista_menu, String restaurantId){
+        this.lista_menu = lista_menu;
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-        DatabaseReference refToOne = database.getReference("offers/" + restaurantId);
+        DatabaseReference refToOne = database.getReference("menu/" + restaurantId);
         refToOne.limitToFirst(1).addListenerForSingleValueEvent(this);
 
-        myRef = database.getReference("offers/" + restaurantId);
+        myRef = database.getReference("menu/" + restaurantId);
         myRef.addChildEventListener(this);
 
         new java.util.Timer().schedule(
@@ -102,13 +101,12 @@ public class FirebaseOfferListManager implements ValueEventListener, ChildEventL
         lock.lock();
         this.cv.signal();
         toReturn = true;
-        Offer o = dataSnapshot.getValue(Offer.class);
-        lista_offerte.add(o);
-        if(this.adapter != null) {
-            this.adapter.notifyItemInserted(lista_offerte.size() - 1);
-        }
-        else if(fragments[0] != null){
-            fragments[0].getAdapter().notifyItemInserted(lista_offerte.size() - 1);
+
+        Dish d = dataSnapshot.getValue(Dish.class);
+        int index = DishTypeConverter.fromEnumToIndex(DishTypeConverter.fromStringToEnum(d.getType()));
+        lista_menu.getDishListByIndex(index).add(d);
+        if(fragments[index] != null) {
+            fragments[index].getAdapter().notifyItemInserted(lista_menu.getDishListByIndex(index).size() - 1);
         }
         lock.unlock();
     }
@@ -120,24 +118,22 @@ public class FirebaseOfferListManager implements ValueEventListener, ChildEventL
 
     @Override
     public void onChildRemoved(DataSnapshot dataSnapshot) {
-        Offer o = dataSnapshot.getValue(Offer.class);
+        Dish d = dataSnapshot.getValue(Dish.class);
 
-        int position = findPositionOnList(lista_offerte, o.getOfferId());
-        lista_offerte.remove(position);
-        if(this.adapter != null) {
-            this.adapter.notifyItemRemoved(position);
-            this.adapter.notifyItemRangeChanged(position, lista_offerte.size());
+        int index = DishTypeConverter.fromEnumToIndex(DishTypeConverter.fromStringToEnum(d.getType()));
+        int position = findPositionOnList(lista_menu.getDishListByIndex(index), d.getDishId());
+        lista_menu.getDishListByIndex(index).remove(position);
+        if(fragments[index] != null) {
+            fragments[index].getAdapter().notifyItemRemoved(position);
+            fragments[index].getAdapter().notifyItemRangeChanged(position, lista_menu.getDishListByIndex(index).size());
         }
-        else if(fragments[0] != null){
-            fragments[0].getAdapter().notifyItemRemoved(position);
-            fragments[0].getAdapter().notifyItemRangeChanged(position, lista_offerte.size());
-        }
+
     }
 
-    private int findPositionOnList(ArrayList<Offer> lista_offerte, String offerId) {
+    private int findPositionOnList(ArrayList<Dish> list, String dishId){
         int i = 0;
-        for(Offer d : lista_offerte){
-            if(d.getOfferId().equals(offerId)){
+        for(Dish d : list){
+            if(d.getDishId().equals(dishId)){
                 return i;
             }
             i++;
@@ -161,9 +157,5 @@ public class FirebaseOfferListManager implements ValueEventListener, ChildEventL
             myRef.removeEventListener((ValueEventListener) this);
             myRef.removeEventListener((ChildEventListener) this);
         }
-    }
-
-    public void setFragments(BlankOfferFragment[] fragments) {
-        this.fragments = fragments;
     }
 }

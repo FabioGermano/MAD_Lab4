@@ -62,7 +62,7 @@ public class BlankOfferFragment extends Fragment {
         return rootView;
     }
 
-    public RecyclerView.Adapter getAdapter() {
+    public RecyclerAdapter_offerte getAdapter() {
         return myAdapter;
     }
 }

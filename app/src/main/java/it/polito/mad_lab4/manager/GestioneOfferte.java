@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.os.Bundle;
@@ -35,11 +36,9 @@ import it.polito.mad_lab4.firebase_manager.FirebaseOfferListManager;
 import it.polito.mad_lab4.newData.restaurant.Offer;
 
 public class GestioneOfferte extends EditableBaseActivity {
-    private ArrayList<Offer> lista_offerte = new ArrayList<>();;
-    private JSONObject jsonRootObject;
+    private ArrayList<Offer> lista_offerte = new ArrayList<>();
     private boolean availability_mode = false;
     private RecyclerAdapter_offerte myAdapter;
-    private DatabaseReference offersReference;
     private FirebaseOfferListManager firebaseOfferListManager;
 
     @Override
@@ -56,27 +55,19 @@ public class GestioneOfferte extends EditableBaseActivity {
             checkStoragePermission();
 
         setUpRecyclerView();
-        readOffers();
     }
 
-    /*@Override
-    public void onStart() {
-        super.onStart();
-
-        try {
-            setUpRecyclerView();
-            readOffers();
-        } catch(Exception e){
-            System.out.println("Eccezione: " + e.getMessage());
-        }
+    @Override
+    public void onResume() {
+        super.onResume();
+        readOffers();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-
         firebaseOfferListManager.detachListeners();
-    }*/
+    }
 
     @Override
     protected void ModificaProfilo() {
@@ -89,6 +80,9 @@ public class GestioneOfferte extends EditableBaseActivity {
     }
 
     private void readOffers() {
+        lista_offerte.clear();
+        myAdapter.notifyDataSetChanged();
+
         showProgressBar();
 
         new Thread() {
@@ -97,11 +91,15 @@ public class GestioneOfferte extends EditableBaseActivity {
                 firebaseOfferListManager = new FirebaseOfferListManager();
                 firebaseOfferListManager.setAdapter(myAdapter);
                 firebaseOfferListManager.startGetList(lista_offerte, "-KIrgaSxr9VhHllAjqmp");
-                firebaseOfferListManager.waitForResult();
+                final boolean timeout = firebaseOfferListManager.waitForResult();
 
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        if(timeout){
+                            Snackbar.make(findViewById(android.R.id.content), "Connection error", Snackbar.LENGTH_LONG)
+                                    .show();
+                        }
 
                         dismissProgressDialog();
                     }

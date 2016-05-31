@@ -85,7 +85,7 @@ public class EditRestaurantProfile extends it.polito.mad_lab4.BaseActivity imple
         this.coversThumbPath = new String[4];
         this.coversLargePath = new String[4];
 
-        gerRestaurantByRestaurantId("-KIcTNUVIT-BIqARHq3P");
+        gerRestaurantByRestaurantId("-KIrgaSxr9VhHllAjqmp");
 
         initializePhotoManagement();
     }
@@ -139,13 +139,18 @@ public class EditRestaurantProfile extends it.polito.mad_lab4.BaseActivity imple
             public void run() {
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference myRef = database.getReference("restaurants/" + id);
-                myRef.addValueEventListener(EditRestaurantProfile.this);
+                myRef.addListenerForSingleValueEvent(EditRestaurantProfile.this);
             }
         };
         t.start();
     }
 
     private void saveRestaurant(final Restaurant restaurant){
+
+        if(!validateData()){
+            return;
+        }
+
         Thread t = new Thread() {
             public void run() {
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -156,6 +161,183 @@ public class EditRestaurantProfile extends it.polito.mad_lab4.BaseActivity imple
         };
         t.start();
 
+    }
+
+    private boolean validateData() {
+
+        String name, address, phone, email, description, tmp;
+        String lun, mar, mer, gio, ven, sab, dom;
+
+        if(logoPhotoViewer.getThumb() == null){
+            printAlert(getResources().getString(R.string.error_complete));
+            return false;
+        }
+
+        if (lunBtn != null){
+            tmp = lunBtn.getText().toString();
+            if (tmp.compareTo(getResources().getString(R.string.monday).toUpperCase()) == 0){
+                //campo vuoto
+                printAlert(getResources().getString(R.string.error_complete));
+                return false;
+            }
+            else
+                lun = tmp.substring(tmp.indexOf("\n")+1,tmp.length());
+        }
+        else {
+            //errore
+            printAlert(getResources().getString(R.string.exceptionError));
+            return false;
+        }
+
+        if (marBtn != null){
+            tmp = marBtn.getText().toString();
+            if (tmp.compareTo(getResources().getString(R.string.tuesday).toUpperCase()) == 0){
+                //campo vuoto
+                printAlert(getResources().getString(R.string.error_complete));
+                return false;
+            }
+            else
+                mar = tmp.substring(tmp.indexOf("\n")+1,tmp.length());
+        }
+        else {
+            //errore
+            printAlert(getResources().getString(R.string.exceptionError));
+            return false;
+        }
+
+
+        if (merBtn != null) {
+            tmp = merBtn.getText().toString();
+            if (tmp.compareTo(getResources().getString(R.string.wednesday).toUpperCase()) == 0) {
+                //campo vuoto
+                printAlert(getResources().getString(R.string.error_complete));
+                return false;
+            } else
+                mer = tmp.substring(tmp.indexOf("\n") + 1, tmp.length());
+        }
+        else {
+            //errore
+            printAlert(getResources().getString(R.string.exceptionError));
+            return false;
+        }
+
+        if (gioBtn != null){
+            tmp = gioBtn.getText().toString();
+            if (tmp.compareTo(getResources().getString(R.string.thursday).toUpperCase()) == 0){
+                //campo vuoto
+                printAlert(getResources().getString(R.string.error_complete));
+                return false;
+            }
+            else
+                gio = tmp.substring(tmp.indexOf("\n")+1,tmp.length());
+        }
+        else {
+            //errore
+            printAlert(getResources().getString(R.string.exceptionError));
+            return false;
+        }
+
+        if (venBtn != null){
+            tmp = venBtn.getText().toString();
+            if (tmp.compareTo(getResources().getString(R.string.friday).toUpperCase()) == 0){
+                //campo vuoto
+                printAlert(getResources().getString(R.string.error_complete));
+                return false;
+            }
+            else
+                ven = tmp.substring(tmp.indexOf("\n")+1,tmp.length());
+        }
+        else {
+            //errore
+            printAlert(getResources().getString(R.string.exceptionError));
+            return false;
+        }
+
+        if (sabBtn != null){
+            tmp = sabBtn.getText().toString();
+            if (tmp.compareTo(getResources().getString(R.string.saturday).toUpperCase()) == 0){
+                //campo vuoto
+                printAlert(getResources().getString(R.string.error_complete));
+                return false;
+            }
+            else
+                sab = tmp.substring(tmp.indexOf("\n")+1,tmp.length());
+        }
+        else {
+            //errore
+            printAlert(getResources().getString(R.string.exceptionError));
+            return false;
+        }
+
+        if (domBtn != null){
+            tmp = domBtn.getText().toString();
+            if (tmp.compareTo(getResources().getString(R.string.sunday).toUpperCase()) == 0){
+                //campo vuoto
+                printAlert(getResources().getString(R.string.error_complete));
+                return false;
+            }
+            else
+                dom = tmp.substring(tmp.indexOf("\n")+1,tmp.length());
+        }
+        else {
+            //errore
+            printAlert(getResources().getString(R.string.exceptionError));
+            return false;
+        }
+
+
+        if (edit_name != null) {
+            name = edit_name.getText().toString();
+        }
+        else {
+            //errore
+            printAlert(getResources().getString(R.string.exceptionError));
+            return false;
+        }
+
+        if (edit_address != null) {
+            address = edit_address.getText().toString();
+        }
+        else {
+            //errore
+            printAlert(getResources().getString(R.string.exceptionError));
+            return false;
+        }
+
+        if (edit_phone != null) {
+            phone = edit_phone.getText().toString();
+        }
+        else {
+            //errore
+            printAlert(getResources().getString(R.string.exceptionError));
+            return false;
+        }
+
+        if (edit_email != null) {
+            email = edit_email.getText().toString();
+        }
+        else {
+            //errore
+            printAlert(getResources().getString(R.string.exceptionError));
+            return false;
+        }
+
+        if (edit_description != null) {
+            description = edit_description.getText().toString();
+        }
+        else {
+            //errore
+            printAlert(getResources().getString(R.string.exceptionError));
+            return false;
+        }
+
+        if (name.isEmpty() || address.isEmpty() || phone.isEmpty() || email.isEmpty() || description.isEmpty()){
+            //campo vuoto
+            printAlert(getResources().getString(R.string.error_complete));
+            return false;
+        }
+
+        return true;
     }
 
     private void setRestaurantInfo(Restaurant restaurant){

@@ -54,34 +54,22 @@ public class FirebaseSaveDishManager implements DatabaseReference.CompletionList
         }
 
         if(thumb != null && large != null) {
-            FirebaseStorage storage = FirebaseStorage.getInstance();
-            final StorageReference storageRef = storage.getReferenceFromUrl("gs://project-9122886501087922816.appspot.com");
-            StorageReference thumbNameRef = storageRef.child(dish.getDishId() + "_thumb.jpg");
 
-            UploadTask uploadTask = thumbNameRef.putBytes(Helper.getBitmapAsByteArray(thumb));
-            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    downloadLinkThumb = taskSnapshot.getDownloadUrl().toString();
+            new Thread() {
+                public void run() {
+                    PhotoLoader photoLoader = new PhotoLoader();
+                    photoLoader.loadPhoto(dish.getDishId(), thumb, large);
+                    photoLoader.waitForResult();
 
-                    StorageReference largeNameRef = storageRef.child(dish.getDishId() + "_large.jpg");
-                    UploadTask uploadTask = largeNameRef.putBytes(Helper.getBitmapAsByteArray(large));
-                    uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            downloadLinkLarge = taskSnapshot.getDownloadUrl().toString();
+                    dish.setThumbDownloadLink(photoLoader.getDownloadLinkThumb());
+                    dish.setLargeDownloadLink(photoLoader.getDownloadLinkLarge());
+                    dish.setIsTodayAvailable(true);
 
-                            dish.setThumbDownloadLink(downloadLinkThumb);
-                            dish.setLargeDownloadLink(downloadLinkLarge);
-                            dish.setIsTodayAvailable(true);
-
-                            FirebaseDatabase database = FirebaseDatabase.getInstance();
-                            DatabaseReference myRef = database.getReference("menu/" + restaurantId + "/" + dish.getDishId());
-                            myRef.setValue(dish, FirebaseSaveDishManager.this);
-                        }
-                    });
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference myRef = database.getReference("menu/" + restaurantId + "/" + dish.getDishId());
+                    myRef.setValue(dish, FirebaseSaveDishManager.this);
                 }
-            });
+            }.start();
         }
         else {
 

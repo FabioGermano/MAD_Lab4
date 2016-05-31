@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -40,6 +41,8 @@ import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.bl.RestaurantBL;
 import it.polito.mad_lab4.data.restaurant.DishTypeConverter;
 import it.polito.mad_lab4.data.user.User;
+import it.polito.mad_lab4.firebase_manager.FirebaseMenuListManager;
+import it.polito.mad_lab4.firebase_manager.FirebaseOfferListManager;
 import it.polito.mad_lab4.firebase_manager.FirebaseSaveAvailabilityManager;
 import it.polito.mad_lab4.newData.restaurant.Dish;
 import it.polito.mad_lab4.data.restaurant.DishType;
@@ -49,12 +52,14 @@ import it.polito.mad_lab4.newData.restaurant.Offer;
  * Created by Giovanna on 11/04/2016.
  */
 public class EditAvailability extends EditableBaseActivity {
-    private Oggetto_menu lista_menu = null;
-    private ArrayList<Offer> lista_offerte = null;
+    private Oggetto_menu lista_menu = new Oggetto_menu();
+    private ArrayList<Offer> lista_offerte = new ArrayList<>();
     private boolean availability_mode=true;
 
-    private BlankOfferFragment blankOfferFragment;
+    private BlankOfferFragment[] blankOfferFragment = new BlankOfferFragment[1];
     private BlankMenuFragment[] fragments = new BlankMenuFragment[4];
+    private FirebaseMenuListManager firebaseMenuListManager;
+    private FirebaseOfferListManager firebaseOfferListManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +75,8 @@ public class EditAvailability extends EditableBaseActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             checkStoragePermission();
 
-        readMenu();
-        readOffers();
+        //readMenu();
+        //readOffers();
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager_menu);
         MyPageAdapter pagerAdapter = new MyPageAdapter(getSupportFragmentManager(), EditAvailability.this);
@@ -88,123 +93,78 @@ public class EditAvailability extends EditableBaseActivity {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        readOffers();
+        readMenu();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        firebaseMenuListManager.detachListeners();
+        firebaseOfferListManager.detachListeners();
+    }
+
     private void readOffers() {
+        lista_offerte.clear();
+        if(blankOfferFragment[0] != null) {
+            blankOfferFragment[0].getAdapter().notifyDataSetChanged();
+        }
 
-        lista_offerte = new ArrayList<Offer>();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        new Thread() {
+            public void run() {
 
-        DatabaseReference myRef = database.getReference("offers/" + "-KIrgaSxr9VhHllAjqmp");
-        myRef.limitToFirst(1).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.getValue() == null){
+                firebaseOfferListManager = new FirebaseOfferListManager();
+                firebaseOfferListManager.setFragments(blankOfferFragment);
+                firebaseOfferListManager.startGetList(lista_offerte, "-KIrgaSxr9VhHllAjqmp");
+                final boolean timeout = firebaseOfferListManager.waitForResult();
 
-                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(timeout){
+                            Snackbar.make(findViewById(android.R.id.content), "Connection error", Snackbar.LENGTH_LONG)
+                                    .show();
+                        }
+                    }
+                });
             }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        myRef = database.getReference("offers/" + "-KIrgaSxr9VhHllAjqmp");
-        myRef.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-                Offer o = dataSnapshot.getValue(Offer.class);
-                lista_offerte.add(o);
-                if(blankOfferFragment != null) {
-                    blankOfferFragment.getAdapter().notifyItemInserted(lista_offerte.size() - 1);
-                }
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        }.start();
     }
 
     private void readMenu() {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-
-        DatabaseReference myRef = database.getReference("menu/" + "-KIrgaSxr9VhHllAjqmp");
-        myRef.limitToFirst(1).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.getValue() == null){
-
-                }
+        lista_menu.clearAll();
+        for(int i = 0; i<4; i++) {
+            if(fragments[i] != null) {
+                fragments[i].getAdapter().notifyDataSetChanged();
             }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        this.lista_menu = new Oggetto_menu();
-        myRef = database.getReference("menu/" + "-KIrgaSxr9VhHllAjqmp");
-        myRef.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-                Dish d = dataSnapshot.getValue(Dish.class);
-                int index = DishTypeConverter.fromEnumToIndex(DishTypeConverter.fromStringToEnum(d.getType()));
-                lista_menu.getDishListByIndex(index).add(d);
-                if(fragments[index] != null){
-                    fragments[index].getAdapter().notifyItemInserted(lista_menu.getDishListByIndex(index).size() - 1);
-                }
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    private int findPositionOnList(ArrayList<Dish> list, String dishId){
-        int i = 0;
-        for(Dish d : list){
-            if(d.getDishId().equals(dishId)){
-                return i;
-            }
-            i++;
         }
 
-        return i;
+        showProgressBar();
+
+        new Thread() {
+            public void run() {
+
+                firebaseMenuListManager = new FirebaseMenuListManager();
+                firebaseMenuListManager.setFragments(fragments);
+                firebaseMenuListManager.startGetList(lista_menu, "-KIrgaSxr9VhHllAjqmp");
+                final boolean timeout = firebaseMenuListManager.waitForResult();
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(timeout){
+                            Snackbar.make(findViewById(android.R.id.content), "Connection error", Snackbar.LENGTH_LONG)
+                                    .show();
+                        }
+
+                        dismissProgressDialog();
+                    }
+                });
+            }
+        }.start();
     }
 
     @Override
@@ -315,7 +275,6 @@ public class EditAvailability extends EditableBaseActivity {
 
         @Override
         public Fragment getItem(int position) {
-            BlankMenuFragment menuFragment;
             Bundle bundle = new Bundle();
             bundle.putBoolean("availability", availability_mode);
             switch (position) {
@@ -344,10 +303,10 @@ public class EditAvailability extends EditableBaseActivity {
                     fragments[3].setValue(lista_menu.getAltro(), DishType.Other, this.context);
                     return fragments[3];
                 case 0:
-                    blankOfferFragment = new BlankOfferFragment();
-                    blankOfferFragment.setArguments(bundle);
-                    blankOfferFragment.setValue(lista_offerte, this.context);
-                    return blankOfferFragment;
+                    blankOfferFragment[0] = new BlankOfferFragment();
+                    blankOfferFragment[0].setArguments(bundle);
+                    blankOfferFragment[0].setValue(lista_offerte, this.context);
+                    return blankOfferFragment[0];
 
             }
 

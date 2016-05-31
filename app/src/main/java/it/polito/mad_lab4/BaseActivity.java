@@ -476,20 +476,17 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
      */
     protected abstract void ModificaProfilo();
     protected abstract void ShowPrenotazioni();
+
     public void showProgressBar(){
-        //pd = new ProgressDialog(BaseActivity.this,R.style.DialogTheme);
-        //pd.setCancelable(false);
-       // pd.setProgressStyle(android.R.style.Widget_ProgressBar_Small);
-        //pd.show();
-        pd = new ProgressDialog(this);
-        pd.setMessage("Loading...");
-        pd.setCancelable(false);
-        pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        pd.show();
+            pd = new ProgressDialog(this);
+            pd.setMessage("Loading...");
+            pd.setCancelable(false);
+            pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            pd.show();
     }
 
     public void dismissProgressDialog(){
-        if(pd.isShowing())
+        if(pd != null && pd.isShowing())
             pd.dismiss();
     }
 

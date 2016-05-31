@@ -18,6 +18,8 @@ public class Restaurant {
     private String address;
     private String city;
     private String phone;
+    private String logoThumbDownloadLink;
+    private ArrayList<Cover> covers;
     private ArrayList<String> timeTable; // eg item "11:30 - 15:30" ; string "CLOSED" if the restaurant is closed on that day; index -> day of week
     private String email;
     private String description;
@@ -210,5 +212,21 @@ public class Restaurant {
 
     public void setTotRanking(float totRanking) {
         this.totRanking = totRanking;
+    }
+
+    public String getLogoThumbDownloadLink() {
+        return logoThumbDownloadLink;
+    }
+
+    public void setLogoThumbDownloadLink(String logoThumbDownloadLink) {
+        this.logoThumbDownloadLink = logoThumbDownloadLink;
+    }
+
+    public ArrayList<Cover> getCovers() {
+        return covers;
+    }
+
+    public void setCovers(ArrayList<Cover> covers) {
+        this.covers = covers;
     }
 }

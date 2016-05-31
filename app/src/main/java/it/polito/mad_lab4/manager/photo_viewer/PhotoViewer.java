@@ -408,7 +408,7 @@ public class PhotoViewer extends Fragment  implements PhotoDialogListener {
             }
         }
         catch(Exception e){
-           Log.e(e.getMessage(), e.getMessage());
+            //todo manage
         }
     }
 
