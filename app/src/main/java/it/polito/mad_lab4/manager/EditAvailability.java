@@ -181,16 +181,6 @@ public class EditAvailability extends EditableBaseActivity {
         return true;
     }
 
-    @Override
-    protected void ModificaProfilo() {
-
-    }
-
-    @Override
-    protected void ShowPrenotazioni() {
-
-    }
-
     void saveInfo() {
         new Thread()
         {

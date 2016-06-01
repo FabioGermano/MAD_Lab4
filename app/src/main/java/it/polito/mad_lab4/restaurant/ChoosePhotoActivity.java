@@ -65,15 +65,6 @@ public class ChoosePhotoActivity extends BaseActivity implements PhotoViewerList
 
     }
 
-    @Override
-    protected void ModificaProfilo() {
-
-    }
-
-    @Override
-    protected void ShowPrenotazioni() {
-
-    }
 
     private void sendButtonClicked() {
         if(!this.photoViewer.isPhotoSetted()){

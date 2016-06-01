@@ -90,15 +90,7 @@ public class EditRestaurantProfile extends it.polito.mad_lab4.BaseActivity imple
         initializePhotoManagement();
     }
 
-    @Override
-    protected void ModificaProfilo() {
 
-    }
-
-    @Override
-    protected void ShowPrenotazioni() {
-
-    }
 
     private void getViews() {
         edit_name = (EditText) findViewById(R.id.edit_name);

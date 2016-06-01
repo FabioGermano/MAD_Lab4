@@ -69,15 +69,6 @@ public class GestioneOfferte extends EditableBaseActivity {
         firebaseOfferListManager.detachListeners();
     }
 
-    @Override
-    protected void ModificaProfilo() {
-
-    }
-
-    @Override
-    protected void ShowPrenotazioni() {
-
-    }
 
     private void readOffers() {
         lista_offerte.clear();

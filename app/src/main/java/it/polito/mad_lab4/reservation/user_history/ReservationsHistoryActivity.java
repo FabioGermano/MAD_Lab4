@@ -58,13 +58,5 @@ public class ReservationsHistoryActivity extends BaseActivity {
 
     }
 
-    @Override
-    protected void ModificaProfilo() {
 
-    }
-
-    @Override
-    protected void ShowPrenotazioni() {
-
-    }
 }

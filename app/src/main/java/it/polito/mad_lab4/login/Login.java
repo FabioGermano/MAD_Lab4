@@ -23,6 +23,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -42,6 +43,7 @@ import it.polito.mad_lab4.firebase_manager.FirebaseGetOfferManager;
 import it.polito.mad_lab4.firebase_manager.FirebaseGetUniversitiesManager;
 import it.polito.mad_lab4.newData.other.University;
 import it.polito.mad_lab4.newData.user.User;
+import it.polito.mad_lab4.user.EditUserProfileActivity;
 
 public class Login extends BaseActivity {
     private FirebaseAuth mAuth;
@@ -95,15 +97,26 @@ public class Login extends BaseActivity {
                             progressDialog = null;
                         }
                         if (registration) {
-
-                            insertClientInfo(user.getUid());
+                            //arrivo qua dalla fase di registrazione
                             registration = false;
-                        }
+                            insertClientInfo(user.getUid());
+                            String email = user.getEmail();
+                            Bundle b = new Bundle();
+                            b.putString("email", email);
+                            b.putString("userId", user.getUid());
+                            b.putString("name", username);
+                            b.putBoolean("new", true);
 
-                        Toast.makeText(getApplicationContext(), "authentication succeed", Toast.LENGTH_SHORT).show();
-                        Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                        mAuth.removeAuthStateListener(mAuthListener);
-                        startActivity(i);
+                            Intent i = new Intent(getApplicationContext(), EditUserProfileActivity.class);
+                            i.putExtras(b);
+                            startActivity(i);
+                        }
+                        else {
+                            Toast.makeText(getApplicationContext(), "authentication succeed", Toast.LENGTH_SHORT).show();
+                            Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                            mAuth.removeAuthStateListener(mAuthListener);
+                            startActivity(i);
+                        }
                     }
                 }
             };
@@ -122,15 +135,6 @@ public class Login extends BaseActivity {
     }
 
 
-    @Override
-    protected void ModificaProfilo() {
-
-    }
-
-    @Override
-    protected void ShowPrenotazioni() {
-
-    }
 
     public void eseguiLogin(View view) {
         try {
@@ -225,7 +229,6 @@ public class Login extends BaseActivity {
                     public void onClick(DialogInterface dialog, int id) {
                         Toast.makeText(Login.this, "Client", Toast.LENGTH_SHORT).show();
                         defaultLogin.setVisibility(View.GONE);
-                        fillUniversitySpinner();
                         newClient.setVisibility(View.VISIBLE);
                         setActivityTitle("Registrazione Cliente");
                     }
@@ -249,9 +252,8 @@ public class Login extends BaseActivity {
         final EditText emailField = (EditText) findViewById(R.id.emailNA_client);
         final EditText pwdField = (EditText) findViewById(R.id.passwordNA_client);
         final EditText checkPwdField = (EditText) findViewById(R.id.passwordNA_client_repeat);
-        Spinner uniSpinner = (Spinner) findViewById(R.id.spinner_university_client);
 
-        if (nameField == null || emailField == null || pwdField == null || checkPwdField == null || uniSpinner == null){
+        if (nameField == null || emailField == null || pwdField == null || checkPwdField == null){
             Toast.makeText(getApplicationContext(), getResources().getString(R.string.exceptionError), Toast.LENGTH_LONG).show();
             Intent i = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(i);
@@ -261,7 +263,6 @@ public class Login extends BaseActivity {
         String email = emailField.getText().toString();
         String pwd = pwdField.getText().toString();
         String checkPwd = checkPwdField.getText().toString();
-        String university = uniSpinner.getSelectedItem().toString();
 
         if (name.isEmpty() || email.isEmpty() || pwd.isEmpty() || checkPwd.isEmpty()){
             Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_complete), Toast.LENGTH_LONG).show();
@@ -366,44 +367,6 @@ public class Login extends BaseActivity {
         setActivityTitle("Login");
     }
 
-    public void fillUniversitySpinner(){
-
-        if (universitiesList == null){
-            new Thread()
-            {
-                public void run() {
-
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            showProgressBar();
-                        }
-                    });
-
-                    ArrayList<String> universities;
-
-                    FirebaseGetUniversitiesManager uniManager = new FirebaseGetUniversitiesManager();
-
-                    uniManager.getUniversities();
-                    uniManager.waitForResult();
-                    universities = uniManager.getResult();
-                    universitiesList = universities.toArray(new String[0]);
-
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Spinner spinner = (Spinner)findViewById(R.id.spinner_university_client);
-                            ArrayAdapter<String> adp = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, universitiesList);
-                            adp.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                            spinner.setAdapter(adp);
-                            dismissProgressDialog();
-                        }
-                    });
-                }
-            }.start();
-        }
-    }
-
     public void insertClientInfo(String id){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference mDatabase = database.getReference();
@@ -411,6 +374,8 @@ public class Login extends BaseActivity {
         Map<String, Object> userValues = new HashMap<>();
         userValues.put("name", username);
         userValues.put("userType", "C");
+        userValues.put("avatarDownloadLink", getResources().getString(R.string.default_avatar));
+
 
         Map<String, Object> clientUpdates = new HashMap<>();
         clientUpdates.put("/users/" + id, userValues);

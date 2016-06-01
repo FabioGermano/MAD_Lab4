@@ -6,32 +6,24 @@ import java.io.Serializable;
  * Created by Euge on 28/05/2016.
  */
 public class ClientPersonalInformation implements Serializable {
-    private String userId; // not mapped in firebase
-    private String userName;
+    private String name;
     private String tipoUser; // eg teacher , phd student, student ...
     private String phoneNumber;
-    private boolean isMale;
+    private String gender;
+    private String universityId;
     private String email;
-    private String facolta;
-    private Object posizioneFacolta; //to be defined //secondo me possiamo fare una tabella su firebase fissa con nomeFacoltà - Posizione
+    private String bio;
+    private String avatarDownloadLink;
 
     public ClientPersonalInformation(){
     }
 
-    public String getUserId() {
-        return userId;
+    public String getName() {
+        return name;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setName(String userName) {
+        this.name = userName;
     }
 
     public String getTipoUser() {
@@ -50,35 +42,35 @@ public class ClientPersonalInformation implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUniversityId() {
+        return universityId;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUniversityId(String id) {
+        this.universityId = id;
     }
 
-    public String getFacolta() {
-        return facolta;
+    public String getGender() {
+        return gender;
     }
 
-    public void setFacolta(String facolta) {
-        this.facolta = facolta;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
-    public Object getPosizioneFacolta() {
-        return posizioneFacolta;
+    public String getEmail(){ return this.email; }
+
+    public void setEmail(String email) {this.email = email;}
+
+    public String getBio(){ return this.bio; }
+
+    public void setBio (String bio) {this.bio = bio;}
+
+    public String getAvatarDownloadLink() {
+        return avatarDownloadLink;
     }
 
-    public void setPosizioneFacolta(Object posizioneFacolta) {
-        this.posizioneFacolta = posizioneFacolta;
-    }
-
-    public boolean isMale() {
-        return isMale;
-    }
-
-    public void setMale(boolean male) {
-        isMale = male;
+    public void setAvatarDownloadLink(String link){
+        this.avatarDownloadLink = link;
     }
 }

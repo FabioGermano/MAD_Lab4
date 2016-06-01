@@ -225,15 +225,6 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
 
 
     @Override
-    protected void ModificaProfilo() {
-
-    }
-
-    @Override
-    protected void ShowPrenotazioni() {
-
-    }
-    @Override
     protected void onResume() {
         super.onResume();
         appbar.addOnOffsetChangedListener(this);

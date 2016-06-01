@@ -146,19 +146,6 @@ public class MainActivity extends BaseActivity {
     }
 
 
-    @Override
-    protected void ModificaProfilo() {
-
-        Intent i= new Intent(this, EditUserProfileActivity.class);
-        startActivity(i);
-    }
-
-    @Override
-    protected void ShowPrenotazioni() {
-
-        Intent i= new Intent(this, ReservationsHistoryActivity.class);
-        startActivity(i);
-    }
 
     private void caricaDati() {
 

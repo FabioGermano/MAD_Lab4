@@ -75,15 +75,6 @@ public class CoverActivity extends BaseActivity {
                 .getCovers();
     }
 
-    @Override
-    protected void ModificaProfilo() {
-
-    }
-
-    @Override
-    protected void ShowPrenotazioni() {
-
-    }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 

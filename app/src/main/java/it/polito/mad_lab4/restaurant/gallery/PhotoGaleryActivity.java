@@ -40,15 +40,6 @@ public class PhotoGaleryActivity extends BaseActivity implements PhotoGalleryLis
         gridView.setAdapter(adapter);
     }
 
-    @Override
-    protected void ModificaProfilo() {
-
-    }
-
-    @Override
-    protected void ShowPrenotazioni() {
-
-    }
 
     @Override
     public void OnPhotoClick(UserPhoto userPHotoClicked) {

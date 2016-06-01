@@ -56,14 +56,5 @@ public class ShowFavouritesActivity extends BaseActivity {
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    @Override
-    protected void ModificaProfilo() {
 
-    }
-
-
-    @Override
-    protected void ShowPrenotazioni() {
-
-    }
 }

@@ -146,13 +146,4 @@ public class RateDishesActivity extends BaseActivity{
 
     }
 
-    @Override
-    protected void ModificaProfilo() {
-
-    }
-
-    @Override
-    protected void ShowPrenotazioni() {
-
-    }
 }

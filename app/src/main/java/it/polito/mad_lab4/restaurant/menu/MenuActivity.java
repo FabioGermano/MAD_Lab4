@@ -42,15 +42,6 @@ public class MenuActivity extends BaseActivity {
         tabLayout.setupWithViewPager(mViewPager);
     }
 
-    @Override
-    protected void ModificaProfilo() {
-
-    }
-
-    @Override
-    protected void ShowPrenotazioni() {
-
-    }
 
     private class SectionsPagerAdapter extends FragmentPagerAdapter {
 

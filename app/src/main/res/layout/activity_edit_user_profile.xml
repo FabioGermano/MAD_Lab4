@@ -6,6 +6,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+
     tools:context="it.polito.mad_lab4.user.EditUserProfileActivity">
 
     <include layout="@layout/toolbar_view" android:layout_height="wrap_content" android:layout_width="match_parent"></include>
@@ -22,16 +25,26 @@
             android:paddingTop="@dimen/activity_vertical_margin"
             android:orientation="vertical">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textColor="@color/bad"
+                android:visibility="gone"
+                android:text="@string/completa_registrazione"
+                android:id="@+id/registration_message"/>
+
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:background="@android:drawable/dialog_holo_light_frame">
+                android:background="@android:drawable/dialog_holo_light_frame"
+                android:layout_gravity="center_horizontal"
+                >
             <fragment
                 xmlns:custom="http://schemas.android.com/apk/res/it.polito.mad_lab4"
                 android:id="@+id/logo_fragment"
                 android:name="it.polito.mad_lab4.manager.photo_viewer.PhotoViewer"
-                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 custom:isEditable="true"
@@ -64,14 +77,16 @@
                 android:weightSum="3"
                 android:paddingTop="10dp"
                 android:gravity="center"
-                android:layout_gravity="center_horizontal">
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/gender_RadioGroup">
 
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/male"
                     android:layout_weight="1"
-                    android:id="@+id/male" />
+                    android:id="@+id/male"
+                    android:checked="true"/>
 
                 <RadioButton
                     android:layout_width="wrap_content"
@@ -111,7 +126,6 @@
                     android:background="@android:color/transparent"
                     android:hint="@string/username"
                     android:padding="5dp"
-                    android:text="fabio.germano"
                     android:singleLine="false" />
 
             </LinearLayout>
@@ -176,7 +190,8 @@
                 android:clickable="true"
                 android:background="@android:color/transparent"
                 android:hint="Pick your university"
-                android:padding="5dp" />
+                android:padding="5dp"
+                android:inputType="textMultiLine|textNoSuggestions"/>
         </LinearLayout>
 
             <View

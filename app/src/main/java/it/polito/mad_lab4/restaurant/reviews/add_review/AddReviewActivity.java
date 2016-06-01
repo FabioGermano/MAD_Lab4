@@ -136,16 +136,6 @@ public class AddReviewActivity extends BaseActivity implements PhotoViewerListen
     }
 
     @Override
-    protected void ModificaProfilo() {
-
-    }
-
-    @Override
-    protected void ShowPrenotazioni() {
-
-    }
-
-    @Override
     public void OnPhotoChanged(int fragmentId, Bitmap thumb, Bitmap large) {
 
     }

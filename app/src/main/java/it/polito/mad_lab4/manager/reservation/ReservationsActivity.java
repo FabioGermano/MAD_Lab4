@@ -120,15 +120,6 @@ public class ReservationsActivity extends it.polito.mad_lab4.BaseActivity {
         return true;
     }
 
-    @Override
-    protected void ModificaProfilo() {
-
-    }
-
-    @Override
-    protected void ShowPrenotazioni() {
-
-    }
 
     private void changeDate(String newDate){
         this.selectedDate = newDate;

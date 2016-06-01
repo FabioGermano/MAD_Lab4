@@ -73,15 +73,7 @@ public class GalleryPhotoViewActivity extends BaseActivity {
         getUserPhoto(getIntent().getExtras());
     }
 
-    @Override
-    protected void ModificaProfilo() {
 
-    }
-
-    @Override
-    protected void ShowPrenotazioni() {
-
-    }
 
     private void likeButtonPressed() {
         if(!UserBL.checkUserPhotoLike(this.user, this.restaurant.getRestaurantId(), this.userPhoto.getId())) {

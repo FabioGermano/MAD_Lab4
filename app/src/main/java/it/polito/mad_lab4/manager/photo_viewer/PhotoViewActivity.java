@@ -34,15 +34,6 @@ public class PhotoViewActivity extends EditableBaseActivity {
 
     }
 
-    @Override
-    protected void ModificaProfilo() {
-
-    }
-
-    @Override
-    protected void ShowPrenotazioni() {
-
-    }
 
     private void setDeleteVisibility(Bundle savedInstanceState)
     {

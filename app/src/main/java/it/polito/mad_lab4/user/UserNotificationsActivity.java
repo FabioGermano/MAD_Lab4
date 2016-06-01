@@ -60,13 +60,5 @@ public class UserNotificationsActivity extends BaseActivity {
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    @Override
-    protected void ModificaProfilo() {
 
-    }
-
-    @Override
-    protected void ShowPrenotazioni() {
-
-    }
 }

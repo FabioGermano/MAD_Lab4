@@ -35,15 +35,7 @@ public class PhotoViewActivity  extends BaseActivity {
 
     }
 
-    @Override
-    protected void ModificaProfilo() {
 
-    }
-
-    @Override
-    protected void ShowPrenotazioni() {
-
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

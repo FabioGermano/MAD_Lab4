@@ -78,15 +78,6 @@ public class ModifyOfferDish extends EditableBaseActivity {
         imageViewer = (PhotoViewer)getSupportFragmentManager().findFragmentById(R.id.imageOffer_modifyOffer);
     }
 
-    @Override
-    protected void ModificaProfilo() {
-
-    }
-
-    @Override
-    protected void ShowPrenotazioni() {
-
-    }
 
     private boolean readData(){ //return false if editing
         try {

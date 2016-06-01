@@ -120,15 +120,7 @@ public class ShowAdditionalInfoActivity extends BaseActivity{
 
     }
 
-    @Override
-    protected void ModificaProfilo() {
 
-    }
-
-    @Override
-    protected void ShowPrenotazioni() {
-
-    }
 
     public void sendEmail(String contact) {
         Log.i("Send email", "");

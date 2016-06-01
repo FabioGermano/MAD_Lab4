@@ -110,15 +110,6 @@ public class elaborazioneRicerche extends BaseActivity implements fragment_ricer
         startActivity(i);
     }
 
-    @Override
-    protected void ModificaProfilo() {
-
-    }
-
-    @Override
-    protected void ShowPrenotazioni() {
-
-    }
 
     private void setUpRecyclerView(){
         RecyclerView rView = (RecyclerView) findViewById(R.id.recyclerView_ricerca);

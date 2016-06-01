@@ -94,16 +94,6 @@ public class  GestioneMenu extends EditableBaseActivity {
         firebaseMenuListManager.detachListeners();
     }
 
-    @Override
-    protected void ModificaProfilo() {
-
-    }
-
-    @Override
-    protected void ShowPrenotazioni() {
-
-    }
-
     private void readMenu() {
         lista_menu.clearAll();
         for(int i = 0; i<4; i++) {

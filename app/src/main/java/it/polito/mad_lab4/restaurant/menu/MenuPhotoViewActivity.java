@@ -60,15 +60,7 @@ public class MenuPhotoViewActivity extends BaseActivity {
                 dish.getAvgRank());
     }
 
-    @Override
-    protected void ModificaProfilo() {
 
-    }
-
-    @Override
-    protected void ShowPrenotazioni() {
-
-    }
 
     private void setDeleteVisibility(Bundle savedInstanceState)
     {

@@ -362,15 +362,7 @@ public class ModifyMenuDish extends EditableBaseActivity {
         return true;
     }
 
-    @Override
-    protected void ModificaProfilo() {
 
-    }
-
-    @Override
-    protected void ShowPrenotazioni() {
-
-    }
 
     @Override
     protected void OnDeleteButtonPressed() {

@@ -133,15 +133,6 @@ public class CheckoutOrderActivity extends BaseActivity {
 
     }
 
-    @Override
-    protected void ModificaProfilo() {
-
-    }
-
-    @Override
-    protected void ShowPrenotazioni() {
-
-    }
 
     public void fillLayout(ArrayList<ReservedDish> list) {
         for (ReservedDish d : list) {

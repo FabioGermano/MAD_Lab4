@@ -482,4 +482,10 @@ public class PhotoViewer extends Fragment  implements PhotoDialogListener {
     public void setLargePhotoDownloadLink(String largePhotoDownloadLink) {
         this.largePhotoDownloadLink = largePhotoDownloadLink;
     }
+
+    public void setImageFromLink(String link){
+        if (imgPhoto != null){
+            Glide.with(this).load(link).into(imgPhoto);
+        }
+    }
 }

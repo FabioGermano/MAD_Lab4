@@ -181,15 +181,7 @@ public class FoodOrderActivity extends BaseActivity {
     }
 
 
-    @Override
-    protected void ModificaProfilo() {
 
-    }
-
-    @Override
-    protected void ShowPrenotazioni() {
-
-    }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
         Context context;

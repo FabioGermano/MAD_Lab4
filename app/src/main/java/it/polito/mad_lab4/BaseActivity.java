@@ -24,6 +24,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -34,11 +35,13 @@ import com.google.firebase.database.ValueEventListener;
 
 import it.polito.mad_lab4.login.Login;
 import it.polito.mad_lab4.newData.user.User;
+import it.polito.mad_lab4.user.EditUserProfileActivity;
 import it.polito.mad_lab4.user.ShowFavouritesActivity;
 import it.polito.mad_lab4.user.UserNotificationsActivity;
 
 public abstract class BaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     protected Toolbar toolbar;
+    private ProgressDialog progressDialog = null;
 
     private boolean hideToolbar=false, hideShadow=false, save_visibility=false,
             calendar_visibility=false,orderby_visibility=false, alert_visibility = true, backbutton_visibility=true, filter_visibility=false;
@@ -60,6 +63,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     private User infoUser = null;
 
     private boolean alreadyNotified;
+
+    private String id = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +110,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         titleTextView.setVisibility(View.GONE);
         //toolbar.setBackgroundColor(Color.TRANSPARENT);
         toolbar.setBackgroundResource(R.drawable.shadow);
+
     }
 
     protected boolean useToolbar(boolean useToolbar) {
@@ -166,15 +172,26 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                                 System.out.println("--------------------------> utente connesso");
                                 alreadyNotified = true;
                                 mAuth.removeAuthStateListener(mAuthListener);
+                                id = user.getUid();
                                 caricaUtenteLoggato(user, navigationView);
                             } else if (!alreadyNotified){
                                 System.out.println("--------------------------> utente non connesso");
                                 alreadyNotified = true;
                                 mAuth.removeAuthStateListener(mAuthListener);
+                                id = null;
                                 caricaUtenteDefault(navigationView);
+                                if (progressDialog != null)
+                                    progressDialog.dismiss();
                             }
                         }
                     };
+
+                    // Attendo l'esito dell'operazione
+                    progressDialog = new ProgressDialog(this);
+                    progressDialog.setMessage("Loading...");
+                    progressDialog.setCancelable(false);
+                    progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                    progressDialog.show();
                 }
             }
         } catch(Exception e){
@@ -201,6 +218,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                         // Get user value e utilizzo i dati
                         infoUser = dataSnapshot.getValue(User.class);
                         riempiBarraLaterale(navigationView);
+                        if (progressDialog != null)
+                            progressDialog.dismiss();
                     }
 
                     @Override
@@ -236,23 +255,9 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                 if (user_name != null)
                     user_name.setText(infoUser.getName());
                 //setto la foto dell'utente
-                if (user_logo != null) {
-                    ///////
-                    //////
-                        /*
-                            Prendo la foto dell'utente dalla cartella delle foto con nome idUtente_logo
-                        */
-                    String path = null;
-                    if (path != null) {
-                        try {
-                            Bitmap bitmap = BitmapFactory.decodeFile(path);
-                            if (bitmap != null)
-                                user_logo.setImageBitmap(bitmap);
-                        } catch (Exception e) {
-                            System.out.println("Errore creazione bitmap"); //debug
-                        }
-                    }
-                }
+                /*if (user_logo != null) {
+                   Glide.with(this).load(infoUser.getAvatarDownloadLink()).into(user_logo);
+                }*/
             }
         } catch (Exception e){
             System.out.println(e.getMessage());
@@ -348,8 +353,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         return super.onCreateOptionsMenu(menu);
     }
 
-
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -376,8 +379,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         switch (id){
             //CLIENT
             case R.id.mod_profilo_client:
-                //ModificaProfilo();
-                Toast.makeText(getApplicationContext(), "profilo client", Toast.LENGTH_LONG).show();
+                ModificaProfilo();
+                //Toast.makeText(getApplicationContext(), "profilo client", Toast.LENGTH_LONG).show();
                 break;
             case R.id.prenotazioni_client:
                 Toast.makeText(getApplicationContext(), "prenotazioni client", Toast.LENGTH_LONG).show();
@@ -454,7 +457,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     private void Logout(){
         //eseguo il logout e cancello eventualmente il file con le credenziali
         FirebaseAuth.getInstance().signOut();
-
+        id = null;
         Toast.makeText(getApplicationContext(), getResources().getString(R.string.logout_message), Toast.LENGTH_LONG).show();
         Intent i = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(i);
@@ -474,8 +477,17 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         Questi invece sono personali per ogni utente e quindi è meglio gestirli nella schermata
         appropriata con tutti i dati corretti
      */
-    protected abstract void ModificaProfilo();
-    protected abstract void ShowPrenotazioni();
+    private void ModificaProfilo(){
+
+        Bundle b = new Bundle();
+        b.putString("userId", id);
+        Intent i = new Intent(getApplicationContext(), EditUserProfileActivity.class);
+        i.putExtras(b);
+        startActivity(i);
+    }
+
+    private void ShowPrenotazioni() {};
+
 
     public void showProgressBar(){
             pd = new ProgressDialog(this);

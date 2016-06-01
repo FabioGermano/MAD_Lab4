@@ -71,15 +71,6 @@ public class ReviewsActivity extends BaseActivity {
         sortByTime();
     }
 
-    @Override
-    protected void ModificaProfilo() {
-
-    }
-
-    @Override
-    protected void ShowPrenotazioni() {
-
-    }
 
 
     public boolean onOptionsItemSelected(MenuItem item) {

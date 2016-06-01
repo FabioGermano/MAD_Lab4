@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name" translatable="false">FERG Food</string>
+
+    <!-- costant informations -->
+    <string name="default_avatar">https://firebasestorage.googleapis.com/v0/b/project-9122886501087922816.appspot.com/o/default_avatar.png?alt=media&amp;token=0de6dcbb-7572-47e9-bfba-f31b551b8779</string>
+
     <!-- Activity names -->
 
     <string name="edit_user_profile_activity_title">Edit profile</string>
@@ -175,6 +179,7 @@
     <string name="check_pwd">Passwords doesn\'t correspond!</string>
     <string name="wrong_email_format">Wrong email format!</string>
     <string name="pwd_too_short">Password too short! Use at least 6 characters.</string>
+    <string name="completa_registrazione">Personal informations are mandatory</string>
 
 
     <string name="seats_string">seats</string>
@@ -277,7 +282,7 @@
     <string name="user_type_registrazione">What type of user do you want create?</string>
     <string name="service_type_manager_registrazione">Service:</string>
     <string name="ritorna_al_login">Return to login</string>
-    <string name="esegui_login">Login</string>
+    <string name="esegui_login">Login/Register</string>
     <string name="modifica_profilo">Edit profile</string>
     <string name="show_all">SHOW ALL</string>
     <string name="show_other">SHOW OTHER...</string>
