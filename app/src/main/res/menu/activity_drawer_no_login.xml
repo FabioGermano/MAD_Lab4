@@ -5,6 +5,9 @@
         <item
             android:id="@+id/esegui_login"
             android:title="@string/esegui_login" />
+        <item
+            android:id="@+id/esegui_registrazione"
+            android:title="@string/esegui_regitrazione"/>
     </group>
 
     <item android:title="Comunicazioni">

@@ -4,8 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -24,7 +22,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -33,7 +30,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import it.polito.mad_lab4.login.Login;
+import it.polito.mad_lab4.login_registrazione.Login;
+import it.polito.mad_lab4.login_registrazione.Register;
 import it.polito.mad_lab4.newData.user.User;
 import it.polito.mad_lab4.user.EditUserProfileActivity;
 import it.polito.mad_lab4.user.ShowFavouritesActivity;
@@ -409,6 +407,9 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
             case R.id.esegui_login:
                 Login();
                 break;
+            case R.id.esegui_registrazione:
+                Registrazione();
+                break;
             case R.id.logout_user:
                 Logout();
                 break;
@@ -451,6 +452,11 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         // accedo alla pagina del login e se l'utente vuole memorizzare in modo permanente i dati
         // li salviamo sul file
         Intent i = new Intent(getApplicationContext(), Login.class);
+        startActivity(i);
+    }
+
+    private void Registrazione(){
+        Intent i = new Intent(getApplicationContext(), Register.class);
         startActivity(i);
     }
 

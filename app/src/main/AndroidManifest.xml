@@ -102,7 +102,7 @@
             android:name=".restaurant.reviews.add_review.RateDishesActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
             android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity android:name=".login.Login" />
+        <activity android:name=".login_registrazione.Login" />
         <activity android:name=".restaurant.cover.CoverActivity" />
         <activity android:name=".test.TestActivity">
 
@@ -175,7 +175,7 @@
         <activity android:name=".user.EditUserProfileActivity" />
         <activity android:name=".user.ShowFavouritesActivity" />
         <activity android:name=".user.UserNotificationsActivity" />
-
+        <activity android:name=".login_registrazione.Register"></activity>
     </application>
 
 </manifest>

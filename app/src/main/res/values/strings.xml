@@ -254,7 +254,7 @@
     <string name="save_manager_toolbar">Save</string>
     <string name="calendar_manager_toolbar">Calendar</string>
     <string name="notifications_manager_toolbar">Notifications</string>
-    <string name="username" translatable="false">Username</string>
+    <string name="username" translatable="false">Name</string>
     <string name="bio" translatable="false">Bio</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
@@ -269,12 +269,12 @@
 
     <!-- Login e registrazione -->
     <string name="username_login" translatable="false">Username:</string>
-    <string name="password" translatable="false">Password:</string>
-    <string name="password_ripeat">Repeat password:</string>
+    <string name="password" translatable="false">Password</string>
+    <string name="password_ripeat">Repeat password</string>
     <string name="newAccount"><u>Create a new account</u></string>
     <string name="createAccount">Create new account</string>
-    <string name="nome_registrazione">Name:</string>
-    <string name="email_registrazione" translatable="false">Email:</string>
+    <string name="nome_registrazione">Name</string>
+    <string name="email_registrazione" translatable="false">email@example.com</string>
     <string name="università_registrazione">University:</string>
     <string name="telefono_registrazione"></string>
     <string name="client_registrazione">Client</string>
@@ -282,7 +282,10 @@
     <string name="user_type_registrazione">What type of user do you want create?</string>
     <string name="service_type_manager_registrazione">Service:</string>
     <string name="ritorna_al_login">Return to login</string>
-    <string name="esegui_login">Login/Register</string>
+    <string name="esegui_login">Login</string>
+    <string name="esegui_regitrazione">Register</string>
+    <string name="titolo_registrazione_cliente">Registrazione Cliente</string>
+
     <string name="modifica_profilo">Edit profile</string>
     <string name="show_all">SHOW ALL</string>
     <string name="show_other">SHOW OTHER...</string>
