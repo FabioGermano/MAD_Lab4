@@ -22,6 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -48,7 +49,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     private View toolbarShadow;
     private boolean useToolbar=true;
 
-    private User userInformation;
     private ProgressDialog pd;
     private int alertCount = 0;
     private ImageButton saveImageButton, alertButton, calendarButton;
@@ -63,6 +63,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     private boolean alreadyNotified;
 
     private String id = null;
+    private String email = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,6 +172,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                                 alreadyNotified = true;
                                 mAuth.removeAuthStateListener(mAuthListener);
                                 id = user.getUid();
+                                email = user.getEmail();
                                 caricaUtenteLoggato(user, navigationView);
                             } else if (!alreadyNotified){
                                 System.out.println("--------------------------> utente non connesso");
@@ -215,6 +217,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         // Get user value e utilizzo i dati
                         infoUser = dataSnapshot.getValue(User.class);
+                        System.out.println("STO LEGGENDO: " + infoUser.getName());
+                        System.out.println(infoUser.getAvatarDownloadLink());
                         riempiBarraLaterale(navigationView);
                         if (progressDialog != null)
                             progressDialog.dismiss();
@@ -248,14 +252,28 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
             if (header != null) {
                 final ImageView user_logo = (ImageView) header.findViewById(R.id.nav_drawer_logo);
                 final TextView user_name = (TextView) header.findViewById(R.id.nav_drawer_name);
+                final TextView emailField = (TextView) header.findViewById(R.id.nav_drawer_email);
+
+                if (infoUser.getUserType().compareTo("C") == 0) {
+                    //CLIENT
+                    header.setBackgroundResource(R.drawable.side_nav_bar_client);
+                } else if (infoUser.getUserType().compareTo("M") == 0) {
+                    //MANAGER
+                    header.setBackgroundResource(R.drawable.side_nav_bar_restaurant);
+                }
 
                 //setto il nome dell'utente
                 if (user_name != null)
                     user_name.setText(infoUser.getName());
                 //setto la foto dell'utente
-                /*if (user_logo != null) {
-                   Glide.with(this).load(infoUser.getAvatarDownloadLink()).into(user_logo);
-                }*/
+                if (user_logo != null) {
+
+                   System.out.println("LINK: "+ infoUser.getAvatarDownloadLink()) ;
+                   Glide.with(this).load(infoUser.getAvatarDownloadLink()).centerCrop().into(user_logo);
+                }
+                if (emailField != null){
+                    emailField.setText(email);
+                }
             }
         } catch (Exception e){
             System.out.println(e.getMessage());
