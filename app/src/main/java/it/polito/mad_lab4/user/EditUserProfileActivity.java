@@ -1,30 +1,20 @@
 package it.polito.mad_lab4.user;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Build;
-import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.firebase.auth.FirebaseUser;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -33,13 +23,11 @@ import java.util.regex.Pattern;
 import it.polito.mad_lab4.BaseActivity;
 import it.polito.mad_lab4.MainActivity;
 import it.polito.mad_lab4.R;
-import it.polito.mad_lab4.data.user.User;
 import it.polito.mad_lab4.firebase_manager.FirebaseGetClientInfoManager;
 import it.polito.mad_lab4.firebase_manager.FirebaseGetUniversitiesManager;
 import it.polito.mad_lab4.firebase_manager.FirebaseSaveClientInfoManager;
 import it.polito.mad_lab4.manager.photo_viewer.PhotoViewer;
 import it.polito.mad_lab4.newData.client.ClientPersonalInformation;
-import it.polito.mad_lab4.newData.other.University;
 
 
 public class EditUserProfileActivity extends BaseActivity implements UniversityPickerFragment.OnSelectionListener{
@@ -50,6 +38,8 @@ public class EditUserProfileActivity extends BaseActivity implements UniversityP
     private ClientPersonalInformation client;
     private String[] universitiesList = null;
     private String userId = null;
+    private String originalAvatar = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -176,8 +166,9 @@ public class EditUserProfileActivity extends BaseActivity implements UniversityP
             emailField.setText(email);
 
         PhotoViewer fragmentAvatar = (PhotoViewer) getSupportFragmentManager().findFragmentById(R.id.logo_fragment);
-        if (fragmentAvatar != null)
-            fragmentAvatar.setImageFromLink(getResources().getString(R.string.default_avatar));
+        if (fragmentAvatar != null){
+            fragmentAvatar.setThumbBitmapByURI(getResources().getString(R.string.default_avatar));
+        }
 
     }
 
@@ -312,8 +303,9 @@ public class EditUserProfileActivity extends BaseActivity implements UniversityP
 
             if (avatarDownloadLink != null) {
                 PhotoViewer fragmentAvatar = (PhotoViewer) getSupportFragmentManager().findFragmentById(R.id.logo_fragment);
+                originalAvatar = avatarDownloadLink;
                 if (fragmentAvatar != null)
-                    fragmentAvatar.setImageFromLink(avatarDownloadLink);
+                    fragmentAvatar.setThumbBitmapByURI(avatarDownloadLink);
             }
         }
 
@@ -382,8 +374,11 @@ public class EditUserProfileActivity extends BaseActivity implements UniversityP
                 break;
         }
 
-        //settare avatar link
-        client.setAvatarDownloadLink(getResources().getString(R.string.default_avatar));
+        final PhotoViewer fragmentAvatar = (PhotoViewer) getSupportFragmentManager().findFragmentById(R.id.logo_fragment);
+
+
+
+        client.setAvatarDownloadLink(originalAvatar);
 
         //qui dovrei avere l'oggetto Client riempito con i dati dei campi
 
@@ -395,9 +390,16 @@ public class EditUserProfileActivity extends BaseActivity implements UniversityP
                         showProgressBar();
                     }
                 });
-
                 FirebaseSaveClientInfoManager saveClientManager = new FirebaseSaveClientInfoManager(getApplicationContext());
-                saveClientManager.saveClientInfo(client, userId, null);
+
+                Bitmap avatarBitmap = null;
+                if (fragmentAvatar != null){
+                    avatarBitmap = fragmentAvatar.getThumb();
+                    if (avatarBitmap == null && fragmentAvatar.removed())
+                        client.setAvatarDownloadLink(getResources().getString(R.string.default_avatar));
+                }
+
+                saveClientManager.saveClientInfo(client, userId, avatarBitmap);
                 //saveClientManager.waitForResult();
 
                 //TODO aggiungere firebaseSaveUsersManager per tenere i dati allineati

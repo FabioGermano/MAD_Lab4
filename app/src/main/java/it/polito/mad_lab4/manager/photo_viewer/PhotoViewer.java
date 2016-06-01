@@ -63,6 +63,10 @@ public class PhotoViewer extends Fragment  implements PhotoDialogListener {
     private Bitmap thumb, large;
     private String largePhotoDownloadLink;
 
+    private boolean removed = false;
+
+    public boolean removed(){return removed;}
+
     public Bitmap getThumb() {
         return thumb;
     }
@@ -79,8 +83,7 @@ public class PhotoViewer extends Fragment  implements PhotoDialogListener {
         this.large = large;
     }
 
-    public PhotoViewer()
-    {
+    public PhotoViewer() {
 
     }
 
@@ -95,12 +98,12 @@ public class PhotoViewer extends Fragment  implements PhotoDialogListener {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.photo_viewer, container, false);
 
-        this.imgPhoto = (ImageView)rootView.findViewById(R.id.epImgPhoto);
+        this.imgPhoto = (ImageView) rootView.findViewById(R.id.epImgPhoto);
         setSizeInDP(this.widthInDP, this.heightInDP);
         setInitialImage(savedInstanceState);
 
-        this.editButton = (ImageButton)rootView.findViewById(R.id.epEditButton);
-        if(this.isEditable == false) {
+        this.editButton = (ImageButton) rootView.findViewById(R.id.epEditButton);
+        if (this.isEditable == false) {
             this.editButton.setVisibility(View.GONE);
         }
 
@@ -110,7 +113,7 @@ public class PhotoViewer extends Fragment  implements PhotoDialogListener {
                 editButtonPressed();
             }
         });
-        if(this.isAddByClickOnImage) {
+        if (this.isAddByClickOnImage) {
             this.editButton.setVisibility(View.GONE);
         }
 
@@ -124,22 +127,16 @@ public class PhotoViewer extends Fragment  implements PhotoDialogListener {
         return rootView;
     }
 
-    private void setInitialImage(Bundle savedInstanceState)
-    {
-        if(savedInstanceState != null)
-        {
+    private void setInitialImage(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
             Bitmap thumb = savedInstanceState.getParcelable("thumbImage");
-            if(thumb != null)
-            {
+            if (thumb != null) {
                 this.imgPhoto.setImageBitmap(thumb);
                 SetIsBitmapSetted(true);
             }
-        }
-        else
-        {
+        } else {
             // consider attributes
-            if(this.initialImage != -1)
-            {
+            if (this.initialImage != -1) {
                 this.imgPhoto.setImageResource(this.initialImage);
             }
         }
@@ -154,11 +151,9 @@ public class PhotoViewer extends Fragment  implements PhotoDialogListener {
 
         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.PhotoViewer);
         final int N = a.getIndexCount();
-        for (int i = 0; i < N; ++i)
-        {
+        for (int i = 0; i < N; ++i) {
             int attr = a.getIndex(i);
-            switch (attr)
-            {
+            switch (attr) {
                 case R.styleable.PhotoViewer_initialBackground:
                     this.initialImage = a.getResourceId(attr, -1);
                     break;
@@ -176,16 +171,11 @@ public class PhotoViewer extends Fragment  implements PhotoDialogListener {
                     break;
                 case R.styleable.PhotoViewer_addImageMode:
                     String value = a.getString(attr);
-                    if(value.equals("clickOnButton"))
-                    {
+                    if (value.equals("clickOnButton")) {
                         this.isAddByClickOnImage = false;
-                    }
-                    else if (value.equals("clickOnImage"))
-                    {
+                    } else if (value.equals("clickOnImage")) {
                         this.isAddByClickOnImage = true;
-                    }
-                    else
-                    {
+                    } else {
                         this.isAddByClickOnImage = false;
                     }
                     break;
@@ -195,21 +185,16 @@ public class PhotoViewer extends Fragment  implements PhotoDialogListener {
         a.recycle();
     }
 
-    private void editButtonPressed()
-    {
+    private void editButtonPressed() {
         PhotoDialog dialog = new PhotoDialog(getContext(), this.isBitmapSetted);
         dialog.addListener(this);
     }
 
-    private void photoPressed()
-    {
-        if(this.isAddByClickOnImage && !this.isBitmapSetted)
-        {
+    private void photoPressed() {
+        if (this.isAddByClickOnImage && !this.isBitmapSetted) {
             editButtonPressed(); // add a photo that actually doas not yet exist
-        }
-        else if(!this.isLogo && this.isBitmapSetted && !this.isPhotoClicked)
-        {
-            if(largePhotoDownloadLink == null) {
+        } else if (!this.isLogo && this.isBitmapSetted && !this.isPhotoClicked) {
+            if (largePhotoDownloadLink == null) {
                 this.isPhotoClicked = true;
 
                 String path = Environment.getExternalStorageDirectory().toString();
@@ -233,8 +218,7 @@ public class PhotoViewer extends Fragment  implements PhotoDialogListener {
                 } catch (IOException e) {
                     Log.d(e.getMessage(), e.getMessage(), e);
                 }
-            }
-            else{
+            } else {
                 Intent intent = new Intent(getActivity(), it.polito.mad_lab4.manager.photo_viewer.PhotoViewActivity.class);
                 intent.putExtra("largePhotoDownloadLink", largePhotoDownloadLink);
                 intent.putExtra("isEditable", this.isEditable);
@@ -250,12 +234,9 @@ public class PhotoViewer extends Fragment  implements PhotoDialogListener {
      * @param bitmap
      */
     public void setThumbBitmap(Bitmap bitmap) {
-        if(bitmap == null && this.initialImage != -1)
-        {
+        if (bitmap == null && this.initialImage != -1) {
             this.imgPhoto.setImageResource(this.initialImage);
-        }
-        else
-        {
+        } else {
             this.imgPhoto.setImageBitmap(bitmap);
             SetIsBitmapSetted(true);
         }
@@ -272,10 +253,9 @@ public class PhotoViewer extends Fragment  implements PhotoDialogListener {
         Glide.with(this).load(url).into(this.imgPhoto);
     }
 
-    public void setSizeInDP(int DP_width, int DP_height)
-    {
+    public void setSizeInDP(int DP_width, int DP_height) {
         final float scale = getResources().getDisplayMetrics().density;
-        int dpWidthInPx  = (int) (DP_width * scale);
+        int dpWidthInPx = (int) (DP_width * scale);
         int dpHeightInPx = (int) (DP_height * scale);
         this.imgPhoto.getLayoutParams().width = dpWidthInPx;
         this.imgPhoto.getLayoutParams().height = dpHeightInPx;
@@ -285,17 +265,16 @@ public class PhotoViewer extends Fragment  implements PhotoDialogListener {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == 6709 && resultCode == Activity.RESULT_OK){
+        if (requestCode == 6709 && resultCode == Activity.RESULT_OK) {
             Bitmap bitmap = null;
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), Crop.getOutput(data));
                 thumb = resizeBitmap(bitmap, 196);
-                if(!this.isLogo) {
+                if (!this.isLogo) {
                     large = resizeBitmap(bitmap, 1024);
                     //bitmap.recycle();
                     this.setThumbBitmap(thumb);
-                }
-                else{
+                } else {
                     this.setThumbBitmap(thumb);
                 }
 
@@ -305,9 +284,9 @@ public class PhotoViewer extends Fragment  implements PhotoDialogListener {
             }
         }
 
-        if(requestCode == VIEW_PHOTO && resultCode == Activity.RESULT_OK){
+        if (requestCode == VIEW_PHOTO && resultCode == Activity.RESULT_OK) {
             boolean toBeDeleted = data.getBooleanExtra("toBeDeteted", false);
-            if(toBeDeleted) {
+            if (toBeDeleted) {
                 SetIsBitmapSetted(false);
                 this.imgPhoto.setImageResource(initialImage);
             }
@@ -315,15 +294,14 @@ public class PhotoViewer extends Fragment  implements PhotoDialogListener {
         }
 
         if (requestCode == REQUEST_CAMERA && resultCode == Activity.RESULT_OK) {
-            File imgFile = new  File(pictureImagePath);
-            if(imgFile.exists()){
+            File imgFile = new File(pictureImagePath);
+            if (imgFile.exists()) {
                 Uri destination = Uri.fromFile(new File(getActivity().getExternalCacheDir(), "cropped"));
-                Crop.of(Uri.parse( imgFile.toURI().toString()), destination).asSquare().start(getActivity(), this);
+                Crop.of(Uri.parse(imgFile.toURI().toString()), destination).asSquare().start(getActivity(), this);
 
                 this.largePhotoDownloadLink = null;
             }
-        }
-        else if (requestCode == SELECT_FILE && resultCode == Activity.RESULT_OK) {
+        } else if (requestCode == SELECT_FILE && resultCode == Activity.RESULT_OK) {
             Uri imageUri = data.getData();
             Uri destination = Uri.fromFile(new File(getActivity().getExternalCacheDir(), "cropped"));
             Crop.of(imageUri, destination).asSquare().start(getActivity(), this);
@@ -332,8 +310,7 @@ public class PhotoViewer extends Fragment  implements PhotoDialogListener {
         }
     }
 
-    private Bitmap resizeBitmap(Bitmap bitMap, int new_size)
-    {
+    private Bitmap resizeBitmap(Bitmap bitMap, int new_size) {
         int width = bitMap.getWidth();
         int height = bitMap.getHeight();
         int scale = 1;
@@ -353,8 +330,7 @@ public class PhotoViewer extends Fragment  implements PhotoDialogListener {
         manageCameraForLargePhoto();
     }
 
-    private void manageCameraForLargePhoto()
-    {
+    private void manageCameraForLargePhoto() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             checkCameraPermission();
         else
@@ -391,13 +367,15 @@ public class PhotoViewer extends Fragment  implements PhotoDialogListener {
     @Override
     public void OnRemoveButtonListener() {
         SetIsBitmapSetted(false);
+        removed = true;
+        thumb = null;
+        large = null;
         this.imgPhoto.setImageResource(initialImage);
     }
     /* end dialog management */
 
     @Override
-    public void onSaveInstanceState (Bundle outState)
-    {
+    public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
         try {
@@ -406,48 +384,41 @@ public class PhotoViewer extends Fragment  implements PhotoDialogListener {
             } else {
                 outState.putParcelable("thumbImage", ((GlideBitmapDrawable) this.imgPhoto.getDrawable().getCurrent()).getBitmap());
             }
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             //todo manage
         }
     }
 
-    private void SetIsBitmapSetted(boolean setted)
-    {
+    private void SetIsBitmapSetted(boolean setted) {
         this.isBitmapSetted = setted;
 
-        if(this.isAddByClickOnImage)
-        {
-            if(!setted)
-            {
+        if (this.isAddByClickOnImage) {
+            if (!setted) {
                 this.editButton.setVisibility(View.GONE);
-            }
-            else
-            {
+            } else {
                 this.editButton.setVisibility(View.VISIBLE);
             }
         }
     }
-    private void checkCameraPermission(){
+
+    private void checkCameraPermission() {
         int camera = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA);
-        if (camera != PackageManager.PERMISSION_GRANTED){
+        if (camera != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, 1);
-        }
-        else
+        } else
             cameraAllowed = true;
     }
 
-    private void checkStoragePermission(){
+    private void checkStoragePermission() {
         int storage = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        if (storage != PackageManager.PERMISSION_GRANTED){
+        if (storage != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
-        }
-        else
+        } else
             storageAllowed = true;
 
     }
 
-    public boolean isImageTobeSetted(){
+    public boolean isImageTobeSetted() {
         return !this.isBitmapSetted;
     }
 
@@ -481,11 +452,5 @@ public class PhotoViewer extends Fragment  implements PhotoDialogListener {
 
     public void setLargePhotoDownloadLink(String largePhotoDownloadLink) {
         this.largePhotoDownloadLink = largePhotoDownloadLink;
-    }
-
-    public void setImageFromLink(String link){
-        if (imgPhoto != null){
-            Glide.with(this).load(link).into(imgPhoto);
-        }
     }
 }

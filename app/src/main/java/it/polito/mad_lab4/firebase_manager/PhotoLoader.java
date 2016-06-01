@@ -1,8 +1,10 @@
 package it.polito.mad_lab4.firebase_manager;
 
 import android.graphics.Bitmap;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,7 +30,7 @@ public class PhotoLoader  {
     final Lock lock = new ReentrantLock();
     final Condition cv  = lock.newCondition();
 
-    private String downloadLinkThumb, downloadLinkLarge;
+    private String downloadLinkThumb, downloadLinkLarge, downloadLinkAvatar;
     private boolean resultReturned = false;
     private DatabaseReference myRef;
 
@@ -68,6 +70,33 @@ public class PhotoLoader  {
         });
     }
 
+    public void loadAvatar(final String id, final Bitmap avatar){
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        final StorageReference storageRef = storage.getReferenceFromUrl("gs://project-9122886501087922816.appspot.com");
+        StorageReference thumbNameRef = storageRef.child(id + "_avatar.jpg");
+
+        UploadTask uploadTask = thumbNameRef.putBytes(Helper.getBitmapAsByteArray(avatar));
+        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                downloadLinkAvatar = taskSnapshot.getDownloadUrl().toString();
+                resultReturned = true;
+                lock.lock();
+                cv.signal();
+                lock.unlock();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                resultReturned = true;
+                lock.lock();
+                cv.signal();
+                lock.unlock();
+            }
+        });
+    }
+
+
 
     public void waitForResult() {
         lock.lock();
@@ -87,4 +116,6 @@ public class PhotoLoader  {
     public String getDownloadLinkLarge() {
         return downloadLinkLarge;
     }
+
+    public String getDownloadLinkAvatar(){ return downloadLinkAvatar; }
 }

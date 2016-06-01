@@ -11,6 +11,12 @@ public class User {
     public User(){
     }
 
+    public User(String name, String type, String link){
+        this.name = name;
+        this.userType = type;
+        this.avatarDownloadLink = link;
+    }
+
     public String getName() {
         return name;
     }
