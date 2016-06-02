@@ -55,6 +55,7 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
     private FloatingActionButton add_review, add_photo, add_reservation;
     private AppBarLayout appbar;
     private boolean favourite=false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,20 +69,20 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         collapsingToolbarLayout.setExpandedTitleColor(Color.WHITE);
         collapsingToolbarLayout.setCollapsedTitleTextColor(Color.WHITE);
-        //FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.reservation);
-        //reservation = (Button) findViewById(R.id.reservation);
 
         fab = (android.support.design.widget.FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //TODO if the user doesn't have the restaurant in his favourites
-                if(!favourite)
+                if(!favourite) {
                     fab.setImageDrawable(getResources().getDrawable(R.drawable.ic_star));
-                // add to the favourite list
-                else
-                 fab.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_disabled));
-                // remove from the favourites list
+                    // add to the favourite list
+                }
+                else {
+                    fab.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_disabled));
+                    // remove from the favourites list
+                }
             }
         });
         fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.themeColor)));
@@ -109,9 +110,8 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
             Intent i = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(i);
         }
-        //System.out.println("Id ricevuto: " + id);
+
         restaurant = RestaurantBL.getRestaurantById(getApplicationContext(), id);
-        //System.out.println("Ristorante: " + restaurant.getRestaurantName());
 
         collapsingToolbarLayout.setTitle(restaurant.getRestaurantName());
         appbar= (AppBarLayout) findViewById(R.id.app_bar_layout);

@@ -514,16 +514,18 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
 
 
     public void showProgressBar(){
-            pd = new ProgressDialog(this);
-            pd.setMessage("Loading...");
-            pd.setCancelable(false);
-            pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            pd.show();
+        pd = new ProgressDialog(this);
+        pd.setMessage("Loading...");
+        pd.setCancelable(false);
+        pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        pd.show();
     }
 
-    public void dismissProgressDialog(){
-        if(pd != null && pd.isShowing())
+    public void dismissProgressDialog() {
+        if (pd != null && pd.isShowing()){
             pd.dismiss();
+            pd = null;
+        }
     }
 
     @Override

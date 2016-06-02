@@ -1,11 +1,12 @@
 package it.polito.mad_lab4.manager;
 
 import android.app.AlertDialog;
-import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.os.Bundle;
@@ -17,34 +18,20 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 
 import it.polito.mad_lab4.*;
-import it.polito.mad_lab4.data.user.User;
+import it.polito.mad_lab4.firebase_manager.FirebaseGetRestaurantProfileManager;
+import it.polito.mad_lab4.firebase_manager.FirebaseSaveRestaurantProfileManager;
 import it.polito.mad_lab4.manager.photo_viewer.PhotoViewer;
+import it.polito.mad_lab4.newData.restaurant.CoverImage;
 import it.polito.mad_lab4.newData.restaurant.Restaurant;
 
-public class EditRestaurantProfile extends it.polito.mad_lab4.BaseActivity implements ValueEventListener, DatabaseReference.CompletionListener {
+public class EditRestaurantProfile extends it.polito.mad_lab4.BaseActivity {
 
-    private String logoThumbPath;
-    private String[] coversThumbPath, coversLargePath;
     private PhotoViewer logoPhotoViewer;
     private PhotoViewer[] coversPhotoViewer;
     private Restaurant restaurant;
-
-    private final String id_logo_photo = "logo_photo";
-    private final String[] ids_cover_photo = new String[]{
-            "cover_photo_1",
-            "cover_photo_2",
-            "cover_photo_3",
-            "cover_photo_4"
-    };
 
     // Views
     private EditText edit_name;
@@ -81,9 +68,6 @@ public class EditRestaurantProfile extends it.polito.mad_lab4.BaseActivity imple
         setActivityTitle(getResources().getString(R.string.title_activity_edit_restaurant_profile));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             checkStoragePermission();
-
-        this.coversThumbPath = new String[4];
-        this.coversLargePath = new String[4];
 
         gerRestaurantByRestaurantId("-KIrgaSxr9VhHllAjqmp");
 
@@ -127,14 +111,31 @@ public class EditRestaurantProfile extends it.polito.mad_lab4.BaseActivity imple
     }
 
     private void gerRestaurantByRestaurantId(final String id){
-        Thread t = new Thread() {
-            public void run() {
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference myRef = database.getReference("restaurants/" + id);
-                myRef.addListenerForSingleValueEvent(EditRestaurantProfile.this);
-            }
-        };
-        t.start();
+            showProgressBar();
+
+            new Thread() {
+                public void run() {
+
+                    FirebaseGetRestaurantProfileManager firebaseGetManProfileManager = new FirebaseGetRestaurantProfileManager();
+                    firebaseGetManProfileManager.getRestaurant(id);
+                    final boolean timeout = firebaseGetManProfileManager.waitForResult();
+                    restaurant = firebaseGetManProfileManager.getResult();
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(timeout){
+                                Snackbar.make(findViewById(android.R.id.content), "Connection error", Snackbar.LENGTH_LONG)
+                                        .show();
+                            }
+
+                            dismissProgressDialog();
+
+                            setData();
+                        }
+                    });
+                }
+            }.start();
     }
 
     private void saveRestaurant(final Restaurant restaurant){
@@ -143,12 +144,41 @@ public class EditRestaurantProfile extends it.polito.mad_lab4.BaseActivity imple
             return;
         }
 
+        showProgressBar();
+
+        final Bitmap[] coversThumb = new Bitmap[4];
+        final Bitmap[] coversLarge = new Bitmap[4];
+
+        for(int num = 0; num < coversPhotoViewer.length; num++){
+            if(coversPhotoViewer[num].getThumb() != null){
+                coversThumb[num] = coversPhotoViewer[num].getThumb();
+                coversLarge[num] = coversPhotoViewer[num].getLarge();
+            }
+        }
+
+        setRestaurantInfo();
+
         Thread t = new Thread() {
             public void run() {
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference myRef = database.getReference("restaurants/" + restaurant.getRestaurantId());
-                setRestaurantInfo(restaurant);
-                myRef.setValue(restaurant, EditRestaurantProfile.this);
+                FirebaseSaveRestaurantProfileManager firebaseSaveManProfileManager = new FirebaseSaveRestaurantProfileManager();
+                firebaseSaveManProfileManager.
+                        saveRestaurant(restaurant,
+                                logoPhotoViewer.getThumb(),
+                                coversThumb,
+                                coversLarge);
+                firebaseSaveManProfileManager.waitForResult();
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        dismissProgressDialog();
+
+                        Toast toast = Toast.makeText(getApplicationContext(), R.string.dataSaved, Toast.LENGTH_SHORT);
+                        toast.show();
+
+                        finish();
+                    }
+                });
             }
         };
         t.start();
@@ -160,7 +190,7 @@ public class EditRestaurantProfile extends it.polito.mad_lab4.BaseActivity imple
         String name, address, phone, email, description, tmp;
         String lun, mar, mer, gio, ven, sab, dom;
 
-        if(logoPhotoViewer.getThumb() == null){
+        if(logoPhotoViewer.isImageTobeSetted()){
             printAlert(getResources().getString(R.string.error_complete));
             return false;
         }
@@ -332,7 +362,7 @@ public class EditRestaurantProfile extends it.polito.mad_lab4.BaseActivity imple
         return true;
     }
 
-    private void setRestaurantInfo(Restaurant restaurant){
+    private void setRestaurantInfo(){
         if(this.restaurant != null){
             restaurant.setDescription(edit_description.getText().toString());
             restaurant.setRestaurantName(edit_name.getText().toString());
@@ -357,6 +387,71 @@ public class EditRestaurantProfile extends it.polito.mad_lab4.BaseActivity imple
             restaurant.setParking(parkSwitch.isChecked());
             restaurant.setSeatsOutside(seatsSwitch.isChecked());
             restaurant.setWifi(wifiSwitch.isChecked());
+
+            if(logoPhotoViewer.isImageTobeSetted()) {
+                restaurant.setLogoThumbDownloadLink(null);
+            }
+
+            for(int i = 0; i < 4; i++){
+                if(coversPhotoViewer[i].isImageTobeSetted()) {
+                    restaurant.setLargeCoverByIndex(i, null);
+                    restaurant.setThumbCoverByIndex(i, null);
+                }
+            }
+
+        }
+    }
+
+    private void setData(){
+        Restaurant r = this.restaurant;
+        if(r == null){
+            return;
+        }
+
+        if (edit_name != null){ edit_name.setText(r.getRestaurantName()); }
+        if (edit_address != null){ edit_address.setText(r.getAddress()); }
+        if (edit_phone != null){ edit_phone.setText(r.getPhone()); }
+        if (edit_email != null){ edit_email.setText(r.getEmail()); }
+        if (edit_description != null){ edit_description.setText(r.getDescription()); }
+
+        if (lunBtn != null){ lunBtn.setText(r.getTimeTable().get(0)); }
+        if (marBtn != null){ marBtn.setText(r.getTimeTable().get(1)); }
+        if (merBtn != null){ merBtn.setText(r.getTimeTable().get(2)); }
+        if (gioBtn != null){ gioBtn.setText(r.getTimeTable().get(3)); }
+        if (venBtn != null){ venBtn.setText(r.getTimeTable().get(4)); }
+        if (sabBtn != null){ sabBtn.setText(r.getTimeTable().get(5)); }
+        if (domBtn != null){ domBtn.setText(r.getTimeTable().get(6)); }
+
+        if (resSwitch != null) { resSwitch.setChecked(r.isReservations()); };
+        if (wifiSwitch != null) { wifiSwitch.setChecked(r.isWifi()); };
+        if (seatsSwitch != null) { seatsSwitch.setChecked(r.isSeatsOutside()); };
+        if (creditSwitch != null) { creditSwitch.setChecked(r.isCreditCard()); };
+        if (bancomatSwitch != null) { bancomatSwitch.setChecked(r.isBancomat()); };
+        if (musicSwitch != null) { musicSwitch.setChecked(r.isMusic()); };
+        if (parkSwitch != null) { parkSwitch.setChecked(r.isParking()); };
+
+        if(r.getLogoThumbDownloadLink() != null) {
+            this.logoPhotoViewer.setThumbBitmapByURI(r.getLogoThumbDownloadLink());
+        }
+
+        if(r.getCover1_thumbDownloadLink() != null) {
+            this.coversPhotoViewer[0].setThumbBitmapByURI(r.getCover1_thumbDownloadLink());
+            this.coversPhotoViewer[0].setLargePhotoDownloadLink(r.getCover1_largeDownloadLink());
+        }
+
+        if(r.getCover2_thumbDownloadLink() != null) {
+            this.coversPhotoViewer[1].setThumbBitmapByURI(r.getCover2_thumbDownloadLink());
+            this.coversPhotoViewer[1].setLargePhotoDownloadLink(r.getCover2_largeDownloadLink());
+        }
+
+        if(r.getCover3_thumbDownloadLink() != null) {
+            this.coversPhotoViewer[2].setThumbBitmapByURI(r.getCover3_thumbDownloadLink());
+            this.coversPhotoViewer[2].setLargePhotoDownloadLink(r.getCover3_largeDownloadLink());
+        }
+
+        if(r.getCover4_thumbDownloadLink() != null) {
+            this.coversPhotoViewer[3].setThumbBitmapByURI(r.getCover4_thumbDownloadLink());
+            this.coversPhotoViewer[3].setLargePhotoDownloadLink(r.getCover4_largeDownloadLink());
         }
     }
 
@@ -425,55 +520,6 @@ public class EditRestaurantProfile extends it.polito.mad_lab4.BaseActivity imple
                 }
                 return;
             }
-        }
-    }
-
-    @Override
-    public void onDataChange(DataSnapshot dataSnapshot) {
-        Restaurant r = dataSnapshot.getValue(Restaurant.class);
-        if(r != null){
-
-            this.restaurant = r;
-
-            if (edit_name != null){ edit_name.setText(r.getRestaurantName()); }
-            if (edit_address != null){ edit_address.setText(r.getAddress()); }
-            if (edit_phone != null){ edit_phone.setText(r.getPhone()); }
-            if (edit_email != null){ edit_email.setText(r.getEmail()); }
-            if (edit_description != null){ edit_description.setText(r.getDescription()); }
-
-            if (lunBtn != null){ lunBtn.setText(r.getTimeTable().get(0)); }
-            if (marBtn != null){ marBtn.setText(r.getTimeTable().get(1)); }
-            if (merBtn != null){ merBtn.setText(r.getTimeTable().get(2)); }
-            if (gioBtn != null){ gioBtn.setText(r.getTimeTable().get(3)); }
-            if (venBtn != null){ venBtn.setText(r.getTimeTable().get(4)); }
-            if (sabBtn != null){ sabBtn.setText(r.getTimeTable().get(5)); }
-            if (domBtn != null){ domBtn.setText(r.getTimeTable().get(6)); }
-
-            if (resSwitch != null) { resSwitch.setChecked(r.isReservations()); };
-            if (wifiSwitch != null) { wifiSwitch.setChecked(r.isWifi()); };
-            if (seatsSwitch != null) { seatsSwitch.setChecked(r.isSeatsOutside()); };
-            if (creditSwitch != null) { creditSwitch.setChecked(r.isCreditCard()); };
-            if (bancomatSwitch != null) { bancomatSwitch.setChecked(r.isBancomat()); };
-            if (musicSwitch != null) { musicSwitch.setChecked(r.isMusic()); };
-            if (parkSwitch != null) { parkSwitch.setChecked(r.isParking()); };
-        }
-    }
-
-    @Override
-    public void onCancelled(DatabaseError databaseError) {
-
-    }
-
-    @Override
-    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-        if(databaseError == null) {
-            Toast toast = Toast.makeText(getApplicationContext(), R.string.dataSaved, Toast.LENGTH_SHORT);
-            toast.show();
-
-            Intent intent = new Intent(getApplicationContext(), MainActivityManager.class);
-            startActivity(intent);
-
-            finish();
         }
     }
 }

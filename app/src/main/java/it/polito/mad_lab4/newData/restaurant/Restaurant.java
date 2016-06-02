@@ -1,5 +1,7 @@
 package it.polito.mad_lab4.newData.restaurant;
 
+import com.google.firebase.database.Exclude;
+
 import java.util.ArrayList;
 
 import it.polito.mad_lab4.data.restaurant.BasicInfo;
@@ -19,7 +21,14 @@ public class Restaurant {
     private String city;
     private String phone;
     private String logoThumbDownloadLink;
-    private ArrayList<Cover> covers;
+
+    // BLEEEE
+    private String cover1_thumbDownloadLink, cover1_largeDownloadLink;
+    private String cover2_thumbDownloadLink, cover2_largeDownloadLink;
+    private String cover3_thumbDownloadLink, cover3_largeDownloadLink;
+    private String cover4_thumbDownloadLink, cover4_largeDownloadLink;
+    // FINE BLEEEE
+
     private ArrayList<String> timeTable; // eg item "11:30 - 15:30" ; string "CLOSED" if the restaurant is closed on that day; index -> day of week
     private String email;
     private String description;
@@ -35,7 +44,12 @@ public class Restaurant {
     public Restaurant(){
 
     }
+
+    @Exclude
     public float getRanking(){
+        if(numReviews == 0){
+            return 0;
+        }
         return totRanking/numReviews;
     }
     public String getAddress() {
@@ -222,11 +236,101 @@ public class Restaurant {
         this.logoThumbDownloadLink = logoThumbDownloadLink;
     }
 
-    public ArrayList<Cover> getCovers() {
-        return covers;
+    public String getCover4_largeDownloadLink() {
+        return cover4_largeDownloadLink;
     }
 
-    public void setCovers(ArrayList<Cover> covers) {
-        this.covers = covers;
+    public void setCover4_largeDownloadLink(String cover4_largeDownloadLink) {
+        this.cover4_largeDownloadLink = cover4_largeDownloadLink;
+    }
+
+    public String getCover4_thumbDownloadLink() {
+        return cover4_thumbDownloadLink;
+    }
+
+    public void setCover4_thumbDownloadLink(String cover4_thumbDownloadLink) {
+        this.cover4_thumbDownloadLink = cover4_thumbDownloadLink;
+    }
+
+    public String getCover1_thumbDownloadLink() {
+        return cover1_thumbDownloadLink;
+    }
+
+    public void setCover1_thumbDownloadLink(String cover1_thumbDownloadLink) {
+        this.cover1_thumbDownloadLink = cover1_thumbDownloadLink;
+    }
+
+    public String getCover1_largeDownloadLink() {
+        return cover1_largeDownloadLink;
+    }
+
+    public void setCover1_largeDownloadLink(String cover1_largeDownloadLink) {
+        this.cover1_largeDownloadLink = cover1_largeDownloadLink;
+    }
+
+    public String getCover2_thumbDownloadLink() {
+        return cover2_thumbDownloadLink;
+    }
+
+    public void setCover2_thumbDownloadLink(String cover2_thumbDownloadLink) {
+        this.cover2_thumbDownloadLink = cover2_thumbDownloadLink;
+    }
+
+    public String getCover2_largeDownloadLink() {
+        return cover2_largeDownloadLink;
+    }
+
+    public void setCover2_largeDownloadLink(String cover2_largeDownloadLink) {
+        this.cover2_largeDownloadLink = cover2_largeDownloadLink;
+    }
+
+    public String getCover3_thumbDownloadLink() {
+        return cover3_thumbDownloadLink;
+    }
+
+    public void setCover3_thumbDownloadLink(String cover3_thumbDownloadLink) {
+        this.cover3_thumbDownloadLink = cover3_thumbDownloadLink;
+    }
+
+    public String getCover3_largeDownloadLink() {
+        return cover3_largeDownloadLink;
+    }
+
+    public void setCover3_largeDownloadLink(String cover3_largeDownloadLink) {
+        this.cover3_largeDownloadLink = cover3_largeDownloadLink;
+    }
+
+    public void setLargeCoverByIndex(int i, String downloadLinkLarge) {
+        switch (i){
+            case 0:
+                this.cover1_largeDownloadLink = downloadLinkLarge;
+                break;
+            case 1:
+                this.cover2_largeDownloadLink = downloadLinkLarge;
+                break;
+            case 2:
+                this.cover3_largeDownloadLink = downloadLinkLarge;
+                break;
+            case 3:
+                this.cover4_largeDownloadLink = downloadLinkLarge;
+                break;
+        }
+    }
+
+    public void setThumbCoverByIndex(int i, String downloadLinkThumb) {
+        switch (i){
+            case 0:
+                this.cover1_thumbDownloadLink = downloadLinkThumb;
+                break;
+            case 1:
+                this.cover2_thumbDownloadLink = downloadLinkThumb;
+                break;
+            case 2:
+                this.cover3_thumbDownloadLink = downloadLinkThumb;
+                break;
+            case 3:
+                this.cover4_thumbDownloadLink = downloadLinkThumb;
+                break;
+        }
     }
 }
