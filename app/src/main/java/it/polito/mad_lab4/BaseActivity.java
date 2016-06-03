@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -25,16 +24,8 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
 
 import it.polito.mad_lab4.firebase_manager.FirebaseGetAuthInformation;
-import it.polito.mad_lab4.firebase_manager.FirebaseGetUniversitiesManager;
 import it.polito.mad_lab4.firebase_manager.FirebaseGetUserInfoManager;
 import it.polito.mad_lab4.login_registrazione.Login;
 import it.polito.mad_lab4.login_registrazione.Register;
@@ -45,7 +36,6 @@ import it.polito.mad_lab4.user.UserNotificationsActivity;
 
 public abstract class BaseActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     protected Toolbar toolbar;
-    private ProgressDialog progressDialog = null;
 
     private boolean hideToolbar=false, hideShadow=false, save_visibility=false,
             calendar_visibility=false,orderby_visibility=false, alert_visibility = true, backbutton_visibility=true, filter_visibility=false;
@@ -186,7 +176,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                                         email = user.getEmail();
                                         caricaUtenteLoggato(user, navigationView);
                                     } else{
-                                        System.out.println("--------------------------> problemi con l'autenticazione");
+                                        System.out.println("--------------------------> utente non connesso");
                                         mAuth.removeAuthStateListener(mAuthListener);
                                         id = null;
                                         int error = mAuthListener.getErrorType();
@@ -504,6 +494,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         Toast.makeText(getApplicationContext(), getResources().getString(R.string.logout_message), Toast.LENGTH_LONG).show();
         Intent i = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(i);
+        finish();
     }
 
     protected void SetAlertCount(int count)
@@ -512,14 +503,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         this.alertCountView.setText(String.valueOf(count));
     }
 
-    /******************/
-    // Ora con firebase sono inutili, possiamo farli qui globali che rimandano alle apposite pagine
-    // poi li tramite firebase ci ricaviamo tutti i dati necessari
-
-    /*
-        Questi invece sono personali per ogni utente e quindi è meglio gestirli nella schermata
-        appropriata con tutti i dati corretti
-     */
     private void ModificaProfilo(){
 
         Bundle b = new Bundle();

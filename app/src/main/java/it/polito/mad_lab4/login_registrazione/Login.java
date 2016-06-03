@@ -23,6 +23,9 @@ import com.google.firebase.auth.FirebaseUser;
 import it.polito.mad_lab4.BaseActivity;
 import it.polito.mad_lab4.MainActivity;
 import it.polito.mad_lab4.R;
+import it.polito.mad_lab4.firebase_manager.FirebaseGetUserInfoManager;
+import it.polito.mad_lab4.manager.MainActivityManager;
+import it.polito.mad_lab4.newData.user.User;
 import it.polito.mad_lab4.user.EditUserProfileActivity;
 
 public class Login extends BaseActivity {
@@ -32,10 +35,7 @@ public class Login extends BaseActivity {
     private ProgressDialog progressDialog = null;
 
     private TextView msgLoginFallito;
-
     private boolean alreadyNotified;
-
-    private String username = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,10 +69,45 @@ public class Login extends BaseActivity {
                             progressDialog = null;
                         }
 
+                        final String uid = user.getUid();
                         Toast.makeText(getApplicationContext(), "authentication succeed", Toast.LENGTH_SHORT).show();
-                        Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                        mAuth.removeAuthStateListener(mAuthListener);
-                        startActivity(i);
+
+                        new Thread()        {
+                            public void run() {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        showProgressBar();
+                                    }
+                                });
+
+                                FirebaseGetUserInfoManager userInfoManager = new FirebaseGetUserInfoManager();
+                                userInfoManager.getClientInfo(uid);
+                                userInfoManager.waitForResult();
+                                final User infoUser = userInfoManager.getUserInfo();
+
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mAuth.removeAuthStateListener(mAuthListener);
+
+                                        if(infoUser.getUserType().compareTo("C") == 0) {
+                                            System.out.println("E UN CLIENT");
+                                            Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                                            startActivity(i);
+                                        } else if(infoUser.getUserType().compareTo("M") == 0){
+                                            System.out.println("E UN MANAGER");
+                                            Intent i = new Intent(getApplicationContext(), MainActivityManager.class);
+                                            startActivity(i);
+                                        }
+                                        dismissProgressDialog();
+                                        finish();
+                                    }
+                                });
+                            }
+                        }.start();
+
+                        //TODO controllo coerenza dati nell due tabelle se è un client
                         }
                     }
             };
@@ -83,10 +118,16 @@ public class Login extends BaseActivity {
 
         } catch (Exception e){
             System.out.println(e.getMessage());
+            if(progressDialog != null){
+                progressDialog.dismiss();
+                progressDialog = null;
+            }
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.exceptionError), Toast.LENGTH_LONG).show();
+            Intent i = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(i);
+            finish();
         }
     }
-
-
 
     public void eseguiLogin(View view) {
         try {
@@ -135,6 +176,7 @@ public class Login extends BaseActivity {
                 Toast.makeText(getApplicationContext(), getResources().getString(R.string.exceptionError), Toast.LENGTH_LONG).show();
                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(i);
+                finish();
             }
 
             // Attendo l'esito dell'operazione
@@ -152,6 +194,7 @@ public class Login extends BaseActivity {
             Toast.makeText(getApplicationContext(), getResources().getString(R.string.exceptionError), Toast.LENGTH_LONG).show();
             Intent i = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(i);
+            finish();
         }
     }
 

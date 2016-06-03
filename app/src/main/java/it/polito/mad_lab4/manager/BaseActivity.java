@@ -32,7 +32,7 @@ import it.polito.mad_lab4.R;
 
 
 /**
- * To be extended by every activity.
+ * To be extended by every activity.   ///L'altra è già pronta per essere estesa da tutte le activity
  *
  * @author f.germano
  */
