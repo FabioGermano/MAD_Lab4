@@ -8,37 +8,35 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import it.polito.mad_lab4.newData.client.ClientPersonalInformation;
-import it.polito.mad_lab4.newData.other.University;
+import it.polito.mad_lab4.newData.user.User;
 
 /**
- * Created by Roby on 31/05/2016.
+ * Created by Euge on 03/06/2016.
  */
-public class FirebaseGetClientInfoManager implements ValueEventListener {
+public class FirebaseGetUserInfoManager implements ValueEventListener {
     final Lock lock = new ReentrantLock();
     final Condition cv  = lock.newCondition();
 
     private boolean resultReturned = false;
 
-    private ClientPersonalInformation client;
+    private User user;
 
     public void getClientInfo(String id) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference mDatabase = database.getReference();
-        client = new ClientPersonalInformation();
-        mDatabase.child("clients").child(id).addListenerForSingleValueEvent(this);
+        user = new User();
+        mDatabase.child("users").child(id).addListenerForSingleValueEvent(this);
     }
 
     @Override
     public void onDataChange(DataSnapshot dataSnapshot) {
         lock.lock();
 
-        client = dataSnapshot.getValue(ClientPersonalInformation.class);
+        user = dataSnapshot.getValue(User.class);
 
         resultReturned = true;
         this.cv.signal();
@@ -48,14 +46,10 @@ public class FirebaseGetClientInfoManager implements ValueEventListener {
     @Override
     public void onCancelled(DatabaseError databaseError) {
         lock.lock();
-        client = null;
+        user = null;
         resultReturned = true;
         this.cv.signal();
         lock.unlock();
-    }
-
-    public ClientPersonalInformation getResult() {
-        return client;
     }
 
     public void waitForResult() {
@@ -72,5 +66,8 @@ public class FirebaseGetClientInfoManager implements ValueEventListener {
             }
         }
     }
-}
 
+    public User getUserInfo(){
+        return this.user;
+    }
+}

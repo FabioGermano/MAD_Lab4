@@ -35,6 +35,7 @@ import java.util.ArrayList;
 
 import it.polito.mad_lab4.firebase_manager.FirebaseGetAuthInformation;
 import it.polito.mad_lab4.firebase_manager.FirebaseGetUniversitiesManager;
+import it.polito.mad_lab4.firebase_manager.FirebaseGetUserInfoManager;
 import it.polito.mad_lab4.login_registrazione.Login;
 import it.polito.mad_lab4.login_registrazione.Register;
 import it.polito.mad_lab4.newData.user.User;
@@ -144,7 +145,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     }
 
     protected void configureBarraLaterale(View view) {
-        //View header = null;
         //inizializzo menu laterale
         DrawerLayout drawer = (DrawerLayout) view.findViewById(R.id.drawer_layout);
 
@@ -192,48 +192,16 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                                         int error = mAuthListener.getErrorType();
                                         if(error == 1){
                                             System.out.println("--------------------------> Ri-autenticazione richiesta");
-
+                                            FirebaseAuth.getInstance().signOut();
+                                            id = null;
                                         }
                                         caricaUtenteDefault(navigationView);
-                                        /*if (progressDialog != null)
-                                            progressDialog.dismiss();*/
                                     }
                                     dismissProgressDialog();
                                 }
                             });
                         }
                     }.start();
-
-                    /*mAuthListener = new FirebaseAuth.AuthStateListener() {
-                        @Override
-                        public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                            FirebaseUser user = firebaseAuth.getCurrentUser();
-                            if (user != null && !alreadyNotified) {
-                                // User is signed in
-                                System.out.println("--------------------------> utente connesso");
-                                alreadyNotified = true;
-                                mAuth.removeAuthStateListener(mAuthListener);
-                                id = user.getUid();
-                                email = user.getEmail();
-                                caricaUtenteLoggato(user, navigationView);
-                            } else if (!alreadyNotified){
-                                System.out.println("--------------------------> utente non connesso");
-                                alreadyNotified = true;
-                                mAuth.removeAuthStateListener(mAuthListener);
-                                id = null;
-                                caricaUtenteDefault(navigationView);
-                                if (progressDialog != null)
-                                    progressDialog.dismiss();
-                            }
-                        }
-                    };
-
-                    // Attendo l'esito dell'operazione
-                    progressDialog = new ProgressDialog(this);
-                    progressDialog.setMessage("Loading...");
-                    progressDialog.setCancelable(false);
-                    progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                    progressDialog.show();*/
                 }
             }
         } catch(Exception e){
@@ -250,29 +218,35 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
 
     private void caricaUtenteLoggato(FirebaseUser user, final NavigationView navigationView) {
         // scarico info dal server e imposto evento per riempire la schermata con i dati utente
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference mDatabase = database.getReference();
         final String userId = user.getUid();
-        System.out.println("STO LEGGENDO: " + userId);
-        mDatabase.child("users").child(userId).addListenerForSingleValueEvent(
-                new ValueEventListener() {
+        new Thread()        {
+            public void run() {
+                runOnUiThread(new Runnable() {
                     @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        // Get user value e utilizzo i dati
-                        System.out.println("STO LEGGENDO: " + dataSnapshot.toString());
-
-                        infoUser = new User();
-                        infoUser = dataSnapshot.getValue(User.class);
-                        System.out.println("STO LEGGENDO: " + infoUser.getName()+ " " + infoUser.getAvatarDownloadLink());
-                        riempiBarraLaterale(navigationView);
-                        if (progressDialog != null)
-                            progressDialog.dismiss();
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                    public void run() {
+                        showProgressBar();
                     }
                 });
+
+                FirebaseGetUserInfoManager userInfoManager = new FirebaseGetUserInfoManager();
+                userInfoManager.getClientInfo(userId);
+                userInfoManager.waitForResult();
+                infoUser = userInfoManager.getUserInfo();
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(infoUser != null)
+                            riempiBarraLaterale(navigationView);
+                        else {
+                            //errore caricamento dati utente dal server
+                            caricaUtenteDefault(navigationView);
+                        }
+                        dismissProgressDialog();
+                    }
+                });
+            }
+        }.start();
     }
 
     private void riempiBarraLaterale(NavigationView navigationView){
