@@ -68,6 +68,9 @@ public class FirebaseGetClientInfoManager implements ValueEventListener {
                 System.out.println("Eccezione: "+ e.getMessage());
                 Log.e(e.getMessage(), e.getMessage());
             }
+            finally {
+                lock.unlock();
+            }
         }
     }
 }

@@ -64,13 +64,15 @@ public class FirebaseGetUniversitiesManager implements ValueEventListener{
     public void waitForResult() {
         lock.lock();
         if(!resultReturned) {
-            System.out.println("!resultReturned");
             try {
                 System.out.println("try");
                 cv.await();
             } catch (InterruptedException e) {
                 System.out.println("Eccezione: "+ e.getMessage());
                 Log.e(e.getMessage(), e.getMessage());
+            }
+            finally {
+                lock.unlock();
             }
         }
     }

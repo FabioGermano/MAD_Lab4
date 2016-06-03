@@ -31,6 +31,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
+import it.polito.mad_lab4.firebase_manager.FirebaseGetAuthInformation;
+import it.polito.mad_lab4.firebase_manager.FirebaseGetUniversitiesManager;
 import it.polito.mad_lab4.login_registrazione.Login;
 import it.polito.mad_lab4.login_registrazione.Register;
 import it.polito.mad_lab4.newData.user.User;
@@ -56,11 +60,9 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     private boolean icona_toolbar = false;
 
     private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
+    private FirebaseGetAuthInformation mAuthListener;
 
     private User infoUser = null;
-
-    private boolean alreadyNotified;
 
     private String id = null;
     private String email = null;
@@ -70,7 +72,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         super.onCreate(savedInstanceState);
 
         mAuth = FirebaseAuth.getInstance();
-        alreadyNotified = false;
 
         /*if (isLargeDevice(getBaseContext())) {
             this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
@@ -162,7 +163,48 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                 final NavigationView navigationView = (NavigationView) view.findViewById(R.id.nav_view);
 
                 if(navigationView != null) {
-                    mAuthListener = new FirebaseAuth.AuthStateListener() {
+                    new Thread()        {
+                        public void run() {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    showProgressBar();
+                                }
+                            });
+                            mAuthListener = new FirebaseGetAuthInformation();
+                            mAuthListener.waitForResult();
+                            final FirebaseUser user = mAuthListener.getUser();
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (user != null) {
+                                        // User is signed in
+                                        System.out.println("--------------------------> utente connesso");
+                                        mAuth.removeAuthStateListener(mAuthListener);
+                                        id = user.getUid();
+                                        email = user.getEmail();
+                                        caricaUtenteLoggato(user, navigationView);
+                                    } else{
+                                        System.out.println("--------------------------> problemi con l'autenticazione");
+                                        mAuth.removeAuthStateListener(mAuthListener);
+                                        id = null;
+                                        int error = mAuthListener.getErrorType();
+                                        if(error == 1){
+                                            System.out.println("--------------------------> Ri-autenticazione richiesta");
+
+                                        }
+                                        caricaUtenteDefault(navigationView);
+                                        /*if (progressDialog != null)
+                                            progressDialog.dismiss();*/
+                                    }
+                                    dismissProgressDialog();
+                                }
+                            });
+                        }
+                    }.start();
+
+                    /*mAuthListener = new FirebaseAuth.AuthStateListener() {
                         @Override
                         public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                             FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -191,7 +233,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                     progressDialog.setMessage("Loading...");
                     progressDialog.setCancelable(false);
                     progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-                    progressDialog.show();
+                    progressDialog.show();*/
                 }
             }
         } catch(Exception e){
@@ -211,14 +253,17 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference mDatabase = database.getReference();
         final String userId = user.getUid();
+        System.out.println("STO LEGGENDO: " + userId);
         mDatabase.child("users").child(userId).addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         // Get user value e utilizzo i dati
+                        System.out.println("STO LEGGENDO: " + dataSnapshot.toString());
+
+                        infoUser = new User();
                         infoUser = dataSnapshot.getValue(User.class);
-                        System.out.println("STO LEGGENDO: " + infoUser.getName());
-                        System.out.println(infoUser.getAvatarDownloadLink());
+                        System.out.println("STO LEGGENDO: " + infoUser.getName()+ " " + infoUser.getAvatarDownloadLink());
                         riempiBarraLaterale(navigationView);
                         if (progressDialog != null)
                             progressDialog.dismiss();

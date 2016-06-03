@@ -33,8 +33,8 @@ public class User {
         this.userType = type;
     }
 
-    public void setAvatarDownloadLink(String link){}{
-        this.avatarDownloadLink = null;
+    public void setAvatarDownloadLink(String link){
+        this.avatarDownloadLink = link;
     }
 
     public String getAvatarDownloadLink(){
