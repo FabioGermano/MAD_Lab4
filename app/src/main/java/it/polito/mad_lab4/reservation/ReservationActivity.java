@@ -14,8 +14,7 @@ import it.polito.mad_lab4.BaseActivity;
 import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.bl.RestaurantBL;
 import it.polito.mad_lab4.common.Helper;
-import it.polito.mad_lab4.data.restaurant.Restaurant;
-import it.polito.mad_lab4.data.user.User;
+import it.polito.mad_lab4.newData.restaurant.Restaurant;
 import it.polito.mad_lab4.reservation.food_order.*;
 
 public class ReservationActivity extends BaseActivity implements ChoiceFragment.OnChoiceSelectedListener,CalendarFragment.OnDateSelectedListener, TimeFragment.OnTimeSelectedListener{
@@ -64,8 +63,8 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
 
 
         //restaurantID=3;
-        restaurant = RestaurantBL.getRestaurantById(getApplicationContext(), restaurantID);
-        this.timeTable= restaurant.getBasicInfo().getTimeTable();
+        //restaurant = RestaurantBL.getRestaurantById(getApplicationContext(), restaurantID);
+        this.timeTable= restaurant.getTimeTable();
         this.restaurantName= restaurant.getRestaurantName();
         name.setText(restaurantName);
 
@@ -132,23 +131,24 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
         this.reservationTime = time;
 
         boolean onlyTakeaway = false, onlySeats= false;
-        ArrayList<String> reservationType = restaurant.getBasicInfo().getTypesOfServices();
+        boolean isTA = restaurant.isTakeAway();
+        boolean isOnPlace = restaurant.isOnPlace();
         // TA : only takeaway
         // R : only seats
         // TA, R: both
         // empty - if empty he shouldn't access this activity (shouldn't be able to make a reservation)
 
-        if(reservationType.isEmpty()){
-            throw new RuntimeException();
-        }
-        if(reservationType.size()<2) {
-            if (reservationType.get(0).toLowerCase().equals("ta")) {
+        if(isTA && !isOnPlace){
                 onlyTakeaway = true;
                 onlySeats = false;
-            } else {
-                onlyTakeaway = false;
-                onlySeats = true;
-            }
+
+        }
+
+        if(!isTA && isOnPlace){
+
+            onlyTakeaway = false;
+            onlySeats = true;
+
         }
 
         //cases :

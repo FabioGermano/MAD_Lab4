@@ -51,7 +51,7 @@
     <string name="logo" translatable="false">Logo</string>
     <string name="done">Done</string>
     <string name="closed">Closed</string>
-    <string name="opening_time">Opening time</string>
+    <string name="opening_time">Opening time:</string>
     <string name="orarioApertura">Start Time</string>
     <string name="orarioChiusura">End Time</string>
     <string name="available">Available</string>
@@ -158,7 +158,7 @@
     <string name="costoFinder">Cost:</string>
     <string name="valutazioneFinder">Rating:</string>
     <string name="ricercaAvanzata">Advanced Search:</string>
-    <string name="takeAway" translatable="false">Take Away</string>
+    <string name="takeAway" >Take Away</string>
     <string name="restaurant">Restaurant</string>
     <string name="takeAway_Restaurant">Take Away &amp; Restaurant</string>
     <string name="noServices">No Services</string>
@@ -222,7 +222,7 @@
     <string name="music">Music</string>
     <string name="reviews_activity_title">Reviews</string>
     <string name="toast_when_sorted">Results has been sorted</string>
-    <string name="description">Description:</string>
+    <string name="description">Description</string>
     <string name="send_mail">Send mail</string>
     <string name="no_email_client">There is no email client installed</string>
     <string name="numReviewsText">Average rank on % reviews</string>
@@ -315,4 +315,7 @@
     <string name="search_byplace">Search by Place</string>
     <string name="permission_denied_message">The app won\'t work properly if you deny the permission</string>
     <string name="title_activity_maps_test">Map</string>
+    <string name="eat_in">Eat in</string>
+    <string name="enabled_reservations">Types of reservation supported:</string>
+    <string name="cuisine">Your cuisine</string>
 </resources>

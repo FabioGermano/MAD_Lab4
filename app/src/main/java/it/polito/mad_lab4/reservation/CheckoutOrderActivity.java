@@ -15,14 +15,9 @@ import java.util.ArrayList;
 import it.polito.mad_lab4.BaseActivity;
 import it.polito.mad_lab4.MainActivity;
 import it.polito.mad_lab4.R;
-import it.polito.mad_lab4.bl.UserBL;
 import it.polito.mad_lab4.common.Helper;
-import it.polito.mad_lab4.data.user.UserSession;
-import it.polito.mad_lab4.data.reservation.Reservation;
-import it.polito.mad_lab4.data.reservation.ReservationType;
-import it.polito.mad_lab4.data.reservation.ReservationTypeConverter;
-import it.polito.mad_lab4.data.reservation.ReservedDish;
-import it.polito.mad_lab4.data.user.User;
+import it.polito.mad_lab4.newData.reservation.Reservation;
+import it.polito.mad_lab4.newData.reservation.ReservedDish;
 
 /**
  * Created by Giovanna on 28/04/2016.
@@ -74,7 +69,7 @@ public class CheckoutOrderActivity extends BaseActivity {
         second = getIntent().getParcelableArrayListExtra("second");
         dessert = getIntent().getParcelableArrayListExtra("dessert");*/
 
-        reservedDishes = getIntent().getParcelableArrayListExtra("reservedDishes");
+        reservedDishes = (ArrayList<ReservedDish>) getIntent().getSerializableExtra("reservedDishes");
 
         orderLayout = (LinearLayout) findViewById(R.id.order);
         dateTextView = (TextView) findViewById(R.id.reservation_date);
@@ -89,19 +84,22 @@ public class CheckoutOrderActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-                User user = UserBL.getUserById(getApplicationContext(), UserSession.userId);
+                //User user = UserBL.getUserById(getApplicationContext(), UserSession.userId);
                 Reservation r = new Reservation();
-                r.setReservationId(UserBL.getNewReservatioId(user));
-                r.setReservedDishes(reservedDishes);
+                //TODO
+                // r.setReservationId(UserBL.getNewReservatioId(user));
+                /* settare piatti */
+                // r.setReservedDishes(reservedDishes);
                 r.setDate(date);
                 r.setTime(time);
-                r.setStatus(ReservationTypeConverter.toString(ReservationType.PENDING));
+                /*settare status */
+                //r.setStatus(ReservationTypeConverter.toString(ReservationType.PENDING));
                 r.setPlaces(String.valueOf(seatsNumber));
-                r.setRestaurantId(restaurantID);
+                //r.setRestaurantId(restaurantID);
                 r.setNoteByUser(notesTextView.getText().toString());
                 r.setTotalIncome(total);
-                UserBL.addReservation(user, r);
-                UserBL.saveChanges(getApplicationContext());
+                //UserBL.addReservation(user, r);
+                //UserBL.saveChanges(getApplicationContext());
                 Toast.makeText(getApplicationContext(),getResources().getString(R.string.reservation_added), Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -91,6 +91,7 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
         add_review = (FloatingActionButton) findViewById(R.id.add_review);
         add_photo = (FloatingActionButton) findViewById(R.id.add_photo);
         add_reservation = (FloatingActionButton) findViewById(R.id.add_reservation);
+
         add.setClosedOnTouchOutside(true);
 
         add_photo.setOnClickListener(clickListener);
@@ -174,7 +175,8 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
                 coverImageClick();
             }
         });
-
+        if( restaurant!= null && !restaurant.isReservations())
+            add_reservation.setVisibility(View.GONE);
         setCoverImage();
 
     }

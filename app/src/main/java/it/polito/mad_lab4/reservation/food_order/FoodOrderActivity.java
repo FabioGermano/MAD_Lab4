@@ -14,18 +14,17 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import it.polito.mad_lab4.BaseActivity;
 import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.bl.RestaurantBL;
 import it.polito.mad_lab4.common.Helper;
-import it.polito.mad_lab4.data.reservation.ReservedDish;
-import it.polito.mad_lab4.data.restaurant.Dish;
-import it.polito.mad_lab4.data.restaurant.DishType;
-import it.polito.mad_lab4.data.restaurant.Offer;
-import it.polito.mad_lab4.data.restaurant.Restaurant;
-import it.polito.mad_lab4.data.user.User;
+import it.polito.mad_lab4.newData.reservation.ReservedDish;
+import it.polito.mad_lab4.newData.restaurant.Dish;
+import it.polito.mad_lab4.newData.restaurant.Offer;
+import it.polito.mad_lab4.newData.restaurant.Restaurant;
 import it.polito.mad_lab4.reservation.CheckoutOrderActivity;
 
 public class FoodOrderActivity extends BaseActivity {
@@ -40,6 +39,15 @@ public class FoodOrderActivity extends BaseActivity {
     private int restaurantID=-1;
     private Restaurant restaurant;
 
+    private  ReservedDish newReservedDish(Dish dish) {
+        //TODO Reserved Dish ID ??
+        ReservedDish rd = new ReservedDish();
+        rd.setName(dish.getDishName());
+        rd.setOffer(false);
+        rd.setPrice(dish.getPrice());
+        rd.setQuantity(0);
+        return rd;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,7 +107,7 @@ public class FoodOrderActivity extends BaseActivity {
 
         useToolbar(false);
 
-        restaurant = RestaurantBL.getRestaurantById(getApplicationContext(), restaurantID);
+        //restaurant = RestaurantBL.getRestaurantById(getApplicationContext(), restaurantID);
 
         //initialize the lists
         lists = new ArrayList<ArrayList<ReservedDish>>();
@@ -107,32 +115,38 @@ public class FoodOrderActivity extends BaseActivity {
             lists.add(new ArrayList<ReservedDish>());
 
 
-        //retrieve all dishes
-        ArrayList<Dish> main = restaurant.getDishesOfCategory(DishType.MainCourses);
-        ArrayList<Dish> second = restaurant.getDishesOfCategory(DishType.SecondCourses);
-        ArrayList<Dish> dessert = restaurant.getDishesOfCategory(DishType.Dessert);
-        ArrayList<Dish> other = restaurant.getDishesOfCategory(DishType.Other);
+        //retrieve all dishes //TODO da db firebase
+        ArrayList<Dish> main = null;
+        ArrayList<Dish> second = null;
+        ArrayList<Dish> dessert = null;
+        ArrayList<Dish> other = null;
 
         //retrieve all offers
-        ArrayList<Offer> offers = restaurant.getOffers();
+        ArrayList<Offer> offers = null; //TODO da db firebase
 
         //Conversion from Offer to ReservedDish
         for(Offer offer : offers){
-            lists.get(0).add(new ReservedDish(offer.getOfferName(), true, 0,offer.getPrice()));
+            //TODO Reserved Dish ID ??
+            ReservedDish rd = new ReservedDish();
+            rd.setName(offer.getOfferName());
+            rd.setOffer(true);
+            rd.setPrice(offer.getPrice());
+            rd.setQuantity(0);
+            lists.get(0).add(rd);
         }
 
         //Conversion from Dish to ReservedDish
         for(Dish dish : main){
-            lists.get(1).add(new ReservedDish(dish.getDishName(), false, 0,dish.getPrice()));
+            lists.get(1).add(newReservedDish(dish));
         }
         for(Dish dish : second){
-            lists.get(2).add(new ReservedDish(dish.getDishName(), false, 0,dish.getPrice()));
+            lists.get(2).add(newReservedDish(dish));
         }
         for(Dish dish : dessert){
-            lists.get(3).add(new ReservedDish(dish.getDishName(), false, 0,dish.getPrice()));
+            lists.get(3).add(newReservedDish(dish));
         }
         for(Dish dish : other){
-            lists.get(4).add(new ReservedDish(dish.getDishName(), false, 0,dish.getPrice()));
+            lists.get(4).add(newReservedDish(dish));
         }
 
         mSectionsPagerAdapter = new SectionsPagerAdapter( getSupportFragmentManager());
@@ -160,7 +174,7 @@ public class FoodOrderActivity extends BaseActivity {
                 }
                 else{
                     Intent i = new Intent(getApplicationContext(), CheckoutOrderActivity.class);
-                    i.putParcelableArrayListExtra("reservedDishes", reservedDishes );
+                    i.putExtra("reservedDishes", (Serializable) reservedDishes );
                     /*i.putParcelableArrayListExtra("offers", lists.get(0) );
                     i.putParcelableArrayListExtra("main",lists.get(1) );
                     i.putParcelableArrayListExtra("second", lists.get(2));
@@ -177,6 +191,7 @@ public class FoodOrderActivity extends BaseActivity {
 
             }
         });
+
 
     }
 

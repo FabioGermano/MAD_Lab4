@@ -12,8 +12,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import it.polito.mad_lab4.R;
-import it.polito.mad_lab4.data.reservation.Dish;
-import it.polito.mad_lab4.data.reservation.ReservedDish;
+import it.polito.mad_lab4.newData.reservation.ReservedDish;
 
 /**
  * Created by Giovanna on 28/04/2016.

@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * Created by f.germano on 12/04/2016.
  */
-public class ReservedDish {
+public class ReservedDish implements Serializable {
     private String reservedDishId; // not mapped in firebase
     private String name;
     private boolean isOffer;

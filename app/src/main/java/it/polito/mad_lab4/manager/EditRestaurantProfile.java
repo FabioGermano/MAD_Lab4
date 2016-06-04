@@ -1,6 +1,7 @@
 package it.polito.mad_lab4.manager;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -12,7 +13,9 @@ import android.support.v4.content.ContextCompat;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -32,13 +35,14 @@ public class EditRestaurantProfile extends it.polito.mad_lab4.BaseActivity {
     private PhotoViewer logoPhotoViewer;
     private PhotoViewer[] coversPhotoViewer;
     private Restaurant restaurant;
-
+    private CheckBox takeaway, onplace;
     // Views
     private EditText edit_name;
     private EditText edit_phone;
     private EditText edit_address;
     private EditText edit_email;
     private EditText edit_description;
+    private EditText cuisineText;
     private TextView mon, tue, wed, thu, fri, sat, sun;
     private TextView[] week_array;
     private Switch resSwitch;
@@ -69,6 +73,27 @@ public class EditRestaurantProfile extends it.polito.mad_lab4.BaseActivity {
         initializePhotoManagement();
     }
 
+    private void showDialogType(int i){
+        android.support.v7.app.AlertDialog dialog;
+
+        // Strings to Show
+        final String[] items = getResources().getStringArray(R.array.userType);
+
+        // Creating and Building the Dialog
+        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
+        builder.setTitle(getResources().getString(R.string.pick_type)).setSingleChoiceItems(items, i, new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int item) {
+                //typeText.setText(items[item]);
+                //typeChoice=item;
+                dialog.dismiss();
+            }
+        });
+        dialog = builder.create();
+        dialog.getListView().setDividerHeight(1);
+        dialog.show();
+    }
+
 
 
     private void getViews() {
@@ -85,6 +110,17 @@ public class EditRestaurantProfile extends it.polito.mad_lab4.BaseActivity {
         fri = (TextView) findViewById(R.id.friday);
         sat = (TextView) findViewById(R.id.saturday);
         sun = (TextView) findViewById(R.id.sunday);
+
+        takeaway = (CheckBox) findViewById(R.id.takeaway);
+        onplace = (CheckBox) findViewById(R.id.onPlace);
+
+        cuisineText = (EditText) findViewById(R.id.edit_cuisine);
+        cuisineText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
         week_array = new TextView[]{mon, tue, wed, thu, fri, sat, sun};
 
@@ -392,6 +428,9 @@ public class EditRestaurantProfile extends it.polito.mad_lab4.BaseActivity {
             timeTable.add(sun.getText().toString());
             restaurant.setTimeTable(timeTable);
 
+            restaurant.setOnPlace(onplace.isChecked());
+            restaurant.setTakeAway(takeaway.isChecked());
+
             restaurant.setReservations(resSwitch.isChecked());
             restaurant.setBancomat(bancomatSwitch.isChecked());
             restaurant.setCreditCard(creditSwitch.isChecked());
@@ -425,7 +464,12 @@ public class EditRestaurantProfile extends it.polito.mad_lab4.BaseActivity {
         if (edit_phone != null){ edit_phone.setText(r.getPhone()); }
         if (edit_email != null){ edit_email.setText(r.getEmail()); }
         if (edit_description != null){ edit_description.setText(r.getDescription()); }
-
+        if(takeaway!=null){
+            takeaway.setChecked(r.isTakeAway());
+        }
+        if(onplace!=null){
+            onplace.setChecked(r.isOnPlace());
+        }
         for (int i =0;i<7 ;i++){
             if(week_array[i] !=null ){
                 week_array[i].setText(r.getTimeTable().get(i));
