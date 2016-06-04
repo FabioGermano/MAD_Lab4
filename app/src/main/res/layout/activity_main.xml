@@ -130,26 +130,44 @@
                         che possiamo cliccare e andare subito alla pagina
                         del ristorante desiderato
                      -->
-
+                    <!--
                     <android.support.v7.widget.RecyclerView
                         android:layout_width="match_parent"
                         android:layout_height="150dp"
-                        android:id="@+id/recyclerView_nearOffers"/>
+                    android:id="@+id/recyclerView_nearOffers"/>
 
-                    <!--
+
                     <Button
                         android:layout_marginTop="10dp"
                         android:id="@+id/addReview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Add Review" />
-                       -->
-                    <fragment
-                        android:id="@+id/map"
-                        android:name="com.google.android.gms.maps.SupportMapFragment"
+                   -->
+                    <android.support.v7.widget.CardView
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        xmlns:card_view="http://schemas.android.com/apk/res-auto"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        tools:context="it.polito.mad_lab4.MainActivity" />
+                        android:layout_height="200dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp"
+                        card_view:cardCornerRadius="5dp"
+                        card_view:cardBackgroundColor="@color/lightGrey"
+                        >
+                        <fragment
+                            android:id="@+id/map"
+                            android:name="com.google.android.gms.maps.SupportMapFragment"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            tools:context="it.polito.mad_lab4.MainActivity" />
+                    </android.support.v7.widget.CardView>
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="New Button"
+                        android:id="@+id/button2" />
 
                 </LinearLayout>
             </ScrollView>
@@ -160,16 +178,12 @@
                 android:layout_alignParentTop="true"
                 />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="New Button"
-                android:id="@+id/button2" />
+
 
         </RelativeLayout>
 
 
-        <!-- -->
+        <!---->
         <android.support.design.widget.NavigationView
             android:id="@+id/nav_view"
             android:layout_width="wrap_content"

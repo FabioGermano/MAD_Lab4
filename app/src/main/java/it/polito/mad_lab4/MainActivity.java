@@ -33,10 +33,11 @@ import it.polito.mad_lab4.elaborazioneRicerche.Oggetto_risultatoRicerca;
 import it.polito.mad_lab4.elaborazioneRicerche.RecyclerAdapter_offerteVicine;
 import it.polito.mad_lab4.elaborazioneRicerche.elaborazioneRicerche;
 import it.polito.mad_lab4.manager.MainActivityManager;
+import it.polito.mad_lab4.maps_management.mainActivity_map;
 import it.polito.mad_lab4.reservation.user_history.ReservationsHistoryActivity;
 import it.polito.mad_lab4.user.EditUserProfileActivity;
 
-public class MainActivity extends BaseActivity implements OnMapReadyCallback {
+public class MainActivity extends BaseActivity{
 
     private Button addReview, reservationBtn, testBtn;
     private ArrayList<Restaurant> listaRistoranti;
@@ -47,9 +48,6 @@ public class MainActivity extends BaseActivity implements OnMapReadyCallback {
     private SearchView ricerca;
 
     private ArrayList<Oggetto_offerteVicine> lista_offerte_vicine;
-
-
-    private GoogleMap mMap;
 
 
     @Override
@@ -124,12 +122,15 @@ public class MainActivity extends BaseActivity implements OnMapReadyCallback {
         ricercaRistoranteBtn = (ImageButton) findViewById(R.id.ricerca_ristorante);
         //ricercaPiattoBtn = (ImageButton) findViewById(R.id.ricerca_piatto);
 
-        setUpRecyclerView();
+        //setUpRecyclerView();
 
         //gestione MAPPA
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        mainActivity_map gestoreMappa = new mainActivity_map();
+        gestoreMappa.setContext(this);
+        gestoreMappa.setPosition(45, 8);
+        mapFragment.getMapAsync(gestoreMappa);
 
     }
 
@@ -225,7 +226,7 @@ public class MainActivity extends BaseActivity implements OnMapReadyCallback {
         return listaRicerca;
     }
 
-    private void setUpRecyclerView(){
+    /*private void setUpRecyclerView(){
         RecyclerView rView = (RecyclerView) findViewById(R.id.recyclerView_nearOffers);
 
         RecyclerAdapter_offerteVicine myAdapter = new RecyclerAdapter_offerteVicine(this, lista_offerte_vicine);
@@ -238,7 +239,7 @@ public class MainActivity extends BaseActivity implements OnMapReadyCallback {
 
             rView.setItemAnimator(new DefaultItemAnimator());
         }
-    }
+    }*/
 
     public void ricercaLuogo(View view) {
         if(ricercaLuogoBtn != null && ricercaRistoranteBtn != null) {
@@ -299,15 +300,5 @@ public class MainActivity extends BaseActivity implements OnMapReadyCallback {
             return true;
         }
         return super.onKeyDown(keyCode, event);
-    }
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 }
