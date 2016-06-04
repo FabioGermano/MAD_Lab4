@@ -16,15 +16,18 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TabHost;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import it.polito.mad_lab4.R;
+import it.polito.mad_lab4.common.Helper;
 
 /**
  * Created by Jose on 24/05/15.
  */
 public class TimeRangePickerDialog extends DialogFragment implements View.OnClickListener {
     TabHost tabs;
+    TextView header;
     Button setTimeRange, closed;
     TimePicker startTimePicker, endTimePicker;
     OnTimeRangeSelectedListener onTimeRangeSelectedListener;
@@ -58,12 +61,14 @@ public class TimeRangePickerDialog extends DialogFragment implements View.OnClic
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.timerange_picker, container, false);
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        header = (TextView) root.findViewById(R.id.header);
         tabs = (TabHost) root.findViewById(R.id.tabHost);
         closed = (Button) root.findViewById(R.id.closed);
         setTimeRange = (Button) root.findViewById(R.id.bSetTimeRange);
         startTimePicker = (TimePicker) root.findViewById(R.id.startTimePicker);
         endTimePicker = (TimePicker) root.findViewById(R.id.endTimePicker);
         setTimeRange.setOnClickListener(this);
+        header.setText(Helper.intToWeekString(getContext(), Helper.fromMyOrderToCalendarWeekOrder(id)));
         closed.setOnClickListener(this);
         tabs.findViewById(R.id.tabHost);
         tabs.setup();

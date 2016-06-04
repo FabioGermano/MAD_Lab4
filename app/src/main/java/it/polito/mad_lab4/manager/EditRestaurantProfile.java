@@ -39,13 +39,8 @@ public class EditRestaurantProfile extends it.polito.mad_lab4.BaseActivity {
     private EditText edit_address;
     private EditText edit_email;
     private EditText edit_description;
-    private Button lunBtn;
-    private Button marBtn;
-    private Button merBtn;
-    private Button gioBtn;
-    private Button venBtn;
-    private Button sabBtn;
-    private Button domBtn;
+    private TextView mon, tue, wed, thu, fri, sat, sun;
+    private TextView[] week_array;
     private Switch resSwitch;
     private Switch wifiSwitch;
     private Switch seatsSwitch;
@@ -83,13 +78,15 @@ public class EditRestaurantProfile extends it.polito.mad_lab4.BaseActivity {
         edit_email = (EditText) findViewById(R.id.edit_email);
         edit_description = (EditText) findViewById(R.id.edit_description);
 
-        lunBtn = (Button) findViewById(R.id.monday_butt);
-        marBtn = (Button) findViewById(R.id.tuesday_butt);
-        merBtn = (Button) findViewById(R.id.wednesday_butt);
-        gioBtn = (Button) findViewById(R.id.thursday_butt);
-        venBtn = (Button) findViewById(R.id.friday_butt);
-        sabBtn = (Button) findViewById(R.id.saturday_butt);
-        domBtn = (Button) findViewById(R.id.sunday_butt);
+        mon = (TextView) findViewById(R.id.monday);
+        tue = (TextView) findViewById(R.id.tuesday);
+        wed = (TextView) findViewById(R.id.wedenesday);
+        thu = (TextView) findViewById(R.id.thursday);
+        fri = (TextView) findViewById(R.id.friday);
+        sat = (TextView) findViewById(R.id.saturday);
+        sun = (TextView) findViewById(R.id.sunday);
+
+        week_array = new TextView[]{mon, tue, wed, thu, fri, sat, sun};
 
         resSwitch = (Switch) findViewById(R.id.reservation);
         wifiSwitch = (Switch) findViewById(R.id.wifi);
@@ -188,15 +185,29 @@ public class EditRestaurantProfile extends it.polito.mad_lab4.BaseActivity {
     private boolean validateData() {
 
         String name, address, phone, email, description, tmp;
-        String lun, mar, mer, gio, ven, sab, dom;
+        String lun = null, mar = null, mer = null, gio = null, ven = null, sab = null, dom = null;
+
+        String[] str_array;
 
         if(logoPhotoViewer.isImageTobeSetted()){
             printAlert(getResources().getString(R.string.error_complete));
             return false;
         }
+        str_array= new String[]{lun, mar, mer, gio, ven, sab, dom};
 
-        if (lunBtn != null){
-            tmp = lunBtn.getText().toString();
+        for(int i=0; i<7; i++){
+            if(week_array[i].getText().toString() == null || week_array[i].getText().toString()== ""){
+                printAlert(getResources().getString(R.string.error_complete));
+                return false;
+            }
+            else{
+                str_array[i]=week_array[i].getText().toString();
+            }
+
+        }
+        /*
+        if (mon != null){
+            tmp = mon.getText().toString();
             if (tmp.compareTo(getResources().getString(R.string.monday).toUpperCase()) == 0){
                 //campo vuoto
                 printAlert(getResources().getString(R.string.error_complete));
@@ -211,8 +222,8 @@ public class EditRestaurantProfile extends it.polito.mad_lab4.BaseActivity {
             return false;
         }
 
-        if (marBtn != null){
-            tmp = marBtn.getText().toString();
+        if (tue != null){
+            tmp = tue.getText().toString();
             if (tmp.compareTo(getResources().getString(R.string.tuesday).toUpperCase()) == 0){
                 //campo vuoto
                 printAlert(getResources().getString(R.string.error_complete));
@@ -228,8 +239,8 @@ public class EditRestaurantProfile extends it.polito.mad_lab4.BaseActivity {
         }
 
 
-        if (merBtn != null) {
-            tmp = merBtn.getText().toString();
+        if (wed != null) {
+            tmp = wed.getText().toString();
             if (tmp.compareTo(getResources().getString(R.string.wednesday).toUpperCase()) == 0) {
                 //campo vuoto
                 printAlert(getResources().getString(R.string.error_complete));
@@ -243,8 +254,8 @@ public class EditRestaurantProfile extends it.polito.mad_lab4.BaseActivity {
             return false;
         }
 
-        if (gioBtn != null){
-            tmp = gioBtn.getText().toString();
+        if (thu != null){
+            tmp = thu.getText().toString();
             if (tmp.compareTo(getResources().getString(R.string.thursday).toUpperCase()) == 0){
                 //campo vuoto
                 printAlert(getResources().getString(R.string.error_complete));
@@ -259,8 +270,8 @@ public class EditRestaurantProfile extends it.polito.mad_lab4.BaseActivity {
             return false;
         }
 
-        if (venBtn != null){
-            tmp = venBtn.getText().toString();
+        if (fri != null){
+            tmp = fri.getText().toString();
             if (tmp.compareTo(getResources().getString(R.string.friday).toUpperCase()) == 0){
                 //campo vuoto
                 printAlert(getResources().getString(R.string.error_complete));
@@ -275,8 +286,8 @@ public class EditRestaurantProfile extends it.polito.mad_lab4.BaseActivity {
             return false;
         }
 
-        if (sabBtn != null){
-            tmp = sabBtn.getText().toString();
+        if (sat != null){
+            tmp = sat.getText().toString();
             if (tmp.compareTo(getResources().getString(R.string.saturday).toUpperCase()) == 0){
                 //campo vuoto
                 printAlert(getResources().getString(R.string.error_complete));
@@ -291,8 +302,8 @@ public class EditRestaurantProfile extends it.polito.mad_lab4.BaseActivity {
             return false;
         }
 
-        if (domBtn != null){
-            tmp = domBtn.getText().toString();
+        if (sun != null){
+            tmp = sun.getText().toString();
             if (tmp.compareTo(getResources().getString(R.string.sunday).toUpperCase()) == 0){
                 //campo vuoto
                 printAlert(getResources().getString(R.string.error_complete));
@@ -306,6 +317,7 @@ public class EditRestaurantProfile extends it.polito.mad_lab4.BaseActivity {
             printAlert(getResources().getString(R.string.exceptionError));
             return false;
         }
+        */
 
 
         if (edit_name != null) {
@@ -371,13 +383,13 @@ public class EditRestaurantProfile extends it.polito.mad_lab4.BaseActivity {
             restaurant.setPhone(edit_phone.getText().toString());
 
             ArrayList<String> timeTable = new ArrayList<String>();
-            timeTable.add(lunBtn.getText().toString());
-            timeTable.add(marBtn.getText().toString());
-            timeTable.add(merBtn.getText().toString());
-            timeTable.add(gioBtn.getText().toString());
-            timeTable.add(venBtn.getText().toString());
-            timeTable.add(sabBtn.getText().toString());
-            timeTable.add(domBtn.getText().toString());
+            timeTable.add(mon.getText().toString());
+            timeTable.add(tue.getText().toString());
+            timeTable.add(wed.getText().toString());
+            timeTable.add(thu.getText().toString());
+            timeTable.add(fri.getText().toString());
+            timeTable.add(sat.getText().toString());
+            timeTable.add(sun.getText().toString());
             restaurant.setTimeTable(timeTable);
 
             restaurant.setReservations(resSwitch.isChecked());
@@ -414,14 +426,11 @@ public class EditRestaurantProfile extends it.polito.mad_lab4.BaseActivity {
         if (edit_email != null){ edit_email.setText(r.getEmail()); }
         if (edit_description != null){ edit_description.setText(r.getDescription()); }
 
-        if (lunBtn != null){ lunBtn.setText(r.getTimeTable().get(0)); }
-        if (marBtn != null){ marBtn.setText(r.getTimeTable().get(1)); }
-        if (merBtn != null){ merBtn.setText(r.getTimeTable().get(2)); }
-        if (gioBtn != null){ gioBtn.setText(r.getTimeTable().get(3)); }
-        if (venBtn != null){ venBtn.setText(r.getTimeTable().get(4)); }
-        if (sabBtn != null){ sabBtn.setText(r.getTimeTable().get(5)); }
-        if (domBtn != null){ domBtn.setText(r.getTimeTable().get(6)); }
-
+        for (int i =0;i<7 ;i++){
+            if(week_array[i] !=null ){
+                week_array[i].setText(r.getTimeTable().get(i));
+            }
+        }
         if (resSwitch != null) { resSwitch.setChecked(r.isReservations()); };
         if (wifiSwitch != null) { wifiSwitch.setChecked(r.isWifi()); };
         if (seatsSwitch != null) { seatsSwitch.setChecked(r.isSeatsOutside()); };

@@ -221,7 +221,7 @@
     <string name="takeAway" >Take-Away</string>
     <string name="show_all">MOSTRA TUTTO</string>
     <string name="show_other">MOSTRA ALTRO...</string>
-    <string name="mon">Lin:</string>
+    <string name="mon">Lun:</string>
     <string name="tue">Mar:</string>
     <string name="wed">Mer:</string>
     <string name="thu">Gio:</string>
@@ -239,7 +239,7 @@
     <string name="today_available">Today available!</string>
     <string name="orderbydate">Ordina dal più recente</string>
     <string name="orderbyranking">Ordina per valutazione</string>
-    <string name="check_out"></string>
+    <string name="check_out">Check out</string>
     <string name="order_now">Ordina</string>
     <string name="rejected_your_reserv">\' ha rifiutato la tua prenotazione</string>
     <string name="short_description">Breve descrizione</string>

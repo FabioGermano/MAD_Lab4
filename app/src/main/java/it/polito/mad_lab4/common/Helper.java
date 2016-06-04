@@ -97,6 +97,26 @@ public class Helper {
                 return -1;
         }
     }
+    public static int fromMyOrderToCalendarWeekOrder(int weekday){
+        switch (weekday){
+            case 0: //monday
+                return 2;
+            case 1: //tuesday
+                return 3;
+            case 2: //wed
+                return 4;
+            case 3:
+                return 5;
+            case 4:
+                return 6;
+            case 5:
+                return 7;
+            case 6:
+                return 1;
+            default:
+                return -1;
+        }
+    }
     public static String intToWeekString (Context context, int weekday){
         switch (weekday){
             case 1:
@@ -201,4 +221,6 @@ public class Helper {
         int px = Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
         return px;
     }
+
+
 }
