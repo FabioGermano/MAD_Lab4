@@ -314,4 +314,5 @@
     <string name="search_byrestaurant">Search by Restaurant</string>
     <string name="search_byplace">Search by Place</string>
     <string name="permission_denied_message">The app won\'t work properly if you deny the permission</string>
+    <string name="title_activity_maps_test">Map</string>
 </resources>
