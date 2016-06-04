@@ -30,6 +30,7 @@ import it.polito.mad_lab4.firebase_manager.FirebaseGetUserInfoManager;
 import it.polito.mad_lab4.login_registrazione.Login;
 import it.polito.mad_lab4.login_registrazione.Register;
 import it.polito.mad_lab4.manager.reservation.ReservationsActivity;
+import it.polito.mad_lab4.manager.MainActivityManager;
 import it.polito.mad_lab4.newData.user.User;
 import it.polito.mad_lab4.user.EditUserProfileActivity;
 import it.polito.mad_lab4.user.ShowFavouritesActivity;
@@ -55,14 +56,16 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     private FirebaseGetAuthInformation mAuthListener;
 
     private User infoUser = null;
-
     private String id = null;
     private String email = null;
+
+    // serve per reindirizzare alla pagina della gestione ristorante se è collegato un utente manager
+    private boolean homePageClient = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        homePageClient = false;
         mAuth = FirebaseAuth.getInstance();
 
         /*if (isLargeDevice(getBaseContext())) {
@@ -227,8 +230,18 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if(infoUser != null)
+                        if(infoUser != null) {
+                            //se è un manager lo reindirizzo alla sua pagina corretta
+                            if(homePageClient){
+                                if(infoUser.getUserType().compareTo("M") == 0){
+                                    Intent i= new Intent(getApplicationContext(), MainActivityManager.class);
+                                    startActivity(i);
+                                    dismissProgressDialog();
+                                    finish();
+                                }
+                            }
                             riempiBarraLaterale(navigationView);
+                        }
                         else {
                             //errore caricamento dati utente dal server
                             caricaUtenteDefault(navigationView);
@@ -289,6 +302,10 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
             System.out.println(e.getMessage());
             return;
         }
+    }
+
+    public void setHomePageClient(){
+        this.homePageClient = true;
     }
 
     private void configureToolbar(View view) {

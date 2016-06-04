@@ -33,7 +33,7 @@ public class MainActivity extends BaseActivity {
 
     private Button addReview, reservationBtn, testBtn;
     private ArrayList<Restaurant> listaRistoranti;
-    private User userInfo;
+    //private User userInfo;
     private ImageButton ricercaLuogoBtn, ricercaRistoranteBtn;
     private boolean ricerca_luogo=false, ricerca_ristorante=true;
 
@@ -51,26 +51,10 @@ public class MainActivity extends BaseActivity {
         setBackButtonVisibility(false);
         setIconaToolbar(true);
 
-        //gestione login e dati utente
-        //controllo file di configurazione per login automatico (così non deve farlo l'utente ad ogni avvio)
-        try {
-            //ottengo i dati utente dalle altre activity
-
-            Bundle extras = getIntent().getExtras();
-            if (extras != null) {
-                userInfo = (User) extras.getSerializable("userInfo");
-                extras.clear();
-
-            } else {
-                userInfo = controlloLoginAutomatico();
-
-            }
-        }catch(Exception e){
-
-            userInfo = new User(null, null, -1);
-        }
+        setHomePageClient();
 
         setContentView(R.layout.activity_main);
+
         hideToolbar(true);
         hideToolbarShadow(true);
 
@@ -137,19 +121,6 @@ public class MainActivity extends BaseActivity {
 
     }
 
-    private User controlloLoginAutomatico(){
-        //controllo file di configurazione ed eventualmente eseguo login e carico le info dell'utente nella struttura dati
-        User user = null;
-        try{
-
-            return new User(null, null, -1);
-        }catch(Exception e) {
-            return new User(null, null, -1);
-        }
-    }
-
-
-
     private void caricaDati() {
 
         lista_offerte_vicine = new ArrayList<>();
@@ -205,7 +176,7 @@ public class MainActivity extends BaseActivity {
 
         Bundle b = new Bundle();
         b.putSerializable("results", listaRicerca);
-        b.putSerializable("userInfo", userInfo);
+        //b.putSerializable("userInfo", userInfo);
 
         Intent i = new Intent(getApplicationContext(), elaborazioneRicerche.class);
         i.putExtras(b);
