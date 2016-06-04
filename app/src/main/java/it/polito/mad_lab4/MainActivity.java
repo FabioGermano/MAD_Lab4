@@ -42,6 +42,9 @@ public class MainActivity extends BaseActivity {
     private ArrayList<Oggetto_offerteVicine> lista_offerte_vicine;
 
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

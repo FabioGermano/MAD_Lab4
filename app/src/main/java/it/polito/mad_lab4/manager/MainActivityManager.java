@@ -13,11 +13,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import it.polito.mad_lab4.MainActivity;
+import it.polito.mad_lab4.*;
 import it.polito.mad_lab4.manager.reservation.ReservationsActivity;
-import it.polito.mad_lab4.R;
 
-public class MainActivityManager extends BaseBarraLaterale{
+public class MainActivityManager extends it.polito.mad_lab4.BaseActivity{
 
     /*private PhotoViewer photoViewer;
     private Bitmap largeBitmap;*/
@@ -36,30 +35,14 @@ public class MainActivityManager extends BaseBarraLaterale{
             // Implement this feature without material design
         }
 
-        SetSaveButtonVisibility(true);
-        SetCalendarButtonVisibility(false);
-        SetBackButtonVisibility(false);
-        SetSaveButtonVisibility(false);
-        setTitleTextView(getResources().getString(R.string.app_name));
+
+
         setContentView(R.layout.activity_main_manager);
         setToolbarColor();
+        setActivityTitle(getResources().getString(R.string.app_name));
 
         View header = null;
 
-        //inizializzo menu laterale
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        if(drawer != null) {
-            drawer.setDrawerListener(toggle);
-            toggle.syncState();
-
-            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-            if(navigationView != null) {
-                navigationView.setNavigationItemSelectedListener(this);
-                header = navigationView.getHeaderView(0);
-            }
-        }
         Button btn = (Button) findViewById(R.id.button);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,21 +52,6 @@ public class MainActivityManager extends BaseBarraLaterale{
             }
         });
         checkDB();
-                 
-        if(header != null){
-            ImageView restaurant_logo = (ImageView) header.findViewById(R.id.nav_drawer_logo);
-            TextView restaurant_name = (TextView) header.findViewById(R.id.nav_drawer_name);
-            TextView restaurant_email = (TextView) header.findViewById(R.id.nav_drawer_email);
-
-            if (restaurant_name != null && restaurant_email != null && restaurant_logo != null) {
-                if (name != null && name.compareTo("") != 0)
-                    restaurant_name.setText(name);
-                if (email != null  && email.compareTo("") != 0)
-                    restaurant_email.setText(email);
-                if (logo != null)
-                    restaurant_logo.setImageBitmap(logo);
-            }
-        }
 
 
         //provaGson();
@@ -100,61 +68,7 @@ public class MainActivityManager extends BaseBarraLaterale{
         moveTaskToBack(true);
     }
 
-    @Override
-    protected void OnSaveButtonPressed()
-    {
-        Toast toast = Toast.makeText(getApplicationContext(), "Save pressed", Toast.LENGTH_SHORT);
-        toast.show();
-    }
 
-    @Override
-    protected void OnAlertButtonPressed()
-    {
-        Toast toast = Toast.makeText(getApplicationContext(), "Alert pressed", Toast.LENGTH_SHORT);
-        toast.show();
-    }
-
-    @Override
-    protected void OnCalendarButtonPressed() {
-
-        Toast toast = Toast.makeText(getApplicationContext(), "Calendar pressed", Toast.LENGTH_SHORT);
-        toast.show();
-    }
-
-    @Override
-    protected void OnBackButtonPressed() {
-
-    }
-
-    @Override
-    protected void ModificaProfilo() {
-        Intent intent = new Intent(getApplicationContext(), it.polito.mad_lab4.manager.EditRestaurantProfile.class);
-        startActivity(intent);
-    }
-
-    @Override
-    protected void ModificaMenu() {
-        Intent intent = new Intent(getApplicationContext(), it.polito.mad_lab4.manager.GestioneMenu.class);
-        startActivity(intent);
-    }
-
-    @Override
-    protected void ModificaOfferte() {
-        Intent intent = new Intent(getApplicationContext(), it.polito.mad_lab4.manager.GestioneOfferte.class);
-        startActivity(intent);
-    }
-
-    @Override
-    protected void ModificaDisponibilità() {
-        Intent intent = new Intent(getApplicationContext(), it.polito.mad_lab4.manager.EditAvailability.class);
-        startActivity(intent);
-    }
-
-    @Override
-    protected void TestPrenotazioni() {
-        Intent intent = new Intent(getApplicationContext(), ReservationsActivity.class);
-        startActivity(intent);
-    }
 
     public void checkDB(){
         GestioneDB DB = new GestioneDB();

@@ -29,6 +29,7 @@ import it.polito.mad_lab4.firebase_manager.FirebaseGetAuthInformation;
 import it.polito.mad_lab4.firebase_manager.FirebaseGetUserInfoManager;
 import it.polito.mad_lab4.login_registrazione.Login;
 import it.polito.mad_lab4.login_registrazione.Register;
+import it.polito.mad_lab4.manager.reservation.ReservationsActivity;
 import it.polito.mad_lab4.newData.user.User;
 import it.polito.mad_lab4.user.EditUserProfileActivity;
 import it.polito.mad_lab4.user.ShowFavouritesActivity;
@@ -398,6 +399,36 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     }
 
 
+    protected void ModificaProfiloManager() {
+        Intent intent = new Intent(getApplicationContext(), it.polito.mad_lab4.manager.EditRestaurantProfile.class);
+        startActivity(intent);
+    }
+
+
+    protected void ModificaMenu() {
+        Intent intent = new Intent(getApplicationContext(), it.polito.mad_lab4.manager.GestioneMenu.class);
+        startActivity(intent);
+    }
+
+
+    protected void ModificaOfferte() {
+        Intent intent = new Intent(getApplicationContext(), it.polito.mad_lab4.manager.GestioneOfferte.class);
+        startActivity(intent);
+    }
+
+
+    protected void ModificaDisponibilità() {
+        Intent intent = new Intent(getApplicationContext(), it.polito.mad_lab4.manager.EditAvailability.class);
+        startActivity(intent);
+    }
+
+
+    protected void VisualizzaPrenotazioni() {
+        Intent intent = new Intent(getApplicationContext(), ReservationsActivity.class);
+        startActivity(intent);
+    }
+
+
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -416,19 +447,24 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                 break;
             //MANAGER
             case R.id.mod_profilo_manager:
-                Toast.makeText(getApplicationContext(), "profilo manager", Toast.LENGTH_LONG).show();
+                ModificaProfiloManager();
+                //Toast.makeText(getApplicationContext(), "profilo manager", Toast.LENGTH_LONG).show();
                 break;
             case R.id.mod_menu_manager:
-                Toast.makeText(getApplicationContext(), "menu manager", Toast.LENGTH_LONG).show();
+                ModificaMenu();
+                //Toast.makeText(getApplicationContext(), "menu manager", Toast.LENGTH_LONG).show();
                 break;
             case R.id.mod_offerte_manager:
-                Toast.makeText(getApplicationContext(), "offerte manager", Toast.LENGTH_LONG).show();
+                ModificaOfferte();
+                //Toast.makeText(getApplicationContext(), "offerte manager", Toast.LENGTH_LONG).show();
                 break;
             case R.id.mod_disponibilità_manager:
-                Toast.makeText(getApplicationContext(), "disponibilità manager", Toast.LENGTH_LONG).show();
+                ModificaDisponibilità();
+                //Toast.makeText(getApplicationContext(), "disponibilità manager", Toast.LENGTH_LONG).show();
                 break;
             case R.id.prenotazioni_manager:
-                Toast.makeText(getApplicationContext(), "prenotazioni manager", Toast.LENGTH_LONG).show();
+                VisualizzaPrenotazioni();
+                //Toast.makeText(getApplicationContext(), "prenotazioni manager", Toast.LENGTH_LONG).show();
                 break;
             //DEFAULT
             case R.id.esegui_login:
