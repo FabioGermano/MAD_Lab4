@@ -21,8 +21,6 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import it.polito.mad_lab4.common.Helper;
 import it.polito.mad_lab4.newData.restaurant.Dish;
-import it.polito.mad_lab4.newData.restaurant.Restaurant;
-import it.polito.mad_lab4.restaurant.RestaurantActivity;
 
 /**
  * Created by f.germano on 28/05/2016.

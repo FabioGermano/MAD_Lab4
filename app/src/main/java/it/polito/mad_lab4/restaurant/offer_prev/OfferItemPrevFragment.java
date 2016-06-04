@@ -13,6 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -22,7 +24,7 @@ import it.polito.mad_lab4.common.Helper;
 import it.polito.mad_lab4.data.restaurant.Dish;
 import it.polito.mad_lab4.data.restaurant.DishType;
 import it.polito.mad_lab4.data.restaurant.DishTypeConverter;
-import it.polito.mad_lab4.data.restaurant.Offer;
+import it.polito.mad_lab4.newData.restaurant.Offer;
 import it.polito.mad_lab4.reservation.ReservationActivity;
 import it.polito.mad_lab4.restaurant.ShowOfferActivity;
 
@@ -33,17 +35,22 @@ public class OfferItemPrevFragment extends Fragment {
 
     private int restaurantId;
     private int sectionNumber;
+    private ArrayList<Offer> offers;
 
     public OfferItemPrevFragment(){
 
     }
 
-    public static OfferItemPrevFragment newInstance(int sectionNumber, int restaurantId) {
+    public static OfferItemPrevFragment newInstance(int sectionNumber, ArrayList<Offer> offers) {
         OfferItemPrevFragment fragment = new OfferItemPrevFragment();
         fragment.setSectionNumber(sectionNumber);
-        fragment.setRestaurantId(restaurantId);
+        fragment.setOffers(offers);
 
         return fragment;
+    }
+
+    private void setOffers(ArrayList<Offer> offers) {
+        this.offers = offers;
     }
 
     private void setRestaurantId(int restaurantId) {
@@ -60,7 +67,6 @@ public class OfferItemPrevFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.offer_prev_view, container, false);
 
-        final ArrayList<Offer> offers = RestaurantBL.getRestaurantById(getContext(), this.restaurantId).getOffers();
         TextView offerName = (TextView)rootView.findViewById(R.id.offerName);
         TextView offerPrice = (TextView)rootView.findViewById(R.id.offerPrice);
         RatingBar offerRatingProgress = (RatingBar)rootView.findViewById(R.id.offerRatingProgress);
@@ -86,14 +92,8 @@ public class OfferItemPrevFragment extends Fragment {
 
         ImageView foodIV = (ImageView)rootView.findViewById(R.id.foodIV);
 
-        if(offers.get(this.sectionNumber).getThumbPath() != null){
-            foodIV.setImageBitmap(BitmapFactory.decodeFile(offers.get(this.sectionNumber).getThumbPath()));
-        }
-        else if(offers.get(this.sectionNumber).getResPhoto() != null){
-            int imgRes = Helper.getResourceByName(getContext(), offers.get(this.sectionNumber).getResPhoto(), "drawable");
-            if(imgRes != 0){
-                foodIV.setImageResource(imgRes);
-            }
+        if(offers.get(this.sectionNumber).getThumbDownloadLink() != null){
+            Glide.with(this).load(offers.get(this.sectionNumber).getThumbDownloadLink()).into(foodIV);
         }
 
         return rootView;

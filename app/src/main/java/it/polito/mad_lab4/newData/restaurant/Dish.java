@@ -1,5 +1,7 @@
 package it.polito.mad_lab4.newData.restaurant;
 
+import com.google.firebase.database.Exclude;
+
 import java.io.Serializable;
 
 import it.polito.mad_lab4.data.restaurant.DishType;
@@ -8,7 +10,7 @@ import it.polito.mad_lab4.data.restaurant.DishTypeConverter;
 /**
  * Created by f.germano on 20/05/2016.
  */
-public class Dish {
+public class Dish implements Serializable{
     private String dishName;
     private float sumRank;
     private String dishId; // not mapped in firebase
@@ -92,5 +94,13 @@ public class Dish {
 
     public String getLargeDownloadLink() {
         return largeDownloadLink;
+    }
+
+    @Exclude
+    public float getAvgRank() {
+        if(this.numRanks == 0){
+            return 0;
+        }
+        return this.sumRank / this.numRanks;
     }
 }

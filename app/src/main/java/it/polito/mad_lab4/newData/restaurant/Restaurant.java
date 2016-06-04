@@ -2,6 +2,7 @@ package it.polito.mad_lab4.newData.restaurant;
 
 import com.google.firebase.database.Exclude;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import it.polito.mad_lab4.data.restaurant.BasicInfo;
@@ -15,7 +16,7 @@ import it.polito.mad_lab4.data.restaurant.UserPhoto;
 /**
  * Created by f.germano on 25/04/2016.
  */
-public class Restaurant {
+public class Restaurant implements Serializable{
 
     private String address;
     private String city;
@@ -314,6 +315,38 @@ public class Restaurant {
             case 3:
                 this.cover4_largeDownloadLink = downloadLinkLarge;
                 break;
+        }
+    }
+
+    public String getLargeCoverByIndex(int i) {
+        switch (i){
+            case 0:
+                return this.cover1_largeDownloadLink;
+            case 1:
+                return this.cover2_largeDownloadLink;
+            case 2:
+                return this.cover3_largeDownloadLink;
+            case 3:
+                return this.cover4_largeDownloadLink;
+            default:
+                return null;
+
+        }
+    }
+
+    public String getThumbCoverByIndex(int i) {
+        switch (i){
+            case 0:
+                return this.cover1_thumbDownloadLink;
+            case 1:
+                return this.cover2_thumbDownloadLink;
+            case 2:
+                return this.cover3_thumbDownloadLink;
+            case 3:
+                return this.cover4_thumbDownloadLink;
+            default:
+                return null;
+
         }
     }
 

@@ -14,21 +14,17 @@ import java.util.Calendar;
 import it.polito.mad_lab4.BaseActivity;
 import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.common.Helper;
-import it.polito.mad_lab4.common.photo_manager.PhotoManager;
-import it.polito.mad_lab4.common.photo_manager.PhotoType;
-import it.polito.mad_lab4.common.photo_viewer.PhotoViewer;
-import it.polito.mad_lab4.common.photo_viewer.PhotoViewerListener;
-import it.polito.mad_lab4.data.restaurant.Offer;
+import it.polito.mad_lab4.manager.photo_viewer.PhotoViewer;
+import it.polito.mad_lab4.newData.restaurant.Offer;
 import it.polito.mad_lab4.data.user.User;
 
 /**
  * Created by Giovanna on 03/05/2016.
  */
-public class ShowOfferActivity extends BaseActivity implements PhotoViewerListener{
+public class ShowOfferActivity extends BaseActivity{
 
     private String imageLarge = null;
     private String imageThumb = null;
-    private PhotoManager photoManager;
     private PhotoViewer photoViewer;
     private String offerName, offerDetails, offerPrice;
     private float rating;
@@ -49,12 +45,6 @@ public class ShowOfferActivity extends BaseActivity implements PhotoViewerListen
         offer = (Offer)getIntent().getExtras().getSerializable("offer");
 
         photoViewer = (PhotoViewer)getSupportFragmentManager().findFragmentById(R.id.photoViewer);
-        photoManager = new PhotoManager(getApplicationContext(), PhotoType.OFFER, this.imageThumb, this.imageLarge);
-
-        if(offer.getResPhoto() != null){
-            this.photoViewer.setThumbBitmap(BitmapFactory.decodeResource(getResources(), Helper.getResourceByName(getApplicationContext(), offer.getResPhoto(), "drawable")));
-        }
-
 
         nameTextView = (TextView) findViewById(R.id.name);
         availableTextView = (TextView) findViewById(R.id.today_available);
@@ -104,28 +94,9 @@ public class ShowOfferActivity extends BaseActivity implements PhotoViewerListen
                 rb,
                 offer.getAvgRank());
 
-    }
-
-
-
-    @Override
-    public void OnPhotoChanged(int fragmentId, Bitmap thumb, Bitmap large) {
-
-    }
-
-    @Override
-    public Bitmap OnPhotoViewerActivityStarting(int fragmentId) {
-        if(offer.getLargePath() != null){
-            return BitmapFactory.decodeFile(offer.getLargePath());
+        if(offer.getLargeDownloadLink() != null && offer.getThumbDownloadLink() != null){
+            photoViewer.setThumbBitmapByURI(offer.getThumbDownloadLink());
+            photoViewer.setLargePhotoDownloadLink(offer.getLargeDownloadLink());
         }
-        else {
-            return BitmapFactory.decodeResource(getResources(),
-                    Helper.getResourceByName(getApplicationContext(), offer.getResPhoto(), "drawable"));
-        }
-    }
-
-    @Override
-    public void OnPhotoRemoved(int fragmentId) {
-
     }
 }

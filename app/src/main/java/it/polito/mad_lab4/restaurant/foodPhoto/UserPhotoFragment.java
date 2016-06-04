@@ -19,8 +19,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import it.polito.mad_lab4.R;
-import it.polito.mad_lab4.data.restaurant.Restaurant;
-import it.polito.mad_lab4.data.restaurant.UserPhoto;
+import it.polito.mad_lab4.newData.restaurant.Restaurant;
+import it.polito.mad_lab4.newData.restaurant.UserPhoto;
 import it.polito.mad_lab4.restaurant.gallery.GalleryPhotoViewActivity;
 import it.polito.mad_lab4.restaurant.gallery.PhotoGaleryActivity;
 
@@ -66,13 +66,13 @@ public class UserPhotoFragment extends Fragment {
         if(this.openGalleryOnClick && this.restaurant != null){ // apro galleria
             Intent i = new Intent(getContext(), PhotoGaleryActivity.class);
             Bundle b = new Bundle();
-            b.putInt("restaurantId", this.restaurant.getRestaurantId());
+            //b.putInt("restaurantId", this.restaurant.getRestaurantId());
             i.putExtras(b);
             startActivity(i);
         }
         else if(!this.openGalleryOnClick && this.restaurant != null && this.userPhoto != null){ // apro dettaglio photo
             Intent intent = new Intent(getActivity().getApplicationContext(), GalleryPhotoViewActivity.class);
-            intent.putExtra("photoPath", userPhoto.getLargePath());
+            //intent.putExtra("photoPath", userPhoto.getLargePath());
             intent.putExtra("isEditable", false);
             intent.putExtra("userPhoto", userPhoto);
             intent.putExtra("restaurantId", this.restaurant.getRestaurantId());
@@ -101,9 +101,9 @@ public class UserPhotoFragment extends Fragment {
     }
 
     public void setImage(){
-        Bitmap bitmap = BitmapFactory.decodeFile(this.userPhoto.getThumbPath());
+        //Bitmap bitmap = BitmapFactory.decodeFile(this.userPhoto.getThumbPath());
 
-        this.foodIV.setImageBitmap(bitmap);
+        //this.foodIV.setImageBitmap(bitmap);
         this.photoSetted = true;
 
         this.likesTV.setVisibility(View.VISIBLE);

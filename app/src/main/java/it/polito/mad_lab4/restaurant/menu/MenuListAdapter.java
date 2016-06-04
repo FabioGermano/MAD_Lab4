@@ -7,18 +7,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
 import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.common.Helper;
-import it.polito.mad_lab4.data.reservation.ReservedDish;
-import it.polito.mad_lab4.data.restaurant.Dish;
-import it.polito.mad_lab4.reservation.ReservationActivity;
+import it.polito.mad_lab4.newData.restaurant.Dish;
 
 /**
  * Created by f.germano on 03/05/2016.
@@ -74,20 +73,13 @@ public class MenuListAdapter extends ArrayAdapter<Dish>  {
                 viewHolder.ratingBar,
                 this.dishes.get(position).getAvgRank());
 
-        boolean clickable = false;
-        if(this.dishes.get(position).getThumbPath() != null) {
-            viewHolder.dishPhotoIV.setImageBitmap(BitmapFactory.decodeFile(this.dishes.get(position).getThumbPath()));
-            clickable = true;
-        }
-        else if(this.dishes.get(position).getResPhoto() != null) {
-            int imgRes = Helper.getResourceByName(getContext(), this.dishes.get(position).getResPhoto(), "drawable");
-            if (imgRes != 0) {
-                viewHolder.dishPhotoIV.setImageResource(imgRes);
-                clickable = true;
-            }
+        if(this.dishes.get(position).getThumbDownloadLink() != null){
+            Glide.with(getContext())
+                    .load(this.dishes.get(position).getThumbDownloadLink())
+                    .into(viewHolder.dishPhotoIV);
         }
 
-        if(clickable) {
+        if(this.dishes.get(position).getLargeDownloadLink() != null) {
             convertView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

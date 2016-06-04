@@ -1,12 +1,14 @@
 package it.polito.mad_lab4.newData.restaurant;
 
+import com.google.firebase.database.Exclude;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by f.germano on 20/05/2016.
  */
-public class Offer {
+public class Offer implements Serializable{
 
     private String offerName;
     private String offerId; //not mapped in firebase
@@ -100,5 +102,13 @@ public class Offer {
 
     public String getLargeDownloadLink() {
         return largeDownloadLink;
+    }
+
+    @Exclude
+    public float getAvgRank() {
+        if(this.numRanks == 0){
+            return 0;
+        }
+        return this.sumRank / this.numRanks;
     }
 }

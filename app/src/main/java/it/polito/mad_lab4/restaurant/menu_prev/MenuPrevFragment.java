@@ -6,14 +6,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import it.polito.mad_lab4.R;
-import it.polito.mad_lab4.common.Helper;
-import it.polito.mad_lab4.data.restaurant.DishTypeConverter;
 
 /**
  * Created by f.germano on 24/04/2016.
@@ -22,7 +19,7 @@ public class MenuPrevFragment extends Fragment {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
-    private int restaurantId;
+    private String restaurantId;
 
     public MenuPrevFragment(){
 
@@ -44,14 +41,12 @@ public class MenuPrevFragment extends Fragment {
         mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
         mViewPager = (ViewPager) view.findViewById(R.id.menuPrevPager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-        //mViewPager.setClipToPadding(false);
-        //mViewPager.setPadding(Helper.dpToPx(getContext(), 10), 0, Helper.dpToPx(getContext(), 10), 0);
 
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.menuPrevTabs);
         tabLayout.setupWithViewPager(mViewPager);
     }
 
-    public void setRestaurantId(int restaurantId) {
+    public void setRestaurantId(String restaurantId) {
         this.restaurantId = restaurantId;
     }
 

@@ -17,18 +17,18 @@ import it.polito.mad_lab4.common.Helper;
 import it.polito.mad_lab4.data.restaurant.BasicInfo;
 import it.polito.mad_lab4.data.restaurant.Offer;
 import it.polito.mad_lab4.data.user.User;
+import it.polito.mad_lab4.newData.restaurant.Restaurant;
 
 /**
  * Created by Giovanna on 07/05/2016.
  */
 public class ShowAdditionalInfoActivity extends BaseActivity{
 
-    private BasicInfo basicInfo;
+    private Restaurant restaurant;
     private TextView restaurantNameTextView, address, phoneNumber, email, description;
     private TextView mon, tue, wed, thu, fri, sat, sun;
     private TextView wifi, reservations, seatsOutside, parking, music, creditCard, bancomat;
     private ImageView logo;
-    private String restaurantName;
     private LinearLayout send_email, call, location;
 
     @Override
@@ -40,8 +40,7 @@ public class ShowAdditionalInfoActivity extends BaseActivity{
 
         setActivityTitle(getResources().getString(R.string.additional_info));
 
-        basicInfo= (BasicInfo) getIntent().getExtras().getSerializable("basicInfo");
-        restaurantName = getIntent().getExtras().getString("restaurantName");
+        restaurant = (Restaurant) getIntent().getExtras().getSerializable("restaurant");
         logo = (ImageView) findViewById(R.id.logo);
 
         restaurantNameTextView = (TextView) findViewById(R.id.restaurant_name);
@@ -54,14 +53,14 @@ public class ShowAdditionalInfoActivity extends BaseActivity{
         call.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Helper.dialNumber(getApplicationContext(), basicInfo.getPhone());
+                Helper.dialNumber(getApplicationContext(), restaurant.getPhone());
             }
         });
         location = (LinearLayout) findViewById(R.id.location);
         location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Helper.findOnGoogleMaps(getApplicationContext(), basicInfo.getAddress(), basicInfo.getCity());
+                Helper.findOnGoogleMaps(getApplicationContext(), restaurant.getAddress(), restaurant.getCity());
             }
         });
 
@@ -69,7 +68,7 @@ public class ShowAdditionalInfoActivity extends BaseActivity{
         send_email.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendEmail(basicInfo.getEmail());
+                sendEmail(restaurant.getEmail());
             }
         });
 
@@ -96,27 +95,27 @@ public class ShowAdditionalInfoActivity extends BaseActivity{
         bancomat = (TextView) findViewById(R.id.bancomat);
         seatsOutside = (TextView) findViewById(R.id.seats_outside);
 
-        restaurantNameTextView.setText(restaurantName);
-        address.setText(basicInfo.getAddress()+ ", "+basicInfo.getCity());
-        phoneNumber.setText(basicInfo.getPhone());
-        email.setText(basicInfo.getEmail());
-        description.setText(basicInfo.getDescription());
+        restaurantNameTextView.setText(restaurant.getRestaurantName());
+        address.setText(restaurant.getAddress()+ ", "+restaurant.getCity());
+        phoneNumber.setText(restaurant.getPhone());
+        email.setText(restaurant.getEmail());
+        description.setText(restaurant.getDescription());
 
         TextView[] time = {mon, tue, wed, thu, fri, sat, sun};
 
         int i=0;
-        for(String s : basicInfo.getTimeTable()){
+        for(String s : restaurant.getTimeTable()){
             time[i].setText(s);
             i++;
         }
 
-        wifi.setText(Helper.fromBoolToString(getApplicationContext(),basicInfo.isWifi()));
-        reservations.setText(Helper.fromBoolToString(getApplicationContext(),basicInfo.isReservations()));
-        music.setText(Helper.fromBoolToString(getApplicationContext(),basicInfo.isMusic()));
-        parking.setText(Helper.fromBoolToString(getApplicationContext(),basicInfo.isParking()));
-        creditCard.setText(Helper.fromBoolToString(getApplicationContext(),basicInfo.isCreditCard()));
-        bancomat.setText(Helper.fromBoolToString(getApplicationContext(),basicInfo.isBancomat()));
-        seatsOutside.setText(Helper.fromBoolToString(getApplicationContext(),basicInfo.isSeatsOutside()));
+        wifi.setText(Helper.fromBoolToString(getApplicationContext(),restaurant.isWifi()));
+        reservations.setText(Helper.fromBoolToString(getApplicationContext(),restaurant.isReservations()));
+        music.setText(Helper.fromBoolToString(getApplicationContext(),restaurant.isMusic()));
+        parking.setText(Helper.fromBoolToString(getApplicationContext(),restaurant.isParking()));
+        creditCard.setText(Helper.fromBoolToString(getApplicationContext(),restaurant.isCreditCard()));
+        bancomat.setText(Helper.fromBoolToString(getApplicationContext(),restaurant.isBancomat()));
+        seatsOutside.setText(Helper.fromBoolToString(getApplicationContext(),restaurant.isSeatsOutside()));
 
     }
 

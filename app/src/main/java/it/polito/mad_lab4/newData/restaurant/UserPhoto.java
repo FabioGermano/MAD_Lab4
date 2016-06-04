@@ -9,6 +9,8 @@ public class UserPhoto implements Serializable{
     private int likes;
     private String description;
     private String userPhotoId; // not mapped in firebase db, obteined by clling .getKey()
+    private String thumbDownloadLink;
+    private String largeDownloadLink;
 
     public UserPhoto(){
     }
@@ -35,5 +37,21 @@ public class UserPhoto implements Serializable{
 
     public void setUserPhotoId(String userPhotoId) {
         this.userPhotoId = userPhotoId;
+    }
+
+    public String getThumbDownloadLink() {
+        return thumbDownloadLink;
+    }
+
+    public void setThumbDownloadLink(String thumbDownloadLink) {
+        this.thumbDownloadLink = thumbDownloadLink;
+    }
+
+    public String getLargeDownloadLink() {
+        return largeDownloadLink;
+    }
+
+    public void setLargeDownloadLink(String largeDownloadLink) {
+        this.largeDownloadLink = largeDownloadLink;
     }
 }

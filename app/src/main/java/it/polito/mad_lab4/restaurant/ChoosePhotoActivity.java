@@ -9,6 +9,7 @@ import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,23 +19,19 @@ import java.io.Serializable;
 
 import it.polito.mad_lab4.BaseActivity;
 import it.polito.mad_lab4.R;
-import it.polito.mad_lab4.common.photo_manager.PhotoManager;
-import it.polito.mad_lab4.common.photo_manager.PhotoType;
-import it.polito.mad_lab4.common.photo_viewer.PhotoViewer;
-import it.polito.mad_lab4.common.photo_viewer.PhotoViewerListener;
-import it.polito.mad_lab4.data.restaurant.UserPhoto;
+import it.polito.mad_lab4.firebase_manager.FirebaseSaveUserPhotoManager;
+import it.polito.mad_lab4.manager.photo_viewer.PhotoViewer;
+import it.polito.mad_lab4.newData.restaurant.UserPhoto;
 import it.polito.mad_lab4.data.user.User;
 
-public class ChoosePhotoActivity extends BaseActivity implements PhotoViewerListener{
+public class ChoosePhotoActivity extends BaseActivity {
 
-    private String imageLarge = null;
-    private String imageThumb = null;
-    private PhotoManager photoManager;
+
     private PhotoViewer photoViewer;
     private FloatingActionButton sendButton;
     private EditText descriptionET;
 
-    private int restaurantId, newPhotoId;
+    private String restaurantId;
     private String ID;
 
     @Override
@@ -56,67 +53,52 @@ public class ChoosePhotoActivity extends BaseActivity implements PhotoViewerList
         descriptionET = (EditText)findViewById(R.id.descriptionET);
 
         photoViewer = (PhotoViewer)getSupportFragmentManager().findFragmentById(R.id.photoViewer);
-        photoManager = new PhotoManager(getApplicationContext(), PhotoType.USERPHOTOS, this.imageThumb, this.imageLarge);
 
-        restaurantId =  getIntent().getExtras().getInt("restaurantId");
-        newPhotoId =  getIntent().getExtras().getInt("newPhotoId");
-
-        ID = String.valueOf(restaurantId) + "_" + String.valueOf(newPhotoId);
-
+        restaurantId =  getIntent().getExtras().getString("restaurantId");
     }
 
 
     private void sendButtonClicked() {
-        if(!this.photoViewer.isPhotoSetted()){
+        if(this.photoViewer.isImageTobeSetted()){
             Toast.makeText(getApplicationContext(), "No photo choosen, please select a photo", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        commitPhotos();
-        UserPhoto up = new UserPhoto(this.imageThumb, this.imageLarge, 0, descriptionET.getText().toString(), newPhotoId);
+        new Thread()
+        {
+            public void run() {
 
-        Intent returnIntent = new Intent();
-        returnIntent.putExtra("UserPhoto",(Serializable) up);
-        setResult(Activity.RESULT_OK, returnIntent);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showProgressBar();
+                    }
+                });
 
-        Toast.makeText(getApplicationContext(), "Your selected photo has been sent.", Toast.LENGTH_SHORT).show();
+                FirebaseSaveUserPhotoManager firebaseSaveDishManager = new FirebaseSaveUserPhotoManager();
+                firebaseSaveDishManager.saveUserPhoto(restaurantId, descriptionET.getText().toString(), photoViewer.getThumb(), photoViewer.getLarge());
 
-        finish();
+                boolean res = firebaseSaveDishManager.waitForResult();
+
+                if(!res){
+                    Log.e("Error saving the userp.", "Error saving the userphoto");
+                    return;
+                }
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        dismissProgressDialog();
+
+                        Toast.makeText(getApplicationContext(), "Your selected photo has been sent.", Toast.LENGTH_SHORT).show();
+
+                        finish();
+                    }
+                });
+
+            }
+        }.start();
     }
-
-    @Override
-    public void OnPhotoChanged(int fragmentId, Bitmap thumb, Bitmap large) {
-        if (fragmentId == R.id.photoViewer){
-            this.photoManager.saveThumb(thumb, ID);
-            this.photoManager.saveLarge(large, ID);
-        }
-    }
-
-    @Override
-    public Bitmap OnPhotoViewerActivityStarting(int fragmentId) {
-        if (fragmentId == R.id.photoViewer){
-            return BitmapFactory.decodeFile(this.photoManager.getLarge(ID));
-        }
-        return null;
-    }
-
-    @Override
-    public void OnPhotoRemoved(int fragmentId) {
-        if (fragmentId == R.id.photoViewer){
-            this.photoManager.removeThumb(ID);
-        }
-    }
-
-    private void commitPhotos() {
-        this.imageThumb = this.photoManager.commitThumb(ID);
-        this.imageLarge = this.photoManager.commitLarge(ID);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        this.photoManager.destroy(ID);
-    }
-
 
 }

@@ -5,21 +5,16 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import it.polito.mad_lab4.BaseActivity;
 import it.polito.mad_lab4.R;
-import it.polito.mad_lab4.common.Helper;
-import it.polito.mad_lab4.data.restaurant.DishTypeConverter;
-import it.polito.mad_lab4.data.user.User;
-import it.polito.mad_lab4.restaurant.menu_prev.MenuListPrevFragment;
 
 public class MenuActivity extends BaseActivity {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
-    private int restaurantId;
+    private String restaurantId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,13 +25,11 @@ public class MenuActivity extends BaseActivity {
         hideToolbarShadow(true);
         setToolbarColor();
 
-        restaurantId = getIntent().getExtras().getInt("restaurantId");
+        restaurantId = getIntent().getExtras().getString("restaurantId");
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.menuViewPager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-        //mViewPager.setClipToPadding(false);
-        //mViewPager.setPadding(Helper.dpToPx(getBaseContext(), 15), 0, Helper.dpToPx(getBaseContext(), 15), 0);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout_menu);
         tabLayout.setupWithViewPager(mViewPager);

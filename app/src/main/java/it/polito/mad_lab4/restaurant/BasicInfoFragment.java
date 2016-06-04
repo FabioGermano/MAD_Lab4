@@ -23,20 +23,17 @@ import it.polito.mad_lab4.MainActivity;
 import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.bl.RestaurantBL;
 import it.polito.mad_lab4.common.Helper;
-import it.polito.mad_lab4.data.restaurant.BasicInfo;
-import it.polito.mad_lab4.data.restaurant.Restaurant;
+import it.polito.mad_lab4.newData.restaurant.Restaurant;
 
 /**
  * Created by Giovanna on 07/05/2016.
  */
 public class BasicInfoFragment extends Fragment {
 
-    private int restaurantId=-1;
     private TextView addressTextView, phoneNumberTextView, closedTextView, openTextView;
-    private BasicInfo basicInfo;
     private Button showMore;
-    private String restaurantName;
     private LinearLayout call, location;
+    private Restaurant restaurant;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,8 +48,6 @@ public class BasicInfoFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.restaurant_basicinfo_fragment, container, false);
 
-
-
         addressTextView = (TextView) rootView.findViewById(R.id.address);
         phoneNumberTextView = (TextView) rootView.findViewById(R.id.phoneNumber);
         openTextView = (TextView) rootView.findViewById(R.id.now_open);
@@ -63,8 +58,7 @@ public class BasicInfoFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getContext(), ShowAdditionalInfoActivity.class);
-                i.putExtra("basicInfo", (Serializable)basicInfo);
-                i.putExtra("restaurantName", restaurantName);
+                i.putExtra("restaurant", restaurant);
                 startActivity(i);
             }
         });
@@ -77,39 +71,18 @@ public class BasicInfoFragment extends Fragment {
         call.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Helper.dialNumber(getContext(), basicInfo.getPhone());
+                Helper.dialNumber(getContext(), restaurant.getPhone());
             }
         });
         location = (LinearLayout) rootView.findViewById(R.id.mapIconLL);
         location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Helper.findOnGoogleMaps(getContext(),basicInfo.getAddress(), basicInfo.getCity());
+                Helper.findOnGoogleMaps(getContext(),restaurant.getAddress(), restaurant.getCity());
             }
         });
 
                 return rootView;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        addressTextView.setText(basicInfo.getAddress());
-        phoneNumberTextView.setText(basicInfo.getPhone());
-
-        //check time and date
-        String isOpen = isOpen(basicInfo.getTimeTable());
-
-        if(isOpen==null) {
-            closedTextView.setVisibility(View.VISIBLE);
-            openTextView.setVisibility(View.GONE);
-            closedTextView.setText(getResources().getString(R.string.closed_restaurant));
-        }
-        else{
-            openTextView.setVisibility(View.VISIBLE);
-            closedTextView.setVisibility(View.GONE);
-            openTextView.setText(isOpen);
-        }
     }
 
     private String isOpen(ArrayList<String> timeTable) {
@@ -144,9 +117,24 @@ public class BasicInfoFragment extends Fragment {
 
     }
 
-    public void setRestaurantId(int restaurantId) {
-        this.restaurantId = restaurantId;
-        this.basicInfo= RestaurantBL.getRestaurantById(getContext(),this.restaurantId).getBasicInfo();
-        this.restaurantName = RestaurantBL.getRestaurantById(getContext(),this.restaurantId).getRestaurantName();
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
+
+        addressTextView.setText(restaurant.getAddress());
+        phoneNumberTextView.setText(restaurant.getPhone());
+
+        //check time and date
+        String isOpen = isOpen(restaurant.getTimeTable());
+
+        if(isOpen==null) {
+            closedTextView.setVisibility(View.VISIBLE);
+            openTextView.setVisibility(View.GONE);
+            closedTextView.setText(getResources().getString(R.string.closed_restaurant));
+        }
+        else{
+            openTextView.setVisibility(View.VISIBLE);
+            closedTextView.setVisibility(View.GONE);
+            openTextView.setText(isOpen);
+        }
     }
 }

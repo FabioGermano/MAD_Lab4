@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import it.polito.mad_lab4.BaseActivity;
 import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.common.Helper;
 import it.polito.mad_lab4.common.photo_viewer.TouchImageView;
-import it.polito.mad_lab4.data.restaurant.Dish;
+import it.polito.mad_lab4.newData.restaurant.Dish;
 import it.polito.mad_lab4.data.user.User;
 
 public class MenuPhotoViewActivity extends BaseActivity {
@@ -41,14 +43,8 @@ public class MenuPhotoViewActivity extends BaseActivity {
     private void getDish(Bundle extras) {
         this.dish = (Dish)extras.getSerializable("dish");
 
-        if(dish.getLargePath() != null) {
-            touchImageView.setImageBitmap(BitmapFactory.decodeFile(dish.getThumbPath()));
-        }
-        else if(dish.getResPhoto() != null) {
-            int imgRes = Helper.getResourceByName(getApplicationContext(), dish.getResPhoto(), "drawable");
-            if (imgRes != 0) {
-                touchImageView.setImageResource(imgRes);
-            }
+        if(this.dish.getLargeDownloadLink() != null) {
+            Glide.with(this).load(this.dish.getLargeDownloadLink()).into(touchImageView);
         }
 
         dishNameText.setText(dish.getDishName());
@@ -59,8 +55,6 @@ public class MenuPhotoViewActivity extends BaseActivity {
                 ratingBar,
                 dish.getAvgRank());
     }
-
-
 
     private void setDeleteVisibility(Bundle savedInstanceState)
     {

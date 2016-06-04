@@ -13,8 +13,8 @@ import android.widget.TextView;
 
 import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.bl.RestaurantBL;
-import it.polito.mad_lab4.data.restaurant.Restaurant;
-import it.polito.mad_lab4.data.restaurant.UserPhoto;
+import it.polito.mad_lab4.newData.restaurant.Restaurant;
+import it.polito.mad_lab4.newData.restaurant.UserPhoto;
 import it.polito.mad_lab4.restaurant.ChoosePhotoActivity;
 import it.polito.mad_lab4.restaurant.gallery.PhotoGaleryActivity;
 
@@ -70,19 +70,10 @@ public class ContainerUserPhotoFragment extends Fragment  {
         return rootView;
     }
 
-    private void testButtonClicked() {
-        Intent i = new Intent(getContext(), PhotoGaleryActivity.class);
-        Bundle b = new Bundle();
-        b.putInt("restaurantId", this.restaurant.getRestaurantId());
-        i.putExtras(b);
-        startActivity(i);
-    }
-
     private void addPhotoClicked(){
         Intent i = new Intent(getContext(), ChoosePhotoActivity.class);
         Bundle b = new Bundle();
-        b.putInt("restaurantId", this.restaurant.getRestaurantId());
-        b.putInt("newPhotoId", RestaurantBL.getNewUserPhotoId(this.restaurant));
+        b.putString("restaurantId", this.restaurant.getRestaurantId());
         i.putExtras(b);
         startActivityForResult(i, PHOTO_CHOOSE);
     }
@@ -99,18 +90,18 @@ public class ContainerUserPhotoFragment extends Fragment  {
     }
 
     private void setPhotosNumber(Restaurant restaurant){
-        if(this.restaurant.getUserPhotos().size() == 0) {
+        /*if(this.restaurant.getUserPhotos().size() == 0) {
             this.availablePhotosTV.setText(R.string.no_photos);
         }
         else{
             this.availablePhotosTV.setText(this.restaurant.getUserPhotos().size()+" "+getResources().getString(R.string.available_photos));
-        }
+        }*/
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (requestCode == PHOTO_CHOOSE) {
+        /*if (requestCode == PHOTO_CHOOSE) {
             if(resultCode == Activity.RESULT_OK){
                 UserPhoto pu = (UserPhoto)data.getSerializableExtra("UserPhoto");
                 this.restaurant.getUserPhotos().add(pu);
@@ -118,12 +109,12 @@ public class ContainerUserPhotoFragment extends Fragment  {
                 manageUserPhotos();
                 RestaurantBL.saveChanges(getContext());
             }
-        }
+        }*/
     }
 
     private void manageUserPhotos(){
 
-        int n_photos = this.restaurant.getUserPhotos().size();
+        /*int n_photos = this.restaurant.getUserPhotos().size();
 
         try {
             if(n_photos > 4) {
@@ -143,7 +134,7 @@ public class ContainerUserPhotoFragment extends Fragment  {
 
         if(n_photos > 4){
             userPhotoFragments[3].setOpenGalleryOnClick(true);
-        }
+        }*/
     }
 
     public void newPhoto() {
