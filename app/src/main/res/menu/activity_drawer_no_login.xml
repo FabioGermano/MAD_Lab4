@@ -8,6 +8,9 @@
         <item
             android:id="@+id/esegui_registrazione"
             android:title="@string/esegui_regitrazione"/>
+        <item
+            android:id="@+id/esegui_registrazione_ristorante"
+            android:title="@string/registrazione_ristorante"/>
     </group>
 
     <item android:title="Comunicazioni">

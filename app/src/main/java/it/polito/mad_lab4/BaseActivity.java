@@ -29,6 +29,7 @@ import it.polito.mad_lab4.firebase_manager.FirebaseGetAuthInformation;
 import it.polito.mad_lab4.firebase_manager.FirebaseGetUserInfoManager;
 import it.polito.mad_lab4.login_registrazione.Login;
 import it.polito.mad_lab4.login_registrazione.Register;
+import it.polito.mad_lab4.login_registrazione.Register_restaurant;
 import it.polito.mad_lab4.manager.reservation.ReservationsActivity;
 import it.polito.mad_lab4.manager.MainActivityManager;
 import it.polito.mad_lab4.newData.user.User;
@@ -490,6 +491,9 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
             case R.id.esegui_registrazione:
                 Registrazione();
                 break;
+            case R.id.esegui_registrazione_ristorante:
+                Registrazione_ristorante();
+                break;
             case R.id.logout_user:
                 Logout();
                 break;
@@ -539,6 +543,13 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         Intent i = new Intent(getApplicationContext(), Register.class);
         startActivity(i);
     }
+
+    private void Registrazione_ristorante(){
+        Intent i = new Intent(getApplicationContext(), Register_restaurant.class);
+        startActivity(i);
+    }
+
+
 
     private void Logout(){
         //eseguo il logout e cancello eventualmente il file con le credenziali

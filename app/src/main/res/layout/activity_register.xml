@@ -9,7 +9,7 @@
     android:focusable="true"
     android:focusableInTouchMode="true"
 
-    tools:context="it.polito.mad_lab4.login_registrazione.Register">
+    tools:context="it.polito.mad_lab4.login_registrazione.Register_restaurant">
 
     <include layout="@layout/toolbar_view" android:layout_height="wrap_content" android:layout_width="match_parent"></include>
     <ScrollView

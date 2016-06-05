@@ -158,7 +158,7 @@
     <string name="costoFinder">Cost:</string>
     <string name="valutazioneFinder">Rating:</string>
     <string name="ricercaAvanzata">Advanced Search:</string>
-    <string name="takeAway" >Take Away</string>
+    <string name="takeAway">Take Away</string>
     <string name="restaurant">Restaurant</string>
     <string name="takeAway_Restaurant">Take Away &amp; Restaurant</string>
     <string name="noServices">No Services</string>
@@ -283,8 +283,12 @@
     <string name="service_type_manager_registrazione">Service:</string>
     <string name="ritorna_al_login">Return to login</string>
     <string name="esegui_login">Login</string>
-    <string name="esegui_regitrazione">Register</string>
-    <string name="titolo_registrazione_cliente">Registrazione Cliente</string>
+    <string name="esegui_regitrazione">User Registration</string>
+    <string name="titolo_registrazione_cliente">User Registration</string>
+    <string name="registrazione_ristorante">Register your business</string>
+    <string name="titolo_registrazione_ristorante">Business Registration</string>
+    <string name="nome_ristorante_registrazione">Business Name</string>
+    <string name="messaggio_richiesta_inviata">You will receive an email soon, with all the instructions</string>
 
     <string name="modifica_profilo">Edit profile</string>
     <string name="show_all">SHOW ALL</string>
