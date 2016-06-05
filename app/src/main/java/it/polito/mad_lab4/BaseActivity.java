@@ -33,6 +33,7 @@ import it.polito.mad_lab4.login_registrazione.Register_restaurant;
 import it.polito.mad_lab4.manager.reservation.ReservationsActivity;
 import it.polito.mad_lab4.manager.MainActivityManager;
 import it.polito.mad_lab4.newData.user.User;
+import it.polito.mad_lab4.reservation.user_history.ReservationsHistoryActivity;
 import it.polito.mad_lab4.user.EditUserProfileActivity;
 import it.polito.mad_lab4.user.ShowFavouritesActivity;
 import it.polito.mad_lab4.user.UserNotificationsActivity;
@@ -457,8 +458,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                 //Toast.makeText(getApplicationContext(), "profilo client", Toast.LENGTH_LONG).show();
                 break;
             case R.id.prenotazioni_client:
-                Toast.makeText(getApplicationContext(), "prenotazioni client", Toast.LENGTH_LONG).show();
-                //ShowPrenotazioni();
+                //Toast.makeText(getApplicationContext(), "prenotazioni client", Toast.LENGTH_LONG).show();
+                ShowPrenotazioni();
                 break;
             case R.id.favourites_client:
                 showFavourites();
@@ -576,7 +577,10 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         startActivity(i);
     }
 
-    private void ShowPrenotazioni() {};
+    private void ShowPrenotazioni() {
+        Intent i= new Intent(getApplicationContext(), ReservationsHistoryActivity.class);
+        startActivity(i);
+    };
 
 
     public void showProgressBar(){

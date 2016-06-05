@@ -2,11 +2,9 @@ package it.polito.mad_lab4.firebase_manager;
 
 import android.util.Log;
 
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,13 +14,15 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import it.polito.mad_lab4.manager.Oggetto_menu;
+import it.polito.mad_lab4.newData.reservation.Reservation;
+import it.polito.mad_lab4.newData.reservation.ReservedDish;
 import it.polito.mad_lab4.newData.restaurant.Dish;
 import it.polito.mad_lab4.newData.restaurant.Offer;
 
 /**
  * Created by f.germano on 28/05/2016.
  */
-public class FirebaseSaveAvailabilityManager implements DatabaseReference.CompletionListener {
+public class FirebaseSaveReservationManager implements DatabaseReference.CompletionListener {
 
     final Lock lock = new ReentrantLock();
     final Condition cv  = lock.newCondition();
@@ -32,22 +32,15 @@ public class FirebaseSaveAvailabilityManager implements DatabaseReference.Comple
 
     private DatabaseReference myRef;
 
-    public void saveAvailability(Oggetto_menu lista_menu, ArrayList<Offer> lista_offerte, String restaurantId){
-        Map<String, Object> mergedUpdates = new HashMap<String, Object>();
-
-        for(Offer o : lista_offerte){
-            mergedUpdates.put("offers/" + restaurantId + "/" + o.getOfferId() + "/isTodayAvailable", o.getIsTodayAvailable());
-        }
-
-        for(int i = 0; i<4; i++){
-            for(Dish d : lista_menu.getDishListByIndex(i)){
-                mergedUpdates.put("menu/" + restaurantId + "/" + d.getDishId() + "/isTodayAvailable", d.getIsTodayAvailable());
-            }
-        }
-
+    public void saveReservation(Reservation reservation, ArrayList<ReservedDish> reservedDish){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference();
-        myRef.updateChildren(mergedUpdates, this);
+
+        DatabaseReference myRef = database.getReference("reservations/");
+        String key = myRef.push().getKey();
+        reservation.setReservationId(key);
+
+        myRef = database.getReference("reservations/"+ key);
+        myRef.setValue(reservation, this);
     }
 
     public boolean waitForResult() {

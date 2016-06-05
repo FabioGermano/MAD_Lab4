@@ -3,7 +3,7 @@ package it.polito.mad_lab4.newData.reservation;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import it.polito.mad_lab4.data.reservation.ReservedDish;
+import it.polito.mad_lab4.newData.reservation.ReservedDish;
 import it.polito.mad_lab4.data.user.User;
 
 /**
@@ -23,6 +23,9 @@ public class Reservation {
     private String noteByOwner;
     private boolean isExpired;
     private boolean isVerified;
+    private ArrayList<ReservedDish> reservedDishes;
+    private String address;
+    private String restaurantName;
 
     public Reservation(){
     }
@@ -107,19 +110,43 @@ public class Reservation {
         this.noteByOwner = noteByOwner;
     }
 
-    public boolean isExpired() {
+    public boolean getIsExpired() {
         return isExpired;
     }
 
-    public void setExpired(boolean expired) {
+    public void setIsExpired(boolean expired) {
         isExpired = expired;
     }
 
-    public boolean isVerified() {
+    public boolean getIsVerified() {
         return isVerified;
     }
 
-    public void setVerified(boolean verified) {
+    public void setIsVerified(boolean verified) {
         isVerified = verified;
+    }
+
+    public void setReservedDishes(ArrayList<ReservedDish> reservedDishes) {
+        this.reservedDishes = reservedDishes;
+    }
+
+    public ArrayList<ReservedDish> getReservedDishes() {
+        return reservedDishes;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setRestaurantName(String restaurantName) {
+        this.restaurantName = restaurantName;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getRestaurantName() {
+        return restaurantName;
     }
 }

@@ -15,6 +15,9 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import it.polito.mad_lab4.R;
+import it.polito.mad_lab4.data.reservation.ReservationType;
+import it.polito.mad_lab4.data.reservation.ReservationTypeConverter;
+import it.polito.mad_lab4.firebase_manager.FirebaseCancelReservationManager;
 import it.polito.mad_lab4.newData.reservation.Reservation;
 import it.polito.mad_lab4.newData.reservation.ReservedDish;
 import it.polito.mad_lab4.newData.restaurant.Restaurant;
@@ -63,21 +66,19 @@ public class ReservationsHistoryAdapter extends RecyclerView.Adapter<Reservation
 
             }
 
-            public void setData(int position, Reservation r, Restaurant restaurant) {
+            public void setData(int position, Reservation r, String restName, String restauarntAddress) {
 
-                restaurantName.setText(restaurant.getRestaurantName());
-                address.setText(restaurant.getAddress()+" - "+restaurant.getCity());
+                restaurantName.setText(restName);
+                address.setText(restauarntAddress);
                 date.setText(r.getDate());
                 time.setText(r.getTime());
                 status.setText(r.getStatus());
                 this.position=position;
 
-                //TODO handle status of reservation in order to make visible button cancel
-                /*
                 if(r.getStatus().equals(ReservationTypeConverter.toString(ReservationType.ACCEPTED)) || r.getStatus().equals(ReservationTypeConverter.toString(ReservationType.PENDING)))
                     cancel.setVisibility(View.VISIBLE);
                 else
-                    cancel.setVisibility(View.GONE);*/
+                    cancel.setVisibility(View.GONE);
             }
 
             public void setListeners() {
@@ -105,8 +106,7 @@ public class ReservationsHistoryAdapter extends RecyclerView.Adapter<Reservation
 
                 Reservation r = data.get(position);
                 Intent i= new Intent(context, RestaurantActivity.class);
-                Restaurant restaurant =null; //= RestaurantBL.getRestaurantById(context, r.getRestaurantId());
-                i.putExtra("restaurantId", restaurant.getRestaurantId());
+                i.putExtra("restaurantId", r.getRestaurantId());
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(i);
             }
@@ -114,28 +114,26 @@ public class ReservationsHistoryAdapter extends RecyclerView.Adapter<Reservation
             private void showOrderDetails() {
 
                 Reservation r = data.get(position);
-                //TODO recuperare dal db i dati relativi alla prenotazione
-                ArrayList<ReservedDish> reservedDishes=null;
-                DialogFragment newFragment = ReservationDetailsFragment.newInstance(Integer.parseInt(r.getPlaces()), reservedDishes);
+                DialogFragment newFragment = ReservationDetailsFragment.newInstance(Integer.parseInt(r.getPlaces()), r.getReservedDishes());
                 newFragment.show(activity.getFragmentManager(), "dialog");
             }
 
             private void removeReservation() {
                 Reservation r = data.get(position);
-                //TODO handle the status of the reservation in order to remove it properly
-                /*
-                if(r.getStatus().equals(ReservationTypeConverter.toString(ReservationType.ACCEPTED))){
-                    // se in stato accettato
-                    UserBL.cancelReservation(UserBL.getUserById(context, UserSession.userId),r.getReservationId(), false);
 
+                FirebaseCancelReservationManager firebaseCancelReservationManager = new FirebaseCancelReservationManager();
+
+                if(r.getStatus().equals(ReservationTypeConverter.toString(ReservationType.ACCEPTED)))
+                {
+                    firebaseCancelReservationManager.cancelReservation(r);
                 }
                 else if(r.getStatus().equals(ReservationTypeConverter.toString(ReservationType.PENDING))){
-                    UserBL.cancelReservation(UserBL.getUserById(context, UserSession.userId),r.getReservationId(), true);
+                    firebaseCancelReservationManager.cancelReservation(r);
+                    data.remove(position);
                     notifyItemRemoved(position);
                     notifyItemRangeChanged(position, data.size());
                 }
-                */
-                //UserBL.saveChanges(context);
+
                 Toast.makeText(activity, R.string.reservation_canceled, Toast.LENGTH_SHORT ).show();
             }
         }
@@ -160,9 +158,7 @@ public class ReservationsHistoryAdapter extends RecyclerView.Adapter<Reservation
             // - replace the contents of the view with that element
 
             Reservation r = data.get(position);
-            //TODO
-            Restaurant restaurant = null; //= RestaurantBL.getRestaurantById(context, r.getRestaurantId());
-            holder.setData(position, r, restaurant);
+            holder.setData(position, r, r.getRestaurantName(), r.getAddress());
 
         }
 

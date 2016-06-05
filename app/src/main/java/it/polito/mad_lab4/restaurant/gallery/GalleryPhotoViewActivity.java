@@ -8,39 +8,34 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import it.polito.mad_lab4.BaseActivity;
 import it.polito.mad_lab4.R;
-import it.polito.mad_lab4.bl.RestaurantBL;
-import it.polito.mad_lab4.bl.UserBL;
-import it.polito.mad_lab4.data.user.UserSession;
 import it.polito.mad_lab4.common.photo_viewer.TouchImageView;
-import it.polito.mad_lab4.data.restaurant.Restaurant;
-import it.polito.mad_lab4.data.restaurant.UserPhoto;
+import it.polito.mad_lab4.firebase_manager.FirebaseGetAuthInformation;
+import it.polito.mad_lab4.firebase_manager.FirebaseUserPhotoLikeManager;
+import it.polito.mad_lab4.newData.restaurant.Restaurant;
+import it.polito.mad_lab4.newData.restaurant.UserPhoto;
 import it.polito.mad_lab4.data.user.User;
 
-public class GalleryPhotoViewActivity extends BaseActivity {
+public class GalleryPhotoViewActivity extends BaseActivity implements ChildEventListener {
 
-    private Restaurant restaurant;
+    private String restaurantId;
     private TouchImageView touchImageView;
     private TextView galleryPhotoText;
     private ImageButton likeButton;
     private UserPhoto userPhoto;
-    private User user;
+    private FirebaseUser currentUser;
+    private boolean currentUserLikedPhoto;
+    private DatabaseReference myRef;
 
-    private void getUserPhoto(Bundle extras) {
-        userPhoto = (UserPhoto)extras.getSerializable("userPhoto");
-        galleryPhotoText.setText(userPhoto.getDescription());
-
-        if(UserSession.userId != null) {
-            user = UserBL.getUserById(getApplicationContext(), UserSession.userId);
-
-            if (!UserBL.checkUserPhotoLike(user, this.restaurant.getRestaurantId(), userPhoto.getId())) {
-                this.likeButton.setColorFilter(Color.WHITE);
-            } else {
-                this.likeButton.setColorFilter(getResources().getColor(R.color.themeColor));
-            }
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +46,10 @@ public class GalleryPhotoViewActivity extends BaseActivity {
         hideToolbarShadow(true);
         setVisibilityAlert(false);
         invalidateOptionsMenu();
-        getRestaurant(getIntent().getExtras());
 
-        touchImageView = (TouchImageView)findViewById(R.id.photoView);
-        galleryPhotoText = (TextView)findViewById(R.id.galleryPhotoText);
-        likeButton = (ImageButton)findViewById(R.id.likeButton);
+        touchImageView = (TouchImageView) findViewById(R.id.photoView);
+        galleryPhotoText = (TextView) findViewById(R.id.galleryPhotoText);
+        likeButton = (ImageButton) findViewById(R.id.likeButton);
         likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,61 +57,84 @@ public class GalleryPhotoViewActivity extends BaseActivity {
             }
         });
 
-        if(UserSession.userId == null){
-            likeButton.setVisibility(View.GONE);
-        }
+        Bundle extras = getIntent().getExtras();
+        userPhoto = (UserPhoto)extras.getSerializable("userPhoto");
+        galleryPhotoText.setText(userPhoto.getDescription());
 
-        getBitmap(getIntent().getExtras());
-        setDeleteVisibility(getIntent().getExtras());
+        restaurantId = extras.getString("restaurantId");
 
-        getUserPhoto(getIntent().getExtras());
+        Glide.with(this).load(userPhoto.getLargeDownloadLink()).into(touchImageView);
+
+        likeButton.setVisibility(View.GONE);
+
+        new Thread() {
+            public void run() {
+                FirebaseGetAuthInformation firebaseGetAuthInformation = new FirebaseGetAuthInformation();
+                firebaseGetAuthInformation.waitForResult();
+                currentUser = firebaseGetAuthInformation.getUser();
+
+                if(currentUser != null){
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            likeButton.setVisibility(View.VISIBLE);
+                        }
+                    });
+
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    myRef = database.getReference("userphotolikes/"+userPhoto.getUserPhotoId()+"/"+ currentUser.getUid());
+                    myRef.addChildEventListener(GalleryPhotoViewActivity.this);
+                }
+            }
+        }.start();
     }
 
-
-
     private void likeButtonPressed() {
-        if(!UserBL.checkUserPhotoLike(this.user, this.restaurant.getRestaurantId(), this.userPhoto.getId())) {
-
-            RestaurantBL.addNewLikeToUserPhoto(this.restaurant, this.userPhoto.getId());
-            UserBL.addUserPhotoLike(this.user, this.restaurant.getRestaurantId(), this.userPhoto.getId());
-
-            this.likeButton.setColorFilter(getResources().getColor(R.color.themeColor));
+        FirebaseUserPhotoLikeManager firebaseUserPhotoLikeManager = new FirebaseUserPhotoLikeManager();
+        if(currentUserLikedPhoto){
+            firebaseUserPhotoLikeManager.removeLike(userPhoto.getUserPhotoId(), currentUser.getUid(), restaurantId);
         }
         else
         {
-            RestaurantBL.removeLikeToUserPhoto(this.restaurant, this.userPhoto.getId());
-            UserBL.removeUserPhotoLike(this.user, this.restaurant.getRestaurantId(), this.userPhoto.getId());
-
-            this.likeButton.setColorFilter(Color.WHITE);
+            firebaseUserPhotoLikeManager.saveLike(userPhoto.getUserPhotoId(), currentUser.getUid(), restaurantId);
         }
     }
 
-    private void getRestaurant(Bundle extras) {
-        this.restaurant = RestaurantBL.getRestaurantById(getApplicationContext(), extras.getInt("restaurantId"));
+    @Override
+    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+        likeButton.setColorFilter(getResources().getColor(R.color.themeColor));
+        currentUserLikedPhoto = true;
     }
 
-    private void setDeleteVisibility(Bundle savedInstanceState)
-    {
-        boolean editable = savedInstanceState.getBoolean("isEditable");
+    @Override
+    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+        likeButton.setColorFilter(getResources().getColor(R.color.themeColor));
+        currentUserLikedPhoto = true;
     }
 
-    private void getBitmap(Bundle savedInstanceState)
-    {
-        String path = savedInstanceState.getString("photoPath");
+    @Override
+    public void onChildRemoved(DataSnapshot dataSnapshot) {
+        likeButton.setColorFilter(Color.WHITE);
+        currentUserLikedPhoto = false;
+    }
 
-        if(path != null) {
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-            Bitmap bitmap = BitmapFactory.decodeFile(path, options);
-            touchImageView.setImageBitmap(bitmap);
-        }
+    @Override
+    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+    }
+
+    @Override
+    public void onCancelled(DatabaseError databaseError) {
+
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
 
-        RestaurantBL.saveChanges(getApplicationContext());
-        UserBL.saveChanges(getApplicationContext());
+        if(myRef != null){
+            myRef.removeEventListener(this);
+        }
     }
 }

@@ -22,6 +22,7 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
     private ChoiceFragment choiceFragment;
     private CalendarFragment calendarFragment;
     private TimeFragment timeFragment;
+    private String currentUserId;
     private String reservationDate;
     private String reservationTime;
     private String reservationDayOfWeek;
@@ -31,7 +32,6 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
     private boolean eat_in;
     private boolean completed=false;
     private ArrayList<String> currentDates;
-    private int restaurantID = -1;
     private Restaurant restaurant;
     View p, c;
     ArrayList<String> timeTable =  new ArrayList<>();
@@ -43,7 +43,9 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reservation_request);
 
-        this.restaurantID = getIntent().getExtras().getInt("restaurantId");
+        this.restaurant = (Restaurant)getIntent().getExtras().getSerializable("restaurant");
+        this.currentUserId = getIntent().getExtras().getString("userId");
+
         if (isLargeDevice(getApplicationContext())) {
             this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
         } else {
@@ -61,9 +63,6 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
         calendarFragment = (CalendarFragment) getSupportFragmentManager().findFragmentById(R.id.date_time);
         TextView name= (TextView) findViewById(R.id.restaurant_name);
 
-
-        //restaurantID=3;
-        //restaurant = RestaurantBL.getRestaurantById(getApplicationContext(), restaurantID);
         this.timeTable= restaurant.getTimeTable();
         this.restaurantName= restaurant.getRestaurantName();
         name.setText(restaurantName);
@@ -79,11 +78,7 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
             String first_date = wd + year + "-" + month + "-" + day;
             onDateSelected(first_date, true);
         }
-
-
     }
-
-
 
     @Override
     public void onDateSelected(String date, boolean b) {
@@ -194,8 +189,9 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
         i.putExtra("weekday", reservationDayOfWeek);
         i.putExtra("time", reservationTime);
         i.putExtra("seats", seats);
-        i.putExtra("restaurantId", restaurantID);
+        i.putExtra("restaurantId", restaurant.getRestaurantId());
         i.putExtra("restaurantName", restaurantName);
+        i.putExtra("userId", this.currentUserId);
         startActivity(i);
     }
 
@@ -204,8 +200,10 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
         i.putExtra("date", reservationDate);
         i.putExtra("weekday", reservationDayOfWeek);
         i.putExtra("time", reservationTime);
-        i.putExtra("restaurantId", restaurantID);
+        i.putExtra("restaurantAddress", restaurant.getCity() + " - " + restaurant.getAddress());
+        i.putExtra("restaurantId", restaurant.getRestaurantId());
         i.putExtra("restaurantName", restaurantName);
+        i.putExtra("userId", this.currentUserId);
         startActivity(i);
     }
 
@@ -215,8 +213,10 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
         i.putExtra("weekday", reservationDayOfWeek);
         i.putExtra("time", reservationTime);
         i.putExtra("seats", seats);
-        i.putExtra("restaurantId", restaurantID);
+        i.putExtra("address", restaurant.getCity() + " - " + restaurant.getAddress());
+        i.putExtra("restaurantId", restaurant.getRestaurantId());
         i.putExtra("restaurantName", restaurantName);
+        i.putExtra("userId", this.currentUserId);
         startActivity(i);
 
     }

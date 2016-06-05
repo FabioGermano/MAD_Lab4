@@ -18,6 +18,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.newData.restaurant.Restaurant;
 import it.polito.mad_lab4.newData.restaurant.UserPhoto;
@@ -66,13 +68,12 @@ public class UserPhotoFragment extends Fragment {
         if(this.openGalleryOnClick && this.restaurant != null){ // apro galleria
             Intent i = new Intent(getContext(), PhotoGaleryActivity.class);
             Bundle b = new Bundle();
-            //b.putInt("restaurantId", this.restaurant.getRestaurantId());
+            b.putString("restaurantId", this.restaurant.getRestaurantId());
             i.putExtras(b);
             startActivity(i);
         }
         else if(!this.openGalleryOnClick && this.restaurant != null && this.userPhoto != null){ // apro dettaglio photo
             Intent intent = new Intent(getActivity().getApplicationContext(), GalleryPhotoViewActivity.class);
-            //intent.putExtra("photoPath", userPhoto.getLargePath());
             intent.putExtra("isEditable", false);
             intent.putExtra("userPhoto", userPhoto);
             intent.putExtra("restaurantId", this.restaurant.getRestaurantId());
@@ -87,23 +88,11 @@ public class UserPhotoFragment extends Fragment {
     @Override
     public void onInflate(Activity activity, AttributeSet attrs, Bundle savedInstanceState) {
         super.onInflate(activity, attrs, savedInstanceState);
-
-        /*TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.UserPhotoFragment);
-        final int N = a.getIndexCount();
-        for (int i = 0; i < N; ++i) {
-            int attr = a.getIndex(i);
-            switch (attr) {
-                case R.styleable.UserPhotoFragment_latest:
-                    this.isLatest = a.getBoolean(attr, false);
-                    break;
-            }
-        }*/
     }
 
     public void setImage(){
-        //Bitmap bitmap = BitmapFactory.decodeFile(this.userPhoto.getThumbPath());
+        Glide.with(this).load(userPhoto.getThumbDownloadLink()).into(this.foodIV);
 
-        //this.foodIV.setImageBitmap(bitmap);
         this.photoSetted = true;
 
         this.likesTV.setVisibility(View.VISIBLE);

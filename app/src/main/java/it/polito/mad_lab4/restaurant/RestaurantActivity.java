@@ -17,12 +17,14 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+import com.google.firebase.auth.FirebaseUser;
 
 import it.polito.mad_lab4.BaseActivity;
 import it.polito.mad_lab4.MainActivity;
 import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.bl.RestaurantBL;
 import it.polito.mad_lab4.common.Helper;
+import it.polito.mad_lab4.firebase_manager.FirebaseGetAuthInformation;
 import it.polito.mad_lab4.firebase_manager.FirebaseGetRestaurantProfileManager;
 import it.polito.mad_lab4.newData.restaurant.Restaurant;
 import it.polito.mad_lab4.reservation.ReservationActivity;
@@ -52,6 +54,7 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
     private FloatingActionButton add_review, add_photo, add_reservation;
     private AppBarLayout appbar;
     private boolean favourite=false;
+    private FirebaseUser currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +95,7 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
         add_photo = (FloatingActionButton) findViewById(R.id.add_photo);
         add_reservation = (FloatingActionButton) findViewById(R.id.add_reservation);
 
+        add.setVisibility(View.GONE);
         add.setClosedOnTouchOutside(true);
 
         add_photo.setOnClickListener(clickListener);
@@ -157,6 +161,22 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
                 });
             }
         }.start();
+
+        new Thread() {
+            public void run() {
+                FirebaseGetAuthInformation firebaseGetAuthInformation = new FirebaseGetAuthInformation();
+                firebaseGetAuthInformation.waitForResult();
+                currentUser = firebaseGetAuthInformation.getUser();
+                if(currentUser != null) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            add.setVisibility(View.VISIBLE);
+                        }
+                    });
+                }
+            }
+        }.start();
     }
 
     void initSections(){
@@ -210,7 +230,8 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
 
     private void newReservation() {
         Intent i = new Intent(getApplicationContext(), ReservationActivity.class);
-        i.putExtra("restaurantId", this.restaurant.getRestaurantId());
+        i.putExtra("restaurant", this.restaurant);
+        i.putExtra("userId", this.currentUser.getUid());
         startActivity(i);
     }
 
@@ -224,7 +245,7 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
                     break;
                 case R.id.add_review:
                     i= new Intent(getApplicationContext(), AddReviewActivity.class);
-                    i.putExtra("restaurantId", restaurant.getRestaurantId());
+                    i.putExtra("restaurant", restaurant);
                     startActivity(i);
                     break;
                 case R.id.add_reservation:

@@ -3,6 +3,7 @@ package it.polito.mad_lab4.reservation;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -16,6 +17,9 @@ import it.polito.mad_lab4.BaseActivity;
 import it.polito.mad_lab4.MainActivity;
 import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.common.Helper;
+import it.polito.mad_lab4.data.reservation.ReservationType;
+import it.polito.mad_lab4.data.reservation.ReservationTypeConverter;
+import it.polito.mad_lab4.firebase_manager.FirebaseSaveReservationManager;
 import it.polito.mad_lab4.newData.reservation.Reservation;
 import it.polito.mad_lab4.newData.reservation.ReservedDish;
 
@@ -24,16 +28,17 @@ import it.polito.mad_lab4.newData.reservation.ReservedDish;
  */
 public class CheckoutOrderActivity extends BaseActivity {
 
-    //private ArrayList<ReservedDish> offers, main, second, dessert, other;
     private ArrayList<ReservedDish> reservedDishes;
     private TextView dateTextView, timeTextView, seatsTextView, nameTextView, totalTextView;
     private EditText notesTextView;
     private String date, time, weekday,restaurantName;
     private int seatsNumber;
-    private int restaurantID = -1;
+    private String restaurantID = null;
     private FloatingActionButton confirmFab;
     private LinearLayout orderLayout;
     private float total=0;
+    private String currentUserId;
+    private String address;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +57,7 @@ public class CheckoutOrderActivity extends BaseActivity {
             time = null;
             weekday = null;
             restaurantName=null;
-            restaurantID = -1;
+            restaurantID = null;
             seatsNumber = 0;
 
         } else {
@@ -61,13 +66,10 @@ public class CheckoutOrderActivity extends BaseActivity {
             weekday = extras.getString("weekday");
             seatsNumber = extras.getInt("seats");
             restaurantName= extras.getString("restaurantName");
-            restaurantID = extras.getInt("restaurantId");
+            restaurantID = extras.getString("restaurantId");
+            currentUserId = extras.getString("userId");
+            address = extras.getString("address");
         }
-        /*
-        offers = getIntent().getParcelableArrayListExtra("offers");
-        main = getIntent().getParcelableArrayListExtra("main");
-        second = getIntent().getParcelableArrayListExtra("second");
-        dessert = getIntent().getParcelableArrayListExtra("dessert");*/
 
         reservedDishes = (ArrayList<ReservedDish>) getIntent().getSerializableExtra("reservedDishes");
 
@@ -83,29 +85,7 @@ public class CheckoutOrderActivity extends BaseActivity {
         confirmFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                //User user = UserBL.getUserById(getApplicationContext(), UserSession.userId);
-                Reservation r = new Reservation();
-                //TODO
-                // r.setReservationId(UserBL.getNewReservatioId(user));
-                /* settare piatti */
-                // r.setReservedDishes(reservedDishes);
-                r.setDate(date);
-                r.setTime(time);
-                /*settare status */
-                //r.setStatus(ReservationTypeConverter.toString(ReservationType.PENDING));
-                r.setPlaces(String.valueOf(seatsNumber));
-                //r.setRestaurantId(restaurantID);
-                r.setNoteByUser(notesTextView.getText().toString());
-                r.setTotalIncome(total);
-                //UserBL.addReservation(user, r);
-                //UserBL.saveChanges(getApplicationContext());
-                Toast.makeText(getApplicationContext(),getResources().getString(R.string.reservation_added), Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                finish();
-
+                saveReservation();
             }
         });
 
@@ -131,6 +111,48 @@ public class CheckoutOrderActivity extends BaseActivity {
 
     }
 
+    private void saveReservation(){
+        final Reservation r = new Reservation();
+        r.setDate(date);
+        r.setTime(time);
+        r.setStatus(ReservationTypeConverter.toString(ReservationType.PENDING));
+        r.setPlaces(String.valueOf(seatsNumber));
+        r.setRestaurantId(restaurantID);
+        r.setUserId(currentUserId);
+        r.setNoteByUser(notesTextView.getText().toString());
+        r.setTotalIncome(total);
+        r.setReservedDishes(reservedDishes);
+        r.setAddress(address);
+        r.setRestaurantName(restaurantName);
+
+        new Thread()
+        {
+            public void run() {
+                FirebaseSaveReservationManager firebaseSaveReservationManager = new FirebaseSaveReservationManager();
+                firebaseSaveReservationManager.saveReservation(r, reservedDishes);
+
+                boolean res = firebaseSaveReservationManager.waitForResult();
+
+                if(!res){
+                    Log.e("FirebaseSaveReservation", "Error saving the reservation");
+                    return;
+                }
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getApplicationContext(),getResources().getString(R.string.reservation_added), Toast.LENGTH_LONG).show();
+
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+
+                        finish();
+                    }
+                });
+            }
+        }.start();
+    }
 
     public void fillLayout(ArrayList<ReservedDish> list) {
         for (ReservedDish d : list) {

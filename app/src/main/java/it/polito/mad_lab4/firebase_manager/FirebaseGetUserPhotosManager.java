@@ -1,10 +1,10 @@
+
 package it.polito.mad_lab4.firebase_manager;
 
 import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
@@ -14,34 +14,27 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import it.polito.mad_lab4.data.restaurant.DishType;
-import it.polito.mad_lab4.data.restaurant.DishTypeConverter;
-import it.polito.mad_lab4.newData.restaurant.Dish;
+import it.polito.mad_lab4.newData.restaurant.Offer;
+import it.polito.mad_lab4.newData.restaurant.UserPhoto;
+import it.polito.mad_lab4.newData.user.User;
 
 /**
  * Created by f.germano on 28/05/2016.
  */
-public class FirebaseGetMenuByTypeManager implements ValueEventListener {
+public class FirebaseGetUserPhotosManager implements ValueEventListener {
 
     final Lock lock = new ReentrantLock();
     final Condition cv  = lock.newCondition();
 
-    private ArrayList<Dish> dishes = new ArrayList<>();
+    private ArrayList<UserPhoto> userPhotos = new ArrayList<>();
     private boolean resultReturned = false;
 
     private Query query;
 
-    public void getMenu(final String restaurantId, DishType type, Integer num){
+    public void getPhotos(final String restaurantId){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         query = database
-                .getReference("menu/" + restaurantId);
-        if(type != null) {
-            query = query.orderByChild("type")
-                    .equalTo(DishTypeConverter.fromEnumToString(type));
-        }
-        if(num != null){
-            query = query.limitToFirst(num);
-        }
+                .getReference("userphotos/" + restaurantId);
 
         query.addListenerForSingleValueEvent(this);
     }
@@ -51,7 +44,7 @@ public class FirebaseGetMenuByTypeManager implements ValueEventListener {
         if(dataSnapshot.getValue() != null) {
             lock.lock();
             for (DataSnapshot d : dataSnapshot.getChildren()) {
-                this.dishes.add(d.getValue(Dish.class));
+                this.userPhotos.add(d.getValue(UserPhoto.class));
             }
             resultReturned = true;
             this.cv.signal();
@@ -68,8 +61,8 @@ public class FirebaseGetMenuByTypeManager implements ValueEventListener {
         lock.unlock();
     }
 
-    public ArrayList<Dish> getResult() {
-        return dishes;
+    public ArrayList<UserPhoto> getResult() {
+        return userPhotos;
     }
 
     public void waitForResult() {

@@ -11,8 +11,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import it.polito.mad_lab4.R;
-import it.polito.mad_lab4.bl.RestaurantBL;
+import it.polito.mad_lab4.firebase_manager.FirebaseGetUserPhotosManager;
 import it.polito.mad_lab4.newData.restaurant.Restaurant;
 import it.polito.mad_lab4.newData.restaurant.UserPhoto;
 import it.polito.mad_lab4.restaurant.ChoosePhotoActivity;
@@ -23,14 +25,11 @@ import it.polito.mad_lab4.restaurant.gallery.PhotoGaleryActivity;
  */
 public class ContainerUserPhotoFragment extends Fragment  {
 
-    private final int PHOTO_CHOOSE = 9999;
-
     UserPhotoFragment[] userPhotoFragments = new UserPhotoFragment[4];
     private final int[] photoIds = {R.id.photo1, R.id.photo2, R.id.photo3, R.id.photo4};
 
-    private Button addPhotoButton, testButton;
     private Restaurant restaurant;
-
+    private ArrayList<UserPhoto> userPhotos = new ArrayList<>();
     private TextView availablePhotosTV;
 
     public ContainerUserPhotoFragment(){
@@ -46,25 +45,6 @@ public class ContainerUserPhotoFragment extends Fragment  {
             userPhotoFragments[i] = (UserPhotoFragment) getChildFragmentManager().findFragmentById(photoIds[i]);
         }
 
-        /*addPhotoButton = (Button) rootView.findViewById(R.id.addPhotoButton);
-        addPhotoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addPhotoClicked();
-            }
-        });
-        if(UserSession.userId == null){
-            addPhotoButton.setVisibility(View.GONE);
-        }
-
-        testButton = (Button) rootView.findViewById(R.id.testButton);
-        testButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                testButtonClicked();
-            }
-        });*/
-
         availablePhotosTV = (TextView)rootView.findViewById(R.id.availablePhotosTV);
 
         return rootView;
@@ -75,46 +55,57 @@ public class ContainerUserPhotoFragment extends Fragment  {
         Bundle b = new Bundle();
         b.putString("restaurantId", this.restaurant.getRestaurantId());
         i.putExtras(b);
-        startActivityForResult(i, PHOTO_CHOOSE);
+        startActivity(i);
     }
 
-    public void init(Restaurant restaurant) {
+    public void init(final Restaurant restaurant) {
         this.restaurant = restaurant;
 
         for(int i =0; i<4; i++) {
             userPhotoFragments[i].init(restaurant);
         }
 
-        setPhotosNumber(restaurant);
-        manageUserPhotos();
+        Thread t = new Thread()
+        {
+            public void run() {
+
+                FirebaseGetUserPhotosManager firebaseGetUserPhotosManager = new FirebaseGetUserPhotosManager();
+                firebaseGetUserPhotosManager.getPhotos(restaurant.getRestaurantId());
+                firebaseGetUserPhotosManager.waitForResult();
+                userPhotos.clear();
+                userPhotos.addAll(firebaseGetUserPhotosManager.getResult());
+
+                if(userPhotos == null){
+                    Log.e("FirebaseGetUPMan.", "UserPhotos null obteined");
+                    return;
+                }
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        setPhotosNumber();
+                        manageUserPhotos();
+                    }
+                });
+
+            }
+        };
+
+        t.start();
     }
 
-    private void setPhotosNumber(Restaurant restaurant){
-        /*if(this.restaurant.getUserPhotos().size() == 0) {
+    private void setPhotosNumber(){
+        if(this.userPhotos.size() == 0) {
             this.availablePhotosTV.setText(R.string.no_photos);
         }
         else{
-            this.availablePhotosTV.setText(this.restaurant.getUserPhotos().size()+" "+getResources().getString(R.string.available_photos));
-        }*/
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        /*if (requestCode == PHOTO_CHOOSE) {
-            if(resultCode == Activity.RESULT_OK){
-                UserPhoto pu = (UserPhoto)data.getSerializableExtra("UserPhoto");
-                this.restaurant.getUserPhotos().add(pu);
-                setPhotosNumber(this.restaurant);
-                manageUserPhotos();
-                RestaurantBL.saveChanges(getContext());
-            }
-        }*/
+            this.availablePhotosTV.setText(this.userPhotos.size()+" "+getResources().getString(R.string.available_photos));
+        }
     }
 
     private void manageUserPhotos(){
 
-        /*int n_photos = this.restaurant.getUserPhotos().size();
+        int n_photos = this.userPhotos.size();
 
         try {
             if(n_photos > 4) {
@@ -127,14 +118,14 @@ public class ContainerUserPhotoFragment extends Fragment  {
 
         for(int i = 0; i<4; i++){
             if(i < n_photos){
-                userPhotoFragments[i].setUserPhoto(this.restaurant.getUserPhotos().get(i));
+                userPhotoFragments[i].setUserPhoto(this.userPhotos.get(i));
                 userPhotoFragments[i].setImage();
             }
         }
 
         if(n_photos > 4){
             userPhotoFragments[3].setOpenGalleryOnClick(true);
-        }*/
+        }
     }
 
     public void newPhoto() {

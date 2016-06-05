@@ -9,7 +9,7 @@ import java.io.Serializable;
  * Created by f.germano on 12/04/2016.
  */
 public class ReservedDish implements Serializable {
-    private String reservedDishId; // not mapped in firebase
+    //private String reservedDishId; // not mapped in firebase
     private String name;
     private boolean isOffer;
     private int quantity;
@@ -18,13 +18,13 @@ public class ReservedDish implements Serializable {
     public ReservedDish(){
     }
 
-    public String getReservedDishId() {
+    /*public String getReservedDishId() {
         return reservedDishId;
     }
 
     public void setReservedDishId(String reservedDishId) {
         this.reservedDishId = reservedDishId;
-    }
+    }*/
 
     public String getName() {
         return name;
@@ -34,11 +34,11 @@ public class ReservedDish implements Serializable {
         this.name = name;
     }
 
-    public boolean isOffer() {
+    public boolean getIsOffer() {
         return isOffer;
     }
 
-    public void setOffer(boolean offer) {
+    public void setIsOffer(boolean offer) {
         isOffer = offer;
     }
 

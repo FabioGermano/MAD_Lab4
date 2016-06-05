@@ -11,11 +11,13 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import it.polito.mad_lab4.R;
-import it.polito.mad_lab4.data.restaurant.UserPhoto;
+import it.polito.mad_lab4.newData.restaurant.UserPhoto;
 
 /**
  * Created by f.germano on 28/04/2016.
@@ -25,6 +27,7 @@ public class PhotoGalleryAdapter extends BaseAdapter {
     private List<UserPhoto> mItems = new ArrayList<UserPhoto>();
     private LayoutInflater mInflater;
     private PhotoGalleryListener photoGalleryListener = null;
+    private Context context;
 
     public PhotoGalleryAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
@@ -53,8 +56,10 @@ public class PhotoGalleryAdapter extends BaseAdapter {
     }
 
     @Override
-    public long getItemId(int i) {
-        return mItems.get(i).getId();
+    public long getItemId(int i)
+    {
+        return 0;
+        //return mItems.get(i).getUserPhotoId();
     }
 
     @Override
@@ -81,7 +86,8 @@ public class PhotoGalleryAdapter extends BaseAdapter {
 
         UserPhoto item = getItem(position);
 
-        picture.setImageBitmap(BitmapFactory.decodeFile(item.getThumbPath()));
+        Glide.with(context).load(item.getThumbDownloadLink()).into(picture);
+
         if(item.getLikes() == 0){
             name.setText("Still no likes");
         }
@@ -90,5 +96,13 @@ public class PhotoGalleryAdapter extends BaseAdapter {
         }
 
         return v;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
+    public Context getContext() {
+        return context;
     }
 }

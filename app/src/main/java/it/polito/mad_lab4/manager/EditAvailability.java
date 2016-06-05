@@ -186,7 +186,7 @@ public class EditAvailability extends EditableBaseActivity {
         {
             public void run() {
                 FirebaseSaveAvailabilityManager firebaseSaveAvailabilityManager = new FirebaseSaveAvailabilityManager();
-                firebaseSaveAvailabilityManager.saveAvailability(lista_menu, lista_offerte);
+                firebaseSaveAvailabilityManager.saveAvailability(lista_menu, lista_offerte, "-KIrgaSxr9VhHllAjqmp");
 
                 boolean res = firebaseSaveAvailabilityManager.waitForResult();
 

@@ -19,8 +19,10 @@ import java.util.ArrayList;
 
 import it.polito.mad_lab4.BaseActivity;
 import it.polito.mad_lab4.R;
-import it.polito.mad_lab4.bl.RestaurantBL;
 import it.polito.mad_lab4.common.Helper;
+import it.polito.mad_lab4.data.restaurant.DishTypeConverter;
+import it.polito.mad_lab4.firebase_manager.FirebaseGetMenuByTypeManager;
+import it.polito.mad_lab4.firebase_manager.FirebaseGetOfferListManager;
 import it.polito.mad_lab4.newData.reservation.ReservedDish;
 import it.polito.mad_lab4.newData.restaurant.Dish;
 import it.polito.mad_lab4.newData.restaurant.Offer;
@@ -36,14 +38,17 @@ public class FoodOrderActivity extends BaseActivity {
     private String date, time, weekday, restaurantName;
     private int seatsNumber;
     private FloatingActionButton doneFab;
-    private int restaurantID=-1;
+    private String restaurantID, restaurantAddress;
     private Restaurant restaurant;
+    private FirebaseGetMenuByTypeManager firebaseGetMenuByTypeManager;
+    private FirebaseGetOfferListManager firebaseGetOfferListManager;
+    private String currentUserId;
 
     private  ReservedDish newReservedDish(Dish dish) {
         //TODO Reserved Dish ID ??
         ReservedDish rd = new ReservedDish();
         rd.setName(dish.getDishName());
-        rd.setOffer(false);
+        rd.setIsOffer(false);
         rd.setPrice(dish.getPrice());
         rd.setQuantity(0);
         return rd;
@@ -52,8 +57,6 @@ public class FoodOrderActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_order);
-
-
 
         if (isLargeDevice(getApplicationContext())) {
             this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
@@ -74,7 +77,7 @@ public class FoodOrderActivity extends BaseActivity {
                 time=null;
                 weekday=null;
                 restaurantName=null;
-                restaurantID=-1;
+                restaurantID=null;
                 seatsNumber=0;
 
 
@@ -84,7 +87,9 @@ public class FoodOrderActivity extends BaseActivity {
                 weekday= extras.getString("weekday");
                 restaurantName= extras.getString("restaurantName");
                 seatsNumber= extras.getInt("seats");
-                restaurantID= extras.getInt("restaurantId");
+                restaurantID= extras.getString("restaurantId");
+                currentUserId = extras.getString("userId");
+                restaurantAddress= extras.getString("restaurantAddress");
             }
         }
 
@@ -106,53 +111,73 @@ public class FoodOrderActivity extends BaseActivity {
         }
 
         useToolbar(false);
+    }
 
-        //restaurant = RestaurantBL.getRestaurantById(getApplicationContext(), restaurantID);
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if(restaurantID == null){
+            return;
+        }
+
+        final ArrayList<Dish> dishes = new ArrayList<>();
+        final ArrayList<Offer> offers = new ArrayList<>();
+
+        Thread t = new Thread()
+        {
+            public void run() {
+
+                firebaseGetMenuByTypeManager = new FirebaseGetMenuByTypeManager();
+                firebaseGetMenuByTypeManager.getMenu(restaurantID, null, null);
+                firebaseGetMenuByTypeManager.waitForResult();
+                dishes.addAll(firebaseGetMenuByTypeManager.getResult());
+
+                firebaseGetOfferListManager = new FirebaseGetOfferListManager();
+                firebaseGetOfferListManager.getOffers(restaurantID);
+                firebaseGetOfferListManager.waitForResult();
+                offers.addAll(firebaseGetOfferListManager.getResult());
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        initAdapter(dishes, offers);
+                    }
+                });
+
+            }
+        };
+
+        t.start();
+    }
+
+    private void initAdapter(ArrayList<Dish> dishes, ArrayList<Offer> offers) {
+        //Conversion from Offer to ReservedDish
 
         //initialize the lists
         lists = new ArrayList<ArrayList<ReservedDish>>();
         for(int i=0;i<5;i++)
             lists.add(new ArrayList<ReservedDish>());
 
-
-        //retrieve all dishes //TODO da db firebase
-        ArrayList<Dish> main = null;
-        ArrayList<Dish> second = null;
-        ArrayList<Dish> dessert = null;
-        ArrayList<Dish> other = null;
-
-        //retrieve all offers
-        ArrayList<Offer> offers = null; //TODO da db firebase
-
-        //Conversion from Offer to ReservedDish
         for(Offer offer : offers){
-            //TODO Reserved Dish ID ??
             ReservedDish rd = new ReservedDish();
             rd.setName(offer.getOfferName());
-            rd.setOffer(true);
+            rd.setIsOffer(true);
             rd.setPrice(offer.getPrice());
             rd.setQuantity(0);
             lists.get(0).add(rd);
         }
 
         //Conversion from Dish to ReservedDish
-        for(Dish dish : main){
-            lists.get(1).add(newReservedDish(dish));
-        }
-        for(Dish dish : second){
-            lists.get(2).add(newReservedDish(dish));
-        }
-        for(Dish dish : dessert){
-            lists.get(3).add(newReservedDish(dish));
-        }
-        for(Dish dish : other){
-            lists.get(4).add(newReservedDish(dish));
+        for(Dish dish : dishes){
+            lists.get(
+                    DishTypeConverter.fromEnumToIndex(DishTypeConverter.fromStringToEnum(dish.getType())) + 1
+                ).add(newReservedDish(dish));
         }
 
         mSectionsPagerAdapter = new SectionsPagerAdapter( getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.viewpager_menu);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout_menu);
         tabLayout.setupWithViewPager(mViewPager);
@@ -184,19 +209,16 @@ public class FoodOrderActivity extends BaseActivity {
                     i.putExtra("weekday", weekday);
                     i.putExtra("time", time);
                     i.putExtra("seats", seatsNumber);
+                    i.putExtra("address", restaurantAddress);
                     i.putExtra("restaurantName", restaurantName);
                     i.putExtra("restaurantId", restaurantID);
+                    i.putExtra("userId", currentUserId);
                     startActivity(i);
                 }
 
             }
         });
-
-
     }
-
-
-
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
         Context context;

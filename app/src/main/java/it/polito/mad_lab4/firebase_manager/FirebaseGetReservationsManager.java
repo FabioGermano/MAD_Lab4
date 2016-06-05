@@ -14,35 +14,34 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import it.polito.mad_lab4.data.restaurant.DishType;
-import it.polito.mad_lab4.data.restaurant.DishTypeConverter;
-import it.polito.mad_lab4.newData.restaurant.Dish;
+import it.polito.mad_lab4.newData.reservation.Reservation;
+
 
 /**
  * Created by f.germano on 28/05/2016.
  */
-public class FirebaseGetMenuByTypeManager implements ValueEventListener {
+public class FirebaseGetReservationsManager implements ValueEventListener {
 
     final Lock lock = new ReentrantLock();
     final Condition cv  = lock.newCondition();
 
-    private ArrayList<Dish> dishes = new ArrayList<>();
+    private ArrayList<Reservation> reservations = new ArrayList<>();
     private boolean resultReturned = false;
 
     private Query query;
 
-    public void getMenu(final String restaurantId, DishType type, Integer num){
+    public void getReservations(String userId, String restaurantId){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        query = database
-                .getReference("menu/" + restaurantId);
-        if(type != null) {
-            query = query.orderByChild("type")
-                    .equalTo(DishTypeConverter.fromEnumToString(type));
+        query = database.getReference("reservations/");
+        if(userId != null) {
+            query = query.orderByChild("userId")
+                    .equalTo(userId);
         }
-        if(num != null){
-            query = query.limitToFirst(num);
+        else
+        {
+            query = query.orderByChild("restaurantId")
+                    .equalTo(restaurantId);
         }
-
         query.addListenerForSingleValueEvent(this);
     }
 
@@ -51,7 +50,7 @@ public class FirebaseGetMenuByTypeManager implements ValueEventListener {
         if(dataSnapshot.getValue() != null) {
             lock.lock();
             for (DataSnapshot d : dataSnapshot.getChildren()) {
-                this.dishes.add(d.getValue(Dish.class));
+                this.reservations.add(d.getValue(Reservation.class));
             }
             resultReturned = true;
             this.cv.signal();
@@ -68,8 +67,8 @@ public class FirebaseGetMenuByTypeManager implements ValueEventListener {
         lock.unlock();
     }
 
-    public ArrayList<Dish> getResult() {
-        return dishes;
+    public ArrayList<Reservation> getResult() {
+        return reservations;
     }
 
     public void waitForResult() {
