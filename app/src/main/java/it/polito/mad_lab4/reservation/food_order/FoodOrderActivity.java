@@ -160,6 +160,9 @@ public class FoodOrderActivity extends BaseActivity {
             lists.add(new ArrayList<ReservedDish>());
 
         for(Offer offer : offers){
+            if(!offer.getIsTodayAvailable()){
+                continue;
+            }
             ReservedDish rd = new ReservedDish();
             rd.setName(offer.getOfferName());
             rd.setIsOffer(true);
@@ -170,6 +173,9 @@ public class FoodOrderActivity extends BaseActivity {
 
         //Conversion from Dish to ReservedDish
         for(Dish dish : dishes){
+            if(!dish.getIsTodayAvailable()){
+                continue;
+            }
             lists.get(
                     DishTypeConverter.fromEnumToIndex(DishTypeConverter.fromStringToEnum(dish.getType())) + 1
                 ).add(newReservedDish(dish));

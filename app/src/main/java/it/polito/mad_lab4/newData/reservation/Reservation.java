@@ -1,5 +1,7 @@
 package it.polito.mad_lab4.newData.reservation;
 
+import com.google.firebase.database.Exclude;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -13,6 +15,7 @@ public class Reservation {
 
     private String reservationId; // not mapped in firebase
     private String restaurantId;
+    private String restaurantIdAndDate;
     private String userId;
     private String date;
     private String time;
@@ -26,6 +29,9 @@ public class Reservation {
     private ArrayList<ReservedDish> reservedDishes;
     private String address;
     private String restaurantName;
+    private String userName;
+    private String phone;
+    private String avatarDownloadLink;
 
     public Reservation(){
     }
@@ -148,5 +154,62 @@ public class Reservation {
 
     public String getRestaurantName() {
         return restaurantName;
+    }
+
+    public String getRestaurantIdAndDate() {
+        return restaurantIdAndDate;
+    }
+
+    public void setRestaurantIdAndDate(String restaurantIdAndDate) {
+        this.restaurantIdAndDate = restaurantIdAndDate;
+    }
+
+    public ArrayList<ReservedDish> getReservedDishesByType(boolean onlyOffer) {
+        ArrayList<ReservedDish> reservedDishes = new ArrayList<ReservedDish>();
+
+        for(ReservedDish rd : this.reservedDishes){
+            if(rd.getIsOffer() == onlyOffer){
+                reservedDishes.add(rd);
+            }
+        }
+
+        return reservedDishes;
+    }
+
+    @Exclude
+    public String getType(){
+        if(places!=null && (reservedDishes == null || reservedDishes.size()==0)){
+            return "Table";
+        }
+        else if (places== null && reservedDishes.size()>0){
+            return "Take-away";
+        }
+        else {
+            return "Table with orders";
+        }
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setAvatarDownloadLink(String avatarDownloadLink) {
+        this.avatarDownloadLink = avatarDownloadLink;
+    }
+
+    public String getAvatarDownloadLink() {
+        return avatarDownloadLink;
+    }
+
+    public String getPhone() {
+        return phone;
     }
 }

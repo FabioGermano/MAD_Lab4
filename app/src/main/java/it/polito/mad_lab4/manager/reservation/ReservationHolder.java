@@ -21,16 +21,19 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import junit.framework.Test;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import it.polito.mad_lab4.R;
-import it.polito.mad_lab4.manager.data.reservation.Reservation;
-import it.polito.mad_lab4.manager.data.reservation.ReservationType;
-import it.polito.mad_lab4.manager.data.reservation.ReservationTypeConverter;
-import it.polito.mad_lab4.manager.data.reservation.ReservedDish;
+import it.polito.mad_lab4.newData.reservation.Reservation;
+import it.polito.mad_lab4.newData.reservation.ReservationType;
+import it.polito.mad_lab4.newData.reservation.ReservationTypeConverter;
+import it.polito.mad_lab4.newData.reservation.ReservedDish;
 
 /**
  * Created by Giovanna on 12/04/2016.
@@ -105,7 +108,7 @@ public class ReservationHolder extends RecyclerView.ViewHolder implements View.O
     public void setData(Reservation reservation) {
         this.reservation = reservation;
         type.setText(reservation.getType());
-        username.setText(reservation.getUser().getName());
+        username.setText(reservation.getUserName());
         time.setText(reservation.getTime());
         if(reservation.getNoteByUser() != null){
             userNote.setText(reservation.getNoteByUser());
@@ -113,12 +116,12 @@ public class ReservationHolder extends RecyclerView.ViewHolder implements View.O
         if(reservation.getNoteByOwner() != null){
             yourNotes.setText(reservation.getNoteByOwner());
         }
-        ph_number.setText(reservation.getUser().getPhone());
+        ph_number.setText(reservation.getPhone());
 
         manageFooterVisibility(reservation);
 
-        ArrayList<ReservedDish> reservedDish = reservation.getReservedDishes(false);
-        ArrayList<ReservedDish> reservedOffers = reservation.getReservedDishes(true);
+        ArrayList<ReservedDish> reservedDish = reservation.getReservedDishesByType(false);
+        ArrayList<ReservedDish> reservedOffers = reservation.getReservedDishesByType(true);
 
         if (reservation.getPlaces() == null) {
             ((TextView) childLayout.findViewById(R.id.seats_number)).setVisibility(View.GONE);
@@ -184,9 +187,9 @@ public class ReservationHolder extends RecyclerView.ViewHolder implements View.O
         }
         else if (reservation.getStatus().equals(ReservationTypeConverter.toString(ReservationType.ACCEPTED)))
         {
-            if (reservation.isExpired()) {
+            if (reservation.getIsExpired()) {
                 this.expiredChildFooter.setVisibility(View.VISIBLE);
-            } else if (reservation.isVerified()) {
+            } else if (reservation.getIsVerified()) {
                 this.verifiedChildFooter.setVisibility(View.VISIBLE);
             }
             else{
@@ -264,6 +267,11 @@ public class ReservationHolder extends RecyclerView.ViewHolder implements View.O
 
     private void acceptClick(View v) {
         this.reservation.setStatus(ReservationTypeConverter.toString(ReservationType.ACCEPTED));
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("reservations/"+this.reservation.getReservationId()+"/status");
+        myRef.setValue(ReservationTypeConverter.toString(ReservationType.ACCEPTED));
+
         containerFragment.moveReservationToNewState(getAdapterPosition(), ReservationType.PENDING, ReservationType.ACCEPTED);
     }
 
@@ -307,6 +315,13 @@ public class ReservationHolder extends RecyclerView.ViewHolder implements View.O
 
     private void setAsRejected() {
         this.reservation.setStatus(ReservationTypeConverter.toString(ReservationType.REJECTED));
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("reservations/"+this.reservation.getReservationId()+"/status");
+        myRef.setValue(ReservationTypeConverter.toString(ReservationType.REJECTED));
+        myRef = database.getReference("reservations/"+this.reservation.getReservationId()+"/noteByOwner");
+        myRef.setValue(this.reservation.getNoteByOwner());
+
         containerFragment.moveReservationToNewState(getAdapterPosition(), ReservationType.PENDING, ReservationType.REJECTED);
     }
 

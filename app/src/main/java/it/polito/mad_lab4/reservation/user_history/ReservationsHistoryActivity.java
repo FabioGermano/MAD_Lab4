@@ -1,6 +1,7 @@
 package it.polito.mad_lab4.reservation.user_history;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -46,6 +47,8 @@ public class ReservationsHistoryActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
 
+        showProgressBar();
+
         new Thread() {
             public void run() {
                 FirebaseGetAuthInformation firebaseGetAuthInformation = new FirebaseGetAuthInformation();
@@ -53,13 +56,21 @@ public class ReservationsHistoryActivity extends BaseActivity {
                 currentUser = firebaseGetAuthInformation.getUser();
                 if(currentUser != null) {
                     firebaseGetReservationsManager = new FirebaseGetReservationsManager();
-                    firebaseGetReservationsManager.getReservations(currentUser.getUid(), null);
+                    firebaseGetReservationsManager.getReservations(currentUser.getUid(), null, null);
                     firebaseGetReservationsManager.waitForResult();
                     reservations = firebaseGetReservationsManager.getResult();
 
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            dismissProgressDialog();
+
+                            if(reservations == null){
+                                Snackbar.make(findViewById(android.R.id.content), "Connection error", Snackbar.LENGTH_LONG)
+                                        .show();
+                                return;
+                            }
+
                             mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
 
                             mLayoutManager = new LinearLayoutManager(ReservationsHistoryActivity.this);

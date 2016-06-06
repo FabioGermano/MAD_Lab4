@@ -2,6 +2,7 @@ package it.polito.mad_lab4.manager.reservation;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 
 import android.support.v4.app.Fragment;
@@ -13,18 +14,25 @@ import android.view.MenuItem;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 import it.polito.mad_lab4.data.user.User;
+import it.polito.mad_lab4.firebase_manager.FirebaseGetAuthInformation;
+import it.polito.mad_lab4.firebase_manager.FirebaseGetReservationsManager;
 import it.polito.mad_lab4.manager.GestioneDB;
 import it.polito.mad_lab4.R;
-import it.polito.mad_lab4.manager.data.reservation.Reservation;
-import it.polito.mad_lab4.manager.data.reservation.ReservationEntity;
-import it.polito.mad_lab4.manager.data.reservation.ReservationType;
-import it.polito.mad_lab4.manager.data.reservation.ReservationTypeConverter;
+import it.polito.mad_lab4.newData.reservation.Reservation;
+import it.polito.mad_lab4.newData.reservation.ReservationType;
+import it.polito.mad_lab4.newData.reservation.ReservationTypeConverter;
+import it.polito.mad_lab4.newData.reservation.ReservedDish;
 
 public class ReservationsActivity extends it.polito.mad_lab4.BaseActivity {
 
@@ -37,13 +45,13 @@ public class ReservationsActivity extends it.polito.mad_lab4.BaseActivity {
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
-    private ReservationEntity res_entity;
     private ReservationFragment[] reservationFragments = new ReservationFragment[4];
-    private String selectedDate = "2016-04-12";
+    private String selectedDate;
     private DatePickerDialog datePickerDialog;
     private SimpleDateFormat dateFormatter;
     private String datePicked;
-
+    private String restaurantId = "-KIrgaSxr9VhHllAjqmp";
+    private ArrayList<Reservation> reservations = new ArrayList<>();
 
 
     /**
@@ -51,6 +59,11 @@ public class ReservationsActivity extends it.polito.mad_lab4.BaseActivity {
      */
     private ViewPager mViewPager;
     private TextView dateText;
+    private FirebaseUser currentUser;
+    private FirebaseGetReservationsManager firebaseGetReservationsManager;
+    private int currYear;
+    private int currmonthOfYear;
+    private int currdayOfMonth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,17 +75,20 @@ public class ReservationsActivity extends it.polito.mad_lab4.BaseActivity {
         hideToolbarShadow(true);
         setVisibilityCalendar(true);
         invalidateOptionsMenu();
-        getReservations();
 
-        dateFormatter = new SimpleDateFormat("dd/MM/yyyy");
+        dateFormatter = new SimpleDateFormat("yyyy-M-d");
         Calendar c = Calendar.getInstance();
         Date newDate = c.getTime();
-        //set to show actual date
-        selectedDate = dateFormatter.format(newDate.getTime());
 
         datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
 
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                if(currYear == year && monthOfYear == currmonthOfYear && dayOfMonth == currdayOfMonth){
+                    return;
+                }
+                currYear = year;
+                currmonthOfYear = monthOfYear;
+                currdayOfMonth = dayOfMonth;
                 Calendar newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
                 datePicked= dateFormatter.format(newDate.getTime());
@@ -88,22 +104,23 @@ public class ReservationsActivity extends it.polito.mad_lab4.BaseActivity {
         dateText = (TextView) findViewById(R.id.date);
         dateText.setText(selectedDate);
 
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), res_entity);
+        mViewPager = (ViewPager) findViewById(R.id.container);
+
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
+
+        changeDate(dateFormatter.format(newDate.getTime()));
     }
 
-    void getReservations(){
+    /*void getReservations(){
         GestioneDB db = new GestioneDB();
         this.res_entity = db.getAllReservations(getApplicationContext());
-    }
+    }*/
 
 
     @Override
@@ -120,19 +137,54 @@ public class ReservationsActivity extends it.polito.mad_lab4.BaseActivity {
         return true;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
-    private void changeDate(String newDate){
+    private void changeDate(final String newDate){
         this.selectedDate = newDate;
         dateText.setText(newDate);
-        int pos = 0;
-        for(ReservationFragment rf : this.reservationFragments){
-            if(rf != null){
-                rf.getReservations().clear();
-                rf.getReservations().addAll(res_entity.getReservationsByDateAndType(selectedDate, ReservationTypeConverter.fromTabPosition(pos)));
-                rf.getAdapter().notifyDataSetChanged();
+
+        showProgressBar();
+
+        new Thread() {
+            public void run() {
+                FirebaseGetAuthInformation firebaseGetAuthInformation = new FirebaseGetAuthInformation();
+                firebaseGetAuthInformation.waitForResult();
+                currentUser = firebaseGetAuthInformation.getUser();
+                if(currentUser != null) {
+                    firebaseGetReservationsManager = new FirebaseGetReservationsManager();
+                    firebaseGetReservationsManager.getReservations(null, restaurantId, newDate);
+                    firebaseGetReservationsManager.waitForResult();
+                    reservations = new ArrayList<Reservation>();
+                    reservations.addAll(firebaseGetReservationsManager.getResult());
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            dismissProgressDialog();
+
+                            if(reservations == null){
+                                Snackbar.make(findViewById(android.R.id.content), "Connection error", Snackbar.LENGTH_LONG)
+                                        .show();
+                                return;
+                            }
+
+                            int pos = 0;
+                            for(ReservationFragment rf : reservationFragments){
+                                if(rf != null){
+                                    rf.getReservations().clear();
+                                    rf.getReservations().addAll(getReservationsByType(ReservationTypeConverter.fromTabPosition(pos)));
+                                    rf.getAdapter().notifyDataSetChanged();
+                                }
+                                pos++;
+                            }
+                        }
+                    });
+                }
             }
-            pos++;
-        }
+        }.start();
     }
 
     /**
@@ -145,18 +197,15 @@ public class ReservationsActivity extends it.polito.mad_lab4.BaseActivity {
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        private ReservationEntity res_entity;
-
-        public SectionsPagerAdapter(FragmentManager fm, ReservationEntity res_entity) {
+        public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
-            this.res_entity = res_entity;
         }
 
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            reservationFragments[position] = ReservationFragment.newInstance(position + 1, res_entity.getReservationsByDateAndType(selectedDate, ReservationTypeConverter.fromTabPosition(position)));
+            reservationFragments[position] = ReservationFragment.newInstance(position + 1, getReservationsByType(ReservationTypeConverter.fromTabPosition(position)));
             return reservationFragments[position];
         }
 
@@ -200,21 +249,39 @@ public class ReservationsActivity extends it.polito.mad_lab4.BaseActivity {
         int arrayId = ReservationTypeConverter.fromType(ReservationType.ACCEPTED);
         if(this.reservationFragments[arrayId] != null){
             this.reservationFragments[arrayId].getReservations().get(position).setIsVerified(true);
+
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference myRef = database.getReference("reservations/"+this.reservationFragments[arrayId].getReservations().get(position).getReservationId()+"/isVerified");
+            myRef.setValue(true);
+
             this.reservationFragments[arrayId].getAdapter().notifyItemChanged(position);
         }
 
     }
 
-    private void updateDb()
-    {
-        GestioneDB db = new GestioneDB();
-        db.UpdateReservations(getApplicationContext(), this.res_entity);
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if(firebaseGetReservationsManager != null){
+            firebaseGetReservationsManager.terminate();
+        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
 
-        updateDb();
+    }
+
+    private ArrayList<Reservation> getReservationsByType(ReservationType reservationType){
+        ArrayList<Reservation> res = new ArrayList<>();
+        for(Reservation r : this.reservations){
+            if(ReservationTypeConverter.toString(reservationType).equals(r.getStatus())){
+                res.add(r);
+            }
+        }
+
+        return res;
     }
 }

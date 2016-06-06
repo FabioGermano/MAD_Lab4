@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import it.polito.mad_lab4.R;
-import it.polito.mad_lab4.manager.data.reservation.Reservation;
+import it.polito.mad_lab4.newData.reservation.Reservation;
 
 /**
  * Created by Giovanna on 12/04/2016.

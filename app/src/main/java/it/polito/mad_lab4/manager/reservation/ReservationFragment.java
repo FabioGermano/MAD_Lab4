@@ -12,10 +12,9 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import it.polito.mad_lab4.R;
-import it.polito.mad_lab4.manager.data.reservation.Reservation;
-import it.polito.mad_lab4.manager.data.reservation.ReservationEntity;
-import it.polito.mad_lab4.manager.data.reservation.ReservationType;
-import it.polito.mad_lab4.manager.data.reservation.ReservationTypeConverter;
+import it.polito.mad_lab4.newData.reservation.Reservation;
+import it.polito.mad_lab4.newData.reservation.ReservationType;
+import it.polito.mad_lab4.newData.reservation.ReservationTypeConverter;
 
 public final class ReservationFragment extends Fragment {
     /**

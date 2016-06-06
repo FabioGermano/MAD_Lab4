@@ -9,7 +9,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -27,10 +32,11 @@ public class FirebaseGetReservationsManager implements ValueEventListener {
 
     private ArrayList<Reservation> reservations = new ArrayList<>();
     private boolean resultReturned = false;
+    private boolean timeout;
 
     private Query query;
 
-    public void getReservations(String userId, String restaurantId){
+    public void getReservations(String userId, String restaurantId, String date){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         query = database.getReference("reservations/");
         if(userId != null) {
@@ -39,10 +45,28 @@ public class FirebaseGetReservationsManager implements ValueEventListener {
         }
         else
         {
-            query = query.orderByChild("restaurantId")
-                    .equalTo(restaurantId);
+            query = query.orderByChild("restaurantIdAndDate")
+                    .equalTo(restaurantId + " " + date);
+
         }
         query.addListenerForSingleValueEvent(this);
+
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        timeout();
+                    }
+                },
+                10000
+        );
+    }
+
+    private void timeout() {
+        lock.lock();
+        timeout = true;
+        this.cv.signal();
+        lock.unlock();
     }
 
     @Override

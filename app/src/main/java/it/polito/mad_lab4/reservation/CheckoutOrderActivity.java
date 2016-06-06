@@ -19,7 +19,9 @@ import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.common.Helper;
 import it.polito.mad_lab4.data.reservation.ReservationType;
 import it.polito.mad_lab4.data.reservation.ReservationTypeConverter;
+import it.polito.mad_lab4.firebase_manager.FirebaseGetClientInfoManager;
 import it.polito.mad_lab4.firebase_manager.FirebaseSaveReservationManager;
+import it.polito.mad_lab4.newData.client.ClientPersonalInformation;
 import it.polito.mad_lab4.newData.reservation.Reservation;
 import it.polito.mad_lab4.newData.reservation.ReservedDish;
 
@@ -124,10 +126,21 @@ public class CheckoutOrderActivity extends BaseActivity {
         r.setReservedDishes(reservedDishes);
         r.setAddress(address);
         r.setRestaurantName(restaurantName);
+        r.setRestaurantIdAndDate(restaurantID + " " + date);
 
         new Thread()
         {
             public void run() {
+
+                FirebaseGetClientInfoManager clientManager = new FirebaseGetClientInfoManager();
+                clientManager.getClientInfo(currentUserId);
+                clientManager.waitForResult();
+                ClientPersonalInformation client = clientManager.getResult();
+
+                r.setUserName(client.getName());
+                r.setPhone(client.getPhoneNumber());
+                r.setAvatarDownloadLink(client.getAvatarDownloadLink());
+
                 FirebaseSaveReservationManager firebaseSaveReservationManager = new FirebaseSaveReservationManager();
                 firebaseSaveReservationManager.saveReservation(r, reservedDishes);
 

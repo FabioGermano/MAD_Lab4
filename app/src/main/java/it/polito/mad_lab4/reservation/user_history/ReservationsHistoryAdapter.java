@@ -75,10 +75,12 @@ public class ReservationsHistoryAdapter extends RecyclerView.Adapter<Reservation
                 status.setText(r.getStatus());
                 this.position=position;
 
-                if(r.getStatus().equals(ReservationTypeConverter.toString(ReservationType.ACCEPTED)) || r.getStatus().equals(ReservationTypeConverter.toString(ReservationType.PENDING)))
+                if((r.getStatus().equals(ReservationTypeConverter.toString(ReservationType.ACCEPTED)) && !r.getIsVerified()) || r.getStatus().equals(ReservationTypeConverter.toString(ReservationType.PENDING)))
                     cancel.setVisibility(View.VISIBLE);
                 else
                     cancel.setVisibility(View.GONE);
+
+
             }
 
             public void setListeners() {
