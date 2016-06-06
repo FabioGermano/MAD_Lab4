@@ -17,13 +17,14 @@ import com.google.android.gms.maps.SupportMapFragment;
 import java.util.ArrayList;
 
 import it.polito.mad_lab4.bl.RestaurantBL;
-import it.polito.mad_lab4.data.restaurant.Offer;
 import it.polito.mad_lab4.data.restaurant.Restaurant;
 import it.polito.mad_lab4.elaborazioneRicerche.Oggetto_offerteVicine;
 import it.polito.mad_lab4.elaborazioneRicerche.Oggetto_risultatoRicerca;
 import it.polito.mad_lab4.elaborazioneRicerche.elaborazioneRicerche;
 import it.polito.mad_lab4.manager.MainActivityManager;
 import it.polito.mad_lab4.maps_management.mainActivity_map;
+import it.polito.mad_lab4.newData.other.RestaurantPosition;
+import it.polito.mad_lab4.newData.restaurant.Offer;
 
 public class MainActivity extends BaseActivity{
 
@@ -109,10 +110,14 @@ public class MainActivity extends BaseActivity{
 
         //setUpRecyclerView();
 
+        // TODO ottengo la posizione corrente
+        //LatLng myPosition = getCurrentPosition();
+
         //gestione MAPPA
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mainActivity_map gestoreMappa = new mainActivity_map();
         gestoreMappa.setContext(this);
+        //gestoreMappa.setCurrentPosition(myPosition);
         mapFragment.getMapAsync(gestoreMappa);
 
     }
@@ -124,13 +129,18 @@ public class MainActivity extends BaseActivity{
         //f.germano mod. Ci sono appositi metodi del bl:
         this.listaRistoranti = RestaurantBL.getAllRestaurants(getApplicationContext());
 
-        for (Restaurant r: listaRistoranti){
+        /*for (Restaurant r: listaRistoranti){
             if (r.getBasicInfo().getDistance() <= 15){
                 for (Offer o: r.getOffers()){
-                    lista_offerte_vicine.add(new Oggetto_offerteVicine(o, String.valueOf(r.getRestaurantId())));
+                    Oggetto_offerteVicine obj = new Oggetto_offerteVicine();
+                    obj.setOfferta(o);
+                    RestaurantPosition rp = new RestaurantPosition();
+                    rp.setRestaurantId(String.valueOf(r.getRestaurantId()));
+                    obj.setRestaurantPosition(rp);
+                    lista_offerte_vicine.add(obj);
                 }
             }
-        }
+        }*/
     }
 
     public void searchRestaurant(String query) {

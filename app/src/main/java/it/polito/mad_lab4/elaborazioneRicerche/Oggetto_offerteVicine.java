@@ -1,32 +1,29 @@
 package it.polito.mad_lab4.elaborazioneRicerche;
 
-import com.google.android.gms.maps.model.LatLng;
-
 import java.io.Serializable;
 
-import it.polito.mad_lab4.data.restaurant.Offer;
-import it.polito.mad_lab4.newData.other.Position;
+import it.polito.mad_lab4.newData.other.RestaurantPosition;
+import it.polito.mad_lab4.newData.restaurant.Offer;
 
 /**
  * Created by Roby on 10/05/2016.
  */
 public class Oggetto_offerteVicine implements Serializable{
     private Offer offerta;
-
-    private String restaurantId;
-    private Position restaurantPosition;
+    private RestaurantPosition restaurantPosition;
 
     private String markerAssociato = null;
     private boolean isNew = false;
 
 
-    public Oggetto_offerteVicine(Offer o, String id){
-        this.offerta = o;
-        this.restaurantId = id;
+    public Oggetto_offerteVicine(){
     }
 
-    public Offer getOffer(){ return offerta; }
-    public String getId() { return restaurantId; }
+    public void setOfferta(Offer offerta) {
+        this.offerta = offerta;
+    }
+
+    public Offer getOfferta(){ return offerta; }
 
     public String getMarkerAssociato(){
         return this.markerAssociato;
@@ -44,12 +41,11 @@ public class Oggetto_offerteVicine implements Serializable{
         return this.isNew;
     }
 
-    public Position getRestaurantPosition(){
-        return this.restaurantPosition;
+    public RestaurantPosition getRestaurantPosition() {
+        return restaurantPosition;
     }
 
-    public void setRestaurantPosition(Position position){
-        this.restaurantPosition = position;
+    public void setRestaurantPosition(RestaurantPosition restaurantPosition) {
+        this.restaurantPosition = restaurantPosition;
     }
-
 }

@@ -98,25 +98,25 @@ public class RecyclerAdapter_offerteVicine extends RecyclerView.Adapter<Recycler
             this.position = position;
 
             if (this.name != null){
-                this.name.setText(currentObj.getOffer().getOfferName());
+                this.name.setText(currentObj.getOfferta().getOfferName());
             }
             if (this.price != null){
-                this.price.setText(String.valueOf(currentObj.getOffer().getPrice()));
+                this.price.setText(String.valueOf(currentObj.getOfferta().getPrice()));
             }
             if (this.details != null){
-                this.details.setText(currentObj.getOffer().getDetails());
+                this.details.setText(currentObj.getOfferta().getDetails());
             }
             if (this.rating != null){
-                this.rating.setRating(currentObj.getOffer().getAvgRank());
+                this.rating.setRating(currentObj.getOfferta().getAvgRank());
             }
 
             if (this.numRatings != null){
-                String n = "("+currentObj.getOffer().getNumRanks()+")";
+                String n = "("+currentObj.getOfferta().getNumRanks()+")";
                 this.numRatings.setText(n);
             }
 
-            if(this.image != null){
-                String path = currentObj.getOffer().getLargePath();
+            /*if(this.image != null){
+                String path = currentObj.getOfferta().getLargePath();
                 if (path != null){
                     try {
                         bitmap = BitmapFactory.decodeFile(path);
@@ -126,7 +126,7 @@ public class RecyclerAdapter_offerteVicine extends RecyclerView.Adapter<Recycler
                         System.out.println("Errore creazione bitmap"); //debug
                     }
                 }
-            }
+            }*/
         }
 
         private void cancellaBitmap(){
@@ -136,7 +136,7 @@ public class RecyclerAdapter_offerteVicine extends RecyclerView.Adapter<Recycler
 
         private void visualizzaRistorante(){
             Bundle b = new Bundle();
-            b.putInt("restaurantId", Integer.parseInt(current.getId())  );
+            b.putInt("restaurantId", Integer.parseInt(current.getRestaurantPosition().getRestaurantId())  );
             Intent intent = new Intent(context, RestaurantActivity.class);
             intent.putExtras(b);
             context.startActivity(intent);

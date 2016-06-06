@@ -40,7 +40,7 @@ public class mainActivity_infoWindow_adapter implements GoogleMap.InfoWindowAdap
         Oggetto_offerteVicine offerta = getOffeta(marker.getId());
         if(offerta != null){
             if(titolo != null) {
-                titolo.setText(offerta.getId() + " "  +offerta.getMarkerAssociato());
+                titolo.setText(offerta.getRestaurantPosition().getRestaurantId() + " "  +offerta.getMarkerAssociato());
             }
         } else {
             if(titolo != null) {

@@ -7,20 +7,20 @@ import android.view.KeyEvent;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 
 import it.polito.mad_lab4.R;
-import it.polito.mad_lab4.data.user.User;
 import it.polito.mad_lab4.elaborazioneRicerche.Oggetto_offerteVicine;
-import it.polito.mad_lab4.elaborazioneRicerche.Oggetto_risultatoRicerca;
 
 /**
  * Created by Euge on 06/06/2016.
  */
 public class mainActivity_fullscreen_map extends FragmentActivity {
 
-    ArrayList<Oggetto_offerteVicine> lista_offerte_vicine = null;
+    private ArrayList<Oggetto_offerteVicine> lista_offerte_vicine = null;
+    private LatLng myPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +30,11 @@ public class mainActivity_fullscreen_map extends FragmentActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             lista_offerte_vicine = (ArrayList<Oggetto_offerteVicine> ) extras.getSerializable("listaOfferte");
+            double lat = extras.getDouble("myLat") ;
+            double lon = extras.getDouble("myLong");
+            if(lat != 0.0 && lon != 0.0){
+                myPosition = new LatLng(lat, lon);
+            }
             extras.clear();
             if(lista_offerte_vicine == null){
                 ///SEI NELLA MERDA!!!
@@ -47,6 +52,8 @@ public class mainActivity_fullscreen_map extends FragmentActivity {
                 .findFragmentById(R.id.map);
 
         mainActivity_map gestoreMappa = new mainActivity_map();
+        if(myPosition != null)
+            gestoreMappa.setCurrentPosition(myPosition);
         gestoreMappa.setContext(this);
         gestoreMappa.setFullScreen(true);
         gestoreMappa.setListaOfferte(lista_offerte_vicine);

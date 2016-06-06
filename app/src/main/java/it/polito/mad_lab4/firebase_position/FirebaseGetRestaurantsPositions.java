@@ -16,6 +16,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import it.polito.mad_lab4.elaborazioneRicerche.Oggetto_offerteVicine;
 import it.polito.mad_lab4.newData.other.Position;
+import it.polito.mad_lab4.newData.other.RestaurantPosition;
 
 /**
  * Created by Euge on 06/06/2016.
@@ -26,7 +27,7 @@ public class FirebaseGetRestaurantsPositions implements ValueEventListener {
 
     private boolean resultReturned = false;
 
-    private ArrayList<Oggetto_offerteVicine> listaOfferte = null;
+    private ArrayList<RestaurantPosition> listaPosizioniRistoranti = null;
 
 
     public FirebaseGetRestaurantsPositions(){
@@ -39,16 +40,17 @@ public class FirebaseGetRestaurantsPositions implements ValueEventListener {
     public void onDataChange(DataSnapshot dataSnapshot) {
         String idRistorante;
         Position p;
-        Oggetto_offerteVicine obj;
+        RestaurantPosition obj;
         lock.lock();
-        listaOfferte = new ArrayList<Oggetto_offerteVicine>();
+        listaPosizioniRistoranti = new ArrayList<RestaurantPosition>();
         for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
             idRistorante = postSnapshot.getKey();
             System.out.println(postSnapshot.toString());
             p = postSnapshot.getValue(Position.class);
-            obj = new Oggetto_offerteVicine(null, idRistorante);
-            obj.setRestaurantPosition(p);
-            listaOfferte.add(obj);
+            obj = new RestaurantPosition();
+            obj.setRestaurantId(idRistorante);
+            obj.setPosition(p);
+            listaPosizioniRistoranti.add(obj);
         }
 
         resultReturned = true;
@@ -59,14 +61,14 @@ public class FirebaseGetRestaurantsPositions implements ValueEventListener {
     @Override
     public void onCancelled(DatabaseError databaseError) {
         lock.lock();
-        listaOfferte = null;
+        listaPosizioniRistoranti = null;
         resultReturned = true;
         this.cv.signal();
         lock.unlock();
     }
 
-    public ArrayList<Oggetto_offerteVicine> getListaOfferte(){
-        return this.listaOfferte;
+    public ArrayList<RestaurantPosition> getListaOfferte(){
+        return this.listaPosizioniRistoranti;
     }
 
     public void waitForResult() {

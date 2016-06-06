@@ -2,6 +2,7 @@ package it.polito.mad_lab4.maps_management;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -16,8 +17,14 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+
+import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.elaborazioneRicerche.Oggetto_offerteVicine;
+import it.polito.mad_lab4.firebase_manager.FirebaseGetOfferListManager;
 import it.polito.mad_lab4.firebase_position.FirebaseGetRestaurantsPositions;
+import it.polito.mad_lab4.newData.other.Position;
+import it.polito.mad_lab4.newData.other.RestaurantPosition;
+import it.polito.mad_lab4.newData.restaurant.Offer;
 
 /**
  * Created by Euge on 04/06/2016.
@@ -30,7 +37,7 @@ public class mainActivity_map implements OnMapReadyCallback, GoogleMap.OnMapClic
     private boolean caricamentoCompletato = false;
     private ArrayList<Oggetto_offerteVicine>  listaOfferte = null;
 
-    private LatLng position= new LatLng(45.06455, 7.65833);
+    private LatLng myPosition = new LatLng(45.06455, 7.65833); //qui definiamo una posizione di default se per caso non ne abbiamo altre
     private Context context;
 
     @Override
@@ -59,7 +66,7 @@ public class mainActivity_map implements OnMapReadyCallback, GoogleMap.OnMapClic
         if(!fullScreen)
             mMap.setOnMapClickListener(this);
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 10));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myPosition, 10));
 
     }
 
@@ -67,17 +74,16 @@ public class mainActivity_map implements OnMapReadyCallback, GoogleMap.OnMapClic
         LatLng posizioneOfferta;
         Marker marker;
         for (Oggetto_offerteVicine obj:listaOfferte) {
-            posizioneOfferta = new LatLng( obj.getRestaurantPosition().getLatitudine(), obj.getRestaurantPosition().getLongitudine());
+            posizioneOfferta = new LatLng( obj.getRestaurantPosition().getPosition().getLatitudine(), obj.getRestaurantPosition().getPosition().getLongitudine());
             if(obj.isNew()){
                 //metto l'icona con il punto esclamativo
                 marker =mMap.addMarker(new MarkerOptions().position(posizioneOfferta)
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
                 obj.setMarkerAssociato(marker.getId());
             } else {
-
                 //metto l'icona semplice
                 marker =mMap.addMarker(new MarkerOptions().position(posizioneOfferta)
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_icon_default)));
                 obj.setMarkerAssociato(marker.getId());
             }
         }
@@ -116,6 +122,8 @@ public class mainActivity_map implements OnMapReadyCallback, GoogleMap.OnMapClic
             Intent i = new Intent(context, mainActivity_fullscreen_map.class);
             Bundle b = new Bundle();
             b.putSerializable("listaOfferte", listaOfferte);
+            b.putDouble("myLat", myPosition.latitude);
+            b.putDouble("myLong", myPosition.longitude);
             i.putExtras(b);
             context.startActivity(i);
         }
@@ -127,11 +135,34 @@ public class mainActivity_map implements OnMapReadyCallback, GoogleMap.OnMapClic
 
                 FirebaseGetRestaurantsPositions restaurantsPositions = new FirebaseGetRestaurantsPositions();
                 restaurantsPositions.waitForResult();
-                listaOfferte = restaurantsPositions.getListaOfferte();
+                ArrayList<RestaurantPosition> listaPosizioniR = restaurantsPositions.getListaOfferte();
 
-                if(listaOfferte == null){
-                    listaOfferte = new ArrayList<Oggetto_offerteVicine>();
-                } else {
+                listaOfferte = new ArrayList<Oggetto_offerteVicine>();
+
+                if(listaOfferte != null){
+                    Oggetto_offerteVicine objOffertaVicina;
+                    for (RestaurantPosition rp: listaPosizioniR) {
+
+                        if(ristoranteVicino(rp.getPosition())){
+                            objOffertaVicina = new Oggetto_offerteVicine();
+                            objOffertaVicina.setRestaurantPosition(rp);
+                            listaOfferte.add(objOffertaVicina);
+                        }
+                    }
+
+                    // TODO ora ho tutti i ristoranti distanti TOT metri dalla mia posizione
+                    // per ogniuno scarico la prima offerta da far visualizzare o la migliore, da decidere
+                    // TODO decidere quando un'offerta è da considerarsi nuova
+                    FirebaseGetOfferListManager offerListManager = new FirebaseGetOfferListManager();
+
+                    /*for (Oggetto_offerteVicine obj: listaOfferte) {
+                        offerListManager.getOffers(obj.getRestaurantPosition().getRestaurantId());
+                        offerListManager.waitForResult();
+                        if(offerListManager.getResult().size() > 0) {
+                            obj.setOfferta(offerListManager.getResult().get(0));
+                        }
+
+                    }*/
 
                     Handler handler = new Handler(Looper.getMainLooper());
                     handler.post(new Runnable() {
@@ -148,6 +179,20 @@ public class mainActivity_map implements OnMapReadyCallback, GoogleMap.OnMapClic
         }.start();
     }
 
+    private boolean ristoranteVicino(Position restaurantPosition) {
+
+        float[] distance = new float[1];
+        Location.distanceBetween(myPosition.latitude, myPosition.longitude, restaurantPosition.getLatitudine(), restaurantPosition.getLongitudine(), distance);
+        // distance[0] is now the distance between these lat/lons in meters
+        if (distance[0] < 500.0) {
+            return true;
+        } else
+            return false;
+    }
+
+    public void setCurrentPosition(LatLng currentPosition){
+        this.myPosition = currentPosition;
+    }
 
     public void setContext(Context argC){
         this.context = argC;
