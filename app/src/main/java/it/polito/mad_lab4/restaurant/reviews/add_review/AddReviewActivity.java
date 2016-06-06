@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,14 +21,12 @@ import java.util.Date;
 
 import it.polito.mad_lab4.BaseActivity;
 import it.polito.mad_lab4.R;
-import it.polito.mad_lab4.bl.RestaurantBL;
-import it.polito.mad_lab4.bl.UserBL;
-import it.polito.mad_lab4.data.user.UserSession;
 import it.polito.mad_lab4.common.photo_viewer.PhotoViewer;
 import it.polito.mad_lab4.common.photo_viewer.PhotoViewerListener;
-import it.polito.mad_lab4.data.restaurant.Restaurant;
-import it.polito.mad_lab4.data.restaurant.Review;
-import it.polito.mad_lab4.data.user.User;
+import it.polito.mad_lab4.firebase_manager.FirebaseSaveReviewManager;
+import it.polito.mad_lab4.newData.client.ClientPersonalInformation;
+import it.polito.mad_lab4.newData.restaurant.Restaurant;
+import it.polito.mad_lab4.newData.restaurant.Review;
 
 /**
  * Created by Giovanna on 08/05/2016.
@@ -41,17 +40,26 @@ public class AddReviewActivity extends BaseActivity implements PhotoViewerListen
     private ImageView cover;
     private PhotoViewer photoViewer1, photoViewer2, photoViewer3;
     private Button addReview;
-    private int restaurantID=-1;
+    private String restaurantID;
     private Context context = this;
     private float rbValue=-1;
     private Restaurant restaurant;
+    private String restaurantName;
+    private FirebaseSaveReviewManager firebaseSaveReviewManager;
+    private ClientPersonalInformation clientInfo;
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_review);
 
-        this.restaurantID = getIntent().getExtras().getInt("restaurantId");
+        //this.restaurantID = getIntent().getExtras().getInt("restaurantId");
+        //this.restaurantName= getIntent().getExtras().getString("restaurantName");
+
+        this.restaurantID ="-KIrgaSxr9VhHllAjqmp";
+        this.restaurantName="Test";
+
         hideToolbar(true);
         hideToolbarShadow(true);
         setActivityTitle(getResources().getString(R.string.add_review_activity_title));
@@ -62,9 +70,10 @@ public class AddReviewActivity extends BaseActivity implements PhotoViewerListen
         editText= (EditText) findViewById(R.id.review);
         cover = (ImageView)findViewById(R.id.cover) ;
         restaurantNameTextView = (TextView) findViewById(R.id.restaurant_name);
-        restaurant = RestaurantBL.getRestaurantById(this, restaurantID);
 
-        restaurantNameTextView.setText(restaurant.getRestaurantName());
+
+        restaurantNameTextView.setText(restaurantName);
+
         rb = (RatingBar) findViewById(R.id.rating);
         rb.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
@@ -92,6 +101,7 @@ public class AddReviewActivity extends BaseActivity implements PhotoViewerListen
                             i.putExtra("review", editText.getText().toString());
                             i.putExtra("restaurantId", restaurantID);
                             i.putExtra("rating", rbValue);
+                            i.putExtra("restaurantName", restaurantName);
                             startActivity(i);
 
                         }
@@ -99,14 +109,13 @@ public class AddReviewActivity extends BaseActivity implements PhotoViewerListen
                     builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             //TODO aggiungere review al db
-                            DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-                            Date today = new Date();
-                            User user = UserBL.getUserById(getApplicationContext(), UserSession.userId);
-                            Review r = new Review(user.getName(), null, rbValue, df.format(today), editText.getText().toString() );
-                            RestaurantBL.addReview(restaurant, r);
-                            RestaurantBL.saveChanges(getApplicationContext());
-                            Toast.makeText(getApplicationContext(), getResources().getString(R.string.review_published), Toast.LENGTH_SHORT).show();
-                            finish();
+
+                            Review review = new Review();
+                            review.setComment( editText.getText().toString());
+                            review.setRank(rbValue);
+                            review.setUserId("7K4XwUDQzigPJFIWXaLl2TBosnf1");
+                            review.setUserName("Ciccio Bello");
+                            saveReview(restaurantID, review);
                         }
                     });
 
@@ -126,6 +135,44 @@ public class AddReviewActivity extends BaseActivity implements PhotoViewerListen
 
 
 
+    }
+    private void saveReview(final String restaurantId, final  Review review) {
+        new Thread()
+        {
+            public void run() {
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showProgressBar();
+                    }
+                });
+
+                firebaseSaveReviewManager = new FirebaseSaveReviewManager();
+                firebaseSaveReviewManager.saveReview(restaurantId,
+                        review, false, null);
+
+                boolean res = firebaseSaveReviewManager.waitForResult();
+
+                if(!res){
+                    Log.e("Error saving the review", "Error saving the review");
+                    return;
+                }
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        dismissProgressDialog();
+
+                        Toast toast = Toast.makeText(getApplicationContext(), R.string.review_published, Toast.LENGTH_SHORT);
+                        toast.show();
+                        finish();
+                    }
+                });
+
+            }
+        }.start();
     }
 
     @Override

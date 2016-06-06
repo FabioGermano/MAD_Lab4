@@ -1,4 +1,4 @@
-package it.polito.mad_lab4.data.restaurant;
+package it.polito.mad_lab4.newData.restaurant;
 
 /**
  * Created by Giovanna on 09/05/2016.
@@ -7,9 +7,14 @@ public class ReviewFood {
 
     private Object food;
     private int position;
+
+
+
+    private String id;
     private int section;
     private float rating;
 
+    public ReviewFood(){};
 
     public ReviewFood(Object food, int position, int section, float rating) {
         this.food = food;
@@ -48,5 +53,12 @@ public class ReviewFood {
 
     public void setRating(float rating) {
         this.rating = rating;
+    }
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

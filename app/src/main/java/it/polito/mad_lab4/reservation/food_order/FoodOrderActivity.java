@@ -200,11 +200,6 @@ public class FoodOrderActivity extends BaseActivity {
                 else{
                     Intent i = new Intent(getApplicationContext(), CheckoutOrderActivity.class);
                     i.putExtra("reservedDishes", (Serializable) reservedDishes );
-                    /*i.putParcelableArrayListExtra("offers", lists.get(0) );
-                    i.putParcelableArrayListExtra("main",lists.get(1) );
-                    i.putParcelableArrayListExtra("second", lists.get(2));
-                    i.putParcelableArrayListExtra("dessert", lists.get(3) );
-                    i.putParcelableArrayListExtra("other",lists.get(4) );*/
                     i.putExtra("date", date);
                     i.putExtra("weekday", weekday);
                     i.putExtra("time", time);

@@ -19,10 +19,8 @@ import it.polito.mad_lab4.BaseActivity;
 import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.bl.RestaurantBL;
 import it.polito.mad_lab4.common.Helper;
-import it.polito.mad_lab4.data.restaurant.Restaurant;
-import it.polito.mad_lab4.data.restaurant.Review;
-import it.polito.mad_lab4.data.user.User;
-import it.polito.mad_lab4.restaurant.menu.MenuListAdapter;
+import it.polito.mad_lab4.newData.restaurant.Restaurant;
+import it.polito.mad_lab4.newData.restaurant.Review;
 
 public class ReviewsActivity extends BaseActivity {
 
@@ -51,23 +49,23 @@ public class ReviewsActivity extends BaseActivity {
 
         init(getIntent().getExtras());
 
-        ((RatingBar)findViewById(R.id.restaurantAvgRank)).setRating(this.restaurant.getAvgReview());
+        //((RatingBar)findViewById(R.id.restaurantAvgRank)).setRating(this.restaurant.getAvgReview());
         String strNumReviews = getResources().getString(R.string.numReviewsText);
         strNumReviews = strNumReviews.replace("%", String.valueOf(this.restaurant.getNumReviews()));
         ((TextView)findViewById(R.id.numReviews)).setText(strNumReviews);
 
-        Helper.setRatingBarColor(getApplicationContext(),
+        /*Helper.setRatingBarColor(getApplicationContext(),
                 (RatingBar)findViewById(R.id.restaurantAvgRank),
                 restaurant.getAvgReview());
 
         this.adapter = new ReviewsListAdapter(getApplicationContext(), this.reviews);
-        reviewsListView.setAdapter(adapter);
+        reviewsListView.setAdapter(adapter);*/
     }
 
     private void init(Bundle bundle){
         int restaurantId = bundle.getInt("restaurantId");
-        restaurant = RestaurantBL.getRestaurantById(getApplicationContext(), restaurantId);
-        this.reviews = restaurant.getReviews();
+        //restaurant = RestaurantBL.getRestaurantById(getApplicationContext(), restaurantId);
+        //this.reviews = restaurant.getReviews();
         sortByTime();
     }
 

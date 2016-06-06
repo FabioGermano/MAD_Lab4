@@ -11,7 +11,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 import it.polito.mad_lab4.R;
-import it.polito.mad_lab4.data.restaurant.ReviewFood;
+import it.polito.mad_lab4.newData.restaurant.ReviewFood;
 
 /**
  * Created by Giovanna on 25/04/2016.
@@ -50,23 +50,7 @@ public class SectionFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.rate_dishes, container, false);
 
         listView = (ListView) rootView.findViewById(R.id.listView);
-        /*
-        if(isOrder()) {
-            View header = inflater.inflate(R.layout.food_order_header, null);
-            TextView headerTextViewL = (TextView) header.findViewById(R.id.dish);
-            TextView headerTextViewR = (TextView) header.findViewById(R.id.quantity);
-
-            if (position == 0) {
-                headerTextViewL.setText(getResources().getString(R.string.offer));
-            } else
-                headerTextViewL.setText(getResources().getString(R.string.dish));
-
-            headerTextViewR.setText(getResources().getString(R.string.quantity));
-            listView.addHeaderView(header);
-            listView.setAdapter(new FoodOrderAdapter(context,data, position));
-        }
-        else*/
-            listView.setAdapter(new SectionAdapterOffers(context, data, position));
+        listView.setAdapter(new RateAdapter(context, data, position));
 
 
         return rootView;

@@ -135,6 +135,7 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
     @Override
     protected void onResume() {
         super.onResume();
+        add.close(true);
         appbar.addOnOffsetChangedListener(this);
 
         showProgressBar();

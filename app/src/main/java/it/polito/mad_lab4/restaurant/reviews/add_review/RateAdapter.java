@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -15,29 +14,25 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.ViewSwitcher;
 
 import java.util.ArrayList;
 
 import it.polito.mad_lab4.R;
-import it.polito.mad_lab4.data.reservation.ReservedDish;
-import it.polito.mad_lab4.data.restaurant.Dish;
-import it.polito.mad_lab4.data.restaurant.Offer;
-import it.polito.mad_lab4.data.restaurant.ReviewFood;
+import it.polito.mad_lab4.newData.restaurant.Dish;
+import it.polito.mad_lab4.newData.restaurant.Offer;
+import it.polito.mad_lab4.newData.restaurant.ReviewFood;
 
 /**
  * Created by Giovanna on 28/04/2016.
  */
-public class SectionAdapterOffers extends ArrayAdapter<ReviewFood>{
+public class RateAdapter extends ArrayAdapter<ReviewFood>{
 
     private ArrayList<ReviewFood> data;
     private Context context;
     ListView listView;
     private int section;
 
-    Animation slide_in_left, slide_out_right;
-
-    public SectionAdapterOffers(Context context, ArrayList<ReviewFood> objects, int section) {
+    public RateAdapter(Context context, ArrayList<ReviewFood> objects, int section) {
         super(context, 0, objects);
         this.context=context;
         this.data=objects;
@@ -60,14 +55,13 @@ public class SectionAdapterOffers extends ArrayAdapter<ReviewFood>{
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        // Get the data item for this position
-        Offer offer;
-        Dish dish;
 
+        //data.get(position).setPosition(position);
         // Check if an existing view is being reused, otherwise inflate the view
         final ViewHolder viewHolder; // view lookup cache stored in tag
         if (convertView == null) {
             viewHolder = new ViewHolder();
+
             LayoutInflater inflater = LayoutInflater.from(context);
             convertView = inflater.inflate(R.layout.review_dishes_item, parent, false);
 
@@ -83,7 +77,7 @@ public class SectionAdapterOffers extends ArrayAdapter<ReviewFood>{
             //viewHolder.viewSwitcher.setInAnimation(slide_in_left);
             //viewHolder.viewSwitcher.setOutAnimation(slide_out_right);
             viewHolder.position= position;
-            if(data.get(position).getRating()>0) {
+            if(data.get(position).getRating()>=0) {
                 viewHolder.rateIt.setVisibility(View.GONE);
                 viewHolder.ll.setVisibility(View.VISIBLE);
                 viewHolder.ratingBar.setRating(data.get(position).getRating());
@@ -109,6 +103,7 @@ public class SectionAdapterOffers extends ArrayAdapter<ReviewFood>{
                                 public void onAnimationEnd(Animator animation) {
                                     super.onAnimationEnd(animation);
                                     viewHolder.ll.setVisibility(View.VISIBLE);
+                                    data.get(position).setRating(0);
 
                                 }
                             });
@@ -120,6 +115,7 @@ public class SectionAdapterOffers extends ArrayAdapter<ReviewFood>{
                                 public void onAnimationEnd(Animator animation) {
                                     super.onAnimationEnd(animation);
                                     viewHolder.rateIt.setVisibility(View.GONE);
+
 
                                 }
                             });
@@ -173,13 +169,11 @@ public class SectionAdapterOffers extends ArrayAdapter<ReviewFood>{
             viewHolder = (ViewHolder) convertView.getTag();
         }
         // Populate the data into the template view using the data object
-        if(section==0){
-            offer = (Offer) getItem(position).getFood();
-            viewHolder.name.setText(offer.getOfferName());
-        }
+        if(data.get(position).getFood() instanceof Offer)
+            viewHolder.name.setText(((Offer)data.get(position).getFood() ).getOfferName());
+
         else {
-            dish= (Dish) getItem(position).getFood();
-            viewHolder.name.setText(dish.getDishName());
+            viewHolder.name.setText(((Dish)data.get(position).getFood() ).getDishName());
         }
 
         // Return the completed view to render on screen

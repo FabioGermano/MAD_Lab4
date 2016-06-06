@@ -11,6 +11,7 @@ public class Review {
     private String date;
     private String comment;
 
+    private String reviewId;
     public Review(){
     }
 
@@ -53,4 +54,13 @@ public class Review {
     public void setComment(String comment) {
         this.comment = comment;
     }
+
+    public String getReviewId() {
+        return reviewId;
+    }
+
+    public void setReviewId(String reviewId) {
+        this.reviewId = reviewId;
+    }
+
 }

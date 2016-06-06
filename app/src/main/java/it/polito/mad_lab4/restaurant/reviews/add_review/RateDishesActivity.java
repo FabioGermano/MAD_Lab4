@@ -6,9 +6,15 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,17 +22,15 @@ import java.util.Date;
 
 import it.polito.mad_lab4.BaseActivity;
 import it.polito.mad_lab4.R;
-import it.polito.mad_lab4.bl.RestaurantBL;
-import it.polito.mad_lab4.bl.UserBL;
-import it.polito.mad_lab4.data.user.UserSession;
-import it.polito.mad_lab4.data.reservation.ReservedDish;
-import it.polito.mad_lab4.data.restaurant.Dish;
-import it.polito.mad_lab4.data.restaurant.DishType;
-import it.polito.mad_lab4.data.restaurant.Offer;
-import it.polito.mad_lab4.data.restaurant.Restaurant;
-import it.polito.mad_lab4.data.restaurant.Review;
-import it.polito.mad_lab4.data.restaurant.ReviewFood;
-import it.polito.mad_lab4.data.user.User;
+import it.polito.mad_lab4.data.restaurant.DishTypeConverter;
+import it.polito.mad_lab4.firebase_manager.FirebaseGetMenuByTypeManager;
+import it.polito.mad_lab4.firebase_manager.FirebaseGetOfferListManager;
+import it.polito.mad_lab4.firebase_manager.FirebaseSaveReviewManager;
+import it.polito.mad_lab4.newData.restaurant.Dish;
+import it.polito.mad_lab4.newData.restaurant.Offer;
+import it.polito.mad_lab4.newData.restaurant.Restaurant;
+import it.polito.mad_lab4.newData.restaurant.Review;
+import it.polito.mad_lab4.newData.restaurant.ReviewFood;
 import it.polito.mad_lab4.restaurant.RestaurantActivity;
 
 /**
@@ -36,13 +40,75 @@ public class RateDishesActivity extends BaseActivity{
 
     private ViewPager mViewPager;
     private FloatingActionButton doneFab;
-    private Restaurant restaurant;
-    ArrayList<ArrayList<ReviewFood>> data;
-    private ArrayList<ArrayList<ReservedDish>> lists; //order: offer, main, second, dessert , other
-    private int restaurantId=-1;
+    private ArrayList<ArrayList<ReviewFood>> lists; //order: offer, main, second, dessert , other
+    private String restaurantId;
     private String review;
     private float rating;
+    private ImageView cover;
+    private TextView nameTextView;
+    private FirebaseGetMenuByTypeManager firebaseGetMenuByTypeManager;
+    private FirebaseGetOfferListManager firebaseGetOfferListManager;
+    private String restaurantName;
 
+    private FirebaseSaveReviewManager firebaseSaveReviewManager;
+
+    private  ReviewFood newReviewFood(Object object) {
+        ReviewFood rf = new ReviewFood();
+        rf.setFood(object);
+        if( object instanceof Offer ){
+            rf.setSection(0);
+            rf.setId(((Offer) object).getOfferId());
+        }
+        else if( object instanceof Dish ){
+            rf.setId(((Dish) object).getDishId());
+            rf.setSection(DishTypeConverter.fromEnumToIndex(DishTypeConverter.fromStringToEnum(((Dish)object).getType())) + 1);
+        }
+
+        rf.setRating(-1);
+        return rf;
+    }
+    private void saveReview(final String restaurantId, final Review review, final ArrayList<ReviewFood> list) {
+        new Thread()
+        {
+            public void run() {
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showProgressBar();
+                    }
+                });
+
+                firebaseSaveReviewManager = new FirebaseSaveReviewManager();
+                firebaseSaveReviewManager.saveReview(restaurantId,
+                        review, true, list);
+
+                boolean res = firebaseSaveReviewManager.waitForResult();
+
+                if(!res){
+                    Log.e("Error saving the review", "Error saving the review");
+                    return;
+                }
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        dismissProgressDialog();
+
+                        Toast toast = Toast.makeText(getApplicationContext(), R.string.review_published, Toast.LENGTH_SHORT);
+                        toast.show();
+                        finish();
+                        Intent intent = new Intent(getApplicationContext(), RestaurantActivity.class);
+                        intent.putExtra("restaurantId", restaurantId);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                    }
+                });
+
+            }
+        }.start();
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,58 +127,74 @@ public class RateDishesActivity extends BaseActivity{
         invalidateOptionsMenu();
 
         //retrieve values from intent extras
-        this.restaurantId = getIntent().getExtras().getInt("restaurantId");
+        this.restaurantId = getIntent().getExtras().getString("restaurantId");
         this.review = getIntent().getExtras().getString("review");
         this.rating = getIntent().getExtras().getFloat("rating");
+        this.restaurantName = getIntent().getExtras().getString("restaurantName");
+        nameTextView= (TextView) findViewById(R.id.restaurant_name);
+        nameTextView.setText(restaurantName);
+        //restaurant = RestaurantBL.getRestaurantById(getApplicationContext(), restaurantId);
 
-        restaurant = RestaurantBL.getRestaurantById(getApplicationContext(), restaurantId);
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
 
-        ArrayList<Dish> main = restaurant.getDishesOfCategory(DishType.MainCourses);
-        ArrayList<Dish> second = restaurant.getDishesOfCategory(DishType.SecondCourses);
-        ArrayList<Dish> dessert = restaurant.getDishesOfCategory(DishType.Dessert);
-        ArrayList<Dish> other = restaurant.getDishesOfCategory(DishType.Other);
-        ArrayList<Offer> offers = restaurant.getOffers();
+        if(restaurantId == null){
+            return;
+        }
 
-        ArrayList<ReviewFood> off= new ArrayList<>();
-        ArrayList<ReviewFood> m= new ArrayList<>();
-        ArrayList<ReviewFood> s= new ArrayList<>();
-        ArrayList<ReviewFood> d= new ArrayList<>();
-        ArrayList<ReviewFood> oth= new ArrayList<>();
-        int i=0;
+        final ArrayList<Dish> dishes = new ArrayList<>();
+        final ArrayList<Offer> offers = new ArrayList<>();
 
-        for(Offer offer: offers){
-            off.add(new ReviewFood(offer,i,0,-1));
-            i++;
+        Thread t = new Thread()
+        {
+            public void run() {
+
+                firebaseGetMenuByTypeManager = new FirebaseGetMenuByTypeManager();
+                firebaseGetMenuByTypeManager.getMenu(restaurantId, null, null);
+                firebaseGetMenuByTypeManager.waitForResult();
+                dishes.addAll(firebaseGetMenuByTypeManager.getResult());
+
+                firebaseGetOfferListManager = new FirebaseGetOfferListManager();
+                firebaseGetOfferListManager.getOffers(restaurantId);
+                firebaseGetOfferListManager.waitForResult();
+                offers.addAll(firebaseGetOfferListManager.getResult());
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        initAdapter(dishes, offers);
+                    }
+                });
+
+            }
+        };
+
+        t.start();
+    }
+    private void initAdapter(ArrayList<Dish> dishes, ArrayList<Offer> offers) {
+        //Conversion from Offer to ReservedDish
+
+        //initialize the lists
+        lists = new ArrayList<ArrayList<ReviewFood>>();
+        for(int i=0;i<5;i++)
+            lists.add(new ArrayList<ReviewFood>());
+
+        for(Offer offer : offers){
+            ReviewFood rf= newReviewFood(offer);
+            //rf.setPosition(j);
+            lists.get(0).add(rf);
         }
-        i=0;
-        for(Dish dish : main){
-            m.add(new ReviewFood(dish,i,1,-1));
-            i++;
+
+        //Conversion from Dish to ReservedDish
+        for(Dish dish : dishes){
+            ReviewFood rf= newReviewFood(dish);
+            lists.get(DishTypeConverter.fromEnumToIndex(DishTypeConverter.fromStringToEnum(dish.getType()))+1).add(rf);
         }
-        i=0;
-        for(Dish dish : second){
-            s.add(new ReviewFood(dish,i,2,-1));
-            i++;
-        }
-        i=0;
-        for(Dish dish : dessert){
-            d.add(new ReviewFood(dish,i,3,-1));
-            i++;
-        }
-        i=0;
-        for(Dish dish : other){
-            oth.add(new ReviewFood(dish,i,4,-1));
-            i++;
-        }
-        data = new ArrayList<>();
-        data.add(off);
-        data.add(m);
-        data.add(s);
-        data.add(d);
-        data.add(oth);
 
         SectionsPagerAdapter mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(),
-                getBaseContext(), data );
+                getBaseContext(), lists );
         mViewPager = (ViewPager) findViewById(R.id.viewpager_menu);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
@@ -125,25 +207,26 @@ public class RateDishesActivity extends BaseActivity{
             @Override
             public void onClick(View v) {
 
-                for(int j=0;j<5;j++) {
-                    RestaurantBL.updateDishesRating(restaurant, data.get(j),  j);
+
+                Review r = new Review( );
+                r.setComment(review);
+                r.setRank(rating);
+                r.setUserId("7K4XwUDQzigPJFIWXaLl2TBosnf1");
+                r.setUserName("Ciccio Bello");
+                ArrayList<ReviewFood> saveData = new ArrayList<ReviewFood>();
+                for(ArrayList<ReviewFood> list : lists){
+                    for(ReviewFood rev : list){
+                        if(rev.getRating()>=0){
+                            saveData.add(rev);
+                        }
+                    }
                 }
-                DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-                Date today = new Date();
-                User user = UserBL.getUserById(getApplicationContext(), UserSession.userId);
-                Review r = new Review(user.getName(), null, rating, df.format(today), review );
-                RestaurantBL.addReview(restaurant, r);
-                RestaurantBL.saveChanges(getApplicationContext());
-                Toast.makeText(getApplicationContext(), getResources().getString(R.string.review_published), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(), RestaurantActivity.class);
-                intent.putExtra("restaurantId", restaurant.getRestaurantId());
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                finish();
+                saveReview(restaurantId, r, saveData);
 
             }
         });
 
     }
+
 
 }

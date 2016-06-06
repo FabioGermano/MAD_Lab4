@@ -8,7 +8,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import java.util.ArrayList;
 
 import it.polito.mad_lab4.R;
-import it.polito.mad_lab4.data.restaurant.ReviewFood;
+import it.polito.mad_lab4.newData.restaurant.ReviewFood;
 
 /**
  * Created by Giovanna on 09/05/2016.

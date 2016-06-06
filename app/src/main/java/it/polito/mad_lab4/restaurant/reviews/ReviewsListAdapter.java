@@ -15,9 +15,8 @@ import java.util.ArrayList;
 
 import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.common.Helper;
-import it.polito.mad_lab4.data.restaurant.Dish;
-import it.polito.mad_lab4.data.restaurant.Review;
-import it.polito.mad_lab4.restaurant.menu.MenuPhotoViewActivity;
+import it.polito.mad_lab4.newData.restaurant.Dish;
+import it.polito.mad_lab4.newData.restaurant.Review;
 
 /**
  * Created by f.germano on 03/05/2016.

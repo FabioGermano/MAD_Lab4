@@ -11,6 +11,9 @@ public class Review {
     private String date;
     private String comment;
 
+
+    private String reviewId;
+
     public Review(String userName, String thumbPath, float rank, String date, String comment) {
         this.userName = userName;
         this.thumbPath = thumbPath;
@@ -58,4 +61,12 @@ public class Review {
     public void setComment(String comment) {
         this.comment = comment;
     }
+    public String getReviewId() {
+        return reviewId;
+    }
+
+    public void setReviewId(String reviewId) {
+        this.reviewId = reviewId;
+    }
+
 }

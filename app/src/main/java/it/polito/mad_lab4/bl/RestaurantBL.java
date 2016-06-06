@@ -14,8 +14,8 @@ import it.polito.mad_lab4.data.restaurant.Offer;
 import it.polito.mad_lab4.data.restaurant.Restaurant;
 import it.polito.mad_lab4.data.restaurant.RestaurantEntity;
 import it.polito.mad_lab4.data.restaurant.Review;
-import it.polito.mad_lab4.data.restaurant.ReviewFood;
 import it.polito.mad_lab4.data.restaurant.UserPhoto;
+import it.polito.mad_lab4.newData.restaurant.ReviewFood;
 
 /**
  * Created by f.germano on 26/04/2016.
@@ -89,6 +89,8 @@ public class RestaurantBL {
             }
         }
     }
+
+
     public static void updateDishesRating (Restaurant restaurant, ArrayList<ReviewFood> data, int section){
         Dish d;
         for(ReviewFood r : data)

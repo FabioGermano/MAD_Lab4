@@ -118,7 +118,7 @@ public class EditRestaurantProfile extends it.polito.mad_lab4.BaseActivity {
         cuisineText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                //showDialogType(0);
             }
         });
 
@@ -241,120 +241,6 @@ public class EditRestaurantProfile extends it.polito.mad_lab4.BaseActivity {
             }
 
         }
-        /*
-        if (mon != null){
-            tmp = mon.getText().toString();
-            if (tmp.compareTo(getResources().getString(R.string.monday).toUpperCase()) == 0){
-                //campo vuoto
-                printAlert(getResources().getString(R.string.error_complete));
-                return false;
-            }
-            else
-                lun = tmp.substring(tmp.indexOf("\n")+1,tmp.length());
-        }
-        else {
-            //errore
-            printAlert(getResources().getString(R.string.exceptionError));
-            return false;
-        }
-
-        if (tue != null){
-            tmp = tue.getText().toString();
-            if (tmp.compareTo(getResources().getString(R.string.tuesday).toUpperCase()) == 0){
-                //campo vuoto
-                printAlert(getResources().getString(R.string.error_complete));
-                return false;
-            }
-            else
-                mar = tmp.substring(tmp.indexOf("\n")+1,tmp.length());
-        }
-        else {
-            //errore
-            printAlert(getResources().getString(R.string.exceptionError));
-            return false;
-        }
-
-
-        if (wed != null) {
-            tmp = wed.getText().toString();
-            if (tmp.compareTo(getResources().getString(R.string.wednesday).toUpperCase()) == 0) {
-                //campo vuoto
-                printAlert(getResources().getString(R.string.error_complete));
-                return false;
-            } else
-                mer = tmp.substring(tmp.indexOf("\n") + 1, tmp.length());
-        }
-        else {
-            //errore
-            printAlert(getResources().getString(R.string.exceptionError));
-            return false;
-        }
-
-        if (thu != null){
-            tmp = thu.getText().toString();
-            if (tmp.compareTo(getResources().getString(R.string.thursday).toUpperCase()) == 0){
-                //campo vuoto
-                printAlert(getResources().getString(R.string.error_complete));
-                return false;
-            }
-            else
-                gio = tmp.substring(tmp.indexOf("\n")+1,tmp.length());
-        }
-        else {
-            //errore
-            printAlert(getResources().getString(R.string.exceptionError));
-            return false;
-        }
-
-        if (fri != null){
-            tmp = fri.getText().toString();
-            if (tmp.compareTo(getResources().getString(R.string.friday).toUpperCase()) == 0){
-                //campo vuoto
-                printAlert(getResources().getString(R.string.error_complete));
-                return false;
-            }
-            else
-                ven = tmp.substring(tmp.indexOf("\n")+1,tmp.length());
-        }
-        else {
-            //errore
-            printAlert(getResources().getString(R.string.exceptionError));
-            return false;
-        }
-
-        if (sat != null){
-            tmp = sat.getText().toString();
-            if (tmp.compareTo(getResources().getString(R.string.saturday).toUpperCase()) == 0){
-                //campo vuoto
-                printAlert(getResources().getString(R.string.error_complete));
-                return false;
-            }
-            else
-                sab = tmp.substring(tmp.indexOf("\n")+1,tmp.length());
-        }
-        else {
-            //errore
-            printAlert(getResources().getString(R.string.exceptionError));
-            return false;
-        }
-
-        if (sun != null){
-            tmp = sun.getText().toString();
-            if (tmp.compareTo(getResources().getString(R.string.sunday).toUpperCase()) == 0){
-                //campo vuoto
-                printAlert(getResources().getString(R.string.error_complete));
-                return false;
-            }
-            else
-                dom = tmp.substring(tmp.indexOf("\n")+1,tmp.length());
-        }
-        else {
-            //errore
-            printAlert(getResources().getString(R.string.exceptionError));
-            return false;
-        }
-        */
-
 
         if (edit_name != null) {
             name = edit_name.getText().toString();
