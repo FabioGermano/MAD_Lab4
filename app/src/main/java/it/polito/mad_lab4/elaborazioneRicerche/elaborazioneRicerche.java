@@ -102,12 +102,14 @@ public class elaborazioneRicerche extends BaseActivity implements fragment_ricer
         Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.exceptionError), Toast.LENGTH_SHORT);
         toast.show();
 
-        Bundle b = new Bundle();
+        /*Bundle b = new Bundle();
         b.putSerializable("userInfo", userInfo);
 
         Intent i = new Intent(getApplicationContext(), MainActivity.class);
         i.putExtras(b);
-        startActivity(i);
+        startActivity(i);*/
+        finish();
+
     }
 
 

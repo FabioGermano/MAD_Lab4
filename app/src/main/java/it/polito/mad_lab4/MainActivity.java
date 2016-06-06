@@ -5,9 +5,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -15,27 +12,18 @@ import android.widget.ImageButton;
 import android.widget.SearchView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
 import it.polito.mad_lab4.bl.RestaurantBL;
 import it.polito.mad_lab4.data.restaurant.Offer;
 import it.polito.mad_lab4.data.restaurant.Restaurant;
-import it.polito.mad_lab4.data.user.User;
 import it.polito.mad_lab4.elaborazioneRicerche.Oggetto_offerteVicine;
 import it.polito.mad_lab4.elaborazioneRicerche.Oggetto_risultatoRicerca;
-import it.polito.mad_lab4.elaborazioneRicerche.RecyclerAdapter_offerteVicine;
 import it.polito.mad_lab4.elaborazioneRicerche.elaborazioneRicerche;
 import it.polito.mad_lab4.manager.MainActivityManager;
 import it.polito.mad_lab4.maps_management.mainActivity_map;
-import it.polito.mad_lab4.reservation.user_history.ReservationsHistoryActivity;
-import it.polito.mad_lab4.user.EditUserProfileActivity;
 
 public class MainActivity extends BaseActivity{
 
@@ -87,9 +75,7 @@ public class MainActivity extends BaseActivity{
         });
         */
 
-        // carico info dal server: quelle  necessarie per la ricerca, possiamo poi implementare una ricerca direttamente
-        // sul server che ci restituisce la lista dei risultati con informazioni riassuntive per visualizzare
-        // la lista dei locali cercati
+        // TODO con firebase
         caricaDati();
 
         ricerca = (SearchView) findViewById(R.id.searchView_main);
@@ -120,16 +106,13 @@ public class MainActivity extends BaseActivity{
 
         ricercaLuogoBtn = (ImageButton) findViewById(R.id.ricerca_luogo);
         ricercaRistoranteBtn = (ImageButton) findViewById(R.id.ricerca_ristorante);
-        //ricercaPiattoBtn = (ImageButton) findViewById(R.id.ricerca_piatto);
 
         //setUpRecyclerView();
 
         //gestione MAPPA
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mainActivity_map gestoreMappa = new mainActivity_map();
         gestoreMappa.setContext(this);
-        gestoreMappa.setPosition(45, 8);
         mapFragment.getMapAsync(gestoreMappa);
 
     }
@@ -144,7 +127,7 @@ public class MainActivity extends BaseActivity{
         for (Restaurant r: listaRistoranti){
             if (r.getBasicInfo().getDistance() <= 15){
                 for (Offer o: r.getOffers()){
-                    lista_offerte_vicine.add(new Oggetto_offerteVicine(o, r.getRestaurantId()));
+                    lista_offerte_vicine.add(new Oggetto_offerteVicine(o, String.valueOf(r.getRestaurantId())));
                 }
             }
         }

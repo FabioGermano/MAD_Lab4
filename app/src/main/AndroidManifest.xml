@@ -196,6 +196,7 @@
             android:value="@string/google_maps_key" />
 
         <activity android:name=".login_registrazione.Register_restaurant"></activity>
+        <activity android:name=".maps_management.mainActivity_fullscreen_map"></activity>
     </application>
 
 </manifest>

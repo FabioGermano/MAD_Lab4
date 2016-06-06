@@ -8,7 +8,10 @@ import android.widget.TextView;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.Marker;
 
+import java.util.ArrayList;
+
 import it.polito.mad_lab4.R;
+import it.polito.mad_lab4.elaborazioneRicerche.Oggetto_offerteVicine;
 
 /**
  * Created by Euge on 04/06/2016.
@@ -16,10 +19,12 @@ import it.polito.mad_lab4.R;
 public class mainActivity_infoWindow_adapter implements GoogleMap.InfoWindowAdapter {
     private Context context;
     private LayoutInflater myInflater;
+    private ArrayList<Oggetto_offerteVicine> listaOfferte = null;
 
-    public mainActivity_infoWindow_adapter(Context context){
+    public mainActivity_infoWindow_adapter(Context context, ArrayList<Oggetto_offerteVicine> lista_offerte){
         this.context = context;
         this.myInflater = LayoutInflater.from(context);
+        this.listaOfferte = lista_offerte;
     }
 
     @Override
@@ -31,7 +36,26 @@ public class mainActivity_infoWindow_adapter implements GoogleMap.InfoWindowAdap
     public View getInfoContents(Marker marker) {
         View v = myInflater.inflate(R.layout.activity_main_infowindow_map, null);
         TextView titolo = (TextView) v.findViewById(R.id.titolo_map);
-        titolo.setText("NUOVO TITOLO!!!");
+
+        Oggetto_offerteVicine offerta = getOffeta(marker.getId());
+        if(offerta != null){
+            if(titolo != null) {
+                titolo.setText(offerta.getId() + " "  +offerta.getMarkerAssociato());
+            }
+        } else {
+            if(titolo != null) {
+                titolo.setText("NUOVO TITOLO!!!");
+            }
+        }
         return v;
+    }
+
+    private Oggetto_offerteVicine getOffeta(String id){
+        for (Oggetto_offerteVicine obj : listaOfferte) {
+            if(obj.getMarkerAssociato().compareTo(id) == 0)
+                return obj;
+        }
+
+        return null;
     }
 }
