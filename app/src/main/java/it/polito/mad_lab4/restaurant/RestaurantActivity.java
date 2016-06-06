@@ -111,10 +111,10 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
 
         offerPrevFragment = (OfferPrevFragment)getSupportFragmentManager().findFragmentById(R.id.offersPrevFragment);
         offerPrevFragment.init(restaurantId);
-        /*
+
         reviewsPrevFragment = (ReviewsPrevFragment)getSupportFragmentManager().findFragmentById(R.id.reviewsPrevFragment);
-        reviewsPrevFragment.init(restaurant.getRestaurantId());
-        */
+        reviewsPrevFragment.setRestaurantId(this.restaurantId);
+
         showAllMenuButton = (Button)findViewById(R.id.showAllMenuButton);
         showAllMenuButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,14 +122,14 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
                 showAllMenuButtonPressed();
             }
         });
-        /*
+
         showAllReviewsButton = (Button)findViewById(R.id.showAllReviewsButton);
         showAllReviewsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showAllReviewsButtonPressed();
             }
-        });*/
+        });
     }
 
     @Override
@@ -189,6 +189,8 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
         basicInfoFragment = (BasicInfoFragment) getSupportFragmentManager().findFragmentById(R.id.basicinfo_fragment);
         basicInfoFragment.setRestaurant(restaurant);
 
+        reviewsPrevFragment.setRanking(restaurant.getTotRanking(), restaurant.getNumReviews());
+
         coverImage = (ImageView)findViewById(R.id.coverImage);
         coverImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -219,7 +221,9 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
 
     private void showAllReviewsButtonPressed() {
         Intent i = new Intent(getApplicationContext(), ReviewsActivity.class);
-        i.putExtra("restaurantId", this.restaurant.getRestaurantId());
+        i.putExtra("restaurantId", this.restaurantId);
+        i.putExtra("ranking",restaurant.getTotRanking());
+        i.putExtra("numRanking", restaurant.getNumReviews());
         startActivity(i);
     }
 

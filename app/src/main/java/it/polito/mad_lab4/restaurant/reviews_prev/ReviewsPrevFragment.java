@@ -1,19 +1,12 @@
 package it.polito.mad_lab4.restaurant.reviews_prev;
 
-import android.content.Context;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -23,21 +16,24 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import it.polito.mad_lab4.R;
-import it.polito.mad_lab4.bl.RestaurantBL;
 import it.polito.mad_lab4.common.Helper;
-import it.polito.mad_lab4.data.restaurant.Restaurant;
-import it.polito.mad_lab4.data.restaurant.Review;
+import it.polito.mad_lab4.firebase_manager.FirebaseGetMenuByTypeManager;
+import it.polito.mad_lab4.firebase_manager.FirebaseGetReviewsListManager;
+import it.polito.mad_lab4.newData.restaurant.Review;
 
 /**
  * Created by f.germano on 08/05/2016.
  */
 public class ReviewsPrevFragment extends Fragment {
 
-    private int restaurantId;
+    private String restaurantId;
     private LinearLayout containerLayout;
     private Button showAllButton;
     private TextView numReviewsInPrev;
     private RatingBar ratingBarInPrevReviews;
+    private ArrayList<Review> reviews;
+    private float ranking;
+    private int numRanking;
 
     public ReviewsPrevFragment(){
     }
@@ -56,21 +52,52 @@ public class ReviewsPrevFragment extends Fragment {
         return rootView;
     }
 
-    public void init(int restaurantId) {
+    @Override
+    public void onResume() {
+        super.onResume();
 
-        this.restaurantId = restaurantId;
-        Restaurant restaurant =  RestaurantBL.getRestaurantById(getContext(), restaurantId);
 
-        ArrayList<Review> reviews = restaurant.getReviews();
+        final ArrayList<Review> reviews = new ArrayList<>();
 
-        ratingBarInPrevReviews.setRating(restaurant.getAvgReview());
+        Thread t = new Thread()
+        {
+            public void run() {
+                reviews.clear();
+                FirebaseGetReviewsListManager firebaseGetReviewsListManager = new FirebaseGetReviewsListManager();
+                firebaseGetReviewsListManager.getReviews(restaurantId, 3);
+                firebaseGetReviewsListManager.waitForResult();
+                reviews.addAll(firebaseGetReviewsListManager.getResult());
+
+                if(reviews == null){
+                    Log.e("returned null dishes", "resturned null dishes");
+                    return;
+                }
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        setData(reviews);
+                    }
+                });
+
+            }
+        };
+
+        t.start();
+    }
+
+    private void setData(ArrayList<Review> reviews) {
+
+        //Restaurant restaurant =  RestaurantBL.getRestaurantById(getContext(), restaurantId);
+        if(!reviews.isEmpty())
+            ratingBarInPrevReviews.setRating(ranking/numRanking);
         String str = getResources().getString(R.string.reviewsStrPrev);
-        str = str.replace("%", String.valueOf(restaurant.getNumReviews()));
+        str = str.replace("%", String.valueOf(numRanking));
         numReviewsInPrev.setText(str);
 
         Helper.setRatingBarColor(getContext(),
                 ratingBarInPrevReviews,
-                restaurant.getAvgReview());
+                ranking);
 
         Collections.sort(reviews, new Comparator<Review>() {
             @Override
@@ -79,9 +106,8 @@ public class ReviewsPrevFragment extends Fragment {
             }
         });
 
-        int size = restaurant.getNumReviews();
-        for(int i = 0; i<3; i++){
-            if(size > i){
+        for(int i = 0; i<reviews.size(); i++){
+
                 View viewToAdd = LayoutInflater.from(getContext()).inflate(R.layout.review_view, null);
 
                 Review review = reviews.get(i);
@@ -98,10 +124,18 @@ public class ReviewsPrevFragment extends Fragment {
 
                 containerLayout.addView(viewToAdd);
             }
-        }
 
-        if(size < 4){
+        if(numRanking < 4){
             showAllButton.setVisibility(View.GONE);
         }
+    }
+
+    public void setRanking(float ranking, int numRanking) {
+        this.ranking = ranking;
+        this.numRanking= numRanking;
+    }
+
+    public void setRestaurantId(String restaurantId) {
+        this.restaurantId=restaurantId;
     }
 }

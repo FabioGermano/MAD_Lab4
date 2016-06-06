@@ -1,11 +1,16 @@
 package it.polito.mad_lab4.restaurant.reviews;
 
 import android.content.DialogInterface;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -19,8 +24,14 @@ import it.polito.mad_lab4.BaseActivity;
 import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.bl.RestaurantBL;
 import it.polito.mad_lab4.common.Helper;
+import it.polito.mad_lab4.data.restaurant.DishTypeConverter;
+import it.polito.mad_lab4.firebase_manager.FirebaseGetReviewsListManager;
+import it.polito.mad_lab4.newData.restaurant.Dish;
+import it.polito.mad_lab4.newData.restaurant.Offer;
 import it.polito.mad_lab4.newData.restaurant.Restaurant;
 import it.polito.mad_lab4.newData.restaurant.Review;
+import it.polito.mad_lab4.newData.restaurant.ReviewFood;
+import it.polito.mad_lab4.restaurant.reviews.add_review.SectionsPagerAdapter;
 
 public class ReviewsActivity extends BaseActivity {
 
@@ -29,6 +40,11 @@ public class ReviewsActivity extends BaseActivity {
     private Restaurant restaurant;
     private ReviewsListAdapter adapter;
     private int checkedInDialog = 0;
+    private float ranking;
+    private int numRanking;
+    private String restaurantId;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,23 +63,28 @@ public class ReviewsActivity extends BaseActivity {
 
         reviewsListView = (ListView) findViewById(R.id.reviewsListView);
 
-        init(getIntent().getExtras());
+        //init(getIntent().getExtras());
+        Bundle bundle = getIntent().getExtras();
+        restaurantId = bundle.getString("restaurantId");
+        numRanking = bundle.getInt("numRanking");
+        ranking = bundle.getFloat("ranking");
 
         //((RatingBar)findViewById(R.id.restaurantAvgRank)).setRating(this.restaurant.getAvgReview());
         String strNumReviews = getResources().getString(R.string.numReviewsText);
-        strNumReviews = strNumReviews.replace("%", String.valueOf(this.restaurant.getNumReviews()));
+        strNumReviews = strNumReviews.replace("%", String.valueOf(numRanking));
         ((TextView)findViewById(R.id.numReviews)).setText(strNumReviews);
 
-        /*Helper.setRatingBarColor(getApplicationContext(),
+        Helper.setRatingBarColor(getApplicationContext(),
                 (RatingBar)findViewById(R.id.restaurantAvgRank),
-                restaurant.getAvgReview());
+                ranking/numRanking);
 
-        this.adapter = new ReviewsListAdapter(getApplicationContext(), this.reviews);
-        reviewsListView.setAdapter(adapter);*/
+
     }
 
     private void init(Bundle bundle){
         int restaurantId = bundle.getInt("restaurantId");
+        numRanking = bundle.getInt("numRanking");
+        ranking = bundle.getFloat("ranking");
         //restaurant = RestaurantBL.getRestaurantById(getApplicationContext(), restaurantId);
         //this.reviews = restaurant.getReviews();
         sortByTime();
@@ -148,5 +169,44 @@ public class ReviewsActivity extends BaseActivity {
         });
         dialog = builder.create();
         dialog.show();
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+
+
+        final ArrayList<Review> reviews = new ArrayList<>();
+
+        Thread t = new Thread()
+        {
+            public void run() {
+                reviews.clear();
+                FirebaseGetReviewsListManager firebaseGetReviewsListManager = new FirebaseGetReviewsListManager();
+                firebaseGetReviewsListManager.getReviews(restaurantId, null);
+                firebaseGetReviewsListManager.waitForResult();
+                reviews.addAll(firebaseGetReviewsListManager.getResult());
+
+                if(reviews == null){
+                    Log.e("returned null reviews", "resturned null reviews");
+                    return;
+                }
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        initAdapter(reviews);
+                    }
+                });
+
+            }
+        };
+
+        t.start();
+    }
+    private void initAdapter(ArrayList<Review> reviews) {
+        this.reviews=reviews;
+        sortByTime();
+        this.adapter = new ReviewsListAdapter(getApplicationContext(), reviews);
+        reviewsListView.setAdapter(adapter);
     }
 }
