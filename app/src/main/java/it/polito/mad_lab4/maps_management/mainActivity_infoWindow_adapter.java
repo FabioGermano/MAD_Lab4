@@ -38,13 +38,13 @@ public class mainActivity_infoWindow_adapter implements GoogleMap.InfoWindowAdap
         TextView titolo = (TextView) v.findViewById(R.id.titolo_map);
 
         Oggetto_offerteVicine offerta = getOffeta(marker.getId());
-        if(offerta != null){
+        if(offerta != null && offerta.getOfferta() != null){
             if(titolo != null) {
-                titolo.setText(offerta.getRestaurantPosition().getRestaurantId() + " "  +offerta.getMarkerAssociato());
+                titolo.setText(offerta.getOfferta().getOfferName());
             }
         } else {
             if(titolo != null) {
-                titolo.setText("NUOVO TITOLO!!!");
+                titolo.setText("TITOLO OFFERTA NON DISPONIBILE!!!");
             }
         }
         return v;

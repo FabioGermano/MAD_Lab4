@@ -18,7 +18,6 @@ public class RestaurantPosition implements Serializable {
         this.restaurantId = Rid;
     }
 
-
     public Position getPosition(){
         return this.position;
     }

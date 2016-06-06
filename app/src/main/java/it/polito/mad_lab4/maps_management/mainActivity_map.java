@@ -150,19 +150,44 @@ public class mainActivity_map implements OnMapReadyCallback, GoogleMap.OnMapClic
                         }
                     }
 
-                    // TODO ora ho tutti i ristoranti distanti TOT metri dalla mia posizione
-                    // per ogniuno scarico la prima offerta da far visualizzare o la migliore, da decidere
+                    // ora ho tutti i ristoranti distanti TOT metri dalla mia posizione
+                    // TODO per ogniuno scarico la prima offerta da far visualizzare o la migliore, da decidere
                     // TODO decidere quando un'offerta è da considerarsi nuova
                     FirebaseGetOfferListManager offerListManager = new FirebaseGetOfferListManager();
 
+                    /// FUNZIONE DI DEBUG //
+                    Offer o = null;
+                    for (Oggetto_offerteVicine obj: listaOfferte) {
+                        if(!obj.getRestaurantPosition().getRestaurantId().contains("id")) {
+                            System.out.println("-----> scarico offerte del ristorante: " + obj.getRestaurantPosition().getRestaurantId());
+                            offerListManager.getOffers(obj.getRestaurantPosition().getRestaurantId());
+                            offerListManager.waitForResult();
+                            if (offerListManager.getResult().size() > 0) {
+                                o = offerListManager.getResult().get(0);
+                            }
+                        }
+                    }
+
+
+                    System.out.println("-----> Numero di offerte da visualizzare: " + listaOfferte.size());
+                    for (Oggetto_offerteVicine obj: listaOfferte) {
+                        obj.setOfferta(o);
+                    }
+                    //////////////////////////////
+
+                    // Funzione corretta che scarica per ogni ristorante le offerte e prende la prima
+                    // di ogniuno (si può cambiare)
+                    
                     /*for (Oggetto_offerteVicine obj: listaOfferte) {
                         offerListManager.getOffers(obj.getRestaurantPosition().getRestaurantId());
                         offerListManager.waitForResult();
-                        if(offerListManager.getResult().size() > 0) {
-                            obj.setOfferta(offerListManager.getResult().get(0));
+                        ArrayList<Offer> listaOTemp = offerListManager.getResult();
+                        if (listaOTemp.size() > 0) {
+                            obj.setOfferta(listaOTemp.get(0));
                         }
+                    }
+                    */
 
-                    }*/
 
                     Handler handler = new Handler(Looper.getMainLooper());
                     handler.post(new Runnable() {
@@ -184,6 +209,7 @@ public class mainActivity_map implements OnMapReadyCallback, GoogleMap.OnMapClic
         float[] distance = new float[1];
         Location.distanceBetween(myPosition.latitude, myPosition.longitude, restaurantPosition.getLatitudine(), restaurantPosition.getLongitudine(), distance);
         // distance[0] is now the distance between these lat/lons in meters
+        System.out.println("-----> Distanza: " + distance[0]);
         if (distance[0] < 500.0) {
             return true;
         } else
