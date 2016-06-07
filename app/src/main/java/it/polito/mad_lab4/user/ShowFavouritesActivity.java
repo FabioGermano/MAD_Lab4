@@ -54,7 +54,7 @@ public class ShowFavouritesActivity extends BaseActivity {
     public void onResume() {
         super.onResume();
 
-
+        showProgressBar();
         //final ArrayList<FavouritesRestaurantInfos> infos = new ArrayList<>();
         final ArrayList<String[]> infos = new ArrayList<>();
         final ArrayList<String> favourites= new ArrayList<>();
@@ -84,6 +84,8 @@ public class ShowFavouritesActivity extends BaseActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+
+                        dismissProgressDialog();
                         initAdapter(infos);
                     }
                 });

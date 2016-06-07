@@ -116,7 +116,7 @@ public class ReservationsHistoryAdapter extends RecyclerView.Adapter<Reservation
             private void showOrderDetails() {
 
                 Reservation r = data.get(position);
-                DialogFragment newFragment = ReservationDetailsFragment.newInstance(Integer.parseInt(r.getPlaces()), r.getReservedDishes());
+                DialogFragment newFragment = ReservationDetailsFragment.newInstance(Integer.parseInt(r.getPlaces()), r.getReservedDishes(), r.getNoteByUser());
                 newFragment.show(activity.getFragmentManager(), "dialog");
             }
 

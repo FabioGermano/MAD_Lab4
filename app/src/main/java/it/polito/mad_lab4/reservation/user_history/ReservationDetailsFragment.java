@@ -24,11 +24,13 @@ public class ReservationDetailsFragment extends DialogFragment {
     private int seats=-1;
     private ArrayList<ReservedDish> data;
     private float total=0;
+    private String notes;
 
-    static ReservationDetailsFragment newInstance(int seats, ArrayList<ReservedDish> data) {
+    static ReservationDetailsFragment newInstance(int seats, ArrayList<ReservedDish> data, String notes) {
         ReservationDetailsFragment f = new ReservationDetailsFragment();
         f.setSeats(seats);
         f.setData(data);
+        f.setNotes(notes);
         return f;
     }
     @Override
@@ -47,11 +49,20 @@ public class ReservationDetailsFragment extends DialogFragment {
         LinearLayout ll = (LinearLayout) v.findViewById(R.id.food_order);
         LinearLayout seatsLL = (LinearLayout) v.findViewById(R.id.seatsLL);
         LinearLayout totalLL = (LinearLayout) v.findViewById(R.id.totalLL);
+        LinearLayout notesLL = (LinearLayout) v.findViewById(R.id.notesLL);
+        TextView notesTextView = (TextView) v.findViewById(R.id.notes);
 
         if(seats>=1)
             seatsTextView.setText(String.valueOf(seats) + " "+ getResources().getString(R.string.seats_string));
         else{
             seatsLL.setVisibility(View.GONE);
+        }
+        if(notes != null || !notes.equals("")){
+            notesLL.setVisibility(View.VISIBLE);
+            notesTextView.setText(notes);
+        }
+        else{
+            notesLL.setVisibility(View.GONE);
         }
         if(data != null && !data.isEmpty()){
             fillLayout(getActivity(),ll, data );
@@ -105,5 +116,13 @@ public class ReservationDetailsFragment extends DialogFragment {
                 ll.addView(child);
             }
         }
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 }

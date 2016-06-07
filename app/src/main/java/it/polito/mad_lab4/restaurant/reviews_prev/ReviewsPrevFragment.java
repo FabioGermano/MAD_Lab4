@@ -7,9 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -115,7 +118,8 @@ public class ReviewsPrevFragment extends Fragment {
 
                 Review review = reviews.get(i);
 
-                //((ImageView)viewToAdd.findViewById(R.id.offDetUserPhoto));
+
+                Glide.with(getContext()).load(review.getLogoLink()).into((ImageView)viewToAdd.findViewById(R.id.offDetUserPhoto));
                 ((TextView)viewToAdd.findViewById(R.id.offDetDate)).setText(review.getDate());;
                 ((RatingBar)viewToAdd.findViewById(R.id.offDetRatingBar)).setRating(review.getRank());
                 ((TextView)viewToAdd.findViewById(R.id.offDetReview)).setText(review.getComment());

@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
 import it.polito.mad_lab4.R;
@@ -68,6 +70,8 @@ public class ReviewsListAdapter extends ArrayAdapter<Review>  {
 
         // Populate the data into the template view using the data object
         viewHolder.offDetDate.setText(review.getDate());
+
+        Glide.with(getContext()).load(review.getLogoLink()).into(viewHolder.offDetUserPhoto);
         viewHolder.offDetRatingBar.setRating(review.getRank());
         viewHolder.offDetReview.setText(review.getComment());
         viewHolder.offDetUserName.setText(review.getUserName());

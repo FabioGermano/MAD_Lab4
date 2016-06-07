@@ -96,4 +96,30 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:id="@+id/notesLL">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/notes_by_restaurant"
+            android:textStyle="bold"/>
+        <TextView
+            android:id="@+id/notes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Siamo spiacenti ma il locale è già pieno , speriamo di vederti presto !"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            />
+
+
+    </LinearLayout>
+
 </LinearLayout>

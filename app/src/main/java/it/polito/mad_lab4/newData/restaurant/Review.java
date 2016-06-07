@@ -10,6 +10,7 @@ public class Review {
     private float rank;
     private String date;
     private String comment;
+    private String logoLink;
 
     private String reviewId;
     public Review(){
@@ -63,4 +64,11 @@ public class Review {
         this.reviewId = reviewId;
     }
 
+    public String getLogoLink() {
+        return logoLink;
+    }
+
+    public void setLogoLink(String logoLink) {
+        this.logoLink = logoLink;
+    }
 }

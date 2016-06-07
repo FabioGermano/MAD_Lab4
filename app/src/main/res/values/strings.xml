@@ -323,4 +323,5 @@
     <string name="enabled_reservations">Types of reservation supported:</string>
     <string name="cuisine">Your cuisine</string>
     <string name="info">Info</string>
+    <string name="notes_by_restaurant">Notes by the restaurant:</string>
 </resources>

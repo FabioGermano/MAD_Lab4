@@ -114,7 +114,8 @@ public class AddReviewActivity extends BaseActivity implements PhotoViewerListen
                             review.setComment( editText.getText().toString());
                             review.setRank(rbValue);
                             review.setUserId("7K4XwUDQzigPJFIWXaLl2TBosnf1");
-                            review.setUserName("Ciccio Bello");
+                            review.setUserName("Eugenio Cardonatti");
+                            review.setLogoLink("https://firebasestorage.googleapis.com/v0/b/project-9122886501087922816.appspot.com/o/7K4XwUDQzigPJFIWXaLl2TBosnf1_avatar.jpg?alt=media&token=c764207e-b795-4661-8289-25040ecb74f8");
                             saveReview(restaurantID, review);
                         }
                     });

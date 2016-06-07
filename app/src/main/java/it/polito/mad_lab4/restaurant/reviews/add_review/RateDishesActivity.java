@@ -212,7 +212,9 @@ public class RateDishesActivity extends BaseActivity{
                 r.setComment(review);
                 r.setRank(rating);
                 r.setUserId("7K4XwUDQzigPJFIWXaLl2TBosnf1");
-                r.setUserName("Ciccio Bello");
+                r.setUserName("Eugenio Cardonatti");
+                r.setLogoLink("https://firebasestorage.googleapis.com/v0/b/project-9122886501087922816.appspot.com/o/7K4XwUDQzigPJFIWXaLl2TBosnf1_avatar.jpg?alt=media&token=c764207e-b795-4661-8289-25040ecb74f8");
+
                 ArrayList<ReviewFood> saveData = new ArrayList<ReviewFood>();
                 for(ArrayList<ReviewFood> list : lists){
                     for(ReviewFood rev : list){
