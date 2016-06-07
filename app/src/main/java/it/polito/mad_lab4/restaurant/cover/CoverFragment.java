@@ -13,6 +13,8 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
+import com.bumptech.glide.Glide;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -33,13 +35,13 @@ public class CoverFragment extends Fragment implements TouchImageViewListener {
     private int restaurantId;
     private int sectionNumber;
     private int size;
-    private Cover cover;
+    private String cover;
 
     public CoverFragment(){
 
     }
 
-    public static CoverFragment newInstance(int sectionNumber, Cover cover, int size) {
+    public static CoverFragment newInstance(int sectionNumber, String cover, int size) {
         CoverFragment fragment = new CoverFragment();
         fragment.setSectionNumber(sectionNumber);
         fragment.setCover(cover);
@@ -52,7 +54,7 @@ public class CoverFragment extends Fragment implements TouchImageViewListener {
         this.size = size;
     }
 
-    private void setCover(Cover cover) {
+    private void setCover(String cover) {
         this.cover = cover;
     }
 
@@ -71,7 +73,8 @@ public class CoverFragment extends Fragment implements TouchImageViewListener {
         View rootView = inflater.inflate(R.layout.fragment_photo_view, container, false);
 
         TouchImageView touchImageView = (TouchImageView)rootView.findViewById(R.id.photoView);
-        touchImageView.setImageBitmap(BitmapFactory.decodeResource(getContext().getResources(), Helper.getResourceByName(getContext(), cover.getResPhoto(), "drawable")));
+        Glide.with(this).load(cover).into(touchImageView);
+        //touchImageView.setImageBitmap(BitmapFactory.decodeResource(getContext().getResources(), Helper.getResourceByName(getContext(), cover, "drawable")));
         touchImageView.setListener(this);
 
         return rootView;

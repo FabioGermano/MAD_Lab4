@@ -31,6 +31,7 @@ public class MenuListAdapter extends ArrayAdapter<Dish>  {
         RatingBar ratingBar;
         TextView numRanksTV;
         TextView dishPriceTV;
+        TextView availableTextView, notAvailableTextView;
     }
 
     private ArrayList<Dish> dishes;
@@ -58,6 +59,9 @@ public class MenuListAdapter extends ArrayAdapter<Dish>  {
             viewHolder.numRanksTV = (TextView)convertView.findViewById(R.id.numRanksTV);
             viewHolder.dishPriceTV = (TextView)convertView.findViewById(R.id.dishPriceTV);
 
+            viewHolder.availableTextView = (TextView) convertView.findViewById(R.id.today_available);
+            viewHolder.notAvailableTextView = (TextView) convertView.findViewById(R.id.today_not_available);
+
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -66,6 +70,14 @@ public class MenuListAdapter extends ArrayAdapter<Dish>  {
         // Populate the data into the template view using the data object
         viewHolder.dishNameTV.setText(this.dishes.get(position).getDishName());
         viewHolder.ratingBar.setRating(this.dishes.get(position).getAvgRank());
+        if(this.dishes.get(position).getIsTodayAvailable()) {
+            viewHolder.availableTextView.setVisibility(View.VISIBLE);
+            viewHolder.notAvailableTextView.setVisibility(View.GONE);
+        }
+        else{
+            viewHolder.availableTextView.setVisibility(View.GONE);
+            viewHolder.notAvailableTextView.setVisibility(View.VISIBLE);
+        }
         viewHolder.numRanksTV.setText("("+String.valueOf(this.dishes.get(position).getNumRanks())+")");
         viewHolder.dishPriceTV.setText(String.valueOf(this.dishes.get(position).getPrice())+"€");
 

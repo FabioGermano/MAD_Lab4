@@ -205,7 +205,7 @@
     <string name="tuesday_abb">Tu</string>
     <string name="monday_abb">Mo</string>
     <string name="no_item_in_order">Please, select a dish</string>
-    <string name="today_not_available">The offer is not available today</string>
+    <string name="today_not_available">Not available </string>
     <string name="open_restaurant">Now the restaurant is open!</string>
     <string name="additional_info">Additional Info</string>
 
@@ -309,7 +309,7 @@
     <string name="new_offer_added">\' has added a new offer today</string>
     <string name="accepted_your_reserv">\' accepted your reservation</string>
     <string name="rejected_your_reserv">\' rejected your reservation</string>
-    <string name="today_available">Today available!</string>
+    <string name="today_available">Available!</string>
     <string name="orderbydate">Order by date</string>
     <string name="orderbyranking">Order by ranking</string>
     <string name="order_now">Order now</string>
@@ -322,4 +322,5 @@
     <string name="eat_in">Eat in</string>
     <string name="enabled_reservations">Types of reservation supported:</string>
     <string name="cuisine">Your cuisine</string>
+    <string name="info">Info</string>
 </resources>

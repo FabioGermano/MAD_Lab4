@@ -13,11 +13,12 @@
         android:layout_height="wrap_content"
         android:id="@+id/info"
         android:layout_marginLeft="5dp"
+        android:layout_toLeftOf="@+id/dish_price"
         android:orientation="horizontal"
         android:layout_centerVertical="true">
 
     <TextView
-        android:layout_width="150dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/dish_name"
         android:textStyle="italic"

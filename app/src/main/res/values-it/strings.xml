@@ -195,7 +195,7 @@
     <string name="tuesday">Martedì</string>
     <string name="total">Totale:</string>
     <string name="tomorrow">Domani</string>
-    <string name="today_not_available">L\'offerta non è disponibile oggi</string>
+    <string name="today_not_available">Non disponibile</string>
     <string name="today">Oggi</string>
     <string name="toast_when_sorted">Risultati ordinati</string>
     <string name="titolo_ricerca">Cerca il ristorante:</string>
@@ -211,7 +211,7 @@
     <string name="title_activity_edit_offer">Modifica offerta</string>
     <string name="title_activity_edit_dish">Modifica piatto</string>
     <string name="title_activity_edit_menu">Modifica menù</string>
-    <string name="title_activity_edit_availability">Oggi disponibile</string>
+    <string name="title_activity_edit_availability">Disponibile!</string>
     <string name="tipoLocaleFinder">Tipo:</string>
     <string name="timeout_expired">Timeout scaduto</string>
     <string name="thursday">Giovedì</string>
@@ -236,7 +236,7 @@
     <string name="the_restaurant">Il ristorante \'</string>
     <string name="new_offer_added">\' ha aggiunto una nuova offerta oggi!</string>
     <string name="accepted_your_reserv">\' ha accettato la tua prenotazione</string>
-    <string name="today_available">Today available!</string>
+    <string name="today_available">Disponibile!</string>
     <string name="orderbydate">Ordina dal più recente</string>
     <string name="orderbyranking">Ordina per valutazione</string>
     <string name="check_out">Check out</string>

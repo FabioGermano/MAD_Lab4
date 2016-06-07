@@ -34,6 +34,7 @@ public class ReviewsPrevFragment extends Fragment {
     private ArrayList<Review> reviews;
     private float ranking;
     private int numRanking;
+    FirebaseGetReviewsListManager firebaseGetReviewsListManager;
 
     public ReviewsPrevFragment(){
     }
@@ -59,17 +60,18 @@ public class ReviewsPrevFragment extends Fragment {
 
         final ArrayList<Review> reviews = new ArrayList<>();
 
+        containerLayout.removeAllViews();
+
         Thread t = new Thread()
         {
             public void run() {
-                reviews.clear();
-                FirebaseGetReviewsListManager firebaseGetReviewsListManager = new FirebaseGetReviewsListManager();
+                firebaseGetReviewsListManager = new FirebaseGetReviewsListManager();
                 firebaseGetReviewsListManager.getReviews(restaurantId, 3);
                 firebaseGetReviewsListManager.waitForResult();
                 reviews.addAll(firebaseGetReviewsListManager.getResult());
 
                 if(reviews == null){
-                    Log.e("returned null dishes", "resturned null dishes");
+                    Log.e("returned null reviews", "resturned null reviews");
                     return;
                 }
 
@@ -97,7 +99,7 @@ public class ReviewsPrevFragment extends Fragment {
 
         Helper.setRatingBarColor(getContext(),
                 ratingBarInPrevReviews,
-                ranking);
+                ranking/numRanking);
 
         Collections.sort(reviews, new Comparator<Review>() {
             @Override
@@ -109,6 +111,7 @@ public class ReviewsPrevFragment extends Fragment {
         for(int i = 0; i<reviews.size(); i++){
 
                 View viewToAdd = LayoutInflater.from(getContext()).inflate(R.layout.review_view, null);
+
 
                 Review review = reviews.get(i);
 
@@ -137,5 +140,11 @@ public class ReviewsPrevFragment extends Fragment {
 
     public void setRestaurantId(String restaurantId) {
         this.restaurantId=restaurantId;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        firebaseGetReviewsListManager.terminate();
     }
 }

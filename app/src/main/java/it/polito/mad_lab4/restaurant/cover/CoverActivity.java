@@ -22,10 +22,10 @@ import it.polito.mad_lab4.restaurant.offer_prev.OfferItemPrevFragment;
 public class CoverActivity extends BaseActivity {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
-    private int restaurantId;
+    private String restaurantId;
     public CustomViewPager viewPager;
     private ImageView[] shapesIndicator = new ImageView[4];
-    private ArrayList<Cover> covers;
+    private ArrayList<String> covers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +42,8 @@ public class CoverActivity extends BaseActivity {
         shapesIndicator[2] = (ImageView)findViewById(R.id.shape3);
         shapesIndicator[3] = (ImageView)findViewById(R.id.shape4);
 
-        init(getIntent().getIntExtra("restaurantId", -1));
+        //init(getIntent().getIntExtra("restaurantId", -1));
+        this.covers = getIntent().getExtras().getStringArrayList("covers");
 
         initIndicator( this.covers.size());
 
@@ -68,12 +69,6 @@ public class CoverActivity extends BaseActivity {
         });
     }
 
-    public void init(int restaurantId) {
-        this.restaurantId = restaurantId;
-        this.covers = RestaurantBL.getRestaurantById(getApplicationContext(), restaurantId)
-                .getBasicInfo()
-                .getCovers();
-    }
 
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {

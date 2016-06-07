@@ -81,7 +81,7 @@ public class ShowOfferActivity extends BaseActivity{
         Calendar today = Calendar.getInstance();
         int week_day = today.get(Calendar.DAY_OF_WEEK);
         //day of week starts from sunday to saturday (1-7)
-        if(availableOn.get(Helper.fromCalendarOrderToMyOrder(week_day))) {
+        if(availableOn.get(Helper.fromCalendarOrderToMyOrder(week_day)) && offer.getIsTodayAvailable()) {
             availableTextView.setVisibility(View.VISIBLE);
             notAvailableTextView.setVisibility(View.GONE);
         }

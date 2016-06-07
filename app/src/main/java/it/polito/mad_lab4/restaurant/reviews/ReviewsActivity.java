@@ -43,7 +43,7 @@ public class ReviewsActivity extends BaseActivity {
     private float ranking;
     private int numRanking;
     private String restaurantId;
-
+    private FirebaseGetReviewsListManager firebaseGetReviewsListManager;
 
 
     @Override
@@ -73,24 +73,13 @@ public class ReviewsActivity extends BaseActivity {
         String strNumReviews = getResources().getString(R.string.numReviewsText);
         strNumReviews = strNumReviews.replace("%", String.valueOf(numRanking));
         ((TextView)findViewById(R.id.numReviews)).setText(strNumReviews);
-
+        ((RatingBar)findViewById(R.id.restaurantAvgRank)).setRating(ranking/numRanking);
         Helper.setRatingBarColor(getApplicationContext(),
                 (RatingBar)findViewById(R.id.restaurantAvgRank),
                 ranking/numRanking);
 
 
     }
-
-    private void init(Bundle bundle){
-        int restaurantId = bundle.getInt("restaurantId");
-        numRanking = bundle.getInt("numRanking");
-        ranking = bundle.getFloat("ranking");
-        //restaurant = RestaurantBL.getRestaurantById(getApplicationContext(), restaurantId);
-        //this.reviews = restaurant.getReviews();
-        sortByTime();
-    }
-
-
 
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
@@ -180,8 +169,7 @@ public class ReviewsActivity extends BaseActivity {
         Thread t = new Thread()
         {
             public void run() {
-                reviews.clear();
-                FirebaseGetReviewsListManager firebaseGetReviewsListManager = new FirebaseGetReviewsListManager();
+                firebaseGetReviewsListManager = new FirebaseGetReviewsListManager();
                 firebaseGetReviewsListManager.getReviews(restaurantId, null);
                 firebaseGetReviewsListManager.waitForResult();
                 reviews.addAll(firebaseGetReviewsListManager.getResult());
@@ -206,7 +194,13 @@ public class ReviewsActivity extends BaseActivity {
     private void initAdapter(ArrayList<Review> reviews) {
         this.reviews=reviews;
         sortByTime();
-        this.adapter = new ReviewsListAdapter(getApplicationContext(), reviews);
+        this.adapter = new ReviewsListAdapter(getBaseContext(), reviews);
         reviewsListView.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        firebaseGetReviewsListManager.terminate();
     }
 }

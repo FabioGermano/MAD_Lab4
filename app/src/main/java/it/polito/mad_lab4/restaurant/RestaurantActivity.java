@@ -19,13 +19,18 @@ import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+
 import it.polito.mad_lab4.BaseActivity;
 import it.polito.mad_lab4.MainActivity;
 import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.bl.RestaurantBL;
 import it.polito.mad_lab4.common.Helper;
 import it.polito.mad_lab4.firebase_manager.FirebaseGetAuthInformation;
+import it.polito.mad_lab4.firebase_manager.FirebaseGetFavouritesListManager;
 import it.polito.mad_lab4.firebase_manager.FirebaseGetRestaurantProfileManager;
+import it.polito.mad_lab4.firebase_manager.FirebaseSaveFavouriteManager;
 import it.polito.mad_lab4.newData.restaurant.Restaurant;
 import it.polito.mad_lab4.reservation.ReservationActivity;
 import it.polito.mad_lab4.restaurant.cover.CoverActivity;
@@ -73,20 +78,7 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
         appbar= (AppBarLayout) findViewById(R.id.app_bar_layout);
 
         fab = (android.support.design.widget.FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //TODO if the user doesn't have the restaurant in his favourites
-                if(!favourite) {
-                    fab.setImageDrawable(getResources().getDrawable(R.drawable.ic_star));
-                    // add to the favourite list
-                }
-                else {
-                    fab.setImageDrawable(getResources().getDrawable(R.drawable.ic_star_disabled));
-                    // remove from the favourites list
-                }
-            }
-        });
+
         fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.themeColor)));
 
         add = (FloatingActionMenu) findViewById(R.id.add);
@@ -105,6 +97,13 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
         /*Bundle extras = getIntent().getExtras();
         restaurantId = extras.getString("restaurantId");*/
         this.restaurantId = "-KIrgaSxr9VhHllAjqmp";
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseSaveFavouriteManager fb = new FirebaseSaveFavouriteManager();
+                fb.saveFavourite("7K4XwUDQzigPJFIWXaLl2TBosnf1", restaurantId);
+            }
+        });
 
         menuPrevFragment = (MenuPrevFragment)getSupportFragmentManager().findFragmentById(R.id.menuPrevFragment);
         menuPrevFragment.setRestaurantId(restaurantId);
@@ -215,7 +214,14 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
 
     private void coverImageClick() {
         Intent i = new Intent(getApplicationContext(), CoverActivity.class);
-        i.putExtra("restaurantId", this.restaurant.getRestaurantId());
+        ArrayList<String> covers = new ArrayList<>();
+        for(int j = 0;j<4;j++){
+            String link= restaurant.getLargeCoverByIndex(j);
+            if(link!=null){
+                covers.add(link);
+            }
+        }
+        i.putExtra("covers", (Serializable) covers);
         startActivity(i);
     }
 

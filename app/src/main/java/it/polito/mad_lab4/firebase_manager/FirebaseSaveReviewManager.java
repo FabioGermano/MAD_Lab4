@@ -54,27 +54,15 @@ public class FirebaseSaveReviewManager implements DatabaseReference.CompletionLi
         myRef = database.getReference("reviews/" + restaurantId + "/" + review.getReviewId());
         myRef.setValue(review, FirebaseSaveReviewManager.this);
 
-        DatabaseReference upRef = database.getReference("restaurants/" + restaurantId+ "/numReviews");
+        DatabaseReference upRef = database.getReference("restaurants/" + restaurantId);
         upRef.runTransaction(new Transaction.Handler() {
             @Override
             public Transaction.Result doTransaction(MutableData currentData) {
                 if(currentData.getValue() != null) {
-                    currentData.setValue( (Long) currentData.getValue()+1);
-                }
-                return Transaction.success(currentData);
-            }
-
-            @Override
-            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
-
-            }
-        });
-        upRef = database.getReference("restaurants/" + restaurantId+ "/totRanking");
-        upRef.runTransaction(new Transaction.Handler() {
-            @Override
-            public Transaction.Result doTransaction(MutableData currentData) {
-                if(currentData.getValue() != null) {
-                    currentData.setValue( ((Long)  currentData.getValue()).doubleValue()+ Double.parseDouble(String.valueOf(review.getRank())));
+                    Restaurant restaurant= currentData.getValue(Restaurant.class);
+                    restaurant.setNumReviews(restaurant.getNumReviews()+1);
+                    restaurant.setTotRanking(restaurant.getTotRanking()+review.getRank());
+                    currentData.setValue(restaurant);
                 }
                 return Transaction.success(currentData);
             }
@@ -140,7 +128,7 @@ public class FirebaseSaveReviewManager implements DatabaseReference.CompletionLi
 
                                 @Override
                                 public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
-                                    if(reviewedFood.indexOf(r)== reviewedFood.size()-1){
+                                    if(reviewedFood.indexOf(r) == reviewedFood.size()-1){
                                         lock.lock();
                                         firebaseReturnedResult = true;
                                         databaseError = databaseError;

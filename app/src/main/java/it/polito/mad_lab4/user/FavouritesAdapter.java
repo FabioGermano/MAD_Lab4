@@ -12,9 +12,12 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
 import it.polito.mad_lab4.R;
+import it.polito.mad_lab4.newData.restaurant.FavouritesRestaurantInfos;
 import it.polito.mad_lab4.newData.restaurant.Restaurant;
 import it.polito.mad_lab4.restaurant.RestaurantActivity;
 
@@ -24,9 +27,9 @@ import it.polito.mad_lab4.restaurant.RestaurantActivity;
 public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.ViewHolder> {
 
         private Context context;
-        ArrayList<Restaurant> data;
+        ArrayList<String[]> data;
 
-        public FavouritesAdapter(Context context, ArrayList<Restaurant> objects) {
+        public FavouritesAdapter(Context context, ArrayList<String[]> objects) {
             this.context= context;
             this.data= objects;
 
@@ -50,16 +53,22 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.Vi
 
         }
 
-        public void setData(int position, Restaurant restaurant) {
+        public void setData(int position) {
 
             this.position=position;
-            restaurantName.setText(restaurant.getRestaurantName());
-            String tmp= restaurant.getAddress()+" - "+restaurant.getCity();
+            String[] info= data.get(position);
+            restaurantName.setText(info[0]);
+            String tmp= info[1]+" - "+info[2];
             address.setText(tmp);
-            tmp = "( "+ String.valueOf(restaurant.getNumReviews())+" )";
+            tmp = "( "+ info[5]+" )";
             reviews_number.setText(tmp);
-            ratingBar.setRating(restaurant.getRanking());
-            // TODO settare l'immagine logo
+            //reviews_number.setVisibility(View.GONE);
+            float rank=0;
+            if(Integer.parseInt(info[5])>0)
+                rank= Float.parseFloat(info[4])/ Integer.parseInt(info[5]);
+            ratingBar.setRating(rank);
+            //ratingBar.setVisibility(View.GONE);
+            Glide.with(context).load(info[3]).into(logo);
         }
 
         public void setListeners() {
@@ -72,10 +81,9 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.Vi
         }
 
         private void goToRestaurantActivity() {
-
-            Restaurant restaurant = data.get(position);
+            //TODO
             Intent i= new Intent(context, RestaurantActivity.class);
-            i.putExtra("restaurantId", restaurant.getRestaurantId());
+            i.putExtra("restaurantId", "");
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(i);
         }
@@ -101,8 +109,7 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.Vi
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
 
-        Restaurant r = data.get(position);
-        holder.setData(position, r);
+        holder.setData(position);
 
     }
 

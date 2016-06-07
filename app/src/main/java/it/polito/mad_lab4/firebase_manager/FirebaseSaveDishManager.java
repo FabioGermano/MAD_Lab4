@@ -28,6 +28,7 @@ import it.polito.mad_lab4.newData.restaurant.Dish;
 public class FirebaseSaveDishManager implements DatabaseReference.CompletionListener {
 
     final Lock lock = new ReentrantLock();
+
     final Condition cv  = lock.newCondition();
 
     private String restaurantId;
