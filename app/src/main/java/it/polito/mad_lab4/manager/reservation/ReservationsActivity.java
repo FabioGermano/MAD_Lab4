@@ -50,7 +50,7 @@ public class ReservationsActivity extends it.polito.mad_lab4.BaseActivity {
     private DatePickerDialog datePickerDialog;
     private SimpleDateFormat dateFormatter;
     private String datePicked;
-    private String restaurantId = "-KIrgaSxr9VhHllAjqmp";
+    private String restaurantId;
     private ArrayList<Reservation> reservations = new ArrayList<>();
 
 
@@ -69,12 +69,13 @@ public class ReservationsActivity extends it.polito.mad_lab4.BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         setContentView(R.layout.activity_reservations);
         setToolbarColor();
         hideToolbarShadow(true);
         setVisibilityCalendar(true);
         invalidateOptionsMenu();
+
+        restaurantId = (String) getIntent().getExtras().getString("restaurantId");
 
         dateFormatter = new SimpleDateFormat("yyyy-M-d");
         Calendar c = Calendar.getInstance();

@@ -345,9 +345,6 @@ public class ModifyOfferDish extends EditableBaseActivity {
                         Toast toast = Toast.makeText(getApplicationContext(), R.string.dataSaved, Toast.LENGTH_SHORT);
                         toast.show();
 
-                        Intent intent = new Intent(getApplicationContext(), GestioneOfferte.class);
-                        startActivity(intent);
-
                         finish();
                     }
                 });

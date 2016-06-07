@@ -54,11 +54,8 @@ public class AddReviewActivity extends BaseActivity implements PhotoViewerListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_review);
 
-        //this.restaurantID = getIntent().getExtras().getInt("restaurantId");
-        //this.restaurantName= getIntent().getExtras().getString("restaurantName");
-
-        this.restaurantID ="-KIrgaSxr9VhHllAjqmp";
-        this.restaurantName="Test";
+        this.restaurantID = getIntent().getExtras().getString("restaurantId");
+        this.restaurantName= getIntent().getExtras().getString("restaurantName");
 
         hideToolbar(true);
         hideToolbarShadow(true);
@@ -108,8 +105,6 @@ public class AddReviewActivity extends BaseActivity implements PhotoViewerListen
                     });
                     builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            //TODO aggiungere review al db
-
                             Review review = new Review();
                             review.setComment( editText.getText().toString());
                             review.setRank(rbValue);

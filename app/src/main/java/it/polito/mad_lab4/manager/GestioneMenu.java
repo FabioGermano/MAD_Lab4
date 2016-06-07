@@ -22,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,6 +35,7 @@ import java.util.ArrayList;
 import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.data.restaurant.DishTypeConverter;
 import it.polito.mad_lab4.data.user.User;
+import it.polito.mad_lab4.firebase_manager.FirebaseGetAuthInformation;
 import it.polito.mad_lab4.firebase_manager.FirebaseMenuListManager;
 import it.polito.mad_lab4.newData.restaurant.Dish;
 import it.polito.mad_lab4.data.restaurant.DishType;
@@ -45,6 +47,7 @@ public class  GestioneMenu extends EditableBaseActivity {
     private boolean availability_mode=false;
     private BlankMenuFragment[] fragments = new BlankMenuFragment[4];
     private FirebaseMenuListManager firebaseMenuListManager;
+    private String restaurantId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +58,8 @@ public class  GestioneMenu extends EditableBaseActivity {
         setActivityTitle(getResources().getString(R.string.title_activity_edit_menu));
         hideToolbarShadow(true);
         InitializeFABButtons(false, false, true);
+
+        restaurantId = (String) getIntent().getExtras().getString("restaurantId");
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             checkStoragePermission();
@@ -106,10 +111,9 @@ public class  GestioneMenu extends EditableBaseActivity {
 
         new Thread() {
             public void run() {
-
                 firebaseMenuListManager = new FirebaseMenuListManager();
                 firebaseMenuListManager.setFragments(fragments);
-                firebaseMenuListManager.startGetList(lista_menu, "-KIrgaSxr9VhHllAjqmp");
+                firebaseMenuListManager.startGetList(lista_menu, restaurantId);
                 final boolean timeout = firebaseMenuListManager.waitForResult();
 
                 runOnUiThread(new Runnable() {
@@ -175,7 +179,7 @@ public class  GestioneMenu extends EditableBaseActivity {
     protected void OnAddButtonPressed() {
 
         Bundle b = new Bundle();
-        b.putString("restaurantId", "-KIrgaSxr9VhHllAjqmp");
+        b.putString("restaurantId", restaurantId);
         b.putBoolean("isEditing", false);
         Intent intent = new Intent(getApplicationContext(), ModifyMenuDish.class);
         intent.putExtras(b);
@@ -198,6 +202,7 @@ public class  GestioneMenu extends EditableBaseActivity {
         public Fragment getItem(int position) {
             Bundle bundle = new Bundle();
             bundle.putBoolean("availability", availability_mode);
+            bundle.putString("restaurantId", restaurantId);
             switch (position) {
                 case 0:
                     // sono nei primi

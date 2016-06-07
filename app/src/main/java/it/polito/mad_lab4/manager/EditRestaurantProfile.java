@@ -52,14 +52,16 @@ public class EditRestaurantProfile extends it.polito.mad_lab4.BaseActivity {
     private Switch bancomatSwitch;
     private Switch musicSwitch;
     private Switch parkSwitch;
+    private String restaurantId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         setContentView(R.layout.activity_edit_restaurant_profile);
         getViews();
+
+        restaurantId = (String) getIntent().getExtras().getString("restaurantId");
 
         setToolbarColor();
         setVisibilitySave(true);
@@ -68,7 +70,7 @@ public class EditRestaurantProfile extends it.polito.mad_lab4.BaseActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             checkStoragePermission();
 
-        gerRestaurantByRestaurantId("-KIrgaSxr9VhHllAjqmp");
+        gerRestaurantByRestaurantId(restaurantId);
 
         initializePhotoManagement();
     }

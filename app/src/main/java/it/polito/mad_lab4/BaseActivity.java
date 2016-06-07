@@ -419,32 +419,48 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
 
 
     protected void ModificaProfiloManager() {
-        Intent intent = new Intent(getApplicationContext(), it.polito.mad_lab4.manager.EditRestaurantProfile.class);
-        startActivity(intent);
+        Bundle b = new Bundle();
+        b.putString("restaurantId", id); // userid == restaurantid, nel caso manager
+        Intent i = new Intent(getApplicationContext(), it.polito.mad_lab4.manager.EditRestaurantProfile.class);
+        i.putExtras(b);
+        startActivity(i);
     }
 
 
     protected void ModificaMenu() {
-        Intent intent = new Intent(getApplicationContext(), it.polito.mad_lab4.manager.GestioneMenu.class);
-        startActivity(intent);
+
+        Bundle b = new Bundle();
+        b.putString("restaurantId", id); // userid == restaurantid, nel caso manager
+        Intent i = new Intent(getApplicationContext(), it.polito.mad_lab4.manager.GestioneMenu.class);
+        i.putExtras(b);
+        startActivity(i);
     }
 
 
     protected void ModificaOfferte() {
-        Intent intent = new Intent(getApplicationContext(), it.polito.mad_lab4.manager.GestioneOfferte.class);
-        startActivity(intent);
+        Bundle b = new Bundle();
+        b.putString("restaurantId", id); // userid == restaurantid, nel caso manager
+        Intent i = new Intent(getApplicationContext(), it.polito.mad_lab4.manager.GestioneOfferte.class);
+        i.putExtras(b);
+        startActivity(i);
     }
 
 
     protected void ModificaDisponibilità() {
-        Intent intent = new Intent(getApplicationContext(), it.polito.mad_lab4.manager.EditAvailability.class);
-        startActivity(intent);
+        Bundle b = new Bundle();
+        b.putString("restaurantId", id); // userid == restaurantid, nel caso manager
+        Intent i = new Intent(getApplicationContext(), it.polito.mad_lab4.manager.EditAvailability.class);
+        i.putExtras(b);
+        startActivity(i);
     }
 
 
     protected void VisualizzaPrenotazioni() {
-        Intent intent = new Intent(getApplicationContext(), ReservationsActivity.class);
-        startActivity(intent);
+        Bundle b = new Bundle();
+        b.putString("restaurantId", id); // userid == restaurantid, nel caso manager
+        Intent i = new Intent(getApplicationContext(), ReservationsActivity.class);
+        i.putExtras(b);
+        startActivity(i);
     }
 
 
@@ -569,7 +585,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     }
 
     private void ModificaProfilo(){
-
         Bundle b = new Bundle();
         b.putString("userId", id);
         Intent i = new Intent(getApplicationContext(), EditUserProfileActivity.class);

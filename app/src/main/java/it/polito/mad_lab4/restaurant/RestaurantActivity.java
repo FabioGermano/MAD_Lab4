@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -96,7 +97,7 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
 
         /*Bundle extras = getIntent().getExtras();
         restaurantId = extras.getString("restaurantId");*/
-        this.restaurantId = "-KIrgaSxr9VhHllAjqmp";
+        this.restaurantId = "gAFr9RplBOdXm0O7jmUhJH4m98l1";
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -188,7 +189,10 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
         basicInfoFragment = (BasicInfoFragment) getSupportFragmentManager().findFragmentById(R.id.basicinfo_fragment);
         basicInfoFragment.setRestaurant(restaurant);
 
-        reviewsPrevFragment.setRanking(restaurant.getTotRanking(), restaurant.getNumReviews());
+        if(restaurant.getNumReviews()>0){
+            ((LinearLayout)findViewById(R.id.reviewsFragmentContainer)).setVisibility(View.VISIBLE);
+            reviewsPrevFragment.setRanking(restaurant.getTotRanking(), restaurant.getNumReviews());
+        }
 
         coverImage = (ImageView)findViewById(R.id.coverImage);
         coverImage.setOnClickListener(new View.OnClickListener() {
@@ -256,7 +260,8 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
                     break;
                 case R.id.add_review:
                     i= new Intent(getApplicationContext(), AddReviewActivity.class);
-                    i.putExtra("restaurant", restaurant);
+                    i.putExtra("restaurantId", restaurantId);
+                    i.putExtra("restaurantName", restaurant.getRestaurantName());
                     startActivity(i);
                     break;
                 case R.id.add_reservation:

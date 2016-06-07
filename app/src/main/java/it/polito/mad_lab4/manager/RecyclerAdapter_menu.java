@@ -38,6 +38,7 @@ import it.polito.mad_lab4.data.restaurant.DishType;
  * Created by Euge on 05/04/2016.
  */
 public class RecyclerAdapter_menu extends RecyclerView.Adapter<RecyclerAdapter_menu.MyViewHolder>{
+    private String restaurantId;
     private LayoutInflater myInflater;
     private DishType menu_type;
     //accesso veloce alla lista in esame ??
@@ -45,11 +46,12 @@ public class RecyclerAdapter_menu extends RecyclerView.Adapter<RecyclerAdapter_m
     private boolean availability_mode;
 
 
-    public RecyclerAdapter_menu(Context context, ArrayList<Dish> data, DishType type, boolean availability_mode){
+    public RecyclerAdapter_menu(Context context, ArrayList<Dish> data, DishType type, boolean availability_mode, String restaurantId){
         this.current_list = data;
         this.availability_mode=availability_mode;
         myInflater = LayoutInflater.from(context);
         this.menu_type = type;
+        this.restaurantId = restaurantId;
     }
 
     @Override
@@ -170,7 +172,7 @@ public class RecyclerAdapter_menu extends RecyclerView.Adapter<RecyclerAdapter_m
         private void removeItem(){
             try {
                 FirebaseRemoveDishManager firebaseRemoveDishManager = new FirebaseRemoveDishManager();
-                firebaseRemoveDishManager.removeDish("-KIrgaSxr9VhHllAjqmp", current_list.get(position).getDishId());
+                firebaseRemoveDishManager.removeDish(restaurantId, current_list.get(position).getDishId());
             } catch (Exception e){
                 System.out.println("Eccezione: " + e.getMessage());
             }
@@ -180,7 +182,7 @@ public class RecyclerAdapter_menu extends RecyclerView.Adapter<RecyclerAdapter_m
         private void modifyItem(){
 
             Bundle b = new Bundle();
-            b.putString("restaurantId", "-KIrgaSxr9VhHllAjqmp");
+            b.putString("restaurantId", restaurantId);
             b.putString("dishId",  current_list.get(position).getDishId());//current_list.get(position).getDishId());
             b.putBoolean("isEditing", true);
             Intent intent = new Intent(context, ModifyMenuDish.class);

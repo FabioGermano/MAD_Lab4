@@ -48,7 +48,7 @@ public class BlankOfferFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_blank_offer, container, false);
         
         RecyclerView rView = (RecyclerView) rootView.findViewById(R.id.recyclerView_offerte);
-        myAdapter = new RecyclerAdapter_offerte(context,offer_list, mode);
+        myAdapter = new RecyclerAdapter_offerte(context,offer_list, mode, null);
         if(rView != null) {
             rView.setAdapter(myAdapter);
 

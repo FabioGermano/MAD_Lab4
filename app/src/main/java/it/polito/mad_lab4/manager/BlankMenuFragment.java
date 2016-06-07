@@ -26,6 +26,7 @@ public class BlankMenuFragment extends Fragment {
     private Context context;
     private boolean mode;
     private RecyclerAdapter_menu myAdapter;
+    private String restaurantId;
 
 
     public BlankMenuFragment() {
@@ -43,6 +44,7 @@ public class BlankMenuFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.mode=getArguments().getBoolean("availability");
+        this.restaurantId=getArguments().getString("restaurantId");
     }
 
     @Override
@@ -56,7 +58,7 @@ public class BlankMenuFragment extends Fragment {
             else
                 rootView = inflater.inflate(R.layout.fragment_availability, container, false);
             EmptyRecyclerView rView = (EmptyRecyclerView) rootView.findViewById(R.id.recyclerView_menu);
-            myAdapter = new RecyclerAdapter_menu(context, m_list, type, mode);
+            myAdapter = new RecyclerAdapter_menu(context, m_list, type, mode, restaurantId);
             View emptyView;
             emptyView = rootView.findViewById(R.id.empty_view);
             rView.setEmptyView(emptyView);

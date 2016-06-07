@@ -34,14 +34,16 @@ import it.polito.mad_lab4.newData.restaurant.Offer;
  * Created by Euge on 08/04/2016.
  */
 public class RecyclerAdapter_offerte extends RecyclerView.Adapter<RecyclerAdapter_offerte.MyViewHolder_offerta> {
+    private String restaurantId;
     private ArrayList<Offer> lista_offerte;
     private LayoutInflater myInflater;
     private boolean availability_mode;
 
-    public RecyclerAdapter_offerte(Context context, ArrayList<Offer> data, boolean availability_mode) {
+    public RecyclerAdapter_offerte(Context context, ArrayList<Offer> data, boolean availability_mode, String restaurantId) {
         this.lista_offerte = data;
         myInflater = LayoutInflater.from(context);
         this.availability_mode = availability_mode;
+        this.restaurantId = restaurantId;
     }
 
     @Override
@@ -152,13 +154,13 @@ public class RecyclerAdapter_offerte extends RecyclerView.Adapter<RecyclerAdapte
 
             FirebaseRemoveOfferManager firebaseRemoveOfferManager = new FirebaseRemoveOfferManager();
 
-            firebaseRemoveOfferManager.removeOffer("-KIrgaSxr9VhHllAjqmp", lista_offerte.get(position).getOfferId());
+            firebaseRemoveOfferManager.removeOffer(restaurantId, lista_offerte.get(position).getOfferId());
         }
 
         //modifico offerta
         private void modifyItem(){
             Bundle b = new Bundle();
-            b.putString("restaurantId", "-KIrgaSxr9VhHllAjqmp");
+            b.putString("restaurantId", restaurantId);
             b.putString("offerId", lista_offerte.get(position).getOfferId());
             b.putBoolean("isEditing", true);
 

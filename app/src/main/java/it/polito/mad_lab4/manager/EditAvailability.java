@@ -60,6 +60,7 @@ public class EditAvailability extends EditableBaseActivity {
     private BlankMenuFragment[] fragments = new BlankMenuFragment[4];
     private FirebaseMenuListManager firebaseMenuListManager;
     private FirebaseOfferListManager firebaseOfferListManager;
+    private String restaurantId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,8 +76,7 @@ public class EditAvailability extends EditableBaseActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             checkStoragePermission();
 
-        //readMenu();
-        //readOffers();
+        restaurantId = (String) getIntent().getExtras().getString("restaurantId");
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager_menu);
         MyPageAdapter pagerAdapter = new MyPageAdapter(getSupportFragmentManager(), EditAvailability.this);
@@ -118,7 +118,7 @@ public class EditAvailability extends EditableBaseActivity {
 
                 firebaseOfferListManager = new FirebaseOfferListManager();
                 firebaseOfferListManager.setFragments(blankOfferFragment);
-                firebaseOfferListManager.startGetList(lista_offerte, "-KIrgaSxr9VhHllAjqmp");
+                firebaseOfferListManager.startGetList(lista_offerte, restaurantId);
                 final boolean timeout = firebaseOfferListManager.waitForResult();
 
                 runOnUiThread(new Runnable() {
@@ -149,7 +149,7 @@ public class EditAvailability extends EditableBaseActivity {
 
                 firebaseMenuListManager = new FirebaseMenuListManager();
                 firebaseMenuListManager.setFragments(fragments);
-                firebaseMenuListManager.startGetList(lista_menu, "-KIrgaSxr9VhHllAjqmp");
+                firebaseMenuListManager.startGetList(lista_menu, restaurantId);
                 final boolean timeout = firebaseMenuListManager.waitForResult();
 
                 runOnUiThread(new Runnable() {
@@ -186,7 +186,7 @@ public class EditAvailability extends EditableBaseActivity {
         {
             public void run() {
                 FirebaseSaveAvailabilityManager firebaseSaveAvailabilityManager = new FirebaseSaveAvailabilityManager();
-                firebaseSaveAvailabilityManager.saveAvailability(lista_menu, lista_offerte, "-KIrgaSxr9VhHllAjqmp");
+                firebaseSaveAvailabilityManager.saveAvailability(lista_menu, lista_offerte, restaurantId);
 
                 boolean res = firebaseSaveAvailabilityManager.waitForResult();
 

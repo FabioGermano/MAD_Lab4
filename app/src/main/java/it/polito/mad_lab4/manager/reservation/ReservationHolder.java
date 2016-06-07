@@ -120,8 +120,12 @@ public class ReservationHolder extends RecyclerView.ViewHolder implements View.O
 
         manageFooterVisibility(reservation);
 
-        ArrayList<ReservedDish> reservedDish = reservation.getReservedDishesByType(false);
-        ArrayList<ReservedDish> reservedOffers = reservation.getReservedDishesByType(true);
+        ArrayList<ReservedDish> reservedDish = new ArrayList<>();
+        ArrayList<ReservedDish> reservedOffers = new ArrayList<>();
+        if(reservation.getReservedDishes() != null){
+            reservedDish = reservation.getReservedDishesByType(false);
+            reservedOffers = reservation.getReservedDishesByType(true);
+        }
 
         if (reservation.getPlaces() == null) {
             ((TextView) childLayout.findViewById(R.id.seats_number)).setVisibility(View.GONE);

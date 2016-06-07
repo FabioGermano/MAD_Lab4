@@ -40,16 +40,18 @@ public class GestioneOfferte extends EditableBaseActivity {
     private boolean availability_mode = false;
     private RecyclerAdapter_offerte myAdapter;
     private FirebaseOfferListManager firebaseOfferListManager;
+    private String restaurantId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         setContentView(R.layout.activity_gestione_offerte);
         setToolbarColor();
         setActivityTitle(getResources().getString(R.string.title_activity_edit_offers));
         InitializeFABButtons(false, false, true);
+
+        restaurantId = (String) getIntent().getExtras().getString("restaurantId");
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             checkStoragePermission();
@@ -81,7 +83,7 @@ public class GestioneOfferte extends EditableBaseActivity {
 
                 firebaseOfferListManager = new FirebaseOfferListManager();
                 firebaseOfferListManager.setAdapter(myAdapter);
-                firebaseOfferListManager.startGetList(lista_offerte, "-KIrgaSxr9VhHllAjqmp");
+                firebaseOfferListManager.startGetList(lista_offerte, restaurantId);
                 final boolean timeout = firebaseOfferListManager.waitForResult();
 
                 runOnUiThread(new Runnable() {
@@ -104,7 +106,7 @@ public class GestioneOfferte extends EditableBaseActivity {
     private void setUpRecyclerView(){
         EmptyRecyclerView rView = (EmptyRecyclerView) findViewById(R.id.recyclerView_offerte);
 
-        myAdapter = new RecyclerAdapter_offerte(this, lista_offerte, availability_mode);
+        myAdapter = new RecyclerAdapter_offerte(this, lista_offerte, availability_mode, restaurantId);
         if(rView != null) {
 
             View emptyView = findViewById(R.id.empty_view);
@@ -145,7 +147,7 @@ public class GestioneOfferte extends EditableBaseActivity {
     protected void OnAddButtonPressed() {
         Intent intent = new Intent(getApplicationContext(), ModifyOfferDish.class);
         Bundle b = new Bundle();
-        b.putString("restaurantId", "-KIrgaSxr9VhHllAjqmp");
+        b.putString("restaurantId", restaurantId);
         b.putBoolean("isEditing", false);
         intent.putExtras(b);
         startActivity(intent);
