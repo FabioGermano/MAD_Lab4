@@ -75,6 +75,10 @@ public class mainActivity_map implements OnMapReadyCallback, GoogleMap.OnMapClic
     private void settaMarker(){
         LatLng posizioneOfferta;
         Marker marker;
+
+        mMap.addMarker(new MarkerOptions().position(myPosition)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+
         for (Oggetto_offerteVicine obj:listaOfferte) {
             posizioneOfferta = new LatLng( obj.getRestaurantPosition().getPosition().getLatitudine(), obj.getRestaurantPosition().getPosition().getLongitudine());
             if(obj.isNew()){
@@ -205,8 +209,11 @@ public class mainActivity_map implements OnMapReadyCallback, GoogleMap.OnMapClic
             return false;
     }
 
+
+
     public void setCurrentPosition(LatLng currentPosition){
-        this.myPosition = currentPosition;
+        if (currentPosition != null)
+            this.myPosition = currentPosition;
     }
 
     public void setContext(Context argC){
@@ -219,5 +226,16 @@ public class mainActivity_map implements OnMapReadyCallback, GoogleMap.OnMapClic
 
     public void setListaOfferte(ArrayList<Oggetto_offerteVicine>  obj){
         this.listaOfferte = obj;
+    }
+
+    public void updatePosition(){
+        if(!fullScreen){
+            mMap.clear();
+            //scarico ed elaboro i dati dal server e poi chiamo settaMarker()
+            caricaOfferteDaVisualizzare();
+            System.out.println("------> NUOVA POSIZIONE, CARICO DATI DAL SERVER ");
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myPosition, 15));
+
+        }
     }
 }
