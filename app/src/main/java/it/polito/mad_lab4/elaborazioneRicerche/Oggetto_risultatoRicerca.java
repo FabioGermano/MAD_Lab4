@@ -13,28 +13,27 @@ public class Oggetto_risultatoRicerca implements Serializable {
     private int cost = -1;
     private String place;
     private float valutazione;
-    private type type;
-    private int id;
-    private ArrayList<String> typesOfservices;
+    private String id;
+    private boolean takeAway = false;
+    private boolean onPlace = false;
 
-    public enum type{
-        RISTORANTE,
-        PIATTO
-    }
-
-    public Oggetto_risultatoRicerca(int id, String name, String via, String path, int costo, float valutazione, type type, ArrayList<String> typesOfservices){
+    public Oggetto_risultatoRicerca(String id, String name, String via, String path, int costo, float valutazione, boolean takeAway, boolean onPlace){
         this.name = name;
         this.place = via;
         this.image_path=path;
         this.cost = costo;
         this.valutazione = valutazione;
-        this.type = type;
         this.id = id;
-        this.typesOfservices = typesOfservices;
+        this.takeAway = takeAway;
+        this.onPlace = onPlace;
     }
 
-    public ArrayList<String> getTypesOfservices(){
-        return this.typesOfservices;
+    public boolean isOnPlace() {
+        return onPlace;
+    }
+
+    public boolean isTakeAway() {
+        return takeAway;
     }
 
     public String getName(){
@@ -69,10 +68,6 @@ public class Oggetto_risultatoRicerca implements Serializable {
         this.place = place;
     }
 
-    public type getType(){
-        return this.type;
-    }
-
     public String getFasciaPrezzo(){
         if(this.cost != -1){
             if(this.cost < 10)
@@ -85,7 +80,7 @@ public class Oggetto_risultatoRicerca implements Serializable {
         return null;
     }
 
-    public int getId(){
+    public String getId(){
         return this.id;
     }
 }

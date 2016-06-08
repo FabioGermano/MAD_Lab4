@@ -21,10 +21,12 @@ import java.util.ArrayList;
 import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.elaborazioneRicerche.Oggetto_offerteVicine;
 import it.polito.mad_lab4.firebase_manager.FirebaseGetOfferListManager;
+import it.polito.mad_lab4.firebase_manager.FirebaseGetRestaurantInfoManager;
 import it.polito.mad_lab4.firebase_position.FirebaseGetRestaurantsPositions;
 import it.polito.mad_lab4.newData.other.Position;
 import it.polito.mad_lab4.newData.other.RestaurantPosition;
 import it.polito.mad_lab4.newData.restaurant.Offer;
+import it.polito.mad_lab4.restaurant.RestaurantActivity;
 
 /**
  * Created by Euge on 04/06/2016.
@@ -66,7 +68,7 @@ public class mainActivity_map implements OnMapReadyCallback, GoogleMap.OnMapClic
         if(!fullScreen)
             mMap.setOnMapClickListener(this);
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myPosition, 10));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myPosition, 15));
 
     }
 
@@ -83,7 +85,7 @@ public class mainActivity_map implements OnMapReadyCallback, GoogleMap.OnMapClic
             } else {
                 //metto l'icona semplice
                 marker =mMap.addMarker(new MarkerOptions().position(posizioneOfferta)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_icon_default)));
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
                 obj.setMarkerAssociato(marker.getId());
             }
         }
@@ -93,15 +95,21 @@ public class mainActivity_map implements OnMapReadyCallback, GoogleMap.OnMapClic
     public boolean onMarkerClick(Marker marker) {
         System.out.println("------> PREMUTO MARKER: " + marker.getId()+ " - " + marker.getTitle());
 
-        if(marker.isInfoWindowShown())
-            marker.hideInfoWindow();
-
         return false;
     }
 
     @Override
     public void onInfoWindowClick(Marker marker) {
         System.out.println("------> PREMUTO INFO_WINDOW: " + marker.getId()+ " - " + marker.getTitle());
+        for (Oggetto_offerteVicine obj: listaOfferte){
+            if (obj.getMarkerAssociato().equals(marker.getId())){
+                Intent i = new Intent(context, RestaurantActivity.class);
+                Bundle b = new Bundle();
+                b.putSerializable("restaurantId", obj.getRestaurantPosition().getRestaurantId());
+                i.putExtras(b);
+                context.startActivity(i);
+            }
+        }
     }
 
     @Override
@@ -151,43 +159,24 @@ public class mainActivity_map implements OnMapReadyCallback, GoogleMap.OnMapClic
                     }
 
                     // ora ho tutti i ristoranti distanti TOT metri dalla mia posizione
-                    // TODO per ogniuno scarico la prima offerta da far visualizzare o la migliore, da decidere
-                    // TODO decidere quando un'offerta è da considerarsi nuova
-                    FirebaseGetOfferListManager offerListManager = new FirebaseGetOfferListManager();
-
-                    /// FUNZIONE DI DEBUG //
-                    Offer o = null;
-                    for (Oggetto_offerteVicine obj: listaOfferte) {
-                        if(!obj.getRestaurantPosition().getRestaurantId().contains("id")) {
-                            System.out.println("-----> scarico offerte del ristorante: " + obj.getRestaurantPosition().getRestaurantId());
-                            offerListManager.getOffers(obj.getRestaurantPosition().getRestaurantId());
-                            offerListManager.waitForResult();
-                            if (offerListManager.getResult().size() > 0) {
-                                o = offerListManager.getResult().get(0);
-                            }
-                        }
-                    }
-
-
-                    System.out.println("-----> Numero di offerte da visualizzare: " + listaOfferte.size());
-                    for (Oggetto_offerteVicine obj: listaOfferte) {
-                        obj.setOfferta(o);
-                    }
-                    //////////////////////////////
+                    FirebaseGetOfferListManager offerListManager;
+                    FirebaseGetRestaurantInfoManager restaurantInfoManager;
 
                     // Funzione corretta che scarica per ogni ristorante le offerte e prende la prima
                     // di ogniuno (si può cambiare)
-                    
-                    /*for (Oggetto_offerteVicine obj: listaOfferte) {
+
+                    for (Oggetto_offerteVicine obj: listaOfferte) {
+                        offerListManager = new FirebaseGetOfferListManager();
                         offerListManager.getOffers(obj.getRestaurantPosition().getRestaurantId());
                         offerListManager.waitForResult();
                         ArrayList<Offer> listaOTemp = offerListManager.getResult();
-                        if (listaOTemp.size() > 0) {
-                            obj.setOfferta(listaOTemp.get(0));
-                        }
-                    }
-                    */
+                        obj.setNumOfferte(listaOTemp.size());
 
+                        restaurantInfoManager = new FirebaseGetRestaurantInfoManager();
+                        restaurantInfoManager.getRestaurantInfo(obj.getRestaurantPosition().getRestaurantId(), "restaurantName");
+                        restaurantInfoManager.waitForResult();
+                        obj.setNomeRistorante(restaurantInfoManager.getResult());
+                    }
 
                     Handler handler = new Handler(Looper.getMainLooper());
                     handler.post(new Runnable() {
@@ -210,7 +199,7 @@ public class mainActivity_map implements OnMapReadyCallback, GoogleMap.OnMapClic
         Location.distanceBetween(myPosition.latitude, myPosition.longitude, restaurantPosition.getLatitudine(), restaurantPosition.getLongitudine(), distance);
         // distance[0] is now the distance between these lat/lons in meters
         System.out.println("-----> Distanza: " + distance[0]);
-        if (distance[0] < 500.0) {
+        if (distance[0] < 700.0) {
             return true;
         } else
             return false;

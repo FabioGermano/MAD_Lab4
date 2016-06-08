@@ -96,7 +96,7 @@ public class RecyclerAdapter_offerteVicine extends RecyclerView.Adapter<Recycler
         public void setData(Oggetto_offerteVicine currentObj, int position) {
             this.current = currentObj;
             this.position = position;
-
+/*
             if (this.name != null){
                 this.name.setText(currentObj.getOfferta().getOfferName());
             }

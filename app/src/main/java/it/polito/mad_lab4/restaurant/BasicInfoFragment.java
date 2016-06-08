@@ -96,6 +96,12 @@ public class BasicInfoFragment extends Fragment {
         //extract orario
         int orario[] = Helper.formatRange(range);
 
+        if (orario == null){
+            System.out.println("Valore orario = null");
+            return null;
+
+        }
+
         //store in a calendar object the closing time
         Calendar end = Calendar.getInstance();
         end.set(Calendar.HOUR_OF_DAY, orario[2]);

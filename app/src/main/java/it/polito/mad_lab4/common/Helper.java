@@ -146,9 +146,13 @@ public class Helper {
 
     public static int[] formatRange(String tmp){
 
-        if(tmp == "" || tmp.toLowerCase().equals("closed")){
+        //modificata la stringa di controllo in "chiuso". Prima era "closed" ma su firebase abbiamo scritto in italiano.
+        //Questo generava un eccezione
+        if(tmp == "" || tmp.toLowerCase().equals("chiuso")){
             return null;
         }
+
+        System.out.println("ORARIO: " + tmp);
 
         int[] orario = new int[4];
         int n1  = tmp.indexOf(":");

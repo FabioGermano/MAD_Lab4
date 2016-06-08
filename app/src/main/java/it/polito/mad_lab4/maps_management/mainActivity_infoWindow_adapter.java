@@ -36,21 +36,17 @@ public class mainActivity_infoWindow_adapter implements GoogleMap.InfoWindowAdap
     public View getInfoContents(Marker marker) {
         View v = myInflater.inflate(R.layout.activity_main_infowindow_map, null);
         TextView titolo = (TextView) v.findViewById(R.id.titolo_map);
+        TextView testo = (TextView) v.findViewById(R.id.text_map);
 
-        Oggetto_offerteVicine offerta = getOffeta(marker.getId());
-        if(offerta != null && offerta.getOfferta() != null){
-            if(titolo != null) {
-                titolo.setText(offerta.getOfferta().getOfferName());
-            }
-        } else {
-            if(titolo != null) {
-                titolo.setText("TITOLO OFFERTA NON DISPONIBILE!!!");
-            }
-        }
+        Oggetto_offerteVicine offerta = getOfferta(marker.getId());
+
+        titolo.setText(offerta.getNomeRistorante());
+        testo.setText(offerta.getNumOfferte() + " offerte disponibili");
+
         return v;
     }
 
-    private Oggetto_offerteVicine getOffeta(String id){
+    private Oggetto_offerteVicine getOfferta(String id){
         for (Oggetto_offerteVicine obj : listaOfferte) {
             if(obj.getMarkerAssociato().compareTo(id) == 0)
                 return obj;

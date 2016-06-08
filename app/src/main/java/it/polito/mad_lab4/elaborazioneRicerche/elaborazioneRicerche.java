@@ -140,19 +140,16 @@ public class elaborazioneRicerche extends BaseActivity implements fragment_ricer
             //filtro per tipo
             for(Oggetto_risultatoRicerca obj : lista_risultati){
                 if(type.compareTo("ALL") == 0){
-                    if(obj.getTypesOfservices().size() == 2){
-                        if((obj.getTypesOfservices().get(0).compareTo("R") == 0 || obj.getTypesOfservices().get(0).compareTo("TA")==0) &&
-                                (obj.getTypesOfservices().get(1).compareTo("R") == 0 || obj.getTypesOfservices().get(1).compareTo("TA")==0)){
+                    if((obj.isTakeAway() && obj.isOnPlace()))
                             newList.add(obj);
-                        }
-                    }
-                } else {
-                    for(String s : obj.getTypesOfservices()){
-                        if(s.compareTo(type) == 0){
-                            newList.add(obj);
-                            break;
-                        }
-                    }
+                }
+                else if(type.equals("TA")) {
+                    if (obj.isTakeAway())
+                        newList.add(obj);
+                }
+                else if(type.equals("R")) {
+                    if (obj.isOnPlace())
+                        newList.add(obj);
                 }
             }
             lista_risultati = newList;
@@ -191,7 +188,7 @@ public class elaborazioneRicerche extends BaseActivity implements fragment_ricer
             lista_risultati = newList;
             newList = new ArrayList<>();
         }
-
+/*
         if(nomePiatto != null ){
             if(!nomePiatto.isEmpty()){
                 System.out.println("Ricerco per nome: ");
@@ -209,7 +206,7 @@ public class elaborazioneRicerche extends BaseActivity implements fragment_ricer
                 }
                 lista_risultati = newList;
             }
-        }
+        }*/
 
         if(change) {
             if(lista_risultati.isEmpty()){

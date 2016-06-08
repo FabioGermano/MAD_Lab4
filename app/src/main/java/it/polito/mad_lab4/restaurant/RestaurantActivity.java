@@ -95,9 +95,10 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
         add_reservation.setOnClickListener(clickListener);
         add_review.setOnClickListener(clickListener);
 
-        /*Bundle extras = getIntent().getExtras();
-        restaurantId = extras.getString("restaurantId");*/
-        this.restaurantId = "gAFr9RplBOdXm0O7jmUhJH4m98l1";
+        Bundle extras = getIntent().getExtras();
+        restaurantId = extras.getString("restaurantId");
+        //this.restaurantId = "gAFr9RplBOdXm0O7jmUhJH4m98l1";
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -5,6 +5,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -17,26 +19,30 @@ import com.google.android.gms.maps.SupportMapFragment;
 import java.util.ArrayList;
 
 import it.polito.mad_lab4.bl.RestaurantBL;
-import it.polito.mad_lab4.data.restaurant.Restaurant;
 import it.polito.mad_lab4.elaborazioneRicerche.Oggetto_offerteVicine;
 import it.polito.mad_lab4.elaborazioneRicerche.Oggetto_risultatoRicerca;
 import it.polito.mad_lab4.elaborazioneRicerche.elaborazioneRicerche;
+import it.polito.mad_lab4.firebase_manager.FirebaseGetOfferListManager;
+import it.polito.mad_lab4.firebase_manager.FirebaseGetRestaurantInfoManager;
+import it.polito.mad_lab4.firebase_manager.FirebaseGetRestaurantProfileManager;
+import it.polito.mad_lab4.firebase_manager.FirebaseGetUserInfoManager;
+import it.polito.mad_lab4.firebase_position.FirebaseGetRestaurantsPositions;
 import it.polito.mad_lab4.manager.MainActivityManager;
 import it.polito.mad_lab4.maps_management.mainActivity_map;
 import it.polito.mad_lab4.newData.other.RestaurantPosition;
 import it.polito.mad_lab4.newData.restaurant.Offer;
+import it.polito.mad_lab4.newData.restaurant.Restaurant;
 
 public class MainActivity extends BaseActivity{
 
     private Button addReview, reservationBtn, testBtn;
-    private ArrayList<Restaurant> listaRistoranti;
+    private ArrayList<RestaurantPosition> listaRistoranti;
     //private User userInfo;
     private ImageButton ricercaLuogoBtn, ricercaRistoranteBtn;
     private boolean ricerca_luogo=false, ricerca_ristorante=true;
 
     private SearchView ricerca;
 
-    private ArrayList<Oggetto_offerteVicine> lista_offerte_vicine;
 
 
     @Override
@@ -108,8 +114,6 @@ public class MainActivity extends BaseActivity{
         ricercaLuogoBtn = (ImageButton) findViewById(R.id.ricerca_luogo);
         ricercaRistoranteBtn = (ImageButton) findViewById(R.id.ricerca_ristorante);
 
-        //setUpRecyclerView();
-
         // TODO ottengo la posizione corrente
         //LatLng myPosition = getCurrentPosition();
 
@@ -124,23 +128,14 @@ public class MainActivity extends BaseActivity{
 
     private void caricaDati() {
 
-        lista_offerte_vicine = new ArrayList<>();
+        new Thread()        {
+            public void run() {
 
-        //f.germano mod. Ci sono appositi metodi del bl:
-        this.listaRistoranti = RestaurantBL.getAllRestaurants(getApplicationContext());
-
-        /*for (Restaurant r: listaRistoranti){
-            if (r.getBasicInfo().getDistance() <= 15){
-                for (Offer o: r.getOffers()){
-                    Oggetto_offerteVicine obj = new Oggetto_offerteVicine();
-                    obj.setOfferta(o);
-                    RestaurantPosition rp = new RestaurantPosition();
-                    rp.setRestaurantId(String.valueOf(r.getRestaurantId()));
-                    obj.setRestaurantPosition(rp);
-                    lista_offerte_vicine.add(obj);
-                }
+                FirebaseGetRestaurantsPositions restaurantsPositions = new FirebaseGetRestaurantsPositions();
+                restaurantsPositions.waitForResult();
+                listaRistoranti = restaurantsPositions.getListaOfferte();
             }
-        }*/
+        }.start();
     }
 
     public void searchRestaurant(String query) {
@@ -149,9 +144,6 @@ public class MainActivity extends BaseActivity{
             Toast.makeText(MainActivity.this, getResources().getString(R.string.query_troppo_corta), Toast.LENGTH_SHORT).show();
             return;
         }
-
-
-
         if (query.length() > 20){
             Toast.makeText(MainActivity.this, getResources().getString(R.string.query_troppo_lunga), Toast.LENGTH_SHORT).show();
             return;
@@ -165,50 +157,99 @@ public class MainActivity extends BaseActivity{
         }
         if(ricerca_ristorante){
             System.out.println("Ricerco per ristorante");
-            listaRicerca = ricercaPerRistorante(query);
+            ricercaPerRistorante(query);
         }
 
-        if(listaRicerca == null ){
-            Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.exceptionError), Toast.LENGTH_SHORT);
-            toast.show();
-            return;
-        }
 
-        if(listaRicerca.size() == 0){
-            Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.nessun_risultato), Toast.LENGTH_SHORT);
-            toast.show();
-            return;
-        }
-
-        Bundle b = new Bundle();
-        b.putSerializable("results", listaRicerca);
-        //b.putSerializable("userInfo", userInfo);
-
-        Intent i = new Intent(getApplicationContext(), elaborazioneRicerche.class);
-        i.putExtras(b);
-        startActivity(i);
     }
 
     //implemento ricerca per luogo
     private ArrayList<Oggetto_risultatoRicerca> ricercaPerLuogo(String query) {
         ArrayList<Oggetto_risultatoRicerca> listaRicerca = new ArrayList<>();
 
-        for(Restaurant r : this.listaRistoranti){
+        /*for(Restaurant r : this.listaRistoranti){
             String address = r.getBasicInfo().getAddress().toLowerCase();
             if (address.contains(query.toLowerCase())){
                 Oggetto_risultatoRicerca obj = new Oggetto_risultatoRicerca(r.getRestaurantId(), r.getRestaurantName(), r.getBasicInfo().getAddress(), r.getBasicInfo().getLogoThumb(), r.getAvgPrice(), r.getAvgReview(), Oggetto_risultatoRicerca.type.RISTORANTE, r.getBasicInfo().getTypesOfServices());
                 listaRicerca.add(obj);
             }
-        }
+        }*/
 
         return listaRicerca;
     }
 
     //implemento ricerca per ristorante
-    private ArrayList<Oggetto_risultatoRicerca> ricercaPerRistorante(String query) {
-        ArrayList<Oggetto_risultatoRicerca> listaRicerca = new ArrayList<>();
+    private void ricercaPerRistorante(final String query) {
 
-        for(Restaurant r : this.listaRistoranti){
+        new Thread()        {
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showProgressBar();
+                    }
+                });
+
+                ArrayList<Oggetto_risultatoRicerca> listaRicerca = new ArrayList<>();
+                FirebaseGetRestaurantInfoManager restaurantInfoManager;
+                FirebaseGetRestaurantProfileManager restaurantProfileManager;
+
+                for (RestaurantPosition obj: listaRistoranti){
+                    restaurantInfoManager = new FirebaseGetRestaurantInfoManager();
+                    restaurantInfoManager.getRestaurantInfo(obj.getRestaurantId(), "restaurantName");
+                    restaurantInfoManager.waitForResult();
+                    String nome = restaurantInfoManager.getResult();
+
+                    if (nome.toLowerCase().contains(query.toLowerCase())){
+                        restaurantProfileManager = new FirebaseGetRestaurantProfileManager();
+                        restaurantProfileManager.getRestaurant(obj.getRestaurantId());
+                        restaurantProfileManager.waitForResult();
+                        Restaurant r = restaurantProfileManager.getResult();
+
+                        int avgPrice = 10;
+                        Oggetto_risultatoRicerca res = new Oggetto_risultatoRicerca(obj.getRestaurantId(), r.getRestaurantName(), r.getAddress(), r.getLogoThumbDownloadLink(), avgPrice, r.getRanking(), r.isTakeAway(), r.isOnPlace());
+                        listaRicerca.add(res);
+                    }
+                }
+
+                System.out.println("----> ristoranti trovati: " + listaRicerca.size());
+                final ArrayList<Oggetto_risultatoRicerca> risultato = listaRicerca;
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        dismissProgressDialog();
+
+                        if(risultato == null ){
+                            Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.exceptionError), Toast.LENGTH_SHORT);
+                            toast.show();
+                            return;
+                        }
+
+                        if(risultato.size() == 0){
+                            Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.nessun_risultato), Toast.LENGTH_SHORT);
+                            toast.show();
+                            return;
+                        }
+                        Bundle b = new Bundle();
+                        b.putSerializable("results", risultato);
+
+                        Intent i = new Intent(getApplicationContext(), elaborazioneRicerche.class);
+                        i.putExtras(b);
+                        startActivity(i);
+
+
+                    }
+                });
+            }
+        }.start();
+
+
+
+
+
+
+       /* for(Restaurant r : this.listaRistoranti){
             String nome = r.getRestaurantName().toLowerCase();
             if (nome.contains(query.toLowerCase())){
                 Oggetto_risultatoRicerca obj = new Oggetto_risultatoRicerca(r.getRestaurantId(), r.getRestaurantName(), r.getBasicInfo().getAddress(), r.getBasicInfo().getLogoThumb(), r.getAvgPrice(), r.getAvgReview(), Oggetto_risultatoRicerca.type.RISTORANTE, r.getBasicInfo().getTypesOfServices());
@@ -216,23 +257,9 @@ public class MainActivity extends BaseActivity{
             }
         }
 
-        return listaRicerca;
+        return listaRicerca;*/
     }
 
-    /*private void setUpRecyclerView(){
-        RecyclerView rView = (RecyclerView) findViewById(R.id.recyclerView_nearOffers);
-
-        RecyclerAdapter_offerteVicine myAdapter = new RecyclerAdapter_offerteVicine(this, lista_offerte_vicine);
-        if(rView != null) {
-            rView.setAdapter(myAdapter);
-
-            LinearLayoutManager myLLM_vertical = new LinearLayoutManager(this);
-            myLLM_vertical.setOrientation(LinearLayoutManager.HORIZONTAL);
-            rView.setLayoutManager(myLLM_vertical);
-
-            rView.setItemAnimator(new DefaultItemAnimator());
-        }
-    }*/
 
     public void ricercaLuogo(View view) {
         if(ricercaLuogoBtn != null && ricercaRistoranteBtn != null) {
@@ -240,18 +267,12 @@ public class MainActivity extends BaseActivity{
                 ricercaLuogoBtn.setImageResource(R.drawable.ic_ricerca_luogo_selezione);
                 ricerca_luogo = true;
                 ricerca.setQueryHint(getString(R.string.search_byplace));
-                /*if (ricerca_piatto) {
-                    ricerca_piatto = false;
-                    ricercaPiattoBtn.setImageResource(R.drawable.ic_ricerca_luogo);
-                }*/
+
                 if (ricerca_ristorante) {
                     ricerca_ristorante = false;
                     ricercaRistoranteBtn.setImageResource(R.drawable.ic_ricerca_ristorante);
                 }
-            }/* else {
-                ricerca_luogo = false;
-                ricercaLuogoBtn.setImageResource(R.drawable.ic_ricerca_luogo);
-            }*/
+            }
         }
     }
 
@@ -261,18 +282,12 @@ public class MainActivity extends BaseActivity{
                 ricercaRistoranteBtn.setImageResource(R.drawable.ic_ricerca_ristorante_selezione);
                 ricerca_ristorante = true;
                 ricerca.setQueryHint(getString(R.string.search_byrestaurant));
-                /*if (ricerca_piatto) {
-                    ricerca_piatto = false;
-                    ricercaPiattoBtn.setImageResource(R.drawable.ic_ricerca_luogo);
-                }*/
+
                 if (ricerca_luogo) {
                     ricerca_luogo = false;
                     ricercaLuogoBtn.setImageResource(R.drawable.ic_ricerca_luogo);
                 }
-            } /*else {
-                ricerca_ristorante = false;
-                ricercaRistoranteBtn.setImageResource(R.drawable.ic_ricerca_luogo);
-            }*/
+            }
         }
     }
 
