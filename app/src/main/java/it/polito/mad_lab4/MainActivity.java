@@ -308,70 +308,11 @@ public class MainActivity extends BaseActivity implements LocationListener{
                 final ArrayList<Address> nearAddress = new ArrayList<Address>();
 
                 try {
-                    double radius = 6378137; // meters , earth Radius approx
-                    double DEGREES = 180/Math.PI;
-                    int offset = 5000; //distanza in metri dalla posizione attuale
+                    List<Address> addresses;
 
+                    addresses = geocoder.getFromLocationName(query, 5);
 
-
-                    double latLowerLeft = myPosition.latitude - (DEGREES)*(offset/radius);
-                    double longLowerLeft = myPosition.longitude - (DEGREES)*(offset/radius)/ (Math.cos(Math.PI/180.0*myPosition.latitude));
-                    double latUpperRight = myPosition.latitude + (DEGREES)*(offset/radius);
-                    double longUpperRight = myPosition.longitude + (DEGREES)*(offset/radius)/ (Math.cos(Math.PI/180.0*myPosition.latitude));
-
-                    System.out.println("----> BOUNDS");
-                    System.out.println("----> " + latLowerLeft + ", " + longLowerLeft  );
-                    System.out.println("----> " + latUpperRight + ", " + longUpperRight  );
-
-
-
-                    List<Address> addresses = geocoder.getFromLocationName(query, 20, latLowerLeft, longLowerLeft, latUpperRight, longUpperRight);
-                    System.out.println("-----> TROVATI " + addresses.size());
-                    System.out.println("-----> COMPARO I RISULTATI CON " + myPosition.latitude + ", " + myPosition.longitude);
-
-
-                    if (!addresses.isEmpty()){
-                        if (addresses.size() > 1){
-                            for (Address a : addresses){
-                                System.out.println("-----> " + a.getLocality() + ", " + a.getAddressLine(0) + " - " + a.getLatitude() + ", " + a.getLongitude());
-                                if (a.getLocality() != null){
-                                    System.out.println("-----> AGGIUNTO");
-                                    nearAddress.add(a);
-                                }
-
-                            }
-                            if (nearAddress.isEmpty()){
-                                //nessun risultato trovato
-                                runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.nessun_risultato), Toast.LENGTH_SHORT);
-                                    toast.show();
-                                }
-                                });
-                                return;
-                            }
-                            if (nearAddress.size() > 1){
-                                //popup di scelta
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        showDialogPlaces(nearAddress);
-                                    }
-                                });
-                                return;
-                            }
-                            else {
-                                foundedPosition = new LatLng(nearAddress.get(0).getLatitude(), nearAddress.get(0).getLongitude());
-                            }
-                        }
-                        else{
-                            System.out.println("-----> " + addresses.get(0).getLocality() + ", " + addresses.get(0).getAddressLine(0) + " - " + addresses.get(0).getLatitude() + ", " + addresses.get(0).getLongitude());
-                            foundedPosition = new LatLng(addresses.get(0).getLatitude(), addresses.get(0).getLongitude());
-
-                        }
-                    }
-                    else{
+                    if (addresses.isEmpty()) {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -382,13 +323,86 @@ public class MainActivity extends BaseActivity implements LocationListener{
                         return;
                     }
 
-                    //qui avrò foundedPosition riempito correttamente e parto con la vera e propria ricerca
+                    if (addresses.size() == 1) {
+                        foundedPosition = new LatLng(addresses.get(0).getLatitude(), addresses.get(0).getLongitude());
+                    }
+                    else {
+                        double radius = 6378137; // meters , earth Radius approx
+                        double DEGREES = 180 / Math.PI;
+                        int offset = 5000; //distanza in metri dalla posizione attuale
 
 
+                        double latLowerLeft = myPosition.latitude - (DEGREES) * (offset / radius);
+                        double longLowerLeft = myPosition.longitude - (DEGREES) * (offset / radius) / (Math.cos(Math.PI / 180.0 * myPosition.latitude));
+                        double latUpperRight = myPosition.latitude + (DEGREES) * (offset / radius);
+                        double longUpperRight = myPosition.longitude + (DEGREES) * (offset / radius) / (Math.cos(Math.PI / 180.0 * myPosition.latitude));
 
-                } catch (IOException e) {
+                        System.out.println("----> BOUNDS");
+                        System.out.println("----> " + latLowerLeft + ", " + longLowerLeft);
+                        System.out.println("----> " + latUpperRight + ", " + longUpperRight);
+
+
+                        addresses = geocoder.getFromLocationName(query, 20, latLowerLeft, longLowerLeft, latUpperRight, longUpperRight);
+                        System.out.println("-----> TROVATI " + addresses.size());
+                        System.out.println("-----> COMPARO I RISULTATI CON " + myPosition.latitude + ", " + myPosition.longitude);
+
+
+                        if (!addresses.isEmpty()) {
+                            if (addresses.size() > 1) {
+                                for (Address a : addresses) {
+                                    System.out.println("-----> " + a.getLocality() + ", " + a.getAddressLine(0) + " - " + a.getLatitude() + ", " + a.getLongitude());
+                                    if (a.getLocality() != null) {
+                                        System.out.println("-----> AGGIUNTO");
+                                        nearAddress.add(a);
+                                    }
+
+                                }
+                                if (nearAddress.isEmpty()) {
+                                    //nessun risultato trovato
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.nessun_risultato), Toast.LENGTH_SHORT);
+                                            toast.show();
+                                        }
+                                    });
+                                    return;
+                                }
+                                if (nearAddress.size() > 1) {
+                                    //popup di scelta
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            showDialogPlaces(nearAddress);
+                                        }
+                                    });
+                                    return;
+                                } else {
+                                    foundedPosition = new LatLng(nearAddress.get(0).getLatitude(), nearAddress.get(0).getLongitude());
+                                }
+                            } else {
+                                System.out.println("-----> " + addresses.get(0).getLocality() + ", " + addresses.get(0).getAddressLine(0) + " - " + addresses.get(0).getLatitude() + ", " + addresses.get(0).getLongitude());
+                                foundedPosition = new LatLng(addresses.get(0).getLatitude(), addresses.get(0).getLongitude());
+
+                            }
+                        } else {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.nessun_risultato), Toast.LENGTH_SHORT);
+                                    toast.show();
+                                }
+                            });
+                            return;
+                        }
+
+
+                    }
+
+                } catch(IOException e){
                     e.printStackTrace();
                 }
+
 
                 final ArrayList<Oggetto_risultatoRicerca> risultatoRicerca = find();
 
