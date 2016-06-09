@@ -142,7 +142,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         return alert_visibility;
     }
 
-    @Override
+    /*@Override
     protected void onResume() {
         super.onResume();
 
@@ -169,7 +169,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                 });
             }
         }.start();
-    }
+    }*/
 
     protected void configureBarraLaterale(View view) {
         //inizializzo menu laterale
@@ -212,6 +212,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                                         id = user.getUid();
                                         email = user.getEmail();
                                         caricaUtenteLoggato(user, navigationView);
+                                        isLogin(user);
                                     } else{
                                         System.out.println("--------------------------> utente non connesso");
                                         mAuth.removeAuthStateListener(mAuthListener);
@@ -236,6 +237,11 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
             System.out.println(e.getMessage());
             return;
         }
+    }
+
+    protected void isLogin(FirebaseUser user) {
+        // se viene sovrascritto dalle altre classi
+        // si sa quando l'utente è collegato
     }
 
     private void caricaUtenteDefault(final NavigationView navigationView) {

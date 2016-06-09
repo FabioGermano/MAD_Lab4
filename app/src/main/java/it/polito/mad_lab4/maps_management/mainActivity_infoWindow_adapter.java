@@ -31,11 +31,6 @@ public class mainActivity_infoWindow_adapter implements GoogleMap.InfoWindowAdap
 
     @Override
     public View getInfoWindow(Marker marker) {
-        return null;
-    }
-
-    @Override
-    public View getInfoContents(Marker marker) {
         View v = myInflater.inflate(R.layout.activity_main_infowindow_map, null);
         TextView titolo = (TextView) v.findViewById(R.id.titolo_map);
         TextView testo = (TextView) v.findViewById(R.id.text_map);
@@ -49,10 +44,32 @@ public class mainActivity_infoWindow_adapter implements GoogleMap.InfoWindowAdap
         else {
             titolo.setText("Your position");
             img.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_user_grey));
+            testo.setVisibility(View.GONE);
         }
 
-
         return v;
+    }
+
+    @Override
+    public View getInfoContents(Marker marker) {
+        /*View v = myInflater.inflate(R.layout.activity_main_infowindow_map, null);
+        TextView titolo = (TextView) v.findViewById(R.id.titolo_map);
+        TextView testo = (TextView) v.findViewById(R.id.text_map);
+        ImageView img = (ImageView) v.findViewById(R.id.markerLogo);
+
+        Oggetto_offerteVicine offerta = getOfferta(marker.getId());
+        if (offerta != null){
+            titolo.setText(offerta.getNomeRistorante());
+            testo.setText(offerta.getNumOfferte() + " offerte disponibili");
+        }
+        else {
+            titolo.setText("Your position");
+            img.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_user_grey));
+            testo.setVisibility(View.GONE);
+        }
+
+        return v;*/
+        return  null;
     }
 
     private Oggetto_offerteVicine getOfferta(String id){

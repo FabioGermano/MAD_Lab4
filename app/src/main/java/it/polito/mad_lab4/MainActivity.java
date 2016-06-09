@@ -32,6 +32,7 @@ import android.widget.Toast;
 import com.google.android.gms.maps.LocationSource;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.auth.FirebaseUser;
 
 import org.w3c.dom.Text;
 
@@ -43,9 +44,12 @@ import it.polito.mad_lab4.bl.RestaurantBL;
 import it.polito.mad_lab4.elaborazioneRicerche.Oggetto_offerteVicine;
 import it.polito.mad_lab4.elaborazioneRicerche.Oggetto_risultatoRicerca;
 import it.polito.mad_lab4.elaborazioneRicerche.elaborazioneRicerche;
+import it.polito.mad_lab4.firebase_manager.FirebaseGetClientSingleInformation;
 import it.polito.mad_lab4.firebase_manager.FirebaseGetOfferListManager;
 import it.polito.mad_lab4.firebase_manager.FirebaseGetRestaurantInfoManager;
 import it.polito.mad_lab4.firebase_manager.FirebaseGetRestaurantProfileManager;
+import it.polito.mad_lab4.firebase_manager.FirebaseGetUniversitiesManager;
+import it.polito.mad_lab4.firebase_manager.FirebaseGetUniversityPosition;
 import it.polito.mad_lab4.firebase_manager.FirebaseGetUserInfoManager;
 import it.polito.mad_lab4.firebase_position.FirebaseGetRestaurantsPositions;
 import it.polito.mad_lab4.manager.MainActivityManager;
@@ -77,7 +81,7 @@ public class MainActivity extends BaseActivity implements LocationListener{
 
     private mainActivity_map gestoreMappa;
     private LocationManager locationManager;
-    private LatLng myPosition = null;
+    private LatLng myPosition = new LatLng(45.06455, 7.65833);
     private LatLng foundedPosition = null;
 
     @Override
@@ -96,7 +100,6 @@ public class MainActivity extends BaseActivity implements LocationListener{
         setActivityTitle(getResources().getString(R.string.titolo_main_activity));
 
         inizializzaSearchView();
-        myPosition = setPosition();
 
         mapMessage = (TextView) findViewById(R.id.mapMessage);
 
@@ -141,15 +144,42 @@ public class MainActivity extends BaseActivity implements LocationListener{
 
     }
 
-    private LatLng setPosition(){
-        LatLng pos;
+    @Override
+    protected void isLogin(FirebaseUser user){
+        super.isLogin(user);
+        if(myPosition.latitude == 45.06455 && myPosition.longitude == 7.65833){
+            // non è cambiata dalla posizione di dafault quindi è necessario
+            // settare l'università come default. Al max si rileva poi la nuova posizione e si aggiorna
+            setUniversityPosition(user.getUid());
+        }
+    }
 
-        //se loggato setta come default l'ateneo
-        pos = new LatLng(45.06455, 7.65833);
+    private void setUniversityPosition(final String id){
+        new Thread()        {
+            public void run() {
 
+                String university ;
+                FirebaseGetClientSingleInformation clientSingleInformation = new FirebaseGetClientSingleInformation();
+                clientSingleInformation.getClientInfo(id, "universityId");
+                clientSingleInformation.waitForResult();
+                university = clientSingleInformation.getResult();
+                if(university != null){
+                    FirebaseGetUniversityPosition universitiesManager = new FirebaseGetUniversityPosition();
+                    universitiesManager.getUniversityPosition(university);
+                    universitiesManager.waitForResult();
+                    final Position univPosition = universitiesManager.getResult();
 
-        //se non loggato setta come default Torino
-        return pos;
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            gestoreMappa.setCurrentPosition(new LatLng(univPosition.getLatitudine(), univPosition.getLongitudine()));
+                            mapMessage.setVisibility(View.VISIBLE);
+                            gestoreMappa.updatePosition();
+                        }
+                    });
+                }
+             }
+        }.start();
     }
 
     private void checkNetPermission(){
