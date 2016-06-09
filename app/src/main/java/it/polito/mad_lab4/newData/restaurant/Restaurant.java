@@ -53,6 +53,14 @@ public class Restaurant implements Serializable{
         }
         return totRanking/numReviews;
     }
+    @Exclude
+    public int getPrice(){
+        if(numDishesAndOffers == 0){
+            return 0;
+        }
+        return totDishesAndOffers/numDishesAndOffers;
+    }
+
     public String getAddress() {
         return address;
     }

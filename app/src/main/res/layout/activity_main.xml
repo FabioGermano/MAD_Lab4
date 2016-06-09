@@ -165,6 +165,8 @@
                         android:layout_marginBottom="10sp"
                         style="@style/niceText" />
 
+
+
                     <android.support.v7.widget.CardView
                         xmlns:android="http://schemas.android.com/apk/res/android"
                         xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -176,12 +178,29 @@
                         card_view:cardCornerRadius="5dp"
                         card_view:cardBackgroundColor="@color/lightGrey"
                         >
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
                         <fragment
                             android:id="@+id/map"
                             android:name="com.google.android.gms.maps.SupportMapFragment"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             tools:context="it.polito.mad_lab4.MainActivity" />
+
+                         <TextView
+                             android:layout_width="wrap_content"
+                             android:layout_height="wrap_content"
+                             android:text="@string/avvisoMappa"
+                             android:layout_marginLeft="10dp"
+                             android:layout_marginTop="5dp"
+                             android:id="@+id/mapMessage"
+                             android:background="@color/blackSemiTrasparent"/>
+
+                        </RelativeLayout>
+
                     </android.support.v7.widget.CardView>
 
                     <Button
@@ -202,7 +221,7 @@
         </RelativeLayout>
 
 
-        <!-- -->
+        <!--
         <android.support.design.widget.NavigationView
             android:id="@+id/nav_view"
             android:layout_width="wrap_content"
@@ -210,7 +229,7 @@
             android:layout_gravity="start"
             android:fitsSystemWindows="true"
             app:headerLayout="@layout/nav_header_client" />
-
+    -->
 
 
 </android.support.v4.widget.DrawerLayout>

@@ -158,7 +158,7 @@
     <string name="costoFinder">Cost:</string>
     <string name="valutazioneFinder">Rating:</string>
     <string name="ricercaAvanzata">Advanced Search:</string>
-    <string name="takeAway">Take Away</string>
+    <string name="takeAway">Take-Away</string>
     <string name="restaurant">Restaurant</string>
     <string name="takeAway_Restaurant">Take Away &amp; Restaurant</string>
     <string name="noServices">No Services</string>
@@ -324,4 +324,6 @@
     <string name="cuisine">Your cuisine</string>
     <string name="info">Info</string>
     <string name="notes_by_restaurant">Notes by the restaurant:</string>
+
+    <string name="avvisoMappa">Finding your position...</string>
 </resources>

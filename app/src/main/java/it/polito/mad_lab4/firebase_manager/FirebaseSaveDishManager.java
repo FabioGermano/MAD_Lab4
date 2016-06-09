@@ -83,6 +83,34 @@ public class FirebaseSaveDishManager implements DatabaseReference.CompletionList
             DatabaseReference myRef = database.getReference("menu/" + restaurantId + "/" + dish.getDishId());
             myRef.setValue(dish, FirebaseSaveDishManager.this);
         }
+
+/*
+CREARE CLASSE AD HOC STILE FirebaseSaveRestaurantInfoManager
+        int numPiatti = -1;
+        float totPrezzo = -1;
+
+        FirebaseGetRestaurantInfoManager restaurantInfoManager;
+
+        restaurantInfoManager = new FirebaseGetRestaurantInfoManager();
+        restaurantInfoManager.getRestaurantInfo(restaurantId, "totDishesAndOffers");
+        restaurantInfoManager.waitForResult();
+        totPrezzo = Float.parseFloat(restaurantInfoManager.getResult());
+
+        if(isNewDish){
+            restaurantInfoManager = new FirebaseGetRestaurantInfoManager();
+            restaurantInfoManager.getRestaurantInfo(restaurantId, "numDishesAndOffers");
+            restaurantInfoManager.waitForResult();
+            numPiatti = Integer.parseInt(restaurantInfoManager.getResult());
+            if (numPiatti != -1)
+                numPiatti++;
+        }
+
+        if (totPrezzo != -1){
+            if (dish.getLastPrice() != dish.getPrice())
+                totPrezzo = totPrezzo - dish.getLastPrice() + dish.getPrice();
+
+
+        }*/
     }
 
     @Override

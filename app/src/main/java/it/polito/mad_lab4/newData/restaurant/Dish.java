@@ -13,15 +13,24 @@ import it.polito.mad_lab4.data.restaurant.DishTypeConverter;
 public class Dish implements Serializable{
     private String dishName;
     private float sumRank;
-    private String dishId; // not mapped in firebase
+    private String dishId;
     private int numRanks;
     private float price;
     private Boolean isTodayAvailable;
     private String type; // primi, secondi...
     private String thumbDownloadLink;
     private String largeDownloadLink;
-
+    private float lastPrice = -1;
     public Dish(){
+    }
+
+    @Exclude
+    public float getLastPrice() {
+        return lastPrice;
+    }
+    @Exclude
+    public void setLastPrice(float lastPrice) {
+        this.lastPrice = lastPrice;
     }
 
     public String getDishName() {

@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -628,6 +629,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
 
 
     public void showProgressBar(){
+        dismissProgressDialog();
         pd = new ProgressDialog(this);
         pd.setMessage("Loading...");
         pd.setCancelable(false);
@@ -656,5 +658,11 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
+    }
+
+    public void closeKeyboard(){
+        InputMethodManager inputManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if (this.getCurrentFocus() != null)
+            inputManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
     }
 }

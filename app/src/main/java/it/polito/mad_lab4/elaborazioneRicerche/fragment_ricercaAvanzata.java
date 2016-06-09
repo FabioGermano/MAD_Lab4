@@ -87,9 +87,9 @@ public class fragment_ricercaAvanzata extends Fragment {
                     selezioneTipoLocale = (String) adapter.getItemAtPosition(pos);
                     if (selezioneTipoLocale.compareTo("-") == 0)
                         selezioneTipoLocale = null;
-                    else if(selezioneTipoLocale.compareTo("Take Away")== 0)
+                    else if(selezioneTipoLocale.compareTo(getResources().getString(R.string.takeAway))== 0)
                         selezioneTipoLocale = "TA";
-                    else if(selezioneTipoLocale.compareTo("Restaurant") == 0)
+                    else if(selezioneTipoLocale.compareTo(getResources().getString(R.string.restaurant)) == 0)
                         selezioneTipoLocale = "R";
                     else
                         selezioneTipoLocale = "ALL";

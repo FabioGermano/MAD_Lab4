@@ -302,6 +302,10 @@ public class ModifyMenuDish extends EditableBaseActivity {
             }
 
             dish.setDishName(nomeD);
+
+            if (!newDish)
+                dish.setLastPrice(dish.getPrice());
+
             dish.setPrice(priceD);
             dish.setType(DishTypeConverter.fromEnumToString(modifiedType));
 

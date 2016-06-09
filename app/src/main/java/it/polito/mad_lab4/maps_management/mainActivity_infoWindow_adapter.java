@@ -1,8 +1,10 @@
 package it.polito.mad_lab4.maps_management;
 
 import android.content.Context;
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -37,11 +39,18 @@ public class mainActivity_infoWindow_adapter implements GoogleMap.InfoWindowAdap
         View v = myInflater.inflate(R.layout.activity_main_infowindow_map, null);
         TextView titolo = (TextView) v.findViewById(R.id.titolo_map);
         TextView testo = (TextView) v.findViewById(R.id.text_map);
+        ImageView img = (ImageView) v.findViewById(R.id.markerLogo);
 
         Oggetto_offerteVicine offerta = getOfferta(marker.getId());
+        if (offerta != null){
+            titolo.setText(offerta.getNomeRistorante());
+            testo.setText(offerta.getNumOfferte() + " offerte disponibili");
+        }
+        else {
+            titolo.setText("Your position");
+            img.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_user_grey));
+        }
 
-        titolo.setText(offerta.getNomeRistorante());
-        testo.setText(offerta.getNumOfferte() + " offerte disponibili");
 
         return v;
     }

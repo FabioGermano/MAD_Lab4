@@ -26,11 +26,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.LocationSource;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -61,7 +64,8 @@ public class MainActivity extends BaseActivity implements LocationListener{
     private boolean ricerca_luogo=false, ricerca_ristorante=true;
 
     private SearchView ricerca, number, city;
-    private CardView numberCard, cityCard;
+    private TextView mapMessage;
+
 
     private Context context = null;
 
@@ -94,6 +98,7 @@ public class MainActivity extends BaseActivity implements LocationListener{
         inizializzaSearchView();
         myPosition = setPosition();
 
+        mapMessage = (TextView) findViewById(R.id.mapMessage);
 
 
         Button btn = (Button) findViewById(R.id.button2);
@@ -404,7 +409,7 @@ public class MainActivity extends BaseActivity implements LocationListener{
                 }
 
 
-                final ArrayList<Oggetto_risultatoRicerca> risultatoRicerca = find();
+                final ArrayList<Oggetto_risultatoRicerca> risultatoRicerca = findByDistance();
 
                 runOnUiThread(new Runnable() {
                     @Override
@@ -433,7 +438,7 @@ public class MainActivity extends BaseActivity implements LocationListener{
         }.start();
     }
 
-    private ArrayList<Oggetto_risultatoRicerca> find (){
+    private ArrayList<Oggetto_risultatoRicerca> findByDistance (){
         FirebaseGetRestaurantProfileManager restaurantProfileManager;
         final ArrayList<Oggetto_risultatoRicerca> risultatoRicerca = new ArrayList<Oggetto_risultatoRicerca>();
 
@@ -445,8 +450,7 @@ public class MainActivity extends BaseActivity implements LocationListener{
                 restaurantProfileManager.waitForResult();
 
                 Restaurant r = restaurantProfileManager.getResult();
-                int avgPrice = 10;
-                Oggetto_risultatoRicerca res = new Oggetto_risultatoRicerca(restaurant.getRestaurantId(), r.getRestaurantName(), r.getAddress(), r.getLogoThumbDownloadLink(), avgPrice, r.getRanking(), r.isTakeAway(), r.isOnPlace());
+                Oggetto_risultatoRicerca res = new Oggetto_risultatoRicerca(restaurant.getRestaurantId(), r.getRestaurantName(), r.getAddress(), r.getLogoThumbDownloadLink(), r.getPrice(), r.getRanking(), r.isTakeAway(), r.isOnPlace());
                 risultatoRicerca.add(res);
             }
         }
@@ -481,8 +485,7 @@ public class MainActivity extends BaseActivity implements LocationListener{
                         restaurantProfileManager.waitForResult();
                         Restaurant r = restaurantProfileManager.getResult();
 
-                        int avgPrice = 10;
-                        Oggetto_risultatoRicerca res = new Oggetto_risultatoRicerca(obj.getRestaurantId(), r.getRestaurantName(), r.getAddress(), r.getLogoThumbDownloadLink(), avgPrice, r.getRanking(), r.isTakeAway(), r.isOnPlace());
+                        Oggetto_risultatoRicerca res = new Oggetto_risultatoRicerca(obj.getRestaurantId(), r.getRestaurantName(), r.getAddress(), r.getLogoThumbDownloadLink(), r.getPrice(), r.getRanking(), r.isTakeAway(), r.isOnPlace());
                         listaRicerca.add(res);
                     }
                 }
@@ -627,13 +630,15 @@ public class MainActivity extends BaseActivity implements LocationListener{
                 System.out.println("----> " + a.getAddressLine(0));
             }
 
-            if(!isNear(null, new LatLng(location.getLatitude(), location.getLongitude()), 25)) {
-                System.out.println("----> nuova posizione aggiorno la mappa");
+
+            if(!isNear(myPosition, new LatLng(location.getLatitude(), location.getLongitude()), 10) || location.getAccuracy() > 50) {
                 gestoreMappa.setCurrentPosition(new LatLng(location.getLatitude(), location.getLongitude()));
+                mapMessage.setVisibility(View.VISIBLE);
+                System.out.println("----> nuova posizione aggiorno la mappa");
                 gestoreMappa.updatePosition();
             } else{
                 System.out.println("----> nuova posizione NON aggiorno la mappa");
-
+                mapMessage.setVisibility(View.GONE);
             }
 
             myPosition = new LatLng(location.getLatitude(), location.getLongitude());
@@ -750,7 +755,7 @@ public class MainActivity extends BaseActivity implements LocationListener{
 
                         new Thread() {
                             public void run() {
-                                final ArrayList<Oggetto_risultatoRicerca> risultatoRicerca = find();
+                                final ArrayList<Oggetto_risultatoRicerca> risultatoRicerca = findByDistance();
 
                                 runOnUiThread(new Runnable() {
                                     @Override

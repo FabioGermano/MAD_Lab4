@@ -89,7 +89,7 @@ public class mainActivity_map implements OnMapReadyCallback, GoogleMap.OnMapClic
             } else {
                 //metto l'icona semplice
                 marker =mMap.addMarker(new MarkerOptions().position(posizioneOfferta)
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+                        .icon(BitmapDescriptorFactory.fromResource(R.mipmap.hamburger_logo)));
                 obj.setMarkerAssociato(marker.getId());
             }
         }
@@ -212,8 +212,9 @@ public class mainActivity_map implements OnMapReadyCallback, GoogleMap.OnMapClic
 
 
     public void setCurrentPosition(LatLng currentPosition){
-        if (currentPosition != null)
+        if (currentPosition != null) {
             this.myPosition = currentPosition;
+        }
     }
 
     public void setContext(Context argC){
@@ -229,7 +230,7 @@ public class mainActivity_map implements OnMapReadyCallback, GoogleMap.OnMapClic
     }
 
     public void updatePosition(){
-        if(!fullScreen){
+        if(!fullScreen && mMap!=null){
             mMap.clear();
             //scarico ed elaboro i dati dal server e poi chiamo settaMarker()
             caricaOfferteDaVisualizzare();
