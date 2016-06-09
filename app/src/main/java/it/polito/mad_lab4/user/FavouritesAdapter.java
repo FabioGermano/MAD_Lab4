@@ -83,7 +83,7 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.Vi
         private void goToRestaurantActivity() {
             //TODO
             Intent i= new Intent(context, RestaurantActivity.class);
-            i.putExtra("restaurantId", "");
+            i.putExtra("restaurantId", data.get(position)[6]);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(i);
         }

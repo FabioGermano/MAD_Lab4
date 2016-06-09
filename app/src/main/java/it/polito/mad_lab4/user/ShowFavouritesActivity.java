@@ -68,7 +68,8 @@ public class ShowFavouritesActivity extends BaseActivity {
 
                 favourites.addAll(firebaseGetFavouritesListManager.getResult());
                 for(String restaurantId : favourites) {
-                    final String[] result = new String[6];
+                    final String[] result = new String[7];
+
                     for(int i=0;i<fields.length;i++){
                         FirebaseGetRestaurantInfoManager firebaseGetRestaurantInfoManager = new FirebaseGetRestaurantInfoManager();
                         firebaseGetRestaurantInfoManager.getRestaurantInfo(restaurantId, fields[i]);
@@ -76,6 +77,7 @@ public class ShowFavouritesActivity extends BaseActivity {
                         result[i]= ((String) firebaseGetRestaurantInfoManager.getResult());
                         firebaseGetRestaurantInfoManager.terminate();
                     }
+                    result[6]=restaurantId;
                     infos.add(result);
                 }
 
