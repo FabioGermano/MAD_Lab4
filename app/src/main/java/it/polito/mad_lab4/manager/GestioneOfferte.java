@@ -46,6 +46,7 @@ public class GestioneOfferte extends EditableBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setVisibilityAlert(false);
         setContentView(R.layout.activity_gestione_offerte);
         setToolbarColor();
         setActivityTitle(getResources().getString(R.string.title_activity_edit_offers));

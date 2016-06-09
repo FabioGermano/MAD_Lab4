@@ -60,6 +60,7 @@ public class EditRestaurantProfile extends it.polito.mad_lab4.BaseActivity {
 
         setContentView(R.layout.activity_edit_restaurant_profile);
         getViews();
+        setVisibilityAlert(false);
 
         restaurantId = (String) getIntent().getExtras().getString("restaurantId");
 

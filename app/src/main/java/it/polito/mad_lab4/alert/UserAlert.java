@@ -11,10 +11,20 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import it.polito.mad_lab4.newData.reservation.Reservation;
 import it.polito.mad_lab4.data.reservation.ReservationType;
 import it.polito.mad_lab4.data.reservation.ReservationTypeConverter;
+import it.polito.mad_lab4.newData.restaurant.Offer;
 import it.polito.mad_lab4.newData.user.Notification;
 
 /**
@@ -23,12 +33,13 @@ import it.polito.mad_lab4.newData.user.Notification;
 public class UserAlert {
 
     private static Context context;
-    private static boolean isInitialited = false;
+    public static boolean isInitialited = false;
     private static SharedPreferences prefs;
     private static TextView labelAlert;
     public static int count = 0;
+    public static String userId;
 
-    public static void init(Context _context, String userId, TextView _labelAlert){
+    public static void init(Context _context, String _userId, TextView _labelAlert){
         labelAlert = _labelAlert;
 
         if(context == null){
@@ -49,6 +60,9 @@ public class UserAlert {
         }
 
         isInitialited = true;
+        userId = _userId;
+
+        manageOffers();
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         Query query = database.getReference("reservations/");
@@ -131,6 +145,68 @@ public class UserAlert {
         });
     }
 
+    private static void manageOffers() {
+        final Map<String,Boolean> offersAlert = loadMap();
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference mDatabase = database.getReference();
+        mDatabase.child("favourites").child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getValue() != null) {
+
+                    for (final DataSnapshot d : dataSnapshot.getChildren()) {
+                        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        DatabaseReference mDatabase = database.getReference("offers/"+d.getKey());
+                        mDatabase.addChildEventListener(new ChildEventListener() {
+                            @Override
+                            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                Offer o = dataSnapshot.getValue(Offer.class);
+                                if(offersAlert.get(o.getOfferId()) != null){
+                                    return;
+                                }
+
+                                count++;
+                                labelAlert.setText(String.valueOf(count));
+                                offersAlert.put(o.getOfferId(), false);
+                                saveMap(offersAlert);
+
+                                save(o, d.getKey());
+                            }
+
+                            @Override
+                            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                            }
+
+                            @Override
+                            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                            }
+
+                            @Override
+                            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     private static void save(Reservation reservation) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("reservations/"+reservation.getReservationId()+"/notified");
@@ -154,6 +230,38 @@ public class UserAlert {
         editor.commit();
     }
 
+    private static void save(final Offer offer, final String restaurantId) {
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("restaurants/"+restaurantId+"/restaurantName");
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Notification alertInfo = new Notification();
+                alertInfo.setMessage(null);
+                alertInfo.setNewOffer(true);
+                alertInfo.setOfferId(offer.getOfferId());
+                alertInfo.setRestaurantName((String)dataSnapshot.getValue());
+                alertInfo.setRestaurantId(restaurantId);
+
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference("userAlerts/"+userId);
+                String key = myRef.push().getKey();
+                myRef = myRef.child(key);
+                myRef.setValue(alertInfo);
+
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putInt("alertCount", count);
+                editor.commit();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     public static void resetAlertCount() {
         if(prefs == null){
             return;
@@ -165,5 +273,35 @@ public class UserAlert {
 
         count = 0;
         labelAlert.setText("0");
+    }
+
+    private static void saveMap(Map<String,Boolean> inputMap){
+        if (prefs != null){
+            JSONObject jsonObject = new JSONObject(inputMap);
+            String jsonString = jsonObject.toString();
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.remove("OffersAlert").commit();
+            editor.putString("OffersAlert", jsonString);
+            editor.commit();
+        }
+    }
+
+    private static Map<String,Boolean> loadMap(){
+        Map<String,Boolean> outputMap = new HashMap<String,Boolean>();
+        try{
+            if (prefs != null){
+                String jsonString = prefs.getString("OffersAlert", (new JSONObject()).toString());
+                JSONObject jsonObject = new JSONObject(jsonString);
+                Iterator<String> keysItr = jsonObject.keys();
+                while(keysItr.hasNext()) {
+                    String key = keysItr.next();
+                    Boolean value = (Boolean) jsonObject.get(key);
+                    outputMap.put(key, value);
+                }
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return outputMap;
     }
 }

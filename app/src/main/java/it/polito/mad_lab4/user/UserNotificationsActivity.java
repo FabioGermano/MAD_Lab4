@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import it.polito.mad_lab4.BaseActivity;
 import it.polito.mad_lab4.R;
@@ -26,9 +27,10 @@ public class UserNotificationsActivity extends BaseActivity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private String userId;
     private FirebaseGetNotificationListManager firebaseGetNotificationListManager;
     private ArrayList<Notification> notifications = new ArrayList<>();
+    private String userId;
+    private int countNew;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +46,8 @@ public class UserNotificationsActivity extends BaseActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        userId = getIntent().getExtras().getString("userId");
+        userId = UserAlert.userId;
+        countNew = (int) getIntent().getExtras().getInt("countNew");
 
         UserAlert.resetAlertCount();
     }
@@ -52,6 +55,8 @@ public class UserNotificationsActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        showProgressBar();
 
         Thread t = new Thread()
         {
@@ -63,7 +68,10 @@ public class UserNotificationsActivity extends BaseActivity {
                 notifications.clear();
                 notifications.addAll(firebaseGetNotificationListManager.getResult());
 
+                Collections.reverse(notifications);
+
                 if(notifications == null){
+                    dismissProgressDialog();
                     Log.e("GetNotifications", "resturned null notifications");
                     return;
                 }
@@ -71,7 +79,8 @@ public class UserNotificationsActivity extends BaseActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        mAdapter = new NotificationsAdapter(getBaseContext(), UserNotificationsActivity.this, notifications);
+                        dismissProgressDialog();
+                        mAdapter = new NotificationsAdapter(getBaseContext(), UserNotificationsActivity.this, notifications, countNew);
                         mRecyclerView.setAdapter(mAdapter);
                     }
                 });

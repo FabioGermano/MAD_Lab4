@@ -69,9 +69,11 @@ public class EditAvailability extends EditableBaseActivity {
 
         setContentView(R.layout.activity_gestione_menu);
         setToolbarColor();
+        setVisibilityAlert(false);
         hideToolbarShadow(true);
         setActivityTitle(getResources().getString(R.string.title_activity_edit_availability));
         setVisibilitySave(true);
+
         invalidateOptionsMenu();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             checkStoragePermission();

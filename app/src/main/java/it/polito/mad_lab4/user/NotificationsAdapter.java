@@ -26,19 +26,20 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
     private Context context;
     ArrayList<Notification> data;
     Activity activity;
+    int countNew = 0;
 
-    public NotificationsAdapter(Context context, Activity activity, ArrayList<Notification> objects) {
+    public NotificationsAdapter(Context context, Activity activity, ArrayList<Notification> objects, int countNew) {
         this.context= context;
         this.data= objects;
         this.activity=activity;
-
+        this.countNew = countNew;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         int position;
         ImageView icon;
         CardView cardView;
-        TextView message, restaurant_message;
+        TextView message, restaurant_message, isNewTextView;
 
         public ViewHolder(View v){
             super(v);
@@ -46,11 +47,15 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
             cardView = (CardView)  v.findViewById(R.id.cardView);
             message = (TextView)  v.findViewById(R.id.message);
             restaurant_message = (TextView)  v.findViewById(R.id.restaurant_message);
+            isNewTextView = (TextView) v.findViewById(R.id.new_notification);
         }
 
         public void setData(int position, Notification notification) {
 
             this.position=position;
+            if(position<countNew){
+                isNewTextView.setVisibility(View.VISIBLE);
+            }
             String s = new String();
             if(notification.isNewOffer()){
                 icon.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_local_offer_holo_light));
@@ -100,8 +105,7 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
 
             Notification n = data.get(position);
             Intent i= new Intent(context, RestaurantActivity.class);
-            //TODO hard code
-            i.putExtra("restaurantId", 2);
+            i.putExtra("restaurantId", n.getRestaurantId());
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(i);
             activity.finish();

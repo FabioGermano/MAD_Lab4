@@ -54,6 +54,7 @@ public class  GestioneMenu extends EditableBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gestione_menu);
 
+        setVisibilityAlert(false);
         setToolbarColor();
         setActivityTitle(getResources().getString(R.string.title_activity_edit_menu));
         hideToolbarShadow(true);

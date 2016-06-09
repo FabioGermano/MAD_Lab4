@@ -102,14 +102,7 @@ public class MainActivity extends BaseActivity implements LocationListener{
 
 
         Button btn = (Button) findViewById(R.id.button2);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent i= new Intent(getApplicationContext(), MainActivityManager.class);
-                startActivity(i);
-            }
-        });
+        btn.setVisibility(View.GONE);
 
 
         context = this;

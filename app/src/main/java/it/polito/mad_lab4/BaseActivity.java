@@ -145,6 +145,11 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     @Override
     protected void onResume() {
         super.onResume();
+
+        if(!alert_visibility){
+            return;
+        }
+
         new Thread()        {
             public void run() {
                 mAuthListener = new FirebaseGetAuthInformation();
@@ -154,7 +159,10 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (user != null) {
+                        if (user == null) {
+                            setVisibilityAlert(false);
+                        }
+                        else {
                             UserAlert.init(getApplicationContext(), user.getUid(), alertCountView);
                         }
                     }
@@ -214,6 +222,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                                             FirebaseAuth.getInstance().signOut();
                                             id = null;
                                         }
+                                        setVisibilityAlert(false);
                                         caricaUtenteDefault(navigationView);
                                     }
                                     dismissProgressDialog();
@@ -432,6 +441,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                 //TODO un controllo se sono utente o gestore e recuperare dati diversi
                 Bundle b = new Bundle();
                 b.putString("userId", this.id);
+                b.putInt("countNew", UserAlert.count);
                 Intent i = new Intent(getApplicationContext(), UserNotificationsActivity.class);
                 i.putExtras(b);
                 startActivity(i);
@@ -598,6 +608,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         //eseguo il logout e cancello eventualmente il file con le credenziali
         FirebaseAuth.getInstance().signOut();
         id = null;
+        UserAlert.isInitialited = false;
         Toast.makeText(getApplicationContext(), getResources().getString(R.string.logout_message), Toast.LENGTH_LONG).show();
         Intent i = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(i);

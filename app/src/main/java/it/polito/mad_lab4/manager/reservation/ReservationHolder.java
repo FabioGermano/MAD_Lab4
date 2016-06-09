@@ -273,10 +273,9 @@ public class ReservationHolder extends RecyclerView.ViewHolder implements View.O
         this.reservation.setStatus(ReservationTypeConverter.toString(ReservationType.ACCEPTED));
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("reservations/"+this.reservation.getReservationId()+"/status");
-        myRef.setValue(ReservationTypeConverter.toString(ReservationType.ACCEPTED));
-        myRef = database.getReference("reservations/"+this.reservation.getReservationId()+"/notified");
-        myRef.setValue(false);
+        DatabaseReference myRef = database.getReference("reservations/"+this.reservation.getReservationId());
+        this.reservation.setNotified(false);
+        myRef.setValue(this.reservation);
 
         containerFragment.moveReservationToNewState(getAdapterPosition(), ReservationType.PENDING, ReservationType.ACCEPTED);
     }
@@ -323,12 +322,9 @@ public class ReservationHolder extends RecyclerView.ViewHolder implements View.O
         this.reservation.setStatus(ReservationTypeConverter.toString(ReservationType.REJECTED));
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("reservations/"+this.reservation.getReservationId()+"/status");
-        myRef.setValue(ReservationTypeConverter.toString(ReservationType.REJECTED));
-        myRef = database.getReference("reservations/"+this.reservation.getReservationId()+"/noteByOwner");
-        myRef.setValue(this.reservation.getNoteByOwner());
-        myRef = database.getReference("reservations/"+this.reservation.getReservationId()+"/notified");
-        myRef.setValue(false);
+        DatabaseReference myRef = database.getReference("reservations/"+this.reservation.getReservationId());
+        this.reservation.setNotified(false);
+        myRef.setValue(this.reservation);
 
         containerFragment.moveReservationToNewState(getAdapterPosition(), ReservationType.PENDING, ReservationType.REJECTED);
     }

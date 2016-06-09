@@ -67,6 +67,7 @@ public class ModifyMenuDish extends EditableBaseActivity {
         invalidateOptionsMenu();
         setContentView(R.layout.activity_modify_menu_dish);
         getViews();
+        setVisibilityAlert(false);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             checkStoragePermission();

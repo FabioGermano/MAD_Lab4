@@ -61,6 +61,7 @@ public class ModifyOfferDish extends EditableBaseActivity {
 
 
         setContentView(R.layout.activity_modify_offer);
+        setVisibilityAlert(false);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             checkStoragePermission();

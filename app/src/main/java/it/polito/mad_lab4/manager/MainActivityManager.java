@@ -40,18 +40,12 @@ public class MainActivityManager extends it.polito.mad_lab4.BaseActivity{
         setContentView(R.layout.activity_main_manager);
         setToolbarColor();
         setActivityTitle(getResources().getString(R.string.app_name));
+        setVisibilityAlert(false);
 
         View header = null;
 
         Button btn = (Button) findViewById(R.id.button);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-            }
-        });
-        checkDB();
+        btn.setVisibility(View.GONE);
 
 
         //provaGson();

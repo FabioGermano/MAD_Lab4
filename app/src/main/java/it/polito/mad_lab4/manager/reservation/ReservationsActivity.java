@@ -70,6 +70,7 @@ public class ReservationsActivity extends it.polito.mad_lab4.BaseActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_reservations);
+        setVisibilityAlert(false);
         setToolbarColor();
         hideToolbarShadow(true);
         setVisibilityCalendar(true);
@@ -252,10 +253,11 @@ public class ReservationsActivity extends it.polito.mad_lab4.BaseActivity {
             this.reservationFragments[arrayId].getReservations().get(position).setIsVerified(true);
 
             FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference myRef = database.getReference("reservations/"+this.reservationFragments[arrayId].getReservations().get(position).getReservationId()+"/isVerified");
-            myRef.setValue(true);
-            myRef = database.getReference("reservations/"+this.reservationFragments[arrayId].getReservations().get(position).getReservationId()+"/notified");
-            myRef.setValue(false);
+            DatabaseReference myRef = database.getReference("reservations/"+this.reservationFragments[arrayId].getReservations().get(position).getReservationId());
+            Reservation r = this.reservationFragments[arrayId].getReservations().get(position);
+            r.setIsVerified(true);
+            r.setNotified(true);
+            myRef.setValue(r);
 
             this.reservationFragments[arrayId].getAdapter().notifyItemChanged(position);
         }
