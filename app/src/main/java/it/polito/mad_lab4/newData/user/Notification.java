@@ -1,4 +1,4 @@
-package it.polito.mad_lab4.data.user;
+package it.polito.mad_lab4.newData.user;
 
 /**
  * Created by Giovanna on 29/05/2016.
@@ -7,7 +7,6 @@ public class Notification {
 
     private String restaurantId;
     private boolean isNewOffer; // reservation or offer
-
     private String offerId;
     private boolean accepted;
     private String message;

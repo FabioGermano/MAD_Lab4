@@ -5,6 +5,7 @@ import android.util.Log;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,7 +31,7 @@ public class FirebaseSaveReservationManager implements DatabaseReference.Complet
 
     private boolean resultReturned = false;
 
-    private DatabaseReference myRef;
+    private DatabaseReference myRef, myRef1;
 
     public void saveReservation(Reservation reservation, ArrayList<ReservedDish> reservedDish){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -57,10 +58,10 @@ public class FirebaseSaveReservationManager implements DatabaseReference.Complet
 
     @Override
     public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-        lock.lock();
-        resultReturned = true;
-        isOk = (databaseError == null);
-        this.cv.signal();
-        lock.unlock();
+            lock.lock();
+            resultReturned = true;
+            isOk = (databaseError == null);
+            this.cv.signal();
+            lock.unlock();
     }
 }

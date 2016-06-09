@@ -137,7 +137,7 @@ public class TimeFragment extends Fragment implements DatesAdapter.AdapterInterf
 
         ArrayList<String> time = new ArrayList<String>();
 
-        if(tmp == "" || tmp.toLowerCase().equals("closed")){
+        if(tmp == "" || tmp.toLowerCase().equals("closed") || tmp.toLowerCase().equals("chiuso")){
             return time;
         }
 

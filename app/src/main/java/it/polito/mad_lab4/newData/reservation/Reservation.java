@@ -32,6 +32,7 @@ public class Reservation {
     private String userName;
     private String phone;
     private String avatarDownloadLink;
+    private boolean notified;
 
     public Reservation(){
     }
@@ -211,5 +212,13 @@ public class Reservation {
 
     public String getPhone() {
         return phone;
+    }
+
+    public boolean getNotified() {
+        return notified;
+    }
+
+    public void setNotified(boolean notified) {
+        this.notified = notified;
     }
 }

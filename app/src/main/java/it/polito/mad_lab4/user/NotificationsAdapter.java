@@ -3,21 +3,18 @@ package it.polito.mad_lab4.user;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import it.polito.mad_lab4.R;
-import it.polito.mad_lab4.data.user.Notification;
-import it.polito.mad_lab4.newData.restaurant.Restaurant;
+import it.polito.mad_lab4.newData.user.Notification;
 import it.polito.mad_lab4.reservation.user_history.ReservationsHistoryActivity;
 import it.polito.mad_lab4.restaurant.RestaurantActivity;
 

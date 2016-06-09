@@ -314,8 +314,6 @@ public class ModifyMenuDish extends EditableBaseActivity {
             Toast toast = Toast.makeText(getApplicationContext(), R.string.exceptionError, Toast.LENGTH_SHORT);
             toast.show();
 
-            Intent intent = new Intent(getApplicationContext(), GestioneMenu.class);
-            startActivity(intent);
             finish();
             return false;
         }

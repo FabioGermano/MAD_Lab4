@@ -7,6 +7,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.ViewCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -79,6 +80,7 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
         collapsingToolbarLayout.setCollapsedTitleTextColor(Color.WHITE);
 
         appbar= (AppBarLayout) findViewById(R.id.app_bar_layout);
+        appbar.setExpanded(false);
 
         fab = (android.support.design.widget.FloatingActionButton) findViewById(R.id.fab);
         fab.setVisibility(View.GONE);
@@ -192,6 +194,12 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
 
     void initSections(){
         collapsingToolbarLayout.setTitle(restaurant.getRestaurantName());
+        /*if(restaurant.getCover1_thumbDownloadLink() != null ||
+                restaurant.getCover2_thumbDownloadLink() != null ||
+                restaurant.getCover3_thumbDownloadLink() != null ||
+                restaurant.getCover4_thumbDownloadLink() != null) {
+            appbar.setExpanded(true);
+        }*/
 
         containerUserPhotoFragment = (ContainerUserPhotoFragment)getSupportFragmentManager().findFragmentById(R.id.UserPhotoFragment);
         containerUserPhotoFragment.init(restaurant);
@@ -218,6 +226,7 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
         });
         if( restaurant!= null && !restaurant.isReservations())
             add_reservation.setVisibility(View.GONE);
+
         setCoverImage();
 
     }

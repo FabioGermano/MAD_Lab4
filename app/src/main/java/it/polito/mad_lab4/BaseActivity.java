@@ -25,6 +25,7 @@ import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import it.polito.mad_lab4.alert.UserAlert;
 import it.polito.mad_lab4.firebase_manager.FirebaseGetAuthInformation;
 import it.polito.mad_lab4.firebase_manager.FirebaseGetUserInfoManager;
 import it.polito.mad_lab4.login_registrazione.Login;
@@ -138,6 +139,27 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     }
     protected boolean getVisibilityAlert(){
         return alert_visibility;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        new Thread()        {
+            public void run() {
+                mAuthListener = new FirebaseGetAuthInformation();
+                mAuthListener.waitForResult();
+                final FirebaseUser user = mAuthListener.getUser();
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (user != null) {
+                            UserAlert.init(getApplicationContext(), user.getUid(), alertCountView);
+                        }
+                    }
+                });
+            }
+        }.start();
     }
 
     protected void configureBarraLaterale(View view) {
@@ -387,10 +409,10 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
             };
             alertButton.setOnClickListener(listener);
             notificationLayout.setOnClickListener(listener);
-            SetAlertCount(4);
-            if(alertCount==0){
+
+            /*if(alertCount==0){
                 alertButton.setImageResource(R.drawable.ic_bell_white_48dp);
-            }
+            }*/
 
 
         }
@@ -407,7 +429,10 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                 break;
             case R.id.menu_notify:
                 //TODO un controllo se sono utente o gestore e recuperare dati diversi
-                Intent i = new Intent(getBaseContext(), UserNotificationsActivity.class);
+                Bundle b = new Bundle();
+                b.putString("userId", this.id);
+                Intent i = new Intent(getApplicationContext(), UserNotificationsActivity.class);
+                i.putExtras(b);
                 startActivity(i);
                 break;
             default:
@@ -578,11 +603,15 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         finish();
     }
 
-    protected void SetAlertCount(int count)
+    protected void resetAlertCountView(){
+        this.alertCountView.setText("0");
+    }
+
+    /*protected void SetAlertCount(int count)
     {
         this.alertCount = count;
         this.alertCountView.setText(String.valueOf(count));
-    }
+    }*/
 
     private void ModificaProfilo(){
         Bundle b = new Bundle();
