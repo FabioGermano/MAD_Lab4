@@ -23,10 +23,12 @@ public class FoodOrderAdapter extends ArrayAdapter<ReservedDish>{
 
     ListView listView;
     private int section;
+    Context context;
 
     public FoodOrderAdapter(Context context, ArrayList<ReservedDish> objects, int section) {
         super(context, 0, objects);
         this.data=objects;
+        this.context= context;
         this.section=section;
     }
 
@@ -50,7 +52,9 @@ public class FoodOrderAdapter extends ArrayAdapter<ReservedDish>{
         final ViewHolder viewHolder; // view lookup cache stored in tag
         if (convertView == null) {
             viewHolder = new ViewHolder();
-            LayoutInflater inflater = LayoutInflater.from(getContext());
+            LayoutInflater inflater = LayoutInflater.from(context);
+            //ViewGroup.LayoutParams lparams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            //convertView.setLayoutParams(lparams);
             convertView = inflater.inflate(R.layout.food_order_item, parent, false);
 
             viewHolder.name = (TextView) convertView.findViewById(R.id.dish_name);

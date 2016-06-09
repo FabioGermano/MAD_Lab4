@@ -13,27 +13,26 @@ import java.util.Map;
 /**
  * Created by f.germano on 28/05/2016.
  */
-public class FirebaseSaveFavouriteManager implements DatabaseReference.CompletionListener {
+public class FirebaseUserFavouritesManager implements DatabaseReference.CompletionListener {
 
-    private boolean firebaseReturnedResult = false;
-    private DatabaseError databaseError;
-
-    public void removeFavourite(String userId, String restaurantId){
+    public void removeLike(String userId, String restaurantId){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("favourites/"+userId+"/"+restaurantId);
+        myRef.setValue(null, this);
 
     }
 
-    public void saveFavourite(String userId, String restaurantId){
+    public void saveLike(String userId, String restaurantId){
+        Map<String, Object> value = new HashMap<String, Object>();
+        value.put("like", true);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("favourites/"+userId);
-        String key = myRef.push().getKey();
-        myRef = database.getReference("favourites/"+userId+"/"+key);
-        myRef.setValue(restaurantId);
+        DatabaseReference myRef = database.getReference("favourites/"+userId+"/"+restaurantId);
+        myRef.setValue(value, this);
 
     }
 
     @Override
     public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-
     }
 }

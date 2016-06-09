@@ -4,7 +4,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center"
     android:minHeight="40dp"
     android:measureWithLargestChild="true">
 
@@ -12,7 +11,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/info"
+        android:gravity="left"
         android:layout_marginLeft="5dp"
+        android:layout_alignParentLeft="true"
         android:layout_toLeftOf="@+id/dish_price"
         android:orientation="horizontal"
         android:layout_centerVertical="true">
@@ -25,7 +26,7 @@
         android:textColor="@color/blackSemitrasparent"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textSize="18sp"
-        android:text="asdlfhsdòlkfDKLAJFòDSJKLAFDJKFSDòKLJFDSòLKF P èp fè P+F fsd jsd"/>
+        android:text="Pollo"/>
 
 
     </LinearLayout>

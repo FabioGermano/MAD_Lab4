@@ -61,9 +61,6 @@ public class ListOrderFragment extends Fragment {
 
         listView = (ListView) rootView.findViewById(R.id.listView);
         listView.addHeaderView(header);
-
-        View footer = inflater.inflate(R.layout.footer_listview, null);
-        listView.addFooterView(footer);
         listView.setAdapter(new FoodOrderAdapter(context,data, position));
 
 

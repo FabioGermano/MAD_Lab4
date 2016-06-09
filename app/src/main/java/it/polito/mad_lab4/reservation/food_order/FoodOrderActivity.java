@@ -11,8 +11,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -43,6 +46,8 @@ public class FoodOrderActivity extends BaseActivity {
     private FirebaseGetMenuByTypeManager firebaseGetMenuByTypeManager;
     private FirebaseGetOfferListManager firebaseGetOfferListManager;
     private String currentUserId;
+    private String coverLink;
+    private ImageView cover;
 
     private  ReservedDish newReservedDish(Dish dish) {
         //TODO Reserved Dish ID ??
@@ -82,6 +87,7 @@ public class FoodOrderActivity extends BaseActivity {
 
 
             } else {
+                coverLink= extras.getString("coverLink");
                 date= extras.getString("date");
                 time= extras.getString("time");
                 weekday= extras.getString("weekday");
@@ -97,7 +103,9 @@ public class FoodOrderActivity extends BaseActivity {
         timeTextView = (TextView) findViewById(R.id.time) ;
         seatsTextView = (TextView) findViewById(R.id.seats) ;
         nameTextView = (TextView) findViewById(R.id.restaurant_name);
-
+        cover = (ImageView) findViewById(R.id.cover);
+        if(coverLink!=null)
+            Glide.with(this).load(coverLink).into(cover);
         if(date!=null && time!=null && restaurantName!=null){
             dateTextView.setText(Helper.formatDate(getApplicationContext(),weekday, date));
             timeTextView.setText(time);

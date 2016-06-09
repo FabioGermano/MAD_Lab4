@@ -17,7 +17,8 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/restaurant_test"/>
+        android:src="@drawable/restaurant_test"
+            android:id="@+id/cover" />
         <include layout="@layout/toolbar_view" android:layout_height="wrap_content" android:layout_width="match_parent" android:layout_alignParentTop="true"/>
 
         <TextView

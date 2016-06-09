@@ -84,7 +84,9 @@ public class TimeRangePickerDialog extends DialogFragment implements View.OnClic
         tabs.addTab(tabpage1);
         tabs.addTab(tabpage2);
 
-        GestioneDB DB = new GestioneDB();
+        //TODO starting time con quello dell'orario attuale
+
+        /*GestioneDB DB = new GestioneDB();
         int[] orario = DB.getOrario(getContext(), id);
 
         if (orario != null){
@@ -95,6 +97,7 @@ public class TimeRangePickerDialog extends DialogFragment implements View.OnClic
                 endTimePicker.setMinute(orario[3]);
             }
         }
+        */
 
         return root;
     }

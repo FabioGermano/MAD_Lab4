@@ -50,6 +50,7 @@ public class SectionFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.rate_dishes, container, false);
 
         listView = (ListView) rootView.findViewById(R.id.listView);
+
         listView.setAdapter(new RateAdapter(context, data, position));
 
 

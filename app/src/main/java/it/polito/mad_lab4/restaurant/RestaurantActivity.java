@@ -2,7 +2,6 @@ package it.polito.mad_lab4.restaurant;
 
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -13,25 +12,26 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
+
 import it.polito.mad_lab4.BaseActivity;
-import it.polito.mad_lab4.MainActivity;
 import it.polito.mad_lab4.R;
-import it.polito.mad_lab4.bl.RestaurantBL;
-import it.polito.mad_lab4.common.Helper;
 import it.polito.mad_lab4.firebase_manager.FirebaseGetAuthInformation;
-import it.polito.mad_lab4.firebase_manager.FirebaseGetFavouritesListManager;
 import it.polito.mad_lab4.firebase_manager.FirebaseGetRestaurantProfileManager;
-import it.polito.mad_lab4.firebase_manager.FirebaseSaveFavouriteManager;
+import it.polito.mad_lab4.firebase_manager.FirebaseUserFavouritesManager;
 import it.polito.mad_lab4.newData.restaurant.Restaurant;
 import it.polito.mad_lab4.reservation.ReservationActivity;
 import it.polito.mad_lab4.restaurant.cover.CoverActivity;
@@ -43,7 +43,7 @@ import it.polito.mad_lab4.restaurant.reviews.ReviewsActivity;
 import it.polito.mad_lab4.restaurant.reviews.add_review.AddReviewActivity;
 import it.polito.mad_lab4.restaurant.reviews_prev.ReviewsPrevFragment;
 
-public class  RestaurantActivity extends BaseActivity implements AppBarLayout.OnOffsetChangedListener{
+public class  RestaurantActivity extends BaseActivity implements AppBarLayout.OnOffsetChangedListener, ChildEventListener {
 
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private ContainerUserPhotoFragment containerUserPhotoFragment;
@@ -59,8 +59,10 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
     private android.support.design.widget.FloatingActionButton fab;
     private FloatingActionButton add_review, add_photo, add_reservation;
     private AppBarLayout appbar;
-    private boolean favourite=false;
+    public boolean favourite=false;
     private FirebaseUser currentUser;
+    private DatabaseReference myRef;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +81,13 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
         appbar= (AppBarLayout) findViewById(R.id.app_bar_layout);
 
         fab = (android.support.design.widget.FloatingActionButton) findViewById(R.id.fab);
+        fab.setVisibility(View.GONE);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                likeButtonPressed();
+            }
+        });
 
         fab.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.themeColor)));
 
@@ -99,13 +108,6 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
         restaurantId = extras.getString("restaurantId");
         //this.restaurantId = "gAFr9RplBOdXm0O7jmUhJH4m98l1";
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FirebaseSaveFavouriteManager fb = new FirebaseSaveFavouriteManager();
-                fb.saveFavourite("7K4XwUDQzigPJFIWXaLl2TBosnf1", restaurantId);
-            }
-        });
 
         menuPrevFragment = (MenuPrevFragment)getSupportFragmentManager().findFragmentById(R.id.menuPrevFragment);
         menuPrevFragment.setRestaurantId(restaurantId);
@@ -141,6 +143,7 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
 
         showProgressBar();
 
+
         new Thread() {
             public void run() {
                 FirebaseGetRestaurantProfileManager firebaseGetManProfileManager = new FirebaseGetRestaurantProfileManager();
@@ -170,13 +173,19 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
                 firebaseGetAuthInformation.waitForResult();
                 currentUser = firebaseGetAuthInformation.getUser();
                 if(currentUser != null) {
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    myRef = database.getReference("favourites/"+ currentUser.getUid()+"/"+restaurantId);
+                    myRef.addChildEventListener(RestaurantActivity.this);
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             add.setVisibility(View.VISIBLE);
+                            fab.setVisibility(View.VISIBLE);
+
                         }
                     });
                 }
+
             }
         }.start();
     }
@@ -194,6 +203,11 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
             ((LinearLayout)findViewById(R.id.reviewsFragmentContainer)).setVisibility(View.VISIBLE);
             reviewsPrevFragment.setRanking(restaurant.getTotRanking(), restaurant.getNumReviews());
         }
+        if(favourite){
+            fab.setImageResource(R.drawable.ic_star_favourites_active);
+        }
+        else
+            fab.setImageResource((R.drawable.ic_star_disabled));
 
         coverImage = (ImageView)findViewById(R.id.coverImage);
         coverImage.setOnClickListener(new View.OnClickListener() {
@@ -207,7 +221,22 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
         setCoverImage();
 
     }
+    /*
+    private void saveFavourite() {
 
+        FirebaseSaveFavouriteManager firebaseSaveFavouriteManager = new FirebaseSaveFavouriteManager();
+        firebaseSaveFavouriteManager.saveFavourite( currentUser.getUid(), restaurantId);
+        fab.setImageResource(R.drawable.ic_star_favourites_active);
+
+    }
+    private void removeFavourite() {
+
+        FirebaseSaveFavouriteManager firebaseSaveFavouriteManager = new FirebaseSaveFavouriteManager();
+        firebaseSaveFavouriteManager.removeFavourite( currentUser.getUid(), restaurantId);
+        fab.setImageResource(R.drawable.ic_star_disabled);
+
+    }
+    */
     private void setCoverImage() {
         for(int i = 0; i<4; i++){
             if(this.restaurant.getThumbCoverByIndex(i) != null){
@@ -244,9 +273,20 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
         startActivity(i);
     }
 
+    private void likeButtonPressed() {
+        FirebaseUserFavouritesManager firebaseUserFavouritesManager = new FirebaseUserFavouritesManager();
+        if(favourite){
+            firebaseUserFavouritesManager.removeLike( currentUser.getUid(), restaurantId);
+        }
+        else
+        {
+            firebaseUserFavouritesManager.saveLike( currentUser.getUid(), restaurantId);
+        }
+    }
     private void newReservation() {
         Intent i = new Intent(getApplicationContext(), ReservationActivity.class);
         i.putExtra("restaurant", this.restaurant);
+        i.putExtra("coverLink", this.restaurant.getCover1_largeDownloadLink());
         i.putExtra("userId", this.currentUser.getUid());
         startActivity(i);
     }
@@ -280,17 +320,52 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
 
     @Override
     public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                Log.w("appbar", String.valueOf(verticalOffset));
-                if(verticalOffset ==-680 && !getVisibilityAlert()){
-                    setVisibilityAlert(true);
-                    invalidateOptionsMenu();
-                }
-                else if(verticalOffset !=-680 && getVisibilityAlert()==true){
-                    setVisibilityAlert(false);
-                    invalidateOptionsMenu();
-                }
+        Log.w("appbar", String.valueOf(verticalOffset));
+        if(verticalOffset ==-680 && !getVisibilityAlert()){
+            setVisibilityAlert(true);
+            invalidateOptionsMenu();
+        }
+        else if(verticalOffset !=-680 && getVisibilityAlert()==true){
+            setVisibilityAlert(false);
+            invalidateOptionsMenu();
+        }
 
-            }
+    }
 
+    @Override
+    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+        fab.setImageResource(R.drawable.ic_star_favourites_active);
+        favourite = true;
+    }
 
+    @Override
+    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+        fab.setImageResource(R.drawable.ic_star_favourites_active);
+        favourite = true;
+    }
+
+    @Override
+    public void onChildRemoved(DataSnapshot dataSnapshot) {
+        fab.setImageResource(R.drawable.ic_star_disabled);
+        favourite = false;
+    }
+
+    @Override
+    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+    }
+
+    @Override
+    public void onCancelled(DatabaseError databaseError) {
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if(myRef != null){
+            myRef.removeEventListener(this);
+        }
+    }
 }

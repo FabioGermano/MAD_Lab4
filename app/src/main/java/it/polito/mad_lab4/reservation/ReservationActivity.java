@@ -5,7 +5,10 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.widget.NestedScrollView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -34,9 +37,10 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
     private ArrayList<String> currentDates;
     private Restaurant restaurant;
     View p, c;
+    private ImageView cover;
     ArrayList<String> timeTable =  new ArrayList<>();
     private NestedScrollView nestedScrollView;
-
+    private String coverLink;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,11 +61,15 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
 
         setVisibilityAlert(false);
         invalidateOptionsMenu();
+        coverLink = getIntent().getExtras().getString("coverLink");
 
         nestedScrollView = (NestedScrollView)findViewById(R.id.reservationsNestedScrollView);
 
         calendarFragment = (CalendarFragment) getSupportFragmentManager().findFragmentById(R.id.date_time);
         TextView name= (TextView) findViewById(R.id.restaurant_name);
+        cover = (ImageView) findViewById(R.id.cover);
+        if(coverLink != null)
+            Glide.with(this).load(coverLink).into(cover);
 
         this.timeTable= restaurant.getTimeTable();
         this.restaurantName= restaurant.getRestaurantName();
@@ -192,6 +200,7 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
         i.putExtra("restaurantId", restaurant.getRestaurantId());
         i.putExtra("restaurantName", restaurantName);
         i.putExtra("userId", this.currentUserId);
+        i.putExtra("coverLink", this.coverLink);
         startActivity(i);
     }
 
@@ -204,6 +213,7 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
         i.putExtra("restaurantId", restaurant.getRestaurantId());
         i.putExtra("restaurantName", restaurantName);
         i.putExtra("userId", this.currentUserId);
+        i.putExtra("coverLink", this.coverLink);
         startActivity(i);
     }
 
@@ -217,6 +227,7 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
         i.putExtra("restaurantId", restaurant.getRestaurantId());
         i.putExtra("restaurantName", restaurantName);
         i.putExtra("userId", this.currentUserId);
+        i.putExtra("coverLink", this.coverLink);
         startActivity(i);
 
     }
