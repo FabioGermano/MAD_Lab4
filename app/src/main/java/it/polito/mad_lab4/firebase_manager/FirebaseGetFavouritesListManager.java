@@ -45,7 +45,7 @@ public class FirebaseGetFavouritesListManager  implements ValueEventListener {
         if(dataSnapshot.getValue() != null) {
 
             for (DataSnapshot d : dataSnapshot.getChildren()) {
-                this.favourites.add((String) d.getValue());
+                this.favourites.add(d.getKey());
             }
         }
         resultReturned = true;
