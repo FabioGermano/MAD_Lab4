@@ -19,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
 import it.polito.mad_lab4.R;
@@ -131,11 +133,13 @@ public class RecyclerAdapter_risultatoRicerca extends RecyclerView.Adapter<Recyc
             //carico foto
             if(imgView != null){
                 String path = currentObj.getImage_path();
+                System.out.println("**********> Path: " + path);
                 if (path != null){
                     try {
-                        bitmap = BitmapFactory.decodeFile(path);
+                        /*bitmap = BitmapFactory.decodeFile(path);
                         if(bitmap != null)
-                            imgView.setImageBitmap(bitmap);
+                            imgView.setImageBitmap(bitmap);*/
+                        Glide.with(context).load(path).into(imgView);
                     } catch (Exception e){
                         System.out.println("Errore creazione bitmap");  //debug
                     }
