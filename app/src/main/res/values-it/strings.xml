@@ -65,7 +65,7 @@
     <string name="edit_user_profile_activity_title">Modifica profilo</string>
     <string name="email"></string>
     <string name="error_complete">Completa tutti i campi</string>
-    <string name="esegui_login">Esegui Login</string>
+    <string name="esegui_login">Login</string>
     <string name="eseguireLogin">Esegui Login</string>
     <string name="exceptionError">Ops, si è verificato un errore</string>
     <string name="favoriti">Preferiti</string>

@@ -133,7 +133,6 @@ public class RecyclerAdapter_risultatoRicerca extends RecyclerView.Adapter<Recyc
             //carico foto
             if(imgView != null){
                 String path = currentObj.getImage_path();
-                System.out.println("**********> Path: " + path);
                 if (path != null){
                     try {
                         /*bitmap = BitmapFactory.decodeFile(path);
