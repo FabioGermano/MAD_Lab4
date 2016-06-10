@@ -244,7 +244,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
 
     protected void isLogin(FirebaseUser user) {
         // se viene sovrascritto dalle altre classi
-        // si sa quando l'utente è collegato
+        // viene invocato all'avvio quando l'utente è collegato
     }
 
     private void caricaUtenteDefault(final NavigationView navigationView) {
