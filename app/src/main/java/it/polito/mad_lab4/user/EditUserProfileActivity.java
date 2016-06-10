@@ -411,6 +411,7 @@ public class EditUserProfileActivity extends BaseActivity implements UniversityP
                         Toast.makeText(EditUserProfileActivity.this, getResources().getString(R.string.dataSaved), Toast.LENGTH_SHORT).show();
                         Intent i = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(i);
+                        finish();
                     }
                 });
             }

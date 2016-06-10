@@ -33,6 +33,7 @@ import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.data.user.User;
 import it.polito.mad_lab4.firebase_manager.FirebaseGetDishManager;
 import it.polito.mad_lab4.firebase_manager.FirebaseSaveDishManager;
+import it.polito.mad_lab4.firebase_manager.FirebaseUpdateAvgDishesAndOffers;
 import it.polito.mad_lab4.newData.restaurant.Dish;
 import it.polito.mad_lab4.data.restaurant.DishType;
 import it.polito.mad_lab4.data.restaurant.DishTypeConverter;
@@ -128,7 +129,13 @@ public class ModifyMenuDish extends EditableBaseActivity {
                 }
 
                 // AGGIORNAMENTO AVG PREZZO PIATTI/OFFERTE
-
+                FirebaseUpdateAvgDishesAndOffers updateAvgDishesAndOffers = new FirebaseUpdateAvgDishesAndOffers();
+                updateAvgDishesAndOffers.updateAvgDishesAndOffers(restaurantId, dish.getPrice(), dish.getLastPrice(), isNewDish);
+                res = updateAvgDishesAndOffers.waitForResult();
+                if(!res){
+                    Log.e("Error saving the dish", "Error saving the dish");
+                    return;
+                }
 
                 runOnUiThread(new Runnable() {
                     @Override

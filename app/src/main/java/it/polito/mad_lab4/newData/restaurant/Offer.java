@@ -21,7 +21,18 @@ public class Offer implements Serializable{
     private String thumbDownloadLink;
     private String largeDownloadLink;
 
+    private float lastPrice = -1;
+
     public Offer(){
+    }
+
+    @Exclude
+    public float getLastPrice() {
+        return lastPrice;
+    }
+    @Exclude
+    public void setLastPrice(float lastPrice) {
+        this.lastPrice = lastPrice;
     }
 
     public Boolean getIsTodayAvailable() {
