@@ -208,7 +208,7 @@ public class ModifyOfferDish extends EditableBaseActivity {
             ToggleButton domBtn = (ToggleButton) findViewById(R.id.dom_Button);
 
             String nomeO;
-            int priceO;
+            float priceO;
             String notesO;
 
             if (editName != null) {
@@ -227,7 +227,7 @@ public class ModifyOfferDish extends EditableBaseActivity {
             if (editPrice != null) {
                 String price =  editPrice.getText().toString();
                 if (price.compareTo("") != 0) {
-                    priceO = Integer.parseInt(price);
+                    priceO = Float.parseFloat(price);
                 }
                 else {
                     //campo vuoto

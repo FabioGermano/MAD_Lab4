@@ -44,7 +44,7 @@ public class UserAlert {
 
         if(context == null){
             context = _context;
-            prefs = context.getSharedPreferences("pref", 0);
+            prefs = context.getSharedPreferences(_userId, 0);
         }
 
         if(prefs != null){

@@ -283,7 +283,7 @@ public class ModifyMenuDish extends EditableBaseActivity {
                 Altrimenti, teoricamente, posso riempire alcuni campi si e altri no (nulla di che)
              */
             String nomeD;
-            int priceD;
+            float priceD;
 
             /* ##################################
                  Lettura campi dalla schermata
@@ -309,7 +309,7 @@ public class ModifyMenuDish extends EditableBaseActivity {
             if (editPrice != null) {
                 String price =  editPrice.getText().toString();
                 if (price.compareTo("") != 0) {
-                    priceD = Integer.parseInt(editPrice.getText().toString());
+                    priceD = Float.parseFloat(editPrice.getText().toString());
                     //dish.setCost(priceD);
                 }
                 else{
