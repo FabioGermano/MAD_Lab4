@@ -135,6 +135,8 @@ public class ReviewsPrevFragment extends Fragment {
         if(numRanking <3){
             showAllButton.setVisibility(View.GONE);
         }
+        else
+            showAllButton.setVisibility(View.VISIBLE);
     }
 
     public void setRanking(float ranking, int numRanking) {
