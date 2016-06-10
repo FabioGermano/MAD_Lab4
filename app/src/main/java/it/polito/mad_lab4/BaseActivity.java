@@ -578,6 +578,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
      */
     private void showFavourites(){
         Intent i = new Intent(getBaseContext(), ShowFavouritesActivity.class);
+        i.putExtra("userId", this.id);
         startActivity(i);
     }
     private void Contattaci(){

@@ -15,6 +15,8 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -47,15 +49,14 @@ public class AddReviewActivity extends BaseActivity implements PhotoViewerListen
     private String restaurantName;
     private FirebaseSaveReviewManager firebaseSaveReviewManager;
     private ClientPersonalInformation clientInfo;
-    private String userId;
+    private String userId, username, userLogo;
+    private String coverLink;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_review);
 
-        this.restaurantID = getIntent().getExtras().getString("restaurantId");
-        this.restaurantName= getIntent().getExtras().getString("restaurantName");
 
         hideToolbar(true);
         hideToolbarShadow(true);
@@ -66,6 +67,16 @@ public class AddReviewActivity extends BaseActivity implements PhotoViewerListen
 
         editText= (EditText) findViewById(R.id.review);
         cover = (ImageView)findViewById(R.id.cover) ;
+
+        this.restaurantID = getIntent().getExtras().getString("restaurantId");
+        this.restaurantName= getIntent().getExtras().getString("restaurantName");
+        this.coverLink= getIntent().getExtras().getString("coverLink");
+        this.userId= getIntent().getExtras().getString("userId");
+        this.username= getIntent().getExtras().getString("username");
+        this.userLogo = getIntent().getExtras().getString("userLogo");
+
+        if(coverLink!=null)
+            Glide.with(this).load(coverLink).into(cover);
         restaurantNameTextView = (TextView) findViewById(R.id.restaurant_name);
 
 
@@ -99,6 +110,9 @@ public class AddReviewActivity extends BaseActivity implements PhotoViewerListen
                             i.putExtra("restaurantId", restaurantID);
                             i.putExtra("rating", rbValue);
                             i.putExtra("restaurantName", restaurantName);
+                            i.putExtra("userLogo", userLogo);
+                            i.putExtra("username", username);
+                            i.putExtra("userId", userId);
                             startActivity(i);
 
                         }
@@ -108,9 +122,9 @@ public class AddReviewActivity extends BaseActivity implements PhotoViewerListen
                             Review review = new Review();
                             review.setComment( editText.getText().toString());
                             review.setRank(rbValue);
-                            review.setUserId("7K4XwUDQzigPJFIWXaLl2TBosnf1");
-                            review.setUserName("Eugenio Cardonatti");
-                            review.setLogoLink("https://firebasestorage.googleapis.com/v0/b/project-9122886501087922816.appspot.com/o/7K4XwUDQzigPJFIWXaLl2TBosnf1_avatar.jpg?alt=media&token=c764207e-b795-4661-8289-25040ecb74f8");
+                            review.setUserId(userId);
+                            review.setUserName(username);
+                            review.setLogoLink(userLogo);
                             saveReview(restaurantID, review);
                         }
                     });

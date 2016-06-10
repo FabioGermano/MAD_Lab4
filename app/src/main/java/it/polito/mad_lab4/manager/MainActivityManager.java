@@ -13,7 +13,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseUser;
+
 import it.polito.mad_lab4.*;
+import it.polito.mad_lab4.firebase_manager.FirebaseGetAuthInformation;
 import it.polito.mad_lab4.manager.reservation.ReservationsActivity;
 
 public class MainActivityManager extends it.polito.mad_lab4.BaseActivity{
@@ -22,6 +25,7 @@ public class MainActivityManager extends it.polito.mad_lab4.BaseActivity{
     private Bitmap largeBitmap;*/
 
     private String name, email;
+    private FirebaseUser currentUser;
     private Bitmap logo;
 
 
@@ -41,6 +45,7 @@ public class MainActivityManager extends it.polito.mad_lab4.BaseActivity{
         setToolbarColor();
         setActivityTitle(getResources().getString(R.string.app_name));
         setVisibilityAlert(false);
+        invalidateOptionsMenu();
 
         View header = null;
 
@@ -63,32 +68,31 @@ public class MainActivityManager extends it.polito.mad_lab4.BaseActivity{
     }
 
 
-
-    public void checkDB(){
-        GestioneDB DB = new GestioneDB();
-
-        /*
-        DB.deleteDB(this, "db_menu");
-        DB.deleteDB(this, "db_offerte");
-        DB.deleteDB(this, "db_profilo");
-        DB.deleteDB(this, "db_reservation");
-        */
-        
-        DB.creaDB(this);
-
-        name = DB.getRestaurantName(this);
-        email = DB.getRestaurantEmail(this);
-        logo = DB.getRestaurantLogo(this);
-    }
-
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    protected void onResume() {
+        super.onResume();
 
-        /*if (requestCode == 6709) {
-            Toast toast = Toast.makeText(getApplicationContext(), "infatti", Toast.LENGTH_SHORT);
-            toast.show();
-        }*/
+        new Thread() {
+            public void run() {
+                FirebaseGetAuthInformation firebaseGetAuthInformation = new FirebaseGetAuthInformation();
+                firebaseGetAuthInformation.waitForResult();
+                currentUser = firebaseGetAuthInformation.getUser();
+                if(currentUser == null) {
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            setVisibilityAlert(false);
+                            invalidateOptionsMenu();
+
+                        }
+                    });
+                }
+
+            }
+        }.start();
+
     }
 
 }
