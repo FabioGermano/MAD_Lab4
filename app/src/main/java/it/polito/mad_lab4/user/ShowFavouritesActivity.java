@@ -44,8 +44,8 @@ public class ShowFavouritesActivity extends BaseActivity {
 
         setActivityTitle(getResources().getString(R.string.title_activity_show_favourites));
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
-
-        userId = "7K4XwUDQzigPJFIWXaLl2TBosnf1";
+        userId= getIntent().getExtras().getString("userId");
+        //userId = "7K4XwUDQzigPJFIWXaLl2TBosnf1";
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 

@@ -132,7 +132,7 @@ public class ReviewsPrevFragment extends Fragment {
                 containerLayout.addView(viewToAdd);
             }
 
-        if(numRanking < 4){
+        if(numRanking <3){
             showAllButton.setVisibility(View.GONE);
         }
     }

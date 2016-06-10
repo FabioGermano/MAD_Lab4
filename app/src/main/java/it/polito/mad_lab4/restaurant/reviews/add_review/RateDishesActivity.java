@@ -51,6 +51,9 @@ public class RateDishesActivity extends BaseActivity{
     private String restaurantName;
 
     private FirebaseSaveReviewManager firebaseSaveReviewManager;
+    private String username;
+    private String userId;
+    private String userLogo;
 
     private  ReviewFood newReviewFood(Object object) {
         ReviewFood rf = new ReviewFood();
@@ -131,6 +134,10 @@ public class RateDishesActivity extends BaseActivity{
         this.review = getIntent().getExtras().getString("review");
         this.rating = getIntent().getExtras().getFloat("rating");
         this.restaurantName = getIntent().getExtras().getString("restaurantName");
+        this.userId = getIntent().getExtras().getString("userId");
+        this.username = getIntent().getExtras().getString("username");
+        this.userLogo = getIntent().getExtras().getString("usserLogo");
+
         nameTextView= (TextView) findViewById(R.id.restaurant_name);
         nameTextView.setText(restaurantName);
         //restaurant = RestaurantBL.getRestaurantById(getApplicationContext(), restaurantId);
@@ -211,9 +218,9 @@ public class RateDishesActivity extends BaseActivity{
                 Review r = new Review( );
                 r.setComment(review);
                 r.setRank(rating);
-                r.setUserId("7K4XwUDQzigPJFIWXaLl2TBosnf1");
-                r.setUserName("Eugenio Cardonatti");
-                r.setLogoLink("https://firebasestorage.googleapis.com/v0/b/project-9122886501087922816.appspot.com/o/7K4XwUDQzigPJFIWXaLl2TBosnf1_avatar.jpg?alt=media&token=c764207e-b795-4661-8289-25040ecb74f8");
+                r.setUserId(userId);
+                r.setUserName(username);
+                r.setLogoLink(userLogo);
 
                 ArrayList<ReviewFood> saveData = new ArrayList<ReviewFood>();
                 for(ArrayList<ReviewFood> list : lists){

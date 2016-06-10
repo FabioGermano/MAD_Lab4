@@ -31,8 +31,10 @@ import java.util.ArrayList;
 import it.polito.mad_lab4.BaseActivity;
 import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.firebase_manager.FirebaseGetAuthInformation;
+import it.polito.mad_lab4.firebase_manager.FirebaseGetClientInfoManager;
 import it.polito.mad_lab4.firebase_manager.FirebaseGetRestaurantProfileManager;
 import it.polito.mad_lab4.firebase_manager.FirebaseUserFavouritesManager;
+import it.polito.mad_lab4.newData.client.ClientPersonalInformation;
 import it.polito.mad_lab4.newData.restaurant.Restaurant;
 import it.polito.mad_lab4.reservation.ReservationActivity;
 import it.polito.mad_lab4.restaurant.cover.CoverActivity;
@@ -49,7 +51,7 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private ContainerUserPhotoFragment containerUserPhotoFragment;
     private Restaurant restaurant;
-    private String restaurantId;
+    private String restaurantId, username, avatar;
     private BasicInfoFragment basicInfoFragment;
     private MenuPrevFragment menuPrevFragment;
     private OfferPrevFragment offerPrevFragment;
@@ -175,6 +177,12 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
                 firebaseGetAuthInformation.waitForResult();
                 currentUser = firebaseGetAuthInformation.getUser();
                 if(currentUser != null) {
+                    FirebaseGetClientInfoManager clientManager = new FirebaseGetClientInfoManager();
+                    clientManager.getClientInfo(currentUser.getUid());
+                    clientManager.waitForResult();
+                    ClientPersonalInformation client = clientManager.getResult();
+                    username = client.getName();
+                    avatar= client.getAvatarDownloadLink();
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     myRef = database.getReference("favourites/"+ currentUser.getUid()+"/"+restaurantId);
                     myRef.addChildEventListener(RestaurantActivity.this);
@@ -311,7 +319,11 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
                 case R.id.add_review:
                     i= new Intent(getApplicationContext(), AddReviewActivity.class);
                     i.putExtra("restaurantId", restaurantId);
+                    i.putExtra("coverLink", restaurant.getCover1_largeDownloadLink());
                     i.putExtra("restaurantName", restaurant.getRestaurantName());
+                    i.putExtra("userId", currentUser.getUid());
+                    i.putExtra("username", username);
+                    i.putExtra("userLogo",avatar );
                     startActivity(i);
                     break;
                 case R.id.add_reservation:
@@ -330,11 +342,11 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
     @Override
     public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
         Log.w("appbar", String.valueOf(verticalOffset));
-        if(verticalOffset ==-680 && !getVisibilityAlert()){
+        if(currentUser!=null && verticalOffset ==-680 && !getVisibilityAlert()){
             setVisibilityAlert(true);
             invalidateOptionsMenu();
         }
-        else if(verticalOffset !=-680 && getVisibilityAlert()==true){
+        else if(currentUser == null || (verticalOffset !=-680 && getVisibilityAlert()==true)){
             setVisibilityAlert(false);
             invalidateOptionsMenu();
         }
