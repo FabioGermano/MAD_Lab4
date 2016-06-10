@@ -40,7 +40,7 @@ public class FirebaseGetRestaurantInfoManager implements ValueEventListener {
             this.info= String.valueOf(dataSnapshot.getValue());
         }
         else
-            this.info = (String) dataSnapshot.getValue();
+            this.info = String.valueOf(dataSnapshot.getValue());
 
         resultReturned = true;
         this.cv.signal();

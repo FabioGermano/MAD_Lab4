@@ -25,7 +25,7 @@ public class FirebaseUpdateAvgDishesAndOffers implements DatabaseReference.Compl
     private boolean firebaseReturnedResult = false;
     private DatabaseError databaseError;
 
-    public void updateAvgDishesAndOffers(String idRestaurant, float price, float oldPrice, boolean isNew){
+    public boolean updateAvgDishesAndOffers(String idRestaurant, float price, float oldPrice, boolean isNew){
 
         int numPiatti = -1;
         float totPrezzo = -1;
@@ -36,6 +36,8 @@ public class FirebaseUpdateAvgDishesAndOffers implements DatabaseReference.Compl
         restaurantInfoManager.getRestaurantInfo(idRestaurant, "totDishesAndOffers");
         restaurantInfoManager.waitForResult();
         totPrezzo = Float.parseFloat(restaurantInfoManager.getResult());
+
+        Map updateAvg = new HashMap();
 
         if(isNew){
             restaurantInfoManager = new FirebaseGetRestaurantInfoManager();
@@ -48,21 +50,28 @@ public class FirebaseUpdateAvgDishesAndOffers implements DatabaseReference.Compl
             if (totPrezzo != -1){
                 totPrezzo = totPrezzo + price;
             }
+
+            updateAvg.put("numDishesAndOffers", numPiatti);
+            updateAvg.put("totDishesAndOffers", Math.round(totPrezzo));
+
         } else {
             //se è una modifica
             if (totPrezzo != -1) {
-                if (oldPrice != price)
+                if (oldPrice != price) {
                     totPrezzo = totPrezzo - oldPrice + price;
+                    updateAvg.put("totDishesAndOffers", Math.round(totPrezzo));
+                } else {
+                    //non c'è da fare alcun cambiamento
+                    return false;
+                }
             }
         }
 
-        Map updateAvg = new HashMap();
-        updateAvg.put("numDishesAndOffers", numPiatti);
-        updateAvg.put("totDishesAndOffers", totPrezzo);
-
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef1 = database.getReference("menu/" + idRestaurant);
+        DatabaseReference myRef1 = database.getReference("restaurants/" + idRestaurant);
         myRef1.updateChildren(updateAvg, this);
+
+        return true;
 
     }
 

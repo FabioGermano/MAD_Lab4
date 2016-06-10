@@ -335,27 +335,39 @@ public class ModifyOfferDish extends EditableBaseActivity {
                         imageViewer.getThumb(),
                         imageViewer.getLarge());
 
-                boolean res = firebaseSaveOfferManager.waitForResult();
+                final boolean res = firebaseSaveOfferManager.waitForResult();
 
                 if(!res){
-                    Log.e("Error saving the dish", "Error saving the dish");
-                    return;
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            dismissProgressDialog();
+                            Log.e("Error saving the dish", "Error saving the dish");
+                            return;
+
+                        }
+                    });
                 }
 
                 // AGGIORNAMENTO AVG PREZZO PIATTI/OFFERTE
                 FirebaseUpdateAvgDishesAndOffers updateAvgDishesAndOffers = new FirebaseUpdateAvgDishesAndOffers();
-                updateAvgDishesAndOffers.updateAvgDishesAndOffers(restaurantId, offer.getPrice(), offer.getLastPrice(), newOffer);
-                res = updateAvgDishesAndOffers.waitForResult();
-                if(!res){
-                    Log.e("Error saving the dish", "Error saving the dish");
-                    return;
-                }
+                boolean updateRequired = updateAvgDishesAndOffers.updateAvgDishesAndOffers(restaurantId, offer.getPrice(), offer.getLastPrice(), newOffer);
+                final boolean res2;
+                if(updateRequired)
+                    res2 = updateAvgDishesAndOffers.waitForResult();
+                else
+                    res2 = true;
 
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
 
                         dismissProgressDialog();
+                        if(!res2){
+                            Log.e("Error saving the dish", "Error saving the dish");
+                            return;
+                        }
 
                         Toast toast = Toast.makeText(getApplicationContext(), R.string.dataSaved, Toast.LENGTH_SHORT);
                         toast.show();
