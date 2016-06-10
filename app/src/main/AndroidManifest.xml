@@ -114,8 +114,12 @@
             android:name=".restaurant.reviews.add_review.RateDishesActivity"
             android:configChanges="orientation|keyboardHidden|screenSize|keyboard"
             android:windowSoftInputMode="stateAlwaysHidden" />
-        <activity android:name=".login_registrazione.Login" />
-        <activity android:name=".restaurant.cover.CoverActivity" />
+        <activity android:name=".login_registrazione.Login"
+
+            android:configChanges="orientation|keyboardHidden|screenSize|keyboard"/>
+        <activity android:name=".restaurant.cover.CoverActivity"
+
+            android:configChanges="orientation|keyboardHidden|screenSize|keyboard"/>
         <activity android:name=".test.TestActivity">
 
             <!--
@@ -174,7 +178,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".manager.MainActivityManager" />
         </activity>
-        <activity android:name=".manager.MainActivityManager">
+        <activity android:name=".manager.MainActivityManager"
+
+            android:configChanges="orientation|keyboardHidden|screenSize|keyboard">
 
             <!--
             <intent-filter>
@@ -184,10 +190,18 @@
             </intent-filter>
             -->
         </activity>
-        <activity android:name=".user.EditUserProfileActivity" />
-        <activity android:name=".user.ShowFavouritesActivity" />
-        <activity android:name=".user.UserNotificationsActivity" />
-        <activity android:name=".login_registrazione.Register" />
+        <activity android:name=".user.EditUserProfileActivity"
+
+            android:configChanges="orientation|keyboardHidden|screenSize|keyboard"/>
+        <activity android:name=".user.ShowFavouritesActivity"
+
+            android:configChanges="orientation|keyboardHidden|screenSize|keyboard"/>
+        <activity android:name=".user.UserNotificationsActivity"
+
+            android:configChanges="orientation|keyboardHidden|screenSize|keyboard"/>
+        <activity android:name=".login_registrazione.Register"
+
+            android:configChanges="orientation|keyboardHidden|screenSize|keyboard"/>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -200,8 +214,12 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".login_registrazione.Register_restaurant"></activity>
-        <activity android:name=".maps_management.mainActivity_fullscreen_map"></activity>
+        <activity android:name=".login_registrazione.Register_restaurant"
+
+            android:configChanges="orientation|keyboardHidden|screenSize|keyboard"></activity>
+        <activity android:name=".maps_management.mainActivity_fullscreen_map"
+
+            android:configChanges="orientation|keyboardHidden|screenSize|keyboard"></activity>
     </application>
 
 </manifest>

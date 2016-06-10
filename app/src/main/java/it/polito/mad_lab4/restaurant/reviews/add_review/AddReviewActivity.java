@@ -113,6 +113,7 @@ public class AddReviewActivity extends BaseActivity implements PhotoViewerListen
                             i.putExtra("userLogo", userLogo);
                             i.putExtra("username", username);
                             i.putExtra("userId", userId);
+                            i.putExtra("coverLink", coverLink);
                             startActivity(i);
 
                         }

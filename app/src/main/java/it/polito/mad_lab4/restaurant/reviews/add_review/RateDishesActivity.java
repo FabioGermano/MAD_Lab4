@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 import org.w3c.dom.Text;
 
 import java.io.Serializable;
@@ -48,7 +50,7 @@ public class RateDishesActivity extends BaseActivity{
     private TextView nameTextView;
     private FirebaseGetMenuByTypeManager firebaseGetMenuByTypeManager;
     private FirebaseGetOfferListManager firebaseGetOfferListManager;
-    private String restaurantName;
+    private String restaurantName, coverLink;
 
     private FirebaseSaveReviewManager firebaseSaveReviewManager;
     private String username;
@@ -137,10 +139,10 @@ public class RateDishesActivity extends BaseActivity{
         this.userId = getIntent().getExtras().getString("userId");
         this.username = getIntent().getExtras().getString("username");
         this.userLogo = getIntent().getExtras().getString("usserLogo");
+        this.coverLink= getIntent().getExtras().getString("coverLink");
 
         nameTextView= (TextView) findViewById(R.id.restaurant_name);
         nameTextView.setText(restaurantName);
-        //restaurant = RestaurantBL.getRestaurantById(getApplicationContext(), restaurantId);
 
     }
     @Override
@@ -171,6 +173,8 @@ public class RateDishesActivity extends BaseActivity{
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        if(coverLink!=null)
+                            Glide.with(getBaseContext()).load(coverLink).into(cover);
                         initAdapter(dishes, offers);
                     }
                 });

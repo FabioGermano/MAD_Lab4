@@ -50,6 +50,7 @@ public class UserNotificationsActivity extends BaseActivity {
         countNew = (int) getIntent().getExtras().getInt("countNew");
 
         UserAlert.resetAlertCount();
+        setAlertCount(0);
     }
 
     @Override
@@ -80,6 +81,7 @@ public class UserNotificationsActivity extends BaseActivity {
                     @Override
                     public void run() {
                         dismissProgressDialog();
+
                         mAdapter = new NotificationsAdapter(getBaseContext(), UserNotificationsActivity.this, notifications, countNew);
                         mRecyclerView.setAdapter(mAdapter);
                     }

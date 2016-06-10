@@ -51,6 +51,16 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     private boolean useToolbar=true;
 
     private ProgressDialog pd;
+
+    public int getAlertCount() {
+        return alertCount;
+    }
+
+    public void setAlertCount(int alertCount) {
+        this.alertCount = alertCount;
+        invalidateOptionsMenu();
+    }
+
     private int alertCount = 0;
     private ImageButton saveImageButton, alertButton, calendarButton;
     //per visualizzare o meno, e abilitare, l'icona nella toolbar
@@ -100,7 +110,56 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         View view = getLayoutInflater().inflate(layoutResID, null);
         configureToolbar(view);
         super.setContentView(view);
-        configureBarraLaterale(view);
+        controlloLogin(view);
+        //configureBarraLaterale(view);
+    }
+
+    private void controlloLogin(final View view){
+        new Thread()        {
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showProgressBar();
+                    }
+                });
+                mAuthListener = new FirebaseGetAuthInformation();
+                mAuthListener.waitForResult();
+                final FirebaseUser user = mAuthListener.getUser();
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (user != null) {
+                            // User is signed in
+                            System.out.println("--------------------------> utente connesso");
+                            mAuth.removeAuthStateListener(mAuthListener);
+                            id = user.getUid();
+                            email = user.getEmail();
+                            configureBarraLaterale(view, user);
+                            isLogin(user);
+
+                        } else{
+                            if(alert_visibility){
+                                setVisibilityAlert(false);
+                                invalidateOptionsMenu();
+                            }
+                            System.out.println("--------------------------> utente non connesso");
+                            mAuth.removeAuthStateListener(mAuthListener);
+                            id = null;
+                            int error = mAuthListener.getErrorType();
+                            if(error == 1){
+                                System.out.println("--------------------------> Ri-autenticazione richiesta");
+                                FirebaseAuth.getInstance().signOut();
+                                id = null;
+                            }
+                            configureBarraLaterale(view, null);
+                        }
+                        dismissProgressDialog();
+                    }
+                });
+            }
+        }.start();
     }
 
 
@@ -146,32 +205,9 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     protected void onResume() {
         super.onResume();
 
-        if(!alert_visibility){
-            return;
-        }
-
-        new Thread()        {
-            public void run() {
-                if(mAuthListener != null)
-                mAuthListener.waitForResult();
-                final FirebaseUser user = mAuthListener.getUser();
-
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (user == null) {
-                            setVisibilityAlert(false);
-                        }
-                        else {
-                            UserAlert.init(getApplicationContext(), user.getUid(), alertCountView);
-                        }
-                    }
-                });
-            }
-        }.start();
     }
 
-    protected void configureBarraLaterale(View view) {
+    protected void configureBarraLaterale(View view, FirebaseUser user) {
         //inizializzo menu laterale
         DrawerLayout drawer = (DrawerLayout) view.findViewById(R.id.drawer_layout);
 
@@ -190,50 +226,11 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                 final NavigationView navigationView = (NavigationView) view.findViewById(R.id.nav_view);
 
                 if(navigationView != null) {
-                    new Thread()        {
-                        public void run() {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    showProgressBar();
-                                }
-                            });
-                            mAuthListener = new FirebaseGetAuthInformation();
-                            mAuthListener.waitForResult();
-                            final FirebaseUser user = mAuthListener.getUser();
-
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (user != null) {
-                                        // User is signed in
-                                        System.out.println("--------------------------> utente connesso");
-                                        mAuth.removeAuthStateListener(mAuthListener);
-                                        id = user.getUid();
-                                        email = user.getEmail();
-                                        caricaUtenteLoggato(user, navigationView);
-                                        isLogin(user);
-                                    } else{
-                                        if(alert_visibility){
-                                            setVisibilityAlert(false);
-                                        }
-                                        System.out.println("--------------------------> utente non connesso");
-                                        mAuth.removeAuthStateListener(mAuthListener);
-                                        id = null;
-                                        int error = mAuthListener.getErrorType();
-                                        if(error == 1){
-                                            System.out.println("--------------------------> Ri-autenticazione richiesta");
-                                            FirebaseAuth.getInstance().signOut();
-                                            id = null;
-                                        }
-                                        setVisibilityAlert(false);
-                                        caricaUtenteDefault(navigationView);
-                                    }
-                                    dismissProgressDialog();
-                                }
-                            });
-                        }
-                    }.start();
+                   if(user != null){
+                       caricaUtenteLoggato(user, navigationView);
+                   }else {
+                       caricaUtenteDefault(navigationView);
+                   }
                 }
             }
         } catch(Exception e){
@@ -245,6 +242,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     protected void isLogin(FirebaseUser user) {
         // se viene sovrascritto dalle altre classi
         // viene invocato all'avvio quando l'utente è collegato
+        UserAlert.init(getApplicationContext(), user.getUid(), alertCountView);
     }
 
     private void caricaUtenteDefault(final NavigationView navigationView) {
@@ -420,6 +418,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
             RelativeLayout notificationLayout = (RelativeLayout) notify.getActionView();
             alertButton = (ImageButton) notificationLayout.findViewById(R.id.alertButton);
             alertCountView = (TextView) notificationLayout.findViewById(R.id.alertCountView);
+            alertCountView.setText(String.valueOf(alertCount));
+
             View.OnClickListener listener = new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -659,7 +659,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     }
 
     public void dismissProgressDialog() {
-        if (pd != null && pd.isShowing()){
+        if (pd != null ){
             pd.dismiss();
             pd = null;
         }
