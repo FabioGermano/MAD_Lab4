@@ -72,6 +72,9 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         homePageClient = false;
         mAuth = FirebaseAuth.getInstance();
 
+        if(alert_visibility){
+            setVisibilityAlert(false);
+        }
         /*if (isLargeDevice(getBaseContext())) {
             this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
         } else {
@@ -242,6 +245,9 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     protected void isLogin(FirebaseUser user) {
         // se viene sovrascritto dalle altre classi
         // si sa quando l'utente è collegato
+
+        // TODO Bisogna creare un thread secondario nella funzione init e passare una TextView valida
+        // UserAlert.init(getApplicationContext(), user.getUid(), alertCountView);
     }
 
     private void caricaUtenteDefault(final NavigationView navigationView) {

@@ -7,7 +7,7 @@ public class University {
     private String name;
     private String position;
                                     /* TODO da sostituire con la nuova posizione */
-    //private Position position;
+    private Position positionLatlng;
 
     public University(){
 
@@ -29,11 +29,11 @@ public class University {
         this.position = position;
     }
 
-    /*public Position getPosition(){
-        return this.position;
+    public Position getPositionLatlng() {
+        return positionLatlng;
     }
 
-    public void setPosition(Position p){
-        this.position = p;
-    }*/
+    public void setPositionLatlng(Position positionLatlng) {
+        this.positionLatlng = positionLatlng;
+    }
 }

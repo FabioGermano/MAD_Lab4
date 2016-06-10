@@ -1,4 +1,4 @@
-package it.polito.mad_lab4.firebase_manager;
+package it.polito.mad_lab4.firebase_position;
 
 import android.util.Log;
 
@@ -29,7 +29,7 @@ public class FirebaseGetUniversityPosition implements ValueEventListener {
     public void getUniversityPosition(String id) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference mDatabase = database.getReference();
-        mDatabase.child("universities").child(id).child("position").addListenerForSingleValueEvent(this);
+        mDatabase.child("universities").child(id).child("positionLatlng").addListenerForSingleValueEvent(this);
 
     }
 

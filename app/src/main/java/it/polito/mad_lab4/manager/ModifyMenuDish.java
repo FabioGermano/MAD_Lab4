@@ -127,6 +127,9 @@ public class ModifyMenuDish extends EditableBaseActivity {
                     return;
                 }
 
+                // AGGIORNAMENTO AVG PREZZO PIATTI/OFFERTE
+
+
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

@@ -1,6 +1,5 @@
 package it.polito.mad_lab4;
 
-import android.*;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -14,13 +13,9 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.CardView;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -29,34 +24,24 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.LocationSource;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseUser;
-
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.polito.mad_lab4.bl.RestaurantBL;
-import it.polito.mad_lab4.elaborazioneRicerche.Oggetto_offerteVicine;
 import it.polito.mad_lab4.elaborazioneRicerche.Oggetto_risultatoRicerca;
 import it.polito.mad_lab4.elaborazioneRicerche.elaborazioneRicerche;
 import it.polito.mad_lab4.firebase_manager.FirebaseGetClientSingleInformation;
-import it.polito.mad_lab4.firebase_manager.FirebaseGetOfferListManager;
 import it.polito.mad_lab4.firebase_manager.FirebaseGetRestaurantInfoManager;
 import it.polito.mad_lab4.firebase_manager.FirebaseGetRestaurantProfileManager;
-import it.polito.mad_lab4.firebase_manager.FirebaseGetUniversitiesManager;
-import it.polito.mad_lab4.firebase_manager.FirebaseGetUniversityPosition;
-import it.polito.mad_lab4.firebase_manager.FirebaseGetUserInfoManager;
+import it.polito.mad_lab4.firebase_position.FirebaseGetUniversityPosition;
 import it.polito.mad_lab4.firebase_position.FirebaseGetRestaurantsPositions;
-import it.polito.mad_lab4.manager.MainActivityManager;
 import it.polito.mad_lab4.maps_management.mainActivity_map;
 import it.polito.mad_lab4.newData.other.Position;
 import it.polito.mad_lab4.newData.other.RestaurantPosition;
-import it.polito.mad_lab4.newData.restaurant.Offer;
 import it.polito.mad_lab4.newData.restaurant.Restaurant;
 
 public class MainActivity extends BaseActivity implements LocationListener{
