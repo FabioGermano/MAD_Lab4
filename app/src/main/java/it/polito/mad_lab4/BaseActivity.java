@@ -61,7 +61,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         invalidateOptionsMenu();
     }
 
-    private int alertCount = 0;
+    private int alertCount;
     private ImageButton saveImageButton, alertButton, calendarButton;
     //per visualizzare o meno, e abilitare, l'icona nella toolbar
     private boolean icona_toolbar = false;
@@ -204,7 +204,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     @Override
     protected void onResume() {
         super.onResume();
-
+        invalidateOptionsMenu();
     }
 
     protected void configureBarraLaterale(View view, FirebaseUser user) {
@@ -418,7 +418,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
             RelativeLayout notificationLayout = (RelativeLayout) notify.getActionView();
             alertButton = (ImageButton) notificationLayout.findViewById(R.id.alertButton);
             alertCountView = (TextView) notificationLayout.findViewById(R.id.alertCountView);
-            alertCountView.setText(String.valueOf(alertCount));
+            //alertCountView.setText(String.valueOf(alertCount));
 
             View.OnClickListener listener = new View.OnClickListener() {
                 @Override

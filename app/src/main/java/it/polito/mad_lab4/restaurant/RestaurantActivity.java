@@ -341,7 +341,7 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
 
     @Override
     public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-        Log.w("appbar", String.valueOf(verticalOffset));
+       /* Log.w("appbar", String.valueOf(verticalOffset));
         if(currentUser!=null && verticalOffset ==-680 && !getVisibilityAlert()){
             setVisibilityAlert(true);
             invalidateOptionsMenu();
@@ -349,7 +349,7 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
         else if(currentUser == null || (verticalOffset !=-680 && getVisibilityAlert()==true)){
             setVisibilityAlert(false);
             invalidateOptionsMenu();
-        }
+        }*/
 
     }
 
