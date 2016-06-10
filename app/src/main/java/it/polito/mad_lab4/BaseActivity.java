@@ -72,9 +72,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         homePageClient = false;
         mAuth = FirebaseAuth.getInstance();
 
-        if(alert_visibility){
-            setVisibilityAlert(false);
-        }
         /*if (isLargeDevice(getBaseContext())) {
             this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
         } else {
@@ -145,7 +142,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         return alert_visibility;
     }
 
-    /*@Override
+    @Override
     protected void onResume() {
         super.onResume();
 
@@ -155,7 +152,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
 
         new Thread()        {
             public void run() {
-                mAuthListener = new FirebaseGetAuthInformation();
+                if(mAuthListener != null)
                 mAuthListener.waitForResult();
                 final FirebaseUser user = mAuthListener.getUser();
 
@@ -172,7 +169,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                 });
             }
         }.start();
-    }*/
+    }
 
     protected void configureBarraLaterale(View view) {
         //inizializzo menu laterale
@@ -217,6 +214,9 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                                         caricaUtenteLoggato(user, navigationView);
                                         isLogin(user);
                                     } else{
+                                        if(alert_visibility){
+                                            setVisibilityAlert(false);
+                                        }
                                         System.out.println("--------------------------> utente non connesso");
                                         mAuth.removeAuthStateListener(mAuthListener);
                                         id = null;
@@ -244,10 +244,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
 
     protected void isLogin(FirebaseUser user) {
         // se viene sovrascritto dalle altre classi
-        // si sa quando l'utente è collegato
-
-        // TODO Bisogna creare un thread secondario nella funzione init e passare una TextView valida
-        // UserAlert.init(getApplicationContext(), user.getUid(), alertCountView);
+        // viene invocato all'avvio quando l'utente è collegato
     }
 
     private void caricaUtenteDefault(final NavigationView navigationView) {
