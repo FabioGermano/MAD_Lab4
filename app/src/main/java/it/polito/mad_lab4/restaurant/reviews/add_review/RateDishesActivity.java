@@ -142,6 +142,7 @@ public class RateDishesActivity extends BaseActivity{
         this.coverLink= getIntent().getExtras().getString("coverLink");
 
         nameTextView= (TextView) findViewById(R.id.restaurant_name);
+        cover = (ImageView) findViewById(R.id.cover);
         nameTextView.setText(restaurantName);
 
     }
