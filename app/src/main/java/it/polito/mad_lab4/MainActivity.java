@@ -11,15 +11,21 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,13 +50,13 @@ import it.polito.mad_lab4.newData.other.Position;
 import it.polito.mad_lab4.newData.other.RestaurantPosition;
 import it.polito.mad_lab4.newData.restaurant.Restaurant;
 
-public class MainActivity extends BaseActivity implements LocationListener{
+public class MainActivity extends BaseActivity implements LocationListener {
 
     private Button addReview, reservationBtn, testBtn;
     private ArrayList<RestaurantPosition> listaRistoranti;
     //private User userInfo;
     private ImageButton ricercaLuogoBtn, ricercaRistoranteBtn;
-    private boolean ricerca_luogo=false, ricerca_ristorante=true;
+    private boolean ricerca_luogo = false, ricerca_ristorante = true;
 
     private SearchView ricerca, number, city;
     private TextView mapMessage;
@@ -78,77 +84,135 @@ public class MainActivity extends BaseActivity implements LocationListener{
         setHomePageClient();
 
         setContentView(R.layout.activity_main);
-
         hideToolbar(true);
         hideToolbarShadow(true);
-
         setActivityTitle(getResources().getString(R.string.titolo_main_activity));
 
-        inizializzaSearchView();
+        if (isNetworkAvailable()) {
 
-        mapMessage = (TextView) findViewById(R.id.mapMessage);
+            inizializzaSearchView();
+
+            mapMessage = (TextView) findViewById(R.id.mapMessage);
+
+            context = this;
 
 
-        Button btn = (Button) findViewById(R.id.button2);
-        btn.setVisibility(View.GONE);
+            rilevaPosizione();
+
+            caricaDati();
+
+            ricercaLuogoBtn = (ImageButton) findViewById(R.id.ricerca_luogo);
+            ricercaRistoranteBtn = (ImageButton) findViewById(R.id.ricerca_ristorante);
 
 
-        context = this;
+            //gestione MAPPA
+            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+            gestoreMappa = new mainActivity_map();
+            gestoreMappa.setContext(this);
+            gestoreMappa.setCurrentPosition(myPosition);
+            mapFragment.getMapAsync(gestoreMappa);
+        }
+        else{
+                DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+                mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+                RelativeLayout blockLayout = (RelativeLayout) findViewById(R.id.blockConnection);
+                blockLayout.setVisibility(View.VISIBLE);
+                setVisibilityAlert(false);
 
-        //prova acquisizione posizione
-        // Acquire a reference to the system Location Manager
-        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        // Register the listener with the Location Manager to receive location updates
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-           checkNetPermission();
-        else {
-            netAllowed = true;
-            wifiAllowed = true;
-            locAllowed = true;
+
+                android.widget.SearchView searchMain = (android.widget.SearchView) findViewById(R.id.searchView_main);
+                enableSearchView(searchMain, false);
+            }
+
+    }
+
+
+    private void enableSearchView(View view, boolean enabled) {
+        view.setEnabled(enabled);
+        if (view instanceof ViewGroup) {
+            ViewGroup viewGroup = (ViewGroup) view;
+            for (int i = 0; i < viewGroup.getChildCount(); i++) {
+                View child = viewGroup.getChildAt(i);
+                enableSearchView(child, enabled);
+            }
+        }
+    }
+
+    private void rilevaPosizione() {
+        try {
+            ImageButton gpsBtn = (ImageButton) findViewById(R.id.updatePosition);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                checkNetPermission();
+            else {
+                netAllowed = true;
+                wifiAllowed = true;
+                locAllowed = true;
+            }
+
+            //prova acquisizione posizione
+            // Acquire a reference to the system Location Manager
+            locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+            // Register the listener with the Location Manager to receive location updates
+
+            if (netAllowed && wifiAllowed && locAllowed) {
+
+                if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+                    System.out.println("----> GPS NON ATTIVO");
+                    mapMessage.setText("Gps non attivo");
+                    mapMessage.setVisibility(View.VISIBLE);
+                    if (gpsBtn != null)
+                        gpsBtn.setVisibility(View.VISIBLE);
+
+                }
+                else {
+                    System.out.println("----> GPS ATTIVO");
+                    mapMessage.setText("Finding your position...");
+                    mapMessage.setVisibility(View.VISIBLE);
+                    if (gpsBtn != null)
+                        gpsBtn.setVisibility(View.GONE);
+                    String locationProvider = LocationManager.NETWORK_PROVIDER;
+                    //String locationProvider = LocationManager.GPS_PROVIDER;
+
+                    locationManager.requestLocationUpdates(locationProvider, 0, 0, this);
+                    //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+
+                    if (locationManager.getLastKnownLocation(locationProvider) != null){
+                        myPosition = new LatLng(locationManager.getLastKnownLocation(locationProvider).getLatitude(), locationManager.getLastKnownLocation(locationProvider).getLongitude());
+                        System.out.println("----> UTILIZZATA LAST KNOWN POSITION");
+                    }
+                }
+
+            }
+        }
+        catch (Exception e){
+            return;
         }
 
-        if (netAllowed && wifiAllowed && locAllowed){
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-        }
-
-
-        caricaDati();
-
-        ricercaLuogoBtn = (ImageButton) findViewById(R.id.ricerca_luogo);
-        ricercaRistoranteBtn = (ImageButton) findViewById(R.id.ricerca_ristorante);
-
-
-        //gestione MAPPA
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        gestoreMappa = new mainActivity_map();
-        gestoreMappa.setContext(this);
-        gestoreMappa.setCurrentPosition(myPosition);
-        mapFragment.getMapAsync(gestoreMappa);
 
     }
 
     @Override
-    protected void isLogin(FirebaseUser user){
+    protected void isLogin(FirebaseUser user) {
         super.isLogin(user);
-        if(myPosition.latitude == 45.06455 && myPosition.longitude == 7.65833){
+        if (myPosition.latitude == 45.06455 && myPosition.longitude == 7.65833) {
             // non è cambiata dalla posizione di dafault quindi è necessario
             // settare l'università come default. Al max si rileva poi la nuova posizione e si aggiorna
             setUniversityPosition(user.getUid());
         }
     }
 
-    private void setUniversityPosition(final String id){
-        new Thread()        {
+    private void setUniversityPosition(final String id) {
+        new Thread() {
             public void run() {
 
-                String university ;
+                String university;
                 FirebaseGetClientSingleInformation clientSingleInformation = new FirebaseGetClientSingleInformation();
                 clientSingleInformation.getClientInfo(id, "universityId");
                 clientSingleInformation.waitForResult();
                 university = clientSingleInformation.getResult();
-                if(university != null){
+                if (university != null) {
                     FirebaseGetUniversityPosition universitiesManager = new FirebaseGetUniversityPosition();
                     universitiesManager.getUniversityPosition(university);
                     universitiesManager.waitForResult();
@@ -163,17 +227,17 @@ public class MainActivity extends BaseActivity implements LocationListener{
                         }
                     });
                 }
-             }
+            }
         }.start();
     }
 
-    private void checkNetPermission(){
-        int net = ContextCompat.checkSelfPermission(getApplicationContext(),  Manifest.permission.ACCESS_NETWORK_STATE);
+    private void checkNetPermission() {
+        int net = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_NETWORK_STATE);
         int wifi = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_WIFI_STATE);
         int loc = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION);
 
         if (net != PackageManager.PERMISSION_GRANTED)
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_NETWORK_STATE} , 10);
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_NETWORK_STATE}, 10);
         else
             netAllowed = true;
 
@@ -182,15 +246,15 @@ public class MainActivity extends BaseActivity implements LocationListener{
         else
             wifiAllowed = true;
         if (loc != PackageManager.PERMISSION_GRANTED)
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION }, 12);
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 12);
         else
             locAllowed = true;
     }
 
 
-    private void inizializzaSearchView(){
+    private void inizializzaSearchView() {
         ricerca = (SearchView) findViewById(R.id.searchView_main);
-       // number = (SearchView) findViewById(R.id.searchView_number);
+        // number = (SearchView) findViewById(R.id.searchView_number);
         //city = (SearchView) findViewById(R.id.searchView_city);
 
         //numberCard = (CardView) findViewById(R.id.searchNumber_card);
@@ -215,7 +279,7 @@ public class MainActivity extends BaseActivity implements LocationListener{
         ricerca.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch(v.getId()){
+                switch (v.getId()) {
                     case R.id.searchView_main:
                         ricerca.onActionViewExpanded();
                         break;
@@ -272,7 +336,7 @@ public class MainActivity extends BaseActivity implements LocationListener{
 
     private void caricaDati() {
 
-        new Thread()        {
+        new Thread() {
             public void run() {
 
                 FirebaseGetRestaurantsPositions restaurantsPositions = new FirebaseGetRestaurantsPositions();
@@ -284,21 +348,21 @@ public class MainActivity extends BaseActivity implements LocationListener{
 
     public void searchRestaurant(String query) {
 
-        if (query.length() < 3){
+        if (query.length() < 3) {
             Toast.makeText(MainActivity.this, getResources().getString(R.string.query_troppo_corta), Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if (query.length() > 50){
+        if (query.length() > 50) {
             Toast.makeText(MainActivity.this, getResources().getString(R.string.query_troppo_lunga), Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if(ricerca_luogo){
+        if (ricerca_luogo) {
             System.out.println("Ricerco per luogo");
             ricercaPerLuogo(query);
         }
-        if(ricerca_ristorante){
+        if (ricerca_ristorante) {
             System.out.println("Ricerco per ristorante");
             ricercaPerRistorante(query);
         }
@@ -309,7 +373,7 @@ public class MainActivity extends BaseActivity implements LocationListener{
     //implemento ricerca per luogo
     private void ricercaPerLuogo(final String query) {
 
-        new Thread()        {
+        new Thread() {
             public void run() {
                 runOnUiThread(new Runnable() {
                     @Override
@@ -338,8 +402,7 @@ public class MainActivity extends BaseActivity implements LocationListener{
 
                     if (addresses.size() == 1) {
                         foundedPosition = new LatLng(addresses.get(0).getLatitude(), addresses.get(0).getLongitude());
-                    }
-                    else {
+                    } else {
                         double radius = 6378137; // meters , earth Radius approx
                         double DEGREES = 180 / Math.PI;
                         int offset = 5000; //distanza in metri dalla posizione attuale
@@ -412,7 +475,7 @@ public class MainActivity extends BaseActivity implements LocationListener{
 
                     }
 
-                } catch(IOException e){
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
 
@@ -424,12 +487,12 @@ public class MainActivity extends BaseActivity implements LocationListener{
                     public void run() {
                         dismissProgressDialog();
 
-                        if(risultatoRicerca == null ){
+                        if (risultatoRicerca == null) {
                             Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.exceptionError), Toast.LENGTH_SHORT);
                             toast.show();
                             return;
                         }
-                        if(risultatoRicerca.size() == 0){
+                        if (risultatoRicerca.size() == 0) {
                             Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.nessun_risultato), Toast.LENGTH_SHORT);
                             toast.show();
                             return;
@@ -446,13 +509,13 @@ public class MainActivity extends BaseActivity implements LocationListener{
         }.start();
     }
 
-    private ArrayList<Oggetto_risultatoRicerca> findByDistance (){
+    private ArrayList<Oggetto_risultatoRicerca> findByDistance() {
         FirebaseGetRestaurantProfileManager restaurantProfileManager;
         final ArrayList<Oggetto_risultatoRicerca> risultatoRicerca = new ArrayList<Oggetto_risultatoRicerca>();
 
-        for (RestaurantPosition restaurant: listaRistoranti){
+        for (RestaurantPosition restaurant : listaRistoranti) {
             //seleziono ristoranti vicino al posto ricercato
-            if ( isNear( foundedPosition, new LatLng(restaurant.getPosition().getLatitudine(), restaurant.getPosition().getLongitudine()), 1000) ){
+            if (isNear(foundedPosition, new LatLng(restaurant.getPosition().getLatitudine(), restaurant.getPosition().getLongitudine()), 1000)) {
                 restaurantProfileManager = new FirebaseGetRestaurantProfileManager();
                 restaurantProfileManager.getRestaurant(restaurant.getRestaurantId());
                 restaurantProfileManager.waitForResult();
@@ -468,7 +531,7 @@ public class MainActivity extends BaseActivity implements LocationListener{
     //implemento ricerca per ristorante
     private void ricercaPerRistorante(final String query) {
 
-        new Thread()        {
+        new Thread() {
             public void run() {
                 runOnUiThread(new Runnable() {
                     @Override
@@ -481,13 +544,13 @@ public class MainActivity extends BaseActivity implements LocationListener{
                 FirebaseGetRestaurantInfoManager restaurantInfoManager;
                 FirebaseGetRestaurantProfileManager restaurantProfileManager;
 
-                for (RestaurantPosition obj: listaRistoranti){
+                for (RestaurantPosition obj : listaRistoranti) {
                     restaurantInfoManager = new FirebaseGetRestaurantInfoManager();
                     restaurantInfoManager.getRestaurantInfo(obj.getRestaurantId(), "restaurantName");
                     restaurantInfoManager.waitForResult();
                     String nome = restaurantInfoManager.getResult();
 
-                    if (nome.toLowerCase().contains(query.toLowerCase())){
+                    if (nome.toLowerCase().contains(query.toLowerCase())) {
                         restaurantProfileManager = new FirebaseGetRestaurantProfileManager();
                         restaurantProfileManager.getRestaurant(obj.getRestaurantId());
                         restaurantProfileManager.waitForResult();
@@ -505,13 +568,13 @@ public class MainActivity extends BaseActivity implements LocationListener{
                     public void run() {
                         dismissProgressDialog();
 
-                        if(risultato == null ){
+                        if (risultato == null) {
                             Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.exceptionError), Toast.LENGTH_SHORT);
                             toast.show();
                             return;
                         }
 
-                        if(risultato.size() == 0){
+                        if (risultato.size() == 0) {
                             Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.nessun_risultato), Toast.LENGTH_SHORT);
                             toast.show();
                             return;
@@ -532,7 +595,7 @@ public class MainActivity extends BaseActivity implements LocationListener{
 
 
     public void ricercaLuogo(View view) {
-        if(ricercaLuogoBtn != null && ricercaRistoranteBtn != null) {
+        if (ricercaLuogoBtn != null && ricercaRistoranteBtn != null) {
             if (!ricerca_luogo) {
                 ricercaLuogoBtn.setImageResource(R.drawable.ic_ricerca_luogo_selezione);
                 ricerca_luogo = true;
@@ -551,7 +614,7 @@ public class MainActivity extends BaseActivity implements LocationListener{
     }
 
     public void ricercaRistorante(View view) {
-        if(ricercaLuogoBtn != null && ricercaRistoranteBtn != null) {
+        if (ricercaLuogoBtn != null && ricercaRistoranteBtn != null) {
             if (!ricerca_ristorante) {
                 ricercaRistoranteBtn.setImageResource(R.drawable.ic_ricerca_ristorante_selezione);
                 ricerca_ristorante = true;
@@ -569,8 +632,7 @@ public class MainActivity extends BaseActivity implements LocationListener{
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (Integer.parseInt(Build.VERSION.SDK) > 5  && keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0)
-        {
+        if (Integer.parseInt(Build.VERSION.SDK) > 5 && keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage("Do you want to exit?")
                     .setPositiveButton("NO", null)
@@ -630,8 +692,12 @@ public class MainActivity extends BaseActivity implements LocationListener{
     public void onLocationChanged(Location location) {
         Geocoder geo = new Geocoder(context);
         try {
+            System.out.println("----> entrato in callback location");
+
+
             List<Address> addresses = geo.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-            for(Address a: addresses){
+
+            for (Address a : addresses) {
                 System.out.println("----> POSIZIONE");
                 System.out.println("----> " + a.getCountryName());
                 System.out.println("----> " + a.getLocality());
@@ -639,14 +705,32 @@ public class MainActivity extends BaseActivity implements LocationListener{
             }
 
 
-            if(!isNear(myPosition, new LatLng(location.getLatitude(), location.getLongitude()), 10) || location.getAccuracy() > 50) {
+            if (!isNear(myPosition, new LatLng(location.getLatitude(), location.getLongitude()), 10) || location.getAccuracy() > 50) {
                 gestoreMappa.setCurrentPosition(new LatLng(location.getLatitude(), location.getLongitude()));
                 mapMessage.setVisibility(View.VISIBLE);
                 System.out.println("----> nuova posizione aggiorno la mappa");
                 gestoreMappa.updatePosition();
-            } else{
+            } else {
                 System.out.println("----> nuova posizione NON aggiorno la mappa");
                 mapMessage.setVisibility(View.GONE);
+                ImageButton gpsBtn = (ImageButton) findViewById(R.id.updatePosition);
+                if (gpsBtn != null)
+                    gpsBtn.setVisibility(View.VISIBLE);
+
+                if (locationManager != null) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                        checkNetPermission();
+                    else {
+                        netAllowed = true;
+                        wifiAllowed = true;
+                        locAllowed = true;
+                    }
+
+                    if (netAllowed && wifiAllowed && locAllowed){
+                        locationManager.removeUpdates(this);
+                        //TODO rendere visibile bottone update
+                    }
+                }
             }
 
             myPosition = new LatLng(location.getLatitude(), location.getLongitude());
@@ -804,4 +888,20 @@ public class MainActivity extends BaseActivity implements LocationListener{
         dialog.show();
     }
 
+    public void updatePosition(View view) {
+        rilevaPosizione();
+    }
+
+
+    public void connection_refresh(View view) {
+        //Toast.makeText(MainActivity.this, "Devo fare refresh", Toast.LENGTH_SHORT).show();
+        finish();
+        startActivity(getIntent());
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
 }

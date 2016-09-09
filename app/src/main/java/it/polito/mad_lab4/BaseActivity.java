@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -11,7 +13,9 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -110,7 +114,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         View view = getLayoutInflater().inflate(layoutResID, null);
         configureToolbar(view);
         super.setContentView(view);
-        controlloLogin(view);
+        if (isNetworkAvailable())
+            controlloLogin(view);
         //configureBarraLaterale(view);
     }
 
@@ -210,7 +215,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     protected void configureBarraLaterale(View view, FirebaseUser user) {
         //inizializzo menu laterale
         DrawerLayout drawer = (DrawerLayout) view.findViewById(R.id.drawer_layout);
-
         try {
 
             if (drawer != null) {
@@ -226,12 +230,14 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                 final NavigationView navigationView = (NavigationView) view.findViewById(R.id.nav_view);
 
                 if(navigationView != null) {
-                   if(user != null){
+
+                    if(user != null){
                        caricaUtenteLoggato(user, navigationView);
                    }else {
                        caricaUtenteDefault(navigationView);
                    }
                 }
+
             }
         } catch(Exception e){
             System.out.println(e.getMessage());
@@ -685,5 +691,11 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         InputMethodManager inputManager = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
         if (this.getCurrentFocus() != null)
             inputManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }
