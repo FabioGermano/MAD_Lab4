@@ -41,16 +41,10 @@ public class mainActivity_map implements OnMapReadyCallback, GoogleMap.OnMapClic
 
     private LatLng myPosition = new LatLng(45.06455, 7.65833); //qui definiamo una posizione di default se per caso non ne abbiamo altre
     private Context context;
-    private boolean annullaMappa = false;
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        if(annullaMappa){
-            annullaMappa = false;
-            mMap.getUiSettings().setAllGesturesEnabled(false);
-            return;
-        }
 
         if(!fullScreen){
             //scarico ed elaboro i dati dal server e poi chiamo settaMarker()
@@ -99,6 +93,11 @@ public class mainActivity_map implements OnMapReadyCallback, GoogleMap.OnMapClic
                 obj.setMarkerAssociato(marker.getId());
             }
         }
+    }
+
+    private void settaMarkerPrincipale(){
+        mMap.addMarker(new MarkerOptions().position(myPosition)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
     }
 
     @Override
@@ -152,9 +151,20 @@ public class mainActivity_map implements OnMapReadyCallback, GoogleMap.OnMapClic
             public void run() {
 
                 FirebaseGetRestaurantsPositions restaurantsPositions = new FirebaseGetRestaurantsPositions();
-                restaurantsPositions.waitForResult();
+                boolean timeout = restaurantsPositions.waitForResult();
                 ArrayList<RestaurantPosition> listaPosizioniR = restaurantsPositions.getListaOfferte();
-
+                if(timeout){
+                    listaOfferte = null;
+                    caricamentoCompletato = true;
+                    Handler handler = new Handler(Looper.getMainLooper());
+                    handler.post(new Runnable() {
+                        public void run() {
+                            // UI code goes here
+                            settaMarkerPrincipale();
+                        }
+                    });
+                    return;
+                }
                 listaOfferte = new ArrayList<Oggetto_offerteVicine>();
 
                 if(listaOfferte != null){
@@ -215,8 +225,6 @@ public class mainActivity_map implements OnMapReadyCallback, GoogleMap.OnMapClic
             return false;
     }
 
-
-
     public void setCurrentPosition(LatLng currentPosition){
         if (currentPosition != null) {
             this.myPosition = currentPosition;
@@ -242,14 +250,7 @@ public class mainActivity_map implements OnMapReadyCallback, GoogleMap.OnMapClic
             caricaOfferteDaVisualizzare();
             System.out.println("------> NUOVA POSIZIONE, CARICO DATI DAL SERVER ");
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myPosition, 15));
-
+            System.out.println("------> muovo la mappa sulla mia nuova posizione: " + myPosition.latitude + "-" + myPosition.longitude);
         }
-    }
-
-    public void annullaMappa(){
-        if(mMap != null)
-            mMap.getUiSettings().setAllGesturesEnabled(false);
-        else
-            annullaMappa = true;
     }
 }

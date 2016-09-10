@@ -180,6 +180,7 @@
     <string name="wrong_email_format">Wrong email format!</string>
     <string name="pwd_too_short">Password too short! Use at least 6 characters.</string>
     <string name="completa_registrazione">Personal informations are mandatory</string>
+    <string name="connection_error">Connection Error</string>
 
 
     <string name="seats_string">seats</string>

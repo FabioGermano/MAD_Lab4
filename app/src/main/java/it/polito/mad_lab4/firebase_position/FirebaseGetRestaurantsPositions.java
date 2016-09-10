@@ -26,14 +26,25 @@ public class FirebaseGetRestaurantsPositions implements ValueEventListener {
     final Condition cv  = lock.newCondition();
 
     private boolean resultReturned = false;
-
+    private boolean timeout;
+    private DatabaseReference mDatabase;
     private ArrayList<RestaurantPosition> listaPosizioniRistoranti = null;
 
 
     public FirebaseGetRestaurantsPositions(){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference mDatabase = database.getReference();
+        mDatabase = database.getReference();
         mDatabase.child("positions").addListenerForSingleValueEvent(this);
+
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        timeout();
+                    }
+                },
+                10000
+        );
     }
 
     @Override
@@ -58,6 +69,13 @@ public class FirebaseGetRestaurantsPositions implements ValueEventListener {
         lock.unlock();
     }
 
+    private void timeout() {
+        lock.lock();
+        timeout = true;
+        this.cv.signal();
+        lock.unlock();
+    }
+
     @Override
     public void onCancelled(DatabaseError databaseError) {
         lock.lock();
@@ -71,19 +89,22 @@ public class FirebaseGetRestaurantsPositions implements ValueEventListener {
         return this.listaPosizioniRistoranti;
     }
 
-    public void waitForResult() {
+    public boolean waitForResult() {
         lock.lock();
-        if(!resultReturned) {
-            try {
+        try {
+            if(!resultReturned|| timeout)
                 cv.await();
-            } catch (InterruptedException e) {
-                System.out.println("Eccezione: "+ e.getMessage());
-                Log.e(e.getMessage(), e.getMessage());
-            }
-            finally {
-                lock.unlock();
-            }
+        } catch (InterruptedException e) {
+            Log.e(e.getMessage(), e.getMessage());
         }
+        finally {
+            lock.unlock();
+        }
+        return timeout;
+    }
+
+    public void terminate() {
+        mDatabase.removeEventListener(this);
     }
 }
 

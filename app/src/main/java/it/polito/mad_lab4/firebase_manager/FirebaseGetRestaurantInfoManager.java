@@ -21,9 +21,11 @@ public class FirebaseGetRestaurantInfoManager implements ValueEventListener {
     final Condition cv  = lock.newCondition();
     private DatabaseReference myRef;
     private boolean resultReturned = false;
-    private String info;
+    private String info = null;
     private String field;
     private String[] fields={"restaurantName", "address", "city", "logoThumbDownloadLink", "totRanking", "numReviews"};
+
+    private boolean timeout;
 
     public void getRestaurantInfo(String restaurantId, String field) {
 
@@ -31,6 +33,16 @@ public class FirebaseGetRestaurantInfoManager implements ValueEventListener {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         myRef = database.getReference("/restaurants/"+restaurantId+"/"+this.field);
         myRef.addListenerForSingleValueEvent(this);
+
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        timeout();
+                    }
+                },
+                10000
+        );
     }
 
     @Override
@@ -43,6 +55,13 @@ public class FirebaseGetRestaurantInfoManager implements ValueEventListener {
             this.info = String.valueOf(dataSnapshot.getValue());
 
         resultReturned = true;
+        this.cv.signal();
+        lock.unlock();
+    }
+
+    private void timeout() {
+        lock.lock();
+        timeout = true;
         this.cv.signal();
         lock.unlock();
     }
@@ -60,19 +79,21 @@ public class FirebaseGetRestaurantInfoManager implements ValueEventListener {
         return this.info;
     }
 
-    public void waitForResult() {
+    public boolean waitForResult() {
         lock.lock();
-        if(!resultReturned) {
-            try {
+        try {
+            if(!resultReturned || timeout)
                 cv.await();
-            } catch (InterruptedException e) {
-                Log.e(e.getMessage(), e.getMessage());
-            }
-            finally {
-                lock.unlock();
-            }
+        } catch (InterruptedException e) {
+            Log.e(e.getMessage(), e.getMessage());
         }
+        finally {
+            lock.unlock();
+        }
+
+        return timeout;
     }
+
     public void terminate() {
         myRef.removeEventListener(this);
     }

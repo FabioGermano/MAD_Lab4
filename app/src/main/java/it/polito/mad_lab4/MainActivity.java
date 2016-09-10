@@ -98,39 +98,18 @@ public class MainActivity extends BaseActivity implements LocationListener {
         gestoreMappa.setContext(this);
         gestoreMappa.setCurrentPosition(myPosition);
         mapFragment.getMapAsync(gestoreMappa);
+        inizializzaSearchView();
+        mapMessage = (TextView) findViewById(R.id.mapMessage);
+        context = this;
+        rilevaPosizione();
+
+        ricercaLuogoBtn = (ImageButton) findViewById(R.id.ricerca_luogo);
+        ricercaRistoranteBtn = (ImageButton) findViewById(R.id.ricerca_ristorante);
 
         if (isNetworkAvailable()) {
-
-            inizializzaSearchView();
-
-            mapMessage = (TextView) findViewById(R.id.mapMessage);
-
-            context = this;
-
-            rilevaPosizione();
-
             caricaDati();
-
-            ricercaLuogoBtn = (ImageButton) findViewById(R.id.ricerca_luogo);
-            ricercaRistoranteBtn = (ImageButton) findViewById(R.id.ricerca_ristorante);
-
-        }
-        else{
-            blockMainActivity();
         }
 
-    }
-
-
-    private void enableSearchView(View view, boolean enabled) {
-        view.setEnabled(enabled);
-        if (view instanceof ViewGroup) {
-            ViewGroup viewGroup = (ViewGroup) view;
-            for (int i = 0; i < viewGroup.getChildCount(); i++) {
-                View child = viewGroup.getChildAt(i);
-                enableSearchView(child, enabled);
-            }
-        }
     }
 
     private void rilevaPosizione() {
@@ -148,7 +127,6 @@ public class MainActivity extends BaseActivity implements LocationListener {
             //prova acquisizione posizione
             // Acquire a reference to the system Location Manager
             locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-            // Register the listener with the Location Manager to receive location updates
 
             if (netAllowed && wifiAllowed && locAllowed) {
 
@@ -158,7 +136,6 @@ public class MainActivity extends BaseActivity implements LocationListener {
                     mapMessage.setVisibility(View.VISIBLE);
                     if (gpsBtn != null)
                         gpsBtn.setVisibility(View.VISIBLE);
-
                 }
                 else {
                     System.out.println("----> GPS ATTIVO");
@@ -172,12 +149,7 @@ public class MainActivity extends BaseActivity implements LocationListener {
                     locationManager.requestLocationUpdates(locationProvider, 0, 0, this);
                     //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
 
-                    if (locationManager.getLastKnownLocation(locationProvider) != null){
-                        myPosition = new LatLng(locationManager.getLastKnownLocation(locationProvider).getLatitude(), locationManager.getLastKnownLocation(locationProvider).getLongitude());
-                        System.out.println("----> UTILIZZATA LAST KNOWN POSITION");
-                    }
                 }
-
             }
         }
         catch (Exception e){
@@ -471,6 +443,19 @@ public class MainActivity extends BaseActivity implements LocationListener {
 
                 } catch (IOException e) {
                     e.printStackTrace();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            dismissProgressDialog();
+                            if(!isNetworkAvailable())
+                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
+                            else {
+                                Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.error), Toast.LENGTH_SHORT);
+                                toast.show();
+                            }
+                        }
+                    });
+                    return;
                 }
 
 
@@ -533,6 +518,7 @@ public class MainActivity extends BaseActivity implements LocationListener {
                         showProgressBar();
                     }
                 });
+
                 final ArrayList<Oggetto_risultatoRicerca> risultato;
                 ArrayList<Oggetto_risultatoRicerca> listaRicerca = new ArrayList<>();
                 FirebaseGetRestaurantInfoManager restaurantInfoManager;
@@ -542,8 +528,12 @@ public class MainActivity extends BaseActivity implements LocationListener {
                     for (RestaurantPosition obj : listaRistoranti) {
                         restaurantInfoManager = new FirebaseGetRestaurantInfoManager();
                         restaurantInfoManager.getRestaurantInfo(obj.getRestaurantId(), "restaurantName");
-                        restaurantInfoManager.waitForResult();
+                        boolean timeout = restaurantInfoManager.waitForResult();
                         String nome = restaurantInfoManager.getResult();
+                        if(timeout){
+                            listaRicerca= null;
+                            break;
+                        }
 
                         if (nome.toLowerCase().contains(query.toLowerCase())) {
                             restaurantProfileManager = new FirebaseGetRestaurantProfileManager();
@@ -567,8 +557,12 @@ public class MainActivity extends BaseActivity implements LocationListener {
                         dismissProgressDialog();
 
                         if (risultato == null) {
-                            Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.exceptionError), Toast.LENGTH_SHORT);
-                            toast.show();
+                            if(!isNetworkAvailable())
+                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
+                            else {
+                                Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.exceptionError), Toast.LENGTH_SHORT);
+                                toast.show();
+                            }
                             return;
                         }
 
@@ -689,20 +683,8 @@ public class MainActivity extends BaseActivity implements LocationListener {
     //funzioni per la gestione della posizione
     @Override
     public void onLocationChanged(Location location) {
-        Geocoder geo = new Geocoder(context);
         try {
             System.out.println("----> entrato in callback location");
-
-
-            List<Address> addresses = geo.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-
-            for (Address a : addresses) {
-                System.out.println("----> POSIZIONE");
-                System.out.println("----> " + a.getCountryName());
-                System.out.println("----> " + a.getLocality());
-                System.out.println("----> " + a.getAddressLine(0));
-            }
-
 
             if (!isNear(myPosition, new LatLng(location.getLatitude(), location.getLongitude()), 10) || location.getAccuracy() > 50) {
                 gestoreMappa.setCurrentPosition(new LatLng(location.getLatitude(), location.getLongitude()));
@@ -735,7 +717,8 @@ public class MainActivity extends BaseActivity implements LocationListener {
             myPosition = new LatLng(location.getLatitude(), location.getLongitude());
 
             System.out.println("ACCURATEZZA: " + location.getAccuracy());
-        } catch (IOException e) {
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -855,10 +838,14 @@ public class MainActivity extends BaseActivity implements LocationListener {
                                         dismissProgressDialog();
 
                                         if(risultatoRicerca == null ){
-                                            if(!isNetworkAvailable())
-                                                blockMainActivity();
-                                            Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.exceptionError), Toast.LENGTH_SHORT);
-                                            toast.show();
+                                            if(!isNetworkAvailable()){
+                                                Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.connection_error), Toast.LENGTH_SHORT);
+                                                toast.show();
+                                            }
+                                            else {
+                                                Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.exceptionError), Toast.LENGTH_SHORT);
+                                                toast.show();
+                                            }
                                             return;
                                         }
                                         if(risultatoRicerca.size() == 0){
@@ -900,29 +887,4 @@ public class MainActivity extends BaseActivity implements LocationListener {
         startActivity(getIntent());
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if(!isNetworkAvailable()){
-            blockMainActivity();
-        }
-    }
-
-    private void blockMainActivity() {
-        try{
-            DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-            RelativeLayout blockLayout = (RelativeLayout) findViewById(R.id.blockConnection);
-            blockLayout.setVisibility(View.VISIBLE);
-            setVisibilityAlert(false);
-            android.widget.SearchView searchMain = (android.widget.SearchView) findViewById(R.id.searchView_main);
-            enableSearchView(searchMain, false);
-            if(gestoreMappa != null){
-                gestoreMappa.annullaMappa();
-            }
-
-        } catch (Exception e) {
-            return;
-        }
-    }
 }
