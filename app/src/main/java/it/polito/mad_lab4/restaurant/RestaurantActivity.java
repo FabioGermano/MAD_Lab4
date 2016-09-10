@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.github.clans.fab.FloatingActionButton;
@@ -164,8 +165,13 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
                         }
 
                         dismissProgressDialog();
+                        if(restaurant != null)
+                            initSections();
+                        else {
+                            Toast.makeText(RestaurantActivity.this, "Connection error", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
 
-                        initSections();
                     }
                 });
             }

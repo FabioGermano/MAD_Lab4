@@ -2,6 +2,7 @@ package it.polito.mad_lab4;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -30,6 +31,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseUser;
@@ -88,6 +90,15 @@ public class MainActivity extends BaseActivity implements LocationListener {
         hideToolbarShadow(true);
         setActivityTitle(getResources().getString(R.string.titolo_main_activity));
 
+        //gestione MAPPA
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+
+
+        gestoreMappa = new mainActivity_map();
+        gestoreMappa.setContext(this);
+        gestoreMappa.setCurrentPosition(myPosition);
+        mapFragment.getMapAsync(gestoreMappa);
+
         if (isNetworkAvailable()) {
 
             inizializzaSearchView();
@@ -96,7 +107,6 @@ public class MainActivity extends BaseActivity implements LocationListener {
 
             context = this;
 
-
             rilevaPosizione();
 
             caricaDati();
@@ -104,26 +114,10 @@ public class MainActivity extends BaseActivity implements LocationListener {
             ricercaLuogoBtn = (ImageButton) findViewById(R.id.ricerca_luogo);
             ricercaRistoranteBtn = (ImageButton) findViewById(R.id.ricerca_ristorante);
 
-
-            //gestione MAPPA
-            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-            gestoreMappa = new mainActivity_map();
-            gestoreMappa.setContext(this);
-            gestoreMappa.setCurrentPosition(myPosition);
-            mapFragment.getMapAsync(gestoreMappa);
         }
         else{
-                DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-                mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-                RelativeLayout blockLayout = (RelativeLayout) findViewById(R.id.blockConnection);
-                blockLayout.setVisibility(View.VISIBLE);
-                setVisibilityAlert(false);
-
-
-
-                android.widget.SearchView searchMain = (android.widget.SearchView) findViewById(R.id.searchView_main);
-                enableSearchView(searchMain, false);
-            }
+            blockMainActivity();
+        }
 
     }
 
@@ -539,29 +533,33 @@ public class MainActivity extends BaseActivity implements LocationListener {
                         showProgressBar();
                     }
                 });
-
+                final ArrayList<Oggetto_risultatoRicerca> risultato;
                 ArrayList<Oggetto_risultatoRicerca> listaRicerca = new ArrayList<>();
                 FirebaseGetRestaurantInfoManager restaurantInfoManager;
                 FirebaseGetRestaurantProfileManager restaurantProfileManager;
 
-                for (RestaurantPosition obj : listaRistoranti) {
-                    restaurantInfoManager = new FirebaseGetRestaurantInfoManager();
-                    restaurantInfoManager.getRestaurantInfo(obj.getRestaurantId(), "restaurantName");
-                    restaurantInfoManager.waitForResult();
-                    String nome = restaurantInfoManager.getResult();
+                if (listaRistoranti != null) {
+                    for (RestaurantPosition obj : listaRistoranti) {
+                        restaurantInfoManager = new FirebaseGetRestaurantInfoManager();
+                        restaurantInfoManager.getRestaurantInfo(obj.getRestaurantId(), "restaurantName");
+                        restaurantInfoManager.waitForResult();
+                        String nome = restaurantInfoManager.getResult();
 
-                    if (nome.toLowerCase().contains(query.toLowerCase())) {
-                        restaurantProfileManager = new FirebaseGetRestaurantProfileManager();
-                        restaurantProfileManager.getRestaurant(obj.getRestaurantId());
-                        restaurantProfileManager.waitForResult();
-                        Restaurant r = restaurantProfileManager.getResult();
+                        if (nome.toLowerCase().contains(query.toLowerCase())) {
+                            restaurantProfileManager = new FirebaseGetRestaurantProfileManager();
+                            restaurantProfileManager.getRestaurant(obj.getRestaurantId());
+                            restaurantProfileManager.waitForResult();
+                            Restaurant r = restaurantProfileManager.getResult();
 
-                        Oggetto_risultatoRicerca res = new Oggetto_risultatoRicerca(obj.getRestaurantId(), r.getRestaurantName(), r.getAddress(), r.getLogoThumbDownloadLink(), r.getPrice(), r.getRanking(), r.isTakeAway(), r.isOnPlace());
-                        listaRicerca.add(res);
+                            Oggetto_risultatoRicerca res = new Oggetto_risultatoRicerca(obj.getRestaurantId(), r.getRestaurantName(), r.getAddress(), r.getLogoThumbDownloadLink(), r.getPrice(), r.getRanking(), r.isTakeAway(), r.isOnPlace());
+                            listaRicerca.add(res);
+                        }
                     }
-                }
 
-                final ArrayList<Oggetto_risultatoRicerca> risultato = listaRicerca;
+                    risultato = listaRicerca;
+                } else {
+                    risultato = null;
+                }
 
                 runOnUiThread(new Runnable() {
                     @Override
@@ -591,6 +589,7 @@ public class MainActivity extends BaseActivity implements LocationListener {
                 });
             }
         }.start();
+
     }
 
 
@@ -800,9 +799,10 @@ public class MainActivity extends BaseActivity implements LocationListener {
 
             if (netAllowed && wifiAllowed && locAllowed) {
                 locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+             //   locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
             }
         }
+
     }
 
     @Override
@@ -855,6 +855,8 @@ public class MainActivity extends BaseActivity implements LocationListener {
                                         dismissProgressDialog();
 
                                         if(risultatoRicerca == null ){
+                                            if(!isNetworkAvailable())
+                                                blockMainActivity();
                                             Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.exceptionError), Toast.LENGTH_SHORT);
                                             toast.show();
                                             return;
@@ -894,14 +896,33 @@ public class MainActivity extends BaseActivity implements LocationListener {
 
 
     public void connection_refresh(View view) {
-        //Toast.makeText(MainActivity.this, "Devo fare refresh", Toast.LENGTH_SHORT).show();
         finish();
         startActivity(getIntent());
     }
 
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(!isNetworkAvailable()){
+            blockMainActivity();
+        }
+    }
+
+    private void blockMainActivity() {
+        try{
+            DrawerLayout mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            RelativeLayout blockLayout = (RelativeLayout) findViewById(R.id.blockConnection);
+            blockLayout.setVisibility(View.VISIBLE);
+            setVisibilityAlert(false);
+            android.widget.SearchView searchMain = (android.widget.SearchView) findViewById(R.id.searchView_main);
+            enableSearchView(searchMain, false);
+            if(gestoreMappa != null){
+                gestoreMappa.annullaMappa();
+            }
+
+        } catch (Exception e) {
+            return;
+        }
     }
 }

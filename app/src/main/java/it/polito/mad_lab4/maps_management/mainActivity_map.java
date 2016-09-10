@@ -41,10 +41,16 @@ public class mainActivity_map implements OnMapReadyCallback, GoogleMap.OnMapClic
 
     private LatLng myPosition = new LatLng(45.06455, 7.65833); //qui definiamo una posizione di default se per caso non ne abbiamo altre
     private Context context;
+    private boolean annullaMappa = false;
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        if(annullaMappa){
+            annullaMappa = false;
+            mMap.getUiSettings().setAllGesturesEnabled(false);
+            return;
+        }
 
         if(!fullScreen){
             //scarico ed elaboro i dati dal server e poi chiamo settaMarker()
@@ -238,5 +244,12 @@ public class mainActivity_map implements OnMapReadyCallback, GoogleMap.OnMapClic
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myPosition, 15));
 
         }
+    }
+
+    public void annullaMappa(){
+        if(mMap != null)
+            mMap.getUiSettings().setAllGesturesEnabled(false);
+        else
+            annullaMappa = true;
     }
 }
