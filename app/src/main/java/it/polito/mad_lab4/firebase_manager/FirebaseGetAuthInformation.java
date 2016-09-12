@@ -26,6 +26,7 @@ public class FirebaseGetAuthInformation implements  FirebaseAuth.AuthStateListen
 
     private boolean alreadyNotified;
     private FirebaseAuth mAuth;
+    private boolean timeout;
 
     // info di ritorno
     FirebaseUser user = null;  // se è uguale a null c'è un qualche problema con l'autenticazione
@@ -38,8 +39,24 @@ public class FirebaseGetAuthInformation implements  FirebaseAuth.AuthStateListen
         alreadyNotified = false;
         mAuth = FirebaseAuth.getInstance();
         mAuth.addAuthStateListener(this);
+
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        timeout();
+                    }
+                },
+                10000
+        );
     }
 
+    private void timeout() {
+        lock.lock();
+        timeout = true;
+        this.cv.signal();
+        lock.unlock();
+    }
     @Override
     public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
         lock.lock();
@@ -62,19 +79,18 @@ public class FirebaseGetAuthInformation implements  FirebaseAuth.AuthStateListen
         lock.unlock();
     }
 
-    public void waitForResult() {
+    public boolean waitForResult() {
         lock.lock();
-        if(!resultReturned) {
-            try {
-                cv.await();
-            } catch (InterruptedException e) {
-                System.out.println("Eccezione: "+ e.getMessage());
-                Log.e(e.getMessage(), e.getMessage());
-            }
-            finally {
-                lock.unlock();
-            }
+        try {if(!resultReturned || timeout)
+            cv.await();
+        } catch (InterruptedException e) {
+            System.out.println("Eccezione: "+ e.getMessage());
+            Log.e(e.getMessage(), e.getMessage());
         }
+        finally {
+            lock.unlock();
+        }
+        return timeout;
     }
 
 

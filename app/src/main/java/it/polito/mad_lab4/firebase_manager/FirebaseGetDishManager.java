@@ -26,12 +26,31 @@ public class FirebaseGetDishManager implements ValueEventListener {
     private boolean resultReturned = false;
 
     private DatabaseReference myRef;
+    private boolean timeout;
 
     public void getDish(final String restaurantId, final String dishId){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         myRef = database.getReference("menu/" + restaurantId + "/" + dishId);
         myRef.addListenerForSingleValueEvent(this);
+
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        timeout();
+                    }
+                },
+                10000
+        );
     }
+
+    private void timeout() {
+        lock.lock();
+        timeout = true;
+        this.cv.signal();
+        lock.unlock();
+    }
+
 
     @Override
     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -55,15 +74,18 @@ public class FirebaseGetDishManager implements ValueEventListener {
         return dish;
     }
 
-    public void waitForResult() {
+    public boolean waitForResult() {
         lock.lock();
-        if(!resultReturned) {
-            try {
+        try {
+            if(!resultReturned || timeout)
                 cv.await();
-            } catch (InterruptedException e) {
-                Log.e(e.getMessage(), e.getMessage());
-            }
+        } catch (InterruptedException e) {
+            Log.e(e.getMessage(), e.getMessage());
         }
+        finally {
+            lock.unlock();
+        }
+        return timeout;
     }
 
     public void terminate() {

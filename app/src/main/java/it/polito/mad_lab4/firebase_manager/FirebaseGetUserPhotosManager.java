@@ -30,6 +30,7 @@ public class FirebaseGetUserPhotosManager implements ValueEventListener {
     private boolean resultReturned = false;
 
     private Query query;
+    private boolean timeout;
 
     public void getPhotos(final String restaurantId){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -37,6 +38,23 @@ public class FirebaseGetUserPhotosManager implements ValueEventListener {
                 .getReference("userphotos/" + restaurantId);
 
         query.addListenerForSingleValueEvent(this);
+
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        timeout();
+                    }
+                },
+                10000
+        );
+    }
+
+    private void timeout() {
+        lock.lock();
+        timeout = true;
+        this.cv.signal();
+        lock.unlock();
     }
 
     @Override
@@ -65,15 +83,18 @@ public class FirebaseGetUserPhotosManager implements ValueEventListener {
         return userPhotos;
     }
 
-    public void waitForResult() {
+    public boolean waitForResult() {
         lock.lock();
-        if(!resultReturned) {
-            try {
+        try {
+            if(!resultReturned)
                 cv.await();
-            } catch (InterruptedException e) {
-                Log.e(e.getMessage(), e.getMessage());
-            }
+        } catch (InterruptedException e) {
+            Log.e(e.getMessage(), e.getMessage());
         }
+        finally {
+            lock.unlock();
+        }
+        return timeout;
     }
 
     public void terminate() {

@@ -95,15 +95,18 @@ public class FirebaseGetReservationsManager implements ValueEventListener {
         return reservations;
     }
 
-    public void waitForResult() {
+    public boolean waitForResult() {
         lock.lock();
-        if(!resultReturned) {
-            try {
+        try {
+            if(!resultReturned || timeout)
                 cv.await();
-            } catch (InterruptedException e) {
-                Log.e(e.getMessage(), e.getMessage());
-            }
+        } catch (InterruptedException e) {
+            Log.e(e.getMessage(), e.getMessage());
         }
+        finally {
+            lock.unlock();
+        }
+        return timeout;
     }
 
     public void terminate() {

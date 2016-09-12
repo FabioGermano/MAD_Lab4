@@ -41,7 +41,10 @@ public class FirebaseCancelReservationManager implements DatabaseReference.Compl
             myRef = database.getReference("reservations/" + reservation.getReservationId() + "/status");
             myRef.setValue(ReservationTypeConverter.toString(ReservationType.DELETED));
         }
+
+
     }
+
 
     public boolean waitForResult() {
         lock.lock();

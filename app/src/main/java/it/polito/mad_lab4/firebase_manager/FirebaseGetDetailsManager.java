@@ -26,11 +26,30 @@ public class FirebaseGetDetailsManager implements ValueEventListener {
     private boolean resultReturned = false;
 
     private DatabaseReference myRef;
+    private boolean timeout;
 
     public void getDetail(final String path){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         myRef = database.getReference(path);
         myRef.addListenerForSingleValueEvent(this);
+
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        timeout();
+                    }
+                },
+                10000
+        );
+
+    }
+
+    private void timeout() {
+        lock.lock();
+        timeout = true;
+        this.cv.signal();
+        lock.unlock();
     }
 
     @Override
@@ -56,15 +75,19 @@ public class FirebaseGetDetailsManager implements ValueEventListener {
         return result;
     }
 
-    public void waitForResult() {
+    public boolean waitForResult() {
         lock.lock();
-        if(!resultReturned) {
-            try {
+        try {
+            if(!resultReturned || timeout)
                 cv.await();
-            } catch (InterruptedException e) {
-                Log.e(e.getMessage(), e.getMessage());
-            }
+        } catch (InterruptedException e) {
+            Log.e(e.getMessage(), e.getMessage());
         }
+        finally {
+            lock.unlock();
+        }
+
+        return timeout;
     }
 
     public void terminate() {

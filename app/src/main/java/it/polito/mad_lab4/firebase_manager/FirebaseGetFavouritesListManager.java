@@ -32,11 +32,28 @@ public class FirebaseGetFavouritesListManager  implements ValueEventListener {
     private boolean resultReturned = false;
 
     private Query query;
+    private boolean timeout;
 
     public void getFavourites(final String userId){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference mDatabase = database.getReference();
         mDatabase.child("favourites").child(userId).addListenerForSingleValueEvent(this);
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        timeout();
+                    }
+                },
+                10000
+        );
+    }
+
+    private void timeout() {
+        lock.lock();
+        timeout = true;
+        this.cv.signal();
+        lock.unlock();
     }
 
     @Override
@@ -67,15 +84,19 @@ public class FirebaseGetFavouritesListManager  implements ValueEventListener {
         return favourites;
     }
 
-    public void waitForResult() {
+    public boolean waitForResult() {
         lock.lock();
-        if(!resultReturned) {
-            try {
+        try {
+            if(!resultReturned || timeout)
                 cv.await();
-            } catch (InterruptedException e) {
-                Log.e(e.getMessage(), e.getMessage());
-            }
         }
+        catch (InterruptedException e) {
+            Log.e(e.getMessage(), e.getMessage());
+        }
+        finally {
+            lock.unlock();
+        }
+        return timeout;
     }
 
     public void terminate() {

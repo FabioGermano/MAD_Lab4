@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * Created by f.germano on 28/05/2016.
  */
-public class FirebaseUserFavouritesManager implements DatabaseReference.CompletionListener {
+public class /FirebaseUserFavouritesManager implements DatabaseReference.CompletionListener {
 
     public void removeLike(String userId, String restaurantId){
         FirebaseDatabase database = FirebaseDatabase.getInstance();

@@ -27,6 +27,7 @@ public class FirebaseGetUniversitiesManager implements ValueEventListener{
     private boolean resultReturned = false;
 
     private ArrayList<String> universities;
+    private boolean timeout;
 
     public void getUniversities() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -34,6 +35,23 @@ public class FirebaseGetUniversitiesManager implements ValueEventListener{
         mDatabase.child("universities").addListenerForSingleValueEvent(this);
 
         universities = new ArrayList<String>();
+
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        timeout();
+                    }
+                },
+                10000
+        );
+    }
+
+    private void timeout() {
+        lock.lock();
+        timeout = true;
+        this.cv.signal();
+        lock.unlock();
     }
 
     @Override
@@ -61,19 +79,18 @@ public class FirebaseGetUniversitiesManager implements ValueEventListener{
         return universities;
     }
 
-    public void waitForResult() {
+    public boolean waitForResult() {
         lock.lock();
-        if(!resultReturned) {
-            try {
-                System.out.println("try");
+        try {
+        if(!resultReturned)
                 cv.await();
-            } catch (InterruptedException e) {
-                System.out.println("Eccezione: "+ e.getMessage());
-                Log.e(e.getMessage(), e.getMessage());
-            }
-            finally {
-                lock.unlock();
-            }
+        } catch (InterruptedException e) {
+            System.out.println("Eccezione: "+ e.getMessage());
+            Log.e(e.getMessage(), e.getMessage());
         }
+        finally {
+            lock.unlock();
+        }
+        return timeout;
     }
 }
