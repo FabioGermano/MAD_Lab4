@@ -25,7 +25,7 @@ import it.polito.mad_lab4.newData.restaurant.Offer;
 /**
  * Created by f.germano on 28/05/2016.
  */
-public class /FirebaseMenuListManager implements ValueEventListener, ChildEventListener {
+public class FirebaseMenuListManager implements ValueEventListener, ChildEventListener {
 
     final Lock lock = new ReentrantLock();
     final Condition cv  = lock.newCondition();
