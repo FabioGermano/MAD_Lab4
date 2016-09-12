@@ -83,8 +83,22 @@ public class Login extends BaseActivity {
 
                                 FirebaseGetUserInfoManager userInfoManager = new FirebaseGetUserInfoManager();
                                 userInfoManager.getClientInfo(uid);
-                                userInfoManager.waitForResult();
+                                boolean timeout = userInfoManager.waitForResult();
                                 final User infoUser = userInfoManager.getUserInfo();
+
+                                if(timeout){
+                                    System.out.println("TIMEOUT");
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            mAuth.removeAuthStateListener(mAuthListener);
+                                            Toast.makeText(Login.this, getResources().getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
+                                            dismissProgressDialog();
+                                            finish();
+                                        }
+                                    });
+                                    return;
+                                }
 
                                 runOnUiThread(new Runnable() {
                                     @Override
@@ -94,10 +108,12 @@ public class Login extends BaseActivity {
                                         if(infoUser.getUserType().compareTo("C") == 0) {
                                             System.out.println("E UN CLIENT");
                                             Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                             startActivity(i);
                                         } else if(infoUser.getUserType().compareTo("M") == 0){
                                             System.out.println("E UN MANAGER");
                                             Intent i = new Intent(getApplicationContext(), MainActivityManager.class);
+                                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                             startActivity(i);
                                         }
                                         dismissProgressDialog();
@@ -134,6 +150,11 @@ public class Login extends BaseActivity {
             final EditText passwordET = (EditText) findViewById(R.id.passwordET);
             final EditText usernameET = (EditText) findViewById(R.id.usernameET);
 
+            if (!isNetworkAvailable()) {
+                Toast.makeText(getApplicationContext(), getResources().getString(R.string.connection_error), Toast.LENGTH_LONG).show();
+                return;
+            }
+
             //Eseguire controlli su stringhe
             if (passwordET != null && usernameET != null) {
                 String userN = usernameET.getText().toString();
@@ -149,7 +170,7 @@ public class Login extends BaseActivity {
                                     // the auth state listener will be notified and logic to handle the
                                     // signed in user can be handled in the listener.
                                     if (!task.isSuccessful()) {
-                                        if(progressDialog != null){
+                                        if (progressDialog != null) {
                                             progressDialog.dismiss();
                                             progressDialog = null;
                                         }
@@ -162,14 +183,14 @@ public class Login extends BaseActivity {
                             });
                 } else {
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.error_complete), Toast.LENGTH_LONG).show();
-                    if(progressDialog != null){
+                    if (progressDialog != null) {
                         progressDialog.dismiss();
                         progressDialog = null;
                     }
                     return;
                 }
             } else {
-                if(progressDialog != null){
+                if (progressDialog != null) {
                     progressDialog.dismiss();
                     progressDialog = null;
                 }

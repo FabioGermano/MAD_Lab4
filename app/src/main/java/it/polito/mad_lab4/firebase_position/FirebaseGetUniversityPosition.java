@@ -26,11 +26,31 @@ public class FirebaseGetUniversityPosition implements ValueEventListener {
 
     private Position universityPosition = null;
 
+    private boolean timeout;
+    private DatabaseReference mDatabase;
+
     public void getUniversityPosition(String id) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference mDatabase = database.getReference();
+        mDatabase = database.getReference();
         mDatabase.child("universities").child(id).child("positionLatlng").addListenerForSingleValueEvent(this);
 
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        timeout();
+                    }
+                },
+                10000
+        );
+
+    }
+
+    private void timeout() {
+        lock.lock();
+        timeout = true;
+        this.cv.signal();
+        lock.unlock();
     }
 
 
@@ -56,19 +76,23 @@ public class FirebaseGetUniversityPosition implements ValueEventListener {
         return universityPosition;
     }
 
-    public void waitForResult() {
+    public boolean waitForResult() {
         lock.lock();
-        if(!resultReturned) {
-            try {
-                System.out.println("try");
+        try {
+            if (!resultReturned || timeout)
                 cv.await();
-            } catch (InterruptedException e) {
-                System.out.println("Eccezione: "+ e.getMessage());
-                Log.e(e.getMessage(), e.getMessage());
-            }
-            finally {
-                lock.unlock();
-            }
+        } catch (InterruptedException e) {
+            System.out.println("Eccezione: "+ e.getMessage());
+            Log.e(e.getMessage(), e.getMessage());
         }
+        finally {
+            lock.unlock();
+        }
+        return timeout;
     }
+
+    public void terminate() {
+        mDatabase.removeEventListener(this);
+    }
+
 }

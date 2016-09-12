@@ -34,6 +34,12 @@ public class Register_restaurant extends BaseActivity {
 
     public void sendRequest(View view){
 
+        if (!isNetworkAvailable()){
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.connection_error), Toast.LENGTH_LONG).show();
+            return;
+        }
+
+
         if (!checkField()){
             return;
         }

@@ -3,6 +3,7 @@ package it.polito.mad_lab4.user;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
@@ -69,13 +70,21 @@ public class EditUserProfileActivity extends BaseActivity implements UniversityP
 
 
             }
-            else
+            else{
+
+
                 loadData(userId);
+
+
+
+            }
+
             extras.clear();
         }
         else {
             Toast.makeText(EditUserProfileActivity.this, getResources().getString(R.string.exceptionError), Toast.LENGTH_SHORT).show();
             Intent i = new Intent(getApplicationContext(), MainActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(i);
         }
 
@@ -156,6 +165,7 @@ public class EditUserProfileActivity extends BaseActivity implements UniversityP
         if (nameField == null || emailField == null){
             Toast.makeText(getApplicationContext(), getResources().getString(R.string.exceptionError), Toast.LENGTH_LONG).show();
             Intent i = new Intent(getApplicationContext(), MainActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(i);
         }
 
@@ -185,7 +195,19 @@ public class EditUserProfileActivity extends BaseActivity implements UniversityP
 
                 FirebaseGetClientInfoManager clientManager = new FirebaseGetClientInfoManager();
                 clientManager.getClientInfo(id);
-                clientManager.waitForResult();
+                if (clientManager.waitForResult()){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            dismissProgressDialog();
+                            Toast.makeText(EditUserProfileActivity.this, getResources().getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+                    });
+
+
+                }
+
                 client = clientManager.getResult();
 
                 ArrayList<String> universities;
@@ -240,6 +262,7 @@ public class EditUserProfileActivity extends BaseActivity implements UniversityP
             if (nameField == null || emailField == null || typeField == null || universityField == null || phoneField == null || bioField == null) {
                 Toast.makeText(getApplicationContext(), getResources().getString(R.string.exceptionError), Toast.LENGTH_LONG).show();
                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(i);
             }
 
@@ -323,6 +346,7 @@ public class EditUserProfileActivity extends BaseActivity implements UniversityP
         if (nameField == null || emailField == null || typeField == null || universityField == null || phoneField == null || bioField==null || genderRadioGroup==null){
             Toast.makeText(getApplicationContext(), getResources().getString(R.string.exceptionError), Toast.LENGTH_LONG).show();
             Intent i = new Intent(getApplicationContext(), MainActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(i);
         }
 
@@ -410,6 +434,7 @@ public class EditUserProfileActivity extends BaseActivity implements UniversityP
                         dismissProgressDialog();
                         Toast.makeText(EditUserProfileActivity.this, getResources().getString(R.string.dataSaved), Toast.LENGTH_SHORT).show();
                         Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(i);
                         finish();
                     }

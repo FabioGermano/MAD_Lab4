@@ -24,14 +24,26 @@ public class FirebaseGetClientInfoManager implements ValueEventListener {
     final Condition cv  = lock.newCondition();
 
     private boolean resultReturned = false;
+    private boolean timeout;
 
     private ClientPersonalInformation client;
+    private DatabaseReference mDatabase;
 
     public void getClientInfo(String id) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference mDatabase = database.getReference();
+        mDatabase = database.getReference();
         client = new ClientPersonalInformation();
         mDatabase.child("clients").child(id).addListenerForSingleValueEvent(this);
+
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        timeout();
+                    }
+                },
+                10000
+        );
     }
 
     @Override
@@ -41,6 +53,15 @@ public class FirebaseGetClientInfoManager implements ValueEventListener {
         client = dataSnapshot.getValue(ClientPersonalInformation.class);
 
         resultReturned = true;
+        this.cv.signal();
+        lock.unlock();
+
+
+    }
+
+    private void timeout() {
+        lock.lock();
+        timeout = true;
         this.cv.signal();
         lock.unlock();
     }
@@ -58,19 +79,23 @@ public class FirebaseGetClientInfoManager implements ValueEventListener {
         return client;
     }
 
-    public void waitForResult() {
+    public boolean waitForResult() {
         lock.lock();
-        if(!resultReturned) {
-            try {
+        try {
+            if(!resultReturned || timeout)
                 cv.await();
-            } catch (InterruptedException e) {
-                System.out.println("Eccezione: "+ e.getMessage());
-                Log.e(e.getMessage(), e.getMessage());
-            }
-            finally {
-                lock.unlock();
-            }
+        } catch (InterruptedException e) {
+            System.out.println("Eccezione: "+ e.getMessage());
+            Log.e(e.getMessage(), e.getMessage());
         }
+        finally {
+            lock.unlock();
+        }
+        return timeout;
+    }
+
+    public void terminate() {
+        mDatabase.removeEventListener(this);
     }
 }
 

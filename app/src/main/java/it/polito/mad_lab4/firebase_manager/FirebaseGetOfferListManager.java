@@ -30,6 +30,7 @@ public class FirebaseGetOfferListManager implements ValueEventListener {
     private boolean resultReturned = false;
 
     private Query query;
+    private boolean timeout;
 
     public void getOffers(final String restaurantId){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -37,6 +38,16 @@ public class FirebaseGetOfferListManager implements ValueEventListener {
                 .getReference("offers/" + restaurantId);
 
         query.addListenerForSingleValueEvent(this);
+
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        timeout();
+                    }
+                },
+                10000
+        );
     }
 
     @Override
@@ -52,6 +63,13 @@ public class FirebaseGetOfferListManager implements ValueEventListener {
         }
     }
 
+    private void timeout() {
+        lock.lock();
+        timeout = true;
+        this.cv.signal();
+        lock.unlock();
+    }
+
     @Override
     public void onCancelled(DatabaseError databaseError) {
         // TODO manage errors
@@ -65,16 +83,20 @@ public class FirebaseGetOfferListManager implements ValueEventListener {
         return offers;
     }
 
-    public void waitForResult() {
+    public boolean waitForResult() {
         lock.lock();
-        if(!resultReturned) {
-            try {
+        try {
+            if(!resultReturned || timeout)
                 cv.await();
-            } catch (InterruptedException e) {
+        } catch (InterruptedException e) {
                 Log.e(e.getMessage(), e.getMessage());
-            }
         }
+        finally {
+            lock.unlock();
+        }
+        return timeout;
     }
+
 
     public void terminate() {
         query.removeEventListener(this);

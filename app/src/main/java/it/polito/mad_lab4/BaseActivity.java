@@ -116,6 +116,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         super.setContentView(view);
         if (isNetworkAvailable())
             controlloLogin(view);
+        else
+            configureBarraLaterale(view, null);
         //configureBarraLaterale(view);
     }
 

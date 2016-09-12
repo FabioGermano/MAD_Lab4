@@ -16,6 +16,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.Console;
 import java.util.ArrayList;
 
 import it.polito.mad_lab4.R;
@@ -75,23 +76,26 @@ public class mainActivity_map implements OnMapReadyCallback, GoogleMap.OnMapClic
     private void settaMarker(){
         LatLng posizioneOfferta;
         Marker marker;
+        try {
+            mMap.addMarker(new MarkerOptions().position(myPosition)
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
 
-        mMap.addMarker(new MarkerOptions().position(myPosition)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-
-        for (Oggetto_offerteVicine obj:listaOfferte) {
-            posizioneOfferta = new LatLng( obj.getRestaurantPosition().getPosition().getLatitudine(), obj.getRestaurantPosition().getPosition().getLongitudine());
-            if(obj.isNew()){
-                //metto l'icona con il punto esclamativo
-                marker =mMap.addMarker(new MarkerOptions().position(posizioneOfferta)
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-                obj.setMarkerAssociato(marker.getId());
-            } else {
-                //metto l'icona semplice
-                marker =mMap.addMarker(new MarkerOptions().position(posizioneOfferta)
-                        .icon(BitmapDescriptorFactory.fromResource(R.mipmap.hamburger_logo)));
-                obj.setMarkerAssociato(marker.getId());
+            for (Oggetto_offerteVicine obj : listaOfferte) {
+                posizioneOfferta = new LatLng(obj.getRestaurantPosition().getPosition().getLatitudine(), obj.getRestaurantPosition().getPosition().getLongitudine());
+                if (obj.isNew()) {
+                    //metto l'icona con il punto esclamativo
+                    marker = mMap.addMarker(new MarkerOptions().position(posizioneOfferta)
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                    obj.setMarkerAssociato(marker.getId());
+                } else {
+                    //metto l'icona semplice
+                    marker = mMap.addMarker(new MarkerOptions().position(posizioneOfferta)
+                            .icon(BitmapDescriptorFactory.fromResource(R.mipmap.hamburger_logo)));
+                    obj.setMarkerAssociato(marker.getId());
+                }
             }
+        } catch(Exception e){
+            System.out.println("-----> Eccezione:" + e.getMessage());
         }
     }
 
@@ -149,13 +153,75 @@ public class mainActivity_map implements OnMapReadyCallback, GoogleMap.OnMapClic
     private void caricaOfferteDaVisualizzare(){
         new Thread()        {
             public void run() {
+                try {
+                    FirebaseGetRestaurantsPositions restaurantsPositions = new FirebaseGetRestaurantsPositions();
+                    boolean timeout = restaurantsPositions.waitForResult();
+                    ArrayList<RestaurantPosition> listaPosizioniR = restaurantsPositions.getListaOfferte();
+                    if (timeout) {
+                        listaOfferte = null;
+                        caricamentoCompletato = true;
+                        Handler handler = new Handler(Looper.getMainLooper());
+                        handler.post(new Runnable() {
+                            public void run() {
+                                // UI code goes here
+                                settaMarkerPrincipale();
+                            }
+                        });
+                        return;
+                    }
+                    listaOfferte = new ArrayList<Oggetto_offerteVicine>();
 
-                FirebaseGetRestaurantsPositions restaurantsPositions = new FirebaseGetRestaurantsPositions();
-                boolean timeout = restaurantsPositions.waitForResult();
-                ArrayList<RestaurantPosition> listaPosizioniR = restaurantsPositions.getListaOfferte();
-                if(timeout){
-                    listaOfferte = null;
+                    if (listaOfferte != null) {
+                        Oggetto_offerteVicine objOffertaVicina;
+                        for (RestaurantPosition rp : listaPosizioniR) {
+                            if (ristoranteVicino(rp.getPosition())) {
+                                objOffertaVicina = new Oggetto_offerteVicine();
+                                objOffertaVicina.setRestaurantPosition(rp);
+                                listaOfferte.add(objOffertaVicina);
+                                System.out.println("-----> Inserito ristorante: " + objOffertaVicina.getRestaurantPosition().getRestaurantId());
+                            }
+                        }
+
+                        // ora ho tutti i ristoranti distanti TOT metri dalla mia posizione
+                        FirebaseGetOfferListManager offerListManager;
+                        FirebaseGetRestaurantInfoManager restaurantInfoManager;
+
+                        // Funzione corretta che scarica per ogni ristorante le offerte e prende la prima
+                        // di ogniuno (si può cambiare)
+                        System.out.println("-----> carico i dati dal server dei ristoranti in zona");
+                        for (Oggetto_offerteVicine obj : listaOfferte) {
+                            System.out.println("-----> Recupero dati ristorante: " + obj.getRestaurantPosition().getRestaurantId());
+
+                            offerListManager = new FirebaseGetOfferListManager();
+                            offerListManager.getOffers(obj.getRestaurantPosition().getRestaurantId());
+                            offerListManager.waitForResult();
+                            ArrayList<Offer> listaOTemp = offerListManager.getResult();
+                            obj.setNumOfferte(listaOTemp.size());
+
+                            restaurantInfoManager = new FirebaseGetRestaurantInfoManager();
+                            restaurantInfoManager.getRestaurantInfo(obj.getRestaurantPosition().getRestaurantId(), "restaurantName");
+                            restaurantInfoManager.waitForResult();
+                            obj.setNomeRistorante(restaurantInfoManager.getResult());
+
+                            System.out.println("-----> " + obj.getNomeRistorante());
+
+                        }
+
+                        Handler handler = new Handler(Looper.getMainLooper());
+                        handler.post(new Runnable() {
+                            public void run() {
+                                // UI code goes here
+                                settaMarker();
+                            }
+                        });
+                    }
+                    System.out.println("-----> Completato il caricamento della mappa");
                     caricamentoCompletato = true;
+
+                } catch(Exception e){
+                    System.out.println("-----> Eccezione:" + e.getMessage());
+                    caricamentoCompletato = true;
+                    listaOfferte = null;
                     Handler handler = new Handler(Looper.getMainLooper());
                     handler.post(new Runnable() {
                         public void run() {
@@ -163,52 +229,7 @@ public class mainActivity_map implements OnMapReadyCallback, GoogleMap.OnMapClic
                             settaMarkerPrincipale();
                         }
                     });
-                    return;
                 }
-                listaOfferte = new ArrayList<Oggetto_offerteVicine>();
-
-                if(listaOfferte != null){
-                    Oggetto_offerteVicine objOffertaVicina;
-                    for (RestaurantPosition rp: listaPosizioniR) {
-
-                        if(ristoranteVicino(rp.getPosition())){
-                            objOffertaVicina = new Oggetto_offerteVicine();
-                            objOffertaVicina.setRestaurantPosition(rp);
-                            listaOfferte.add(objOffertaVicina);
-                        }
-                    }
-
-                    // ora ho tutti i ristoranti distanti TOT metri dalla mia posizione
-                    FirebaseGetOfferListManager offerListManager;
-                    FirebaseGetRestaurantInfoManager restaurantInfoManager;
-
-                    // Funzione corretta che scarica per ogni ristorante le offerte e prende la prima
-                    // di ogniuno (si può cambiare)
-
-                    for (Oggetto_offerteVicine obj: listaOfferte) {
-                        offerListManager = new FirebaseGetOfferListManager();
-                        offerListManager.getOffers(obj.getRestaurantPosition().getRestaurantId());
-                        offerListManager.waitForResult();
-                        ArrayList<Offer> listaOTemp = offerListManager.getResult();
-                        obj.setNumOfferte(listaOTemp.size());
-
-                        restaurantInfoManager = new FirebaseGetRestaurantInfoManager();
-                        restaurantInfoManager.getRestaurantInfo(obj.getRestaurantPosition().getRestaurantId(), "restaurantName");
-                        restaurantInfoManager.waitForResult();
-                        obj.setNomeRistorante(restaurantInfoManager.getResult());
-                    }
-
-                    Handler handler = new Handler(Looper.getMainLooper());
-                    handler.post(new Runnable() {
-                        public void run() {
-                            // UI code goes here
-                            settaMarker();
-                        }
-                    });
-                }
-
-                caricamentoCompletato = true;
-
             }
         }.start();
     }

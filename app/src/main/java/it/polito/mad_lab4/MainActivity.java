@@ -129,7 +129,6 @@ public class MainActivity extends BaseActivity implements LocationListener {
             locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
             if (netAllowed && wifiAllowed && locAllowed) {
-
                 if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
                     System.out.println("----> GPS NON ATTIVO");
                     mapMessage.setText("Gps non attivo");
@@ -143,12 +142,10 @@ public class MainActivity extends BaseActivity implements LocationListener {
                     mapMessage.setVisibility(View.VISIBLE);
                     if (gpsBtn != null)
                         gpsBtn.setVisibility(View.GONE);
-                    String locationProvider = LocationManager.NETWORK_PROVIDER;
-                    //String locationProvider = LocationManager.GPS_PROVIDER;
+                    //String locationProvider = LocationManager.NETWORK_PROVIDER;
+                    String locationProvider = LocationManager.GPS_PROVIDER;
 
                     locationManager.requestLocationUpdates(locationProvider, 0, 0, this);
-                    //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-
                 }
             }
         }
@@ -184,14 +181,16 @@ public class MainActivity extends BaseActivity implements LocationListener {
                     universitiesManager.waitForResult();
                     final Position univPosition = universitiesManager.getResult();
 
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            gestoreMappa.setCurrentPosition(new LatLng(univPosition.getLatitudine(), univPosition.getLongitudine()));
-                            mapMessage.setVisibility(View.VISIBLE);
-                            gestoreMappa.updatePosition();
-                        }
-                    });
+                    if (univPosition != null) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                gestoreMappa.setCurrentPosition(new LatLng(univPosition.getLatitudine(), univPosition.getLongitudine()));
+                                mapMessage.setVisibility(View.VISIBLE);
+                                gestoreMappa.updatePosition();
+                            }
+                        });
+                    }
                 }
             }
         }.start();
@@ -313,6 +312,9 @@ public class MainActivity extends BaseActivity implements LocationListener {
     }
 
     public void searchRestaurant(String query) {
+
+        if (ricerca != null)
+            ricerca.clearFocus();
 
         if (query.length() < 3) {
             Toast.makeText(MainActivity.this, getResources().getString(R.string.query_troppo_corta), Toast.LENGTH_SHORT).show();
@@ -709,7 +711,6 @@ public class MainActivity extends BaseActivity implements LocationListener {
 
                     if (netAllowed && wifiAllowed && locAllowed){
                         locationManager.removeUpdates(this);
-                        //TODO rendere visibile bottone update
                     }
                 }
             }
@@ -732,7 +733,7 @@ public class MainActivity extends BaseActivity implements LocationListener {
     @Override
     public void onProviderEnabled(String provider) {
         System.out.println("----> onProviderEnabled");
-
+        rilevaPosizione();
     }
 
     @Override
@@ -781,8 +782,8 @@ public class MainActivity extends BaseActivity implements LocationListener {
             }
 
             if (netAllowed && wifiAllowed && locAllowed) {
-                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
-             //   locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+                //locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
             }
         }
 
@@ -880,6 +881,8 @@ public class MainActivity extends BaseActivity implements LocationListener {
     public void updatePosition(View view) {
         rilevaPosizione();
     }
+
+
 
 
     public void connection_refresh(View view) {

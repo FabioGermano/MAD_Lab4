@@ -66,6 +66,14 @@ public class Register extends BaseActivity {
                 public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                     FirebaseUser user = firebaseAuth.getCurrentUser();
 
+                    if (!isNetworkAvailable()){
+                        Toast.makeText(Register.this, getResources().getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
+                        Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(i);
+                    }
+
+
                     if (user != null && !alreadyNotified) {
                         // User is signed in
                         alreadyNotified = true;
@@ -105,6 +113,11 @@ public class Register extends BaseActivity {
         final EditText emailField = (EditText) findViewById(R.id.emailNA_client);
         final EditText pwdField = (EditText) findViewById(R.id.passwordNA_client);
         final EditText checkPwdField = (EditText) findViewById(R.id.passwordNA_client_repeat);
+
+        if (!isNetworkAvailable()){
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.connection_error), Toast.LENGTH_LONG).show();
+            return;
+        }
 
         if (nameField == null || emailField == null || pwdField == null || checkPwdField == null){
             Toast.makeText(getApplicationContext(), getResources().getString(R.string.exceptionError), Toast.LENGTH_LONG).show();
