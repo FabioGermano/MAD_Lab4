@@ -28,7 +28,7 @@
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:textSize="14sp"
             android:layout_gravity="center_vertical"
-            android:text="Via Germanasca, 5"/>
+            android:text=""/>
     </LinearLayout>
 
     <LinearLayout
@@ -52,7 +52,7 @@
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:textSize="14sp"
             android:layout_gravity="center_vertical"
-            android:text="346-6722606"/>
+            android:text=""/>
     </LinearLayout>
 
     <LinearLayout

@@ -305,7 +305,8 @@ public class MainActivity extends BaseActivity implements LocationListener {
             public void run() {
 
                 FirebaseGetRestaurantsPositions restaurantsPositions = new FirebaseGetRestaurantsPositions();
-                restaurantsPositions.waitForResult();
+                if (restaurantsPositions.waitForResult())
+                    return;
                 listaRistoranti = restaurantsPositions.getListaOfferte();
             }
         }.start();
@@ -349,6 +350,7 @@ public class MainActivity extends BaseActivity implements LocationListener {
                         showProgressBar();
                     }
                 });
+
                 Geocoder geocoder = new Geocoder(context);
                 final ArrayList<Address> nearAddress = new ArrayList<Address>();
 
@@ -494,16 +496,18 @@ public class MainActivity extends BaseActivity implements LocationListener {
         FirebaseGetRestaurantProfileManager restaurantProfileManager;
         final ArrayList<Oggetto_risultatoRicerca> risultatoRicerca = new ArrayList<Oggetto_risultatoRicerca>();
 
-        for (RestaurantPosition restaurant : listaRistoranti) {
-            //seleziono ristoranti vicino al posto ricercato
-            if (isNear(foundedPosition, new LatLng(restaurant.getPosition().getLatitudine(), restaurant.getPosition().getLongitudine()), 1000)) {
-                restaurantProfileManager = new FirebaseGetRestaurantProfileManager();
-                restaurantProfileManager.getRestaurant(restaurant.getRestaurantId());
-                restaurantProfileManager.waitForResult();
+        if (listaRistoranti != null){
+            for (RestaurantPosition restaurant : listaRistoranti) {
+                //seleziono ristoranti vicino al posto ricercato
+                if (isNear(foundedPosition, new LatLng(restaurant.getPosition().getLatitudine(), restaurant.getPosition().getLongitudine()), 1000)) {
+                    restaurantProfileManager = new FirebaseGetRestaurantProfileManager();
+                    restaurantProfileManager.getRestaurant(restaurant.getRestaurantId());
+                    restaurantProfileManager.waitForResult();
 
-                Restaurant r = restaurantProfileManager.getResult();
-                Oggetto_risultatoRicerca res = new Oggetto_risultatoRicerca(restaurant.getRestaurantId(), r.getRestaurantName(), r.getAddress(), r.getLogoThumbDownloadLink(), r.getPrice(), r.getRanking(), r.isTakeAway(), r.isOnPlace());
-                risultatoRicerca.add(res);
+                    Restaurant r = restaurantProfileManager.getResult();
+                    Oggetto_risultatoRicerca res = new Oggetto_risultatoRicerca(restaurant.getRestaurantId(), r.getRestaurantName(), r.getAddress(), r.getLogoThumbDownloadLink(), r.getPrice(), r.getRanking(), r.isTakeAway(), r.isOnPlace());
+                    risultatoRicerca.add(res);
+                }
             }
         }
         return risultatoRicerca;
@@ -520,6 +524,16 @@ public class MainActivity extends BaseActivity implements LocationListener {
                         showProgressBar();
                     }
                 });
+
+
+
+                if (listaRistoranti == null && isNetworkAvailable()){
+                    FirebaseGetRestaurantsPositions restaurantsPositions = new FirebaseGetRestaurantsPositions();
+                    if (restaurantsPositions.waitForResult())
+                        return;
+                    listaRistoranti = restaurantsPositions.getListaOfferte();
+                }
+
 
                 final ArrayList<Oggetto_risultatoRicerca> risultato;
                 ArrayList<Oggetto_risultatoRicerca> listaRicerca = new ArrayList<>();
@@ -627,7 +641,10 @@ public class MainActivity extends BaseActivity implements LocationListener {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (Integer.parseInt(Build.VERSION.SDK) > 5 && keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+        System.out.println("---> entrato in onKeyDown");
+        if (Integer.parseInt(Build.VERSION.SDK) > 5 && keyCode == KeyEvent.KEYCODE_BACK) {
+            System.out.println("---> superato if onKeyDown");
+
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage("Do you want to exit?")
                     .setPositiveButton("NO", null)
@@ -643,6 +660,7 @@ public class MainActivity extends BaseActivity implements LocationListener {
         return super.onKeyDown(keyCode, event);
     }
 
+   
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

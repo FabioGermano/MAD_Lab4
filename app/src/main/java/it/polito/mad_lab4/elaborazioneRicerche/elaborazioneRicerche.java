@@ -1,14 +1,17 @@
 package it.polito.mad_lab4.elaborazioneRicerche;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -304,4 +307,5 @@ public class elaborazioneRicerche extends BaseActivity implements fragment_ricer
             }
         }.start();
     }
+
 }
