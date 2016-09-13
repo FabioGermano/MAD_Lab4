@@ -2,7 +2,6 @@ package it.polito.mad_lab4;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,26 +11,19 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseUser;
@@ -45,8 +37,8 @@ import it.polito.mad_lab4.elaborazioneRicerche.elaborazioneRicerche;
 import it.polito.mad_lab4.firebase_manager.FirebaseGetClientSingleInformation;
 import it.polito.mad_lab4.firebase_manager.FirebaseGetRestaurantInfoManager;
 import it.polito.mad_lab4.firebase_manager.FirebaseGetRestaurantProfileManager;
-import it.polito.mad_lab4.firebase_position.FirebaseGetUniversityPosition;
 import it.polito.mad_lab4.firebase_position.FirebaseGetRestaurantsPositions;
+import it.polito.mad_lab4.firebase_position.FirebaseGetUniversityPosition;
 import it.polito.mad_lab4.maps_management.mainActivity_map;
 import it.polito.mad_lab4.newData.other.Position;
 import it.polito.mad_lab4.newData.other.RestaurantPosition;
@@ -54,19 +46,14 @@ import it.polito.mad_lab4.newData.restaurant.Restaurant;
 
 public class MainActivity extends BaseActivity implements LocationListener {
 
-    private Button addReview, reservationBtn, testBtn;
     private ArrayList<RestaurantPosition> listaRistoranti;
-    //private User userInfo;
     private ImageButton ricercaLuogoBtn, ricercaRistoranteBtn;
     private boolean ricerca_luogo = false, ricerca_ristorante = true;
 
-    private SearchView ricerca, number, city;
+    private SearchView ricerca;
     private TextView mapMessage;
 
-
     private Context context = null;
-
-    private String searchCity = "Torino";
 
     private boolean netAllowed = false;
     private boolean wifiAllowed = false;
@@ -92,12 +79,12 @@ public class MainActivity extends BaseActivity implements LocationListener {
 
         //gestione MAPPA
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-
-
         gestoreMappa = new mainActivity_map();
         gestoreMappa.setContext(this);
         gestoreMappa.setCurrentPosition(myPosition);
         mapFragment.getMapAsync(gestoreMappa);
+
+
         inizializzaSearchView();
         mapMessage = (TextView) findViewById(R.id.mapMessage);
         context = this;
@@ -219,15 +206,7 @@ public class MainActivity extends BaseActivity implements LocationListener {
 
     private void inizializzaSearchView() {
         ricerca = (SearchView) findViewById(R.id.searchView_main);
-        // number = (SearchView) findViewById(R.id.searchView_number);
-        //city = (SearchView) findViewById(R.id.searchView_city);
-
-        //numberCard = (CardView) findViewById(R.id.searchNumber_card);
-        //cityCard = (CardView) findViewById(R.id.searchCity_card);
-
         ricerca.setQueryHint(getString(R.string.search_byrestaurant));
-        //number.setQueryHint("number");
-        //city.setQueryHint("City");
 
         ricerca.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -251,52 +230,15 @@ public class MainActivity extends BaseActivity implements LocationListener {
                 }
             }
         });
-/*
-        number.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        ricerca.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public boolean onQueryTextSubmit(String query) {
-                ricercaPerLuogo(query);
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
-        number.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch(v.getId()){
-                    case R.id.searchView_number:
-                        number.onActionViewExpanded();
-                        break;
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    ricerca.onActionViewCollapsed();
+                    supportInvalidateOptionsMenu();
                 }
             }
         });
-        city.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                ricercaPerLuogo(query);
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
-
-        city.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch(v.getId()){
-                    case R.id.searchView_city:
-                        city.onActionViewExpanded();
-                        break;
-                }
-            }
-        });*/
     }
 
     private void caricaDati() {
@@ -643,7 +585,6 @@ public class MainActivity extends BaseActivity implements LocationListener {
         return super.onKeyDown(keyCode, event);
     }
 
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
@@ -882,12 +823,5 @@ public class MainActivity extends BaseActivity implements LocationListener {
         rilevaPosizione();
     }
 
-
-
-
-    public void connection_refresh(View view) {
-        finish();
-        startActivity(getIntent());
-    }
 
 }
