@@ -9,236 +9,189 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
-
     <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:context="it.polito.mad_lab4.MainActivity"
+        android:background="@drawable/wood_background"
+        android:id="@+id/main_RelativeLayout"
+        >
 
-        <RelativeLayout
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                tools:context="it.polito.mad_lab4.MainActivity"
-                android:background="@drawable/wood_background"
-                android:id="@+id/main_RelativeLayout"
-                >
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <ScrollView
+                <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="175dp"
+                    android:id="@+id/cover"
+                    android:src="@drawable/title_wood"
+                    android:layout_marginTop="20dp"
+
+                    />
+
+                <android.support.v7.widget.CardView
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="10dp"
+                    card_view:cardCornerRadius="5dp"
+                    card_view:cardBackgroundColor="@color/lightGrey"
+                    >
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="175dp"
-                            android:id="@+id/cover"
-                            android:src="@drawable/title_wood"
-                            android:layout_marginTop="20dp"
-
-                            />
-
-                        <android.support.v7.widget.CardView
-                            xmlns:android="http://schemas.android.com/apk/res/android"
-                            xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                            android:layout_width="match_parent"
+                        <LinearLayout
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
-                            android:layout_marginBottom="10dp"
-                            card_view:cardCornerRadius="5dp"
-                            card_view:cardBackgroundColor="@color/lightGrey"
-                            >
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="vertical">
-
-                                <LinearLayout
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal"
-                                    android:layout_marginTop="5dp"
-                                    android:layout_gravity="center">
-
-                                    <ImageButton
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:src="@drawable/ic_ricerca_ristorante_selezione"
-                                        android:background="@color/transparent"
-                                        android:layout_marginRight="10dp"
-                                        android:onClick="ricercaRistorante"
-                                        android:id="@+id/ricerca_ristorante"/>
-
-                                    <ImageButton
-                                        android:layout_width="wrap_content"
-                                        android:src="@drawable/ic_ricerca_luogo"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginRight="10dp"
-                                        android:background="@color/transparent"
-                                        android:onClick="ricercaLuogo"
-                                        android:id="@+id/ricerca_luogo"/>
-
-                                </LinearLayout>
-
-                                <android.support.v7.widget.CardView
-                                    xmlns:android="http://schemas.android.com/apk/res/android"
-                                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="5dp"
-                                    android:layout_marginLeft="10dp"
-                                    android:layout_marginRight="10dp"
-                                    android:layout_marginBottom="10dp"
-                                    card_view:cardCornerRadius="5dp"
-                                    card_view:cardBackgroundColor="@color/white"
-                                    >
-
-                                        <SearchView
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:id="@+id/searchView_main"
-                                            android:layout_gravity="center_horizontal"
-                                            />
-
-                                </android.support.v7.widget.CardView>
-
-                        </LinearLayout>
-
-                        </android.support.v7.widget.CardView>
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            >
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/titolo_offerte_vicine"
-                                android:layout_marginTop="10sp"
-                                android:layout_marginBottom="10sp"
-                                style="@style/niceText"
-                                android:layout_centerHorizontal="true"/>
+                            android:orientation="horizontal"
+                            android:layout_marginTop="5dp"
+                            android:layout_gravity="center">
 
                             <ImageButton
                                 android:layout_width="wrap_content"
-                                android:src="@drawable/ic_gps_update"
                                 android:layout_height="wrap_content"
+                                android:src="@drawable/ic_ricerca_ristorante_selezione"
                                 android:background="@color/transparent"
-                                android:onClick="updatePosition"
-                                android:id="@+id/updatePosition"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
                                 android:layout_marginRight="10dp"
-                                android:visibility="gone"/>
+                                android:onClick="ricercaRistorante"
+                                android:id="@+id/ricerca_ristorante"/>
 
+                            <ImageButton
+                                android:layout_width="wrap_content"
+                                android:src="@drawable/ic_ricerca_luogo"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="10dp"
+                                android:background="@color/transparent"
+                                android:onClick="ricercaLuogo"
+                                android:id="@+id/ricerca_luogo"/>
 
-                        </RelativeLayout>
+                        </LinearLayout>
 
                         <android.support.v7.widget.CardView
                             xmlns:android="http://schemas.android.com/apk/res/android"
                             xmlns:card_view="http://schemas.android.com/apk/res-auto"
                             android:layout_width="match_parent"
-                            android:layout_height="200dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
                             android:layout_marginBottom="10dp"
                             card_view:cardCornerRadius="5dp"
-                            card_view:cardBackgroundColor="@color/lightGrey"
+                            card_view:cardBackgroundColor="@color/white"
                             >
 
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
-
-                            <fragment
-                                android:id="@+id/map"
-                                android:name="com.google.android.gms.maps.SupportMapFragment"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                tools:context="it.polito.mad_lab4.MainActivity" />
-
-                             <TextView
-                                 android:layout_width="wrap_content"
-                                 android:layout_height="wrap_content"
-                                 android:text="@string/avvisoMappa"
-                                 android:layout_marginLeft="10dp"
-                                 android:layout_marginTop="5dp"
-                                 android:id="@+id/mapMessage"
-                                 android:background="@color/blackSemiTrasparent"/>
-
-                            </RelativeLayout>
+                                <SearchView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:id="@+id/searchView_main"
+                                    android:layout_gravity="center_horizontal"
+                                    />
 
                         </android.support.v7.widget.CardView>
-<!--
-                        <Button
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="New Button"
-                            android:id="@+id/button2" />
-                        -->
 
-                    </LinearLayout>
-                </ScrollView>
+                </LinearLayout>
 
-                <include layout="@layout/toolbar_view"
-                    android:layout_height="wrap_content"
+                </android.support.v7.widget.CardView>
+
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_alignParentTop="true"
-                    />
+                    android:layout_height="wrap_content"
+                    >
 
-            </RelativeLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/titolo_offerte_vicine"
+                        android:layout_marginTop="10sp"
+                        android:layout_marginBottom="10sp"
+                        style="@style/niceText"
+                        android:layout_centerHorizontal="true"/>
 
-        <RelativeLayout
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:src="@drawable/ic_gps_update"
+                        android:layout_height="wrap_content"
+                        android:background="@color/transparent"
+                        android:onClick="updatePosition"
+                        android:id="@+id/updatePosition"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="10dp"
+                        android:visibility="gone"/>
+
+
+                </RelativeLayout>
+
+                <android.support.v7.widget.CardView
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="10dp"
+                    card_view:cardCornerRadius="5dp"
+                    card_view:cardBackgroundColor="@color/lightGrey"
+                    >
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                    <fragment
+                        android:id="@+id/map"
+                        android:name="com.google.android.gms.maps.SupportMapFragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        tools:context="it.polito.mad_lab4.MainActivity" />
+
+                     <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="@string/avvisoMappa"
+                         android:layout_marginLeft="10dp"
+                         android:layout_marginTop="5dp"
+                         android:id="@+id/mapMessage"
+                         android:background="@color/blackSemiTrasparent"/>
+
+                    </RelativeLayout>
+
+                </android.support.v7.widget.CardView>
+<!--
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="New Button"
+                    android:id="@+id/button2" />
+                -->
+
+            </LinearLayout>
+        </ScrollView>
+
+        <include layout="@layout/toolbar_view"
+            android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/blackSemiTrasparent"
-            android:visibility="gone"
-            android:id="@+id/blockConnection">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="NO CONNECTIVITY\nPress to refresh"
-                android:textColor="@color/black"
-                android:textAlignment="center"
-                android:textStyle="italic"
-                android:textSize="30sp"
-                android:layout_centerVertical="true"
-                android:layout_centerHorizontal="true"
-                android:alpha="10"
-                android:id="@+id/noConnection_message"
-                />
-
-            <ImageButton
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_marginTop="20dp"
-                android:layout_below="@id/noConnection_message"
-                android:layout_centerHorizontal="true"
-                android:background="@drawable/ic_refresh"
-                android:clickable="true"
-                android:onClick="connection_refresh"
-                />
-
-
-        </RelativeLayout>
-
-
-
-
-
+            android:layout_alignParentTop="true"
+            />
 
     </RelativeLayout>
 
-            <!---->
+    <!---->
 
     <android.support.design.widget.NavigationView
                 android:id="@+id/nav_view"

@@ -287,6 +287,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                                     startActivity(i);
                                     dismissProgressDialog();
                                     finish();
+                                    return;
                                 }
                             }
                             riempiBarraLaterale(navigationView);
