@@ -307,6 +307,7 @@ public class MainActivity extends BaseActivity implements LocationListener {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                dismissProgressDialog();
                                 Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.nessun_risultato), Toast.LENGTH_SHORT);
                                 toast.show();
                             }
