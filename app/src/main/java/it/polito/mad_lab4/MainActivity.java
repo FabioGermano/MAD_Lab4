@@ -255,6 +255,10 @@ public class MainActivity extends BaseActivity implements LocationListener {
 
     public void searchRestaurant(String query) {
 
+
+        if (listaRistoranti == null && isNetworkAvailable())
+            caricaDati();
+
         if (ricerca != null)
             ricerca.clearFocus();
 
@@ -336,9 +340,9 @@ public class MainActivity extends BaseActivity implements LocationListener {
                         if (!addresses.isEmpty()) {
                             if (addresses.size() > 1) {
                                 for (Address a : addresses) {
-                                    System.out.println("-----> " + a.getLocality() + ", " + a.getAddressLine(0) + " - " + a.getLatitude() + ", " + a.getLongitude());
+                                    //System.out.println("-----> " + a.getLocality() + ", " + a.getAddressLine(0) + " - " + a.getLatitude() + ", " + a.getLongitude());
                                     if (a.getLocality() != null) {
-                                        System.out.println("-----> AGGIUNTO");
+                                        //System.out.println("-----> AGGIUNTO");
                                         nearAddress.add(a);
                                     }
 
@@ -348,6 +352,9 @@ public class MainActivity extends BaseActivity implements LocationListener {
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
+
+                                            dismissProgressDialog();
+
                                             Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.nessun_risultato), Toast.LENGTH_SHORT);
                                             toast.show();
                                         }
@@ -375,6 +382,7 @@ public class MainActivity extends BaseActivity implements LocationListener {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
+                                    dismissProgressDialog();
                                     Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.nessun_risultato), Toast.LENGTH_SHORT);
                                     toast.show();
                                 }
@@ -435,6 +443,9 @@ public class MainActivity extends BaseActivity implements LocationListener {
     private ArrayList<Oggetto_risultatoRicerca> findByDistance() {
         FirebaseGetRestaurantProfileManager restaurantProfileManager;
         final ArrayList<Oggetto_risultatoRicerca> risultatoRicerca = new ArrayList<Oggetto_risultatoRicerca>();
+
+        if (listaRistoranti == null)
+            return null;
 
         for (RestaurantPosition restaurant : listaRistoranti) {
             //seleziono ristoranti vicino al posto ricercato
@@ -791,6 +802,7 @@ public class MainActivity extends BaseActivity implements LocationListener {
                                             return;
                                         }
                                         if(risultatoRicerca.size() == 0){
+
                                             Toast toast = Toast.makeText(getApplicationContext(), getResources().getString(R.string.nessun_risultato), Toast.LENGTH_SHORT);
                                             toast.show();
                                             return;

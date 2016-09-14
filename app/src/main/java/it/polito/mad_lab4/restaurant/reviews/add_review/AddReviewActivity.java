@@ -163,12 +163,9 @@ public class AddReviewActivity extends BaseActivity implements PhotoViewerListen
                 firebaseSaveReviewManager.saveReview(restaurantId,
                         review, false, null);
 
-                boolean res = firebaseSaveReviewManager.waitForResult();
+                final boolean res = firebaseSaveReviewManager.waitForResult();
 
-                if(!res){
-                    Log.e("Error saving the review", "Error saving the review");
-                    return;
-                }
+
 
                 runOnUiThread(new Runnable() {
                     @Override
@@ -176,8 +173,13 @@ public class AddReviewActivity extends BaseActivity implements PhotoViewerListen
 
                         dismissProgressDialog();
 
-                        Toast toast = Toast.makeText(getApplicationContext(), R.string.review_published, Toast.LENGTH_SHORT);
-                        toast.show();
+                        if(!res){
+                            Toast.makeText(getApplicationContext(), R.string.connection_error, Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        else
+                            Toast.makeText(getApplicationContext(), R.string.review_published, Toast.LENGTH_SHORT).show();
+
                         finish();
                     }
                 });

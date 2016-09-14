@@ -80,6 +80,9 @@ public class ContainerUserPhotoFragment extends Fragment  {
                     return;
                 }
 
+                if (getActivity() == null)
+                    return;
+
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

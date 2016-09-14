@@ -80,6 +80,8 @@ public class OfferPrevFragment extends Fragment {
                     Log.e("returned null dishes", "resturned null dishes");
                     return;
                 }
+                if (getActivity() == null)
+                    return;
 
                 getActivity().runOnUiThread(new Runnable() {
                     @Override

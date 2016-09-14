@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import it.polito.mad_lab4.BaseActivity;
 import it.polito.mad_lab4.R;
@@ -24,6 +25,7 @@ public class MenuActivity extends BaseActivity {
         setActivityTitle("Menu");
         hideToolbarShadow(true);
         setToolbarColor();
+
 
         restaurantId = getIntent().getExtras().getString("restaurantId");
 

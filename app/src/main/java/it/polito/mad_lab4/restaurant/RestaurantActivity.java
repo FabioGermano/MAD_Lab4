@@ -7,6 +7,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewCompat;
 import android.util.Log;
 import android.view.View;
@@ -283,6 +284,11 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
     }
 
     private void showAllReviewsButtonPressed() {
+        if (!isNetworkAvailable()){
+            Toast.makeText(RestaurantActivity.this,getResources().getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         Intent i = new Intent(getApplicationContext(), ReviewsActivity.class);
         i.putExtra("restaurantId", this.restaurantId);
         i.putExtra("ranking",restaurant.getTotRanking());
@@ -291,6 +297,10 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
     }
 
     private void showAllMenuButtonPressed() {
+        if (!isNetworkAvailable()){
+            Toast.makeText(RestaurantActivity.this,getResources().getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
+            return;
+        }
         Intent i = new Intent(getApplicationContext(), MenuActivity.class);
         i.putExtra("restaurantId", this.restaurant.getRestaurantId());
         startActivity(i);

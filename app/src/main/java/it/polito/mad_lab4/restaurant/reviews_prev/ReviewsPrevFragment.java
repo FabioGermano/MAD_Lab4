@@ -77,7 +77,8 @@ public class ReviewsPrevFragment extends Fragment {
                     Log.e("returned null reviews", "resturned null reviews");
                     return;
                 }
-
+                if (getActivity() == null)
+                    return;
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
