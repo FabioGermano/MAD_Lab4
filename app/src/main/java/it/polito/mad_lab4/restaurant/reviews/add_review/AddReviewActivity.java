@@ -174,7 +174,7 @@ public class AddReviewActivity extends BaseActivity implements PhotoViewerListen
                         dismissProgressDialog();
 
                         if(!res){
-                            Toast.makeText(getApplicationContext(), R.string.connection_error, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), R.string.review_published_failed, Toast.LENGTH_SHORT).show();
                             return;
                         }
                         else

@@ -175,7 +175,7 @@ public class ReviewsActivity extends BaseActivity {
                 reviews.addAll(firebaseGetReviewsListManager.getResult());
 
                 if(reviews == null){
-                    Log.e("returned null reviews", "resturned null reviews");
+                    Toast.makeText(ReviewsActivity.this, getResources().getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
                     return;
                 }
 

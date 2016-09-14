@@ -30,10 +30,21 @@ public class FirebaseSaveReservationManager implements DatabaseReference.Complet
     private boolean isOk;
 
     private boolean resultReturned = false;
-
+    private boolean timeout = false;
     private DatabaseReference myRef, myRef1;
 
     public void saveReservation(Reservation reservation, ArrayList<ReservedDish> reservedDish){
+
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        timeout();
+                    }
+                },
+                10000
+        );
+
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
         DatabaseReference myRef = database.getReference("reservations/");
@@ -46,14 +57,27 @@ public class FirebaseSaveReservationManager implements DatabaseReference.Complet
 
     public boolean waitForResult() {
         lock.lock();
-        if(!resultReturned) {
-            try {
+        try {
+            if(!resultReturned || timeout)
                 cv.await();
-            } catch (InterruptedException e) {
-                Log.e(e.getMessage(), e.getMessage());
-            }
+        } catch (InterruptedException e) {
+            Log.e(e.getMessage(), e.getMessage());
         }
+        finally {
+            lock.unlock();
+        }
+
+        if (timeout)
+            return false;
+
         return isOk;
+    }
+
+    private void timeout() {
+        lock.lock();
+        timeout = true;
+        this.cv.signal();
+        lock.unlock();
     }
 
     @Override

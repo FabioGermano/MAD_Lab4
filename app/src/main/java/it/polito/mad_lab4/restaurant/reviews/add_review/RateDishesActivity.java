@@ -88,26 +88,27 @@ public class RateDishesActivity extends BaseActivity{
                 firebaseSaveReviewManager.saveReview(restaurantId,
                         review, true, list);
 
-                boolean res = firebaseSaveReviewManager.waitForResult();
+                final boolean res = firebaseSaveReviewManager.waitForResult();
 
-                if(!res){
-                    Log.e("Error saving the review", "Error saving the review");
-                    return;
-                }
 
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
 
                         dismissProgressDialog();
+                        if(!res){
+                            Toast.makeText(getApplicationContext(), R.string.review_published_failed, Toast.LENGTH_SHORT).show();
+                            finish();
+                        } else {
 
-                        Toast toast = Toast.makeText(getApplicationContext(), R.string.review_published, Toast.LENGTH_SHORT);
-                        toast.show();
-                        finish();
-                        Intent intent = new Intent(getApplicationContext(), RestaurantActivity.class);
-                        intent.putExtra("restaurantId", restaurantId);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
+                            Toast toast = Toast.makeText(getApplicationContext(), R.string.review_published, Toast.LENGTH_SHORT);
+                            toast.show();
+                            finish();
+                            Intent intent = new Intent(getApplicationContext(), RestaurantActivity.class);
+                            intent.putExtra("restaurantId", restaurantId);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+                        }
                     }
                 });
 
@@ -160,23 +161,36 @@ public class RateDishesActivity extends BaseActivity{
         Thread t = new Thread()
         {
             public void run() {
-
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showProgressBar();
+                    }
+                });
                 firebaseGetMenuByTypeManager = new FirebaseGetMenuByTypeManager();
                 firebaseGetMenuByTypeManager.getMenu(restaurantId, null, null);
-                firebaseGetMenuByTypeManager.waitForResult();
+                final boolean timeout1  =firebaseGetMenuByTypeManager.waitForResult();
                 dishes.addAll(firebaseGetMenuByTypeManager.getResult());
 
                 firebaseGetOfferListManager = new FirebaseGetOfferListManager();
                 firebaseGetOfferListManager.getOffers(restaurantId);
-                firebaseGetOfferListManager.waitForResult();
+                final boolean timeout2 = firebaseGetOfferListManager.waitForResult();
                 offers.addAll(firebaseGetOfferListManager.getResult());
 
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        dismissProgressDialog();
+                        if(timeout1 || timeout2){
+                            Toast.makeText(RateDishesActivity.this, getResources().getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
+                            finish();
+                            return;
+                        }
                         if(coverLink!=null)
                             Glide.with(getBaseContext()).load(coverLink).into(cover);
-                        initAdapter(dishes, offers);
+
+                        if(dishes != null && offers != null)
+                            initAdapter(dishes, offers);
                     }
                 });
 

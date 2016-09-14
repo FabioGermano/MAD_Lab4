@@ -157,7 +157,6 @@ public class FirebaseSaveReviewManager implements DatabaseReference.CompletionLi
 
     }
 
-
     private void timeout() {
         lock.lock();
         timeout = true;

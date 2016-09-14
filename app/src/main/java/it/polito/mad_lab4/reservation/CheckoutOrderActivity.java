@@ -134,10 +134,30 @@ public class CheckoutOrderActivity extends BaseActivity {
         new Thread()
         {
             public void run() {
-
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showProgressBar();
+                    }
+                });
                 FirebaseGetClientInfoManager clientManager = new FirebaseGetClientInfoManager();
                 clientManager.getClientInfo(currentUserId);
-                clientManager.waitForResult();
+                if(clientManager.waitForResult()){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            dismissProgressDialog();
+                            Toast.makeText(getApplicationContext(),getResources().getString(R.string.reservation_added_failed), Toast.LENGTH_LONG).show();
+
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+
+                            finish();
+                        }
+                    });
+                    return;
+                }
                 ClientPersonalInformation client = clientManager.getResult();
 
                 r.setUserName(client.getName());
@@ -147,18 +167,17 @@ public class CheckoutOrderActivity extends BaseActivity {
                 FirebaseSaveReservationManager firebaseSaveReservationManager = new FirebaseSaveReservationManager();
                 firebaseSaveReservationManager.saveReservation(r, reservedDishes);
 
-                boolean res = firebaseSaveReservationManager.waitForResult();
-
-                if(!res){
-                    Log.e("FirebaseSaveReservation", "Error saving the reservation");
-                    return;
-                }
+                final boolean res = firebaseSaveReservationManager.waitForResult();
 
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getApplicationContext(),getResources().getString(R.string.reservation_added), Toast.LENGTH_LONG).show();
-
+                        dismissProgressDialog();
+                        if(!res){
+                            Toast.makeText(getApplicationContext(),getResources().getString(R.string.reservation_added_failed), Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), getResources().getString(R.string.reservation_added), Toast.LENGTH_LONG).show();
+                        }
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);

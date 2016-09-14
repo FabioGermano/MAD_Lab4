@@ -307,6 +307,10 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
     }
 
     private void likeButtonPressed() {
+        if (!isNetworkAvailable()){
+            Toast.makeText(RestaurantActivity.this,getResources().getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
+            return;
+        }
         FirebaseUserFavouritesManager firebaseUserFavouritesManager = new FirebaseUserFavouritesManager();
         if(favourite){
             firebaseUserFavouritesManager.removeLike( currentUser.getUid(), restaurantId);
@@ -317,6 +321,10 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
         }
     }
     private void newReservation() {
+        if (!isNetworkAvailable()){
+            Toast.makeText(RestaurantActivity.this,getResources().getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
+            return;
+        }
         Intent i = new Intent(getApplicationContext(), ReservationActivity.class);
         i.putExtra("restaurant", this.restaurant);
         i.putExtra("coverLink", this.restaurant.getCover1_largeDownloadLink());
@@ -330,9 +338,17 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
             Intent i;
             switch (v.getId()) {
                 case R.id.add_photo:
+                    if (!isNetworkAvailable()){
+                        Toast.makeText(RestaurantActivity.this,getResources().getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     containerUserPhotoFragment.newPhoto();
                     break;
                 case R.id.add_review:
+                    if (!isNetworkAvailable()){
+                        Toast.makeText(RestaurantActivity.this,getResources().getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     i= new Intent(getApplicationContext(), AddReviewActivity.class);
                     i.putExtra("restaurantId", restaurantId);
                     i.putExtra("coverLink", restaurant.getCover1_largeDownloadLink());

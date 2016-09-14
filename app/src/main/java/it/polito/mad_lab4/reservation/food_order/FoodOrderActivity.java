@@ -135,21 +135,34 @@ public class FoodOrderActivity extends BaseActivity {
         Thread t = new Thread()
         {
             public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showProgressBar();
+                    }
+                });
 
                 firebaseGetMenuByTypeManager = new FirebaseGetMenuByTypeManager();
                 firebaseGetMenuByTypeManager.getMenu(restaurantID, null, null);
-                firebaseGetMenuByTypeManager.waitForResult();
+                final boolean timeout1 = firebaseGetMenuByTypeManager.waitForResult();
                 dishes.addAll(firebaseGetMenuByTypeManager.getResult());
 
                 firebaseGetOfferListManager = new FirebaseGetOfferListManager();
                 firebaseGetOfferListManager.getOffers(restaurantID);
-                firebaseGetOfferListManager.waitForResult();
+                final boolean timeout2 = firebaseGetOfferListManager.waitForResult();
                 offers.addAll(firebaseGetOfferListManager.getResult());
 
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        initAdapter(dishes, offers);
+                        dismissProgressDialog();
+                        if(timeout1 || timeout2){
+                            Toast.makeText(FoodOrderActivity.this, getResources().getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
+                            finish();
+                            return;
+                        }
+                        if(dishes != null && offers != null)
+                            initAdapter(dishes, offers);
                     }
                 });
 

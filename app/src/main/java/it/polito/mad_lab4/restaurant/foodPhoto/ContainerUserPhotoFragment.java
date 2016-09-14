@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -75,17 +76,16 @@ public class ContainerUserPhotoFragment extends Fragment  {
                 userPhotos.clear();
                 userPhotos.addAll(firebaseGetUserPhotosManager.getResult());
 
-                if(userPhotos == null){
-                    Log.e("FirebaseGetUPMan.", "UserPhotos null obteined");
-                    return;
-                }
-
                 if (getActivity() == null)
                     return;
 
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        if(userPhotos == null){
+                            Toast.makeText(getContext(), getResources().getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
+                            return;
+                        }
                         setPhotosNumber();
                         manageUserPhotos();
                     }

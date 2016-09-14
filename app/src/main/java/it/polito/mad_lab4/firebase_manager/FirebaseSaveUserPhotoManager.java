@@ -26,6 +26,7 @@ public class FirebaseSaveUserPhotoManager implements DatabaseReference.Completio
     private String downloadLinkThumb, downloadLinkLarge;
     private boolean firebaseReturnedResult = false;
     private DatabaseError databaseError;
+    private boolean timeout = false;
 
     public void saveUserPhoto(final String restaurantId,
                               final String description,
@@ -35,6 +36,16 @@ public class FirebaseSaveUserPhotoManager implements DatabaseReference.Completio
         final UserPhoto userPhoto = new UserPhoto();
 
         this.restaurantId = restaurantId;
+
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        timeout();
+                    }
+                },
+                10000
+        );
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("userphotos/" + restaurantId);
@@ -62,6 +73,13 @@ public class FirebaseSaveUserPhotoManager implements DatabaseReference.Completio
         }
     }
 
+    private void timeout() {
+        lock.lock();
+        timeout = true;
+        this.cv.signal();
+        lock.unlock();
+    }
+
     @Override
     public void onComplete(final DatabaseError _databaseError, DatabaseReference databaseReference) {
         lock.lock();
@@ -76,13 +94,18 @@ public class FirebaseSaveUserPhotoManager implements DatabaseReference.Completio
      */
     public boolean waitForResult(){
         lock.lock();
-        if(!firebaseReturnedResult) {
-            try {
+        try {
+            if(!firebaseReturnedResult || timeout)
                 cv.await();
-            } catch (InterruptedException e) {
-                Log.e(e.getMessage(), e.getMessage());
-            }
+        } catch (InterruptedException e) {
+            Log.e(e.getMessage(), e.getMessage());
         }
+        finally {
+            lock.unlock();
+        }
+
+        if (timeout)
+            return false;
 
         return this.databaseError == null;
     }

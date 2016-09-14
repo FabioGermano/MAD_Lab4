@@ -75,15 +75,10 @@ public class ChoosePhotoActivity extends BaseActivity {
                     }
                 });
 
-                FirebaseSaveUserPhotoManager firebaseSaveDishManager = new FirebaseSaveUserPhotoManager();
-                firebaseSaveDishManager.saveUserPhoto(restaurantId, descriptionET.getText().toString(), photoViewer.getThumb(), photoViewer.getLarge());
+                FirebaseSaveUserPhotoManager firebasePhotoManager = new FirebaseSaveUserPhotoManager();
+                firebasePhotoManager.saveUserPhoto(restaurantId, descriptionET.getText().toString(), photoViewer.getThumb(), photoViewer.getLarge());
 
-                boolean res = firebaseSaveDishManager.waitForResult();
-
-                if(!res){
-                    Log.e("Error saving the userp.", "Error saving the userphoto");
-                    return;
-                }
+                final boolean res = firebasePhotoManager.waitForResult();
 
                 runOnUiThread(new Runnable() {
                     @Override
@@ -91,7 +86,10 @@ public class ChoosePhotoActivity extends BaseActivity {
 
                         dismissProgressDialog();
 
-                        Toast.makeText(getApplicationContext(), "Your selected photo has been sent.", Toast.LENGTH_SHORT).show();
+                        if(!res)
+                            Toast.makeText(getApplicationContext(), getResources().getString(R.string.photo_send_error), Toast.LENGTH_SHORT).show();
+                        else
+                            Toast.makeText(getApplicationContext(), "Your selected photo has been sent.", Toast.LENGTH_SHORT).show();
 
                         finish();
                     }
