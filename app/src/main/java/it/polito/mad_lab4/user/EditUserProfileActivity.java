@@ -335,6 +335,10 @@ public class EditUserProfileActivity extends BaseActivity implements UniversityP
     }
 
     private void saveData() {
+        if(!isNetworkAvailable()){
+            Toast.makeText(EditUserProfileActivity.this, getResources().getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
+            return;
+        }
         EditText nameField = (EditText)findViewById(R.id.edit_name);
         EditText typeField = (EditText)findViewById(R.id.typeText);
         EditText universityField = (EditText)findViewById(R.id.universityText);
@@ -424,7 +428,7 @@ public class EditUserProfileActivity extends BaseActivity implements UniversityP
                 }
 
                 saveClientManager.saveClientInfo(client, userId, avatarBitmap);
-                //saveClientManager.waitForResult();
+                //final boolean result = saveClientManager.waitForResult();
 
                 //TODO aggiungere firebaseSaveUsersManager per tenere i dati allineati
 
@@ -432,7 +436,11 @@ public class EditUserProfileActivity extends BaseActivity implements UniversityP
                     @Override
                     public void run() {
                         dismissProgressDialog();
-                        Toast.makeText(EditUserProfileActivity.this, getResources().getString(R.string.dataSaved), Toast.LENGTH_SHORT).show();
+                        //if(result)
+                            Toast.makeText(EditUserProfileActivity.this, getResources().getString(R.string.dataSaved), Toast.LENGTH_SHORT).show();
+                        /*else
+                            Toast.makeText(EditUserProfileActivity.this, getResources().getString(R.string.dataSaved_failed), Toast.LENGTH_SHORT).show();
+                        */
                         Intent i = new Intent(getApplicationContext(), MainActivity.class);
                         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(i);
@@ -510,9 +518,6 @@ public class EditUserProfileActivity extends BaseActivity implements UniversityP
             Toast.makeText(EditUserProfileActivity.this, getResources().getString(R.string.exceptionError), Toast.LENGTH_SHORT).show();
         }
 
-
-
-
     }
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -526,7 +531,7 @@ public class EditUserProfileActivity extends BaseActivity implements UniversityP
                 return false;
             }
 
-            return true;
+            return super.onKeyDown(keyCode, event);
         }
         return super.onKeyDown(keyCode, event);
     }

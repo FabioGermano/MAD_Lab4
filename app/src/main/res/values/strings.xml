@@ -185,6 +185,7 @@
     <string name="review_published_failed">Saving review failed</string>
     <string name="photo_send_error">Sending photo failed</string>
     <string name="reservation_added_failed">Reservation request failed</string>
+    <string name="dataSaved_failed">Data saving failed</string>
 
     <string name="seats_string">seats</string>
 

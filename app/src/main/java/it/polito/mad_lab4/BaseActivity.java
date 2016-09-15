@@ -282,7 +282,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                         if(infoUser != null) {
                             //se è un manager lo reindirizzo alla sua pagina corretta
                             if(homePageClient){
-                                if(infoUser.getUserType().compareTo("M") == 0){
+                                if(infoUser.getUserType()!= null && infoUser.getUserType().compareTo("M") == 0){
                                     Intent i= new Intent(getApplicationContext(), MainActivityManager.class);
                                     startActivity(i);
                                     dismissProgressDialog();
@@ -336,10 +336,10 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                 }
 
                 //setto il nome dell'utente
-                if (user_name != null)
+                if (user_name != null && infoUser.getName()!= null)
                     user_name.setText(infoUser.getName());
                 //setto la foto dell'utente
-                if (user_logo != null) {
+                if (user_logo != null && infoUser.getAvatarDownloadLink()!= null) {
 
                    System.out.println("LINK: "+ infoUser.getAvatarDownloadLink()) ;
                    Glide.with(this).load(infoUser.getAvatarDownloadLink()).centerCrop().into(user_logo);

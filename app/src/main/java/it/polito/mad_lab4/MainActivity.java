@@ -34,15 +34,18 @@ import java.util.List;
 
 import it.polito.mad_lab4.elaborazioneRicerche.Oggetto_risultatoRicerca;
 import it.polito.mad_lab4.elaborazioneRicerche.elaborazioneRicerche;
+import it.polito.mad_lab4.firebase_manager.FirebaseGetClientInfoManager;
 import it.polito.mad_lab4.firebase_manager.FirebaseGetClientSingleInformation;
 import it.polito.mad_lab4.firebase_manager.FirebaseGetRestaurantInfoManager;
 import it.polito.mad_lab4.firebase_manager.FirebaseGetRestaurantProfileManager;
 import it.polito.mad_lab4.firebase_position.FirebaseGetRestaurantsPositions;
 import it.polito.mad_lab4.firebase_position.FirebaseGetUniversityPosition;
 import it.polito.mad_lab4.maps_management.mainActivity_map;
+import it.polito.mad_lab4.newData.client.ClientPersonalInformation;
 import it.polito.mad_lab4.newData.other.Position;
 import it.polito.mad_lab4.newData.other.RestaurantPosition;
 import it.polito.mad_lab4.newData.restaurant.Restaurant;
+import it.polito.mad_lab4.user.EditUserProfileActivity;
 
 public class MainActivity extends BaseActivity implements LocationListener {
 
@@ -144,18 +147,115 @@ public class MainActivity extends BaseActivity implements LocationListener {
     }
 
     @Override
-    protected void isLogin(FirebaseUser user) {
+    protected void isLogin(final FirebaseUser user) {
         super.isLogin(user);
-        if (myPosition.latitude == 45.06455 && myPosition.longitude == 7.65833) {
-            // non è cambiata dalla posizione di dafault quindi è necessario
-            // settare l'università come default. Al max si rileva poi la nuova posizione e si aggiorna
-            setUniversityPosition(user.getUid());
+        //controllo se l'utente ha correttamente fornito i propri dati personali
+        if(isNetworkAvailable()) {
+            new Thread() {
+                public void run() {
+                    System.out.println("----> Scarico dati dell'utente " + user.getUid());
+                    FirebaseGetClientInfoManager clientManager = new FirebaseGetClientInfoManager();
+                    clientManager.getClientInfo(user.getUid());
+                    if (clientManager.waitForResult()) {
+                        System.out.println("----> TIMEOUT controllo dati utente");
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Bundle b = new Bundle();
+                                b.putString("email", user.getEmail());
+                                b.putString("userId", user.getUid());
+                                b.putString("name", "");
+                                b.putBoolean("new", true);
+
+                                Intent i = new Intent(getApplicationContext(), EditUserProfileActivity.class);
+                                i.putExtras(b);
+                                startActivity(i);
+                                finish();
+                            }
+                        });
+                        return;
+                    }
+
+                    ClientPersonalInformation client = clientManager.getResult();
+
+                    if (client == null){
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                System.out.println("----> CLIENT NULL controllo dati utente");
+                                Bundle b = new Bundle();
+                                b.putString("email", user.getEmail());
+                                b.putString("userId", user.getUid());
+                                b.putString("name", "");
+                                b.putBoolean("new", true);
+
+                                Intent i = new Intent(getApplicationContext(), EditUserProfileActivity.class);
+                                i.putExtras(b);
+                                startActivity(i);
+                                finish();
+                            }
+                        });
+                        return;
+                    }
+
+                    if(client.getAvatarDownloadLink() != null && client.getBio() != null && client.getName() != null
+                            && client.getEmail() != null && client.getGender() != null  && client.getPhoneNumber() != null
+                            && client.getTipoUser() != null && client.getUniversityId() != null){
+                        if(client.getEmail().isEmpty() || client.getName().isEmpty() || client.getAvatarDownloadLink().isEmpty()
+                                || client.getUniversityId().isEmpty() || client.getTipoUser().isEmpty() || client.getGender().isEmpty()
+                                || client.getPhoneNumber().isEmpty()){
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    System.out.println("----> UNO DEI CAMPI è VUOTO controllo dati utente");
+                                    Bundle b = new Bundle();
+                                    b.putString("email", user.getEmail());
+                                    b.putString("userId", user.getUid());
+                                    b.putString("name", "");
+                                    b.putBoolean("new", true);
+
+                                    Intent i = new Intent(getApplicationContext(), EditUserProfileActivity.class);
+                                    i.putExtras(b);
+                                    startActivity(i);
+                                    finish();
+                                }
+                            });
+                            return;
+                        }
+
+                    }else{
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                System.out.println("----> UNO DEI CAMPI è NULL controllo dati utente");
+                                Bundle b = new Bundle();
+                                b.putString("email", user.getEmail());
+                                b.putString("userId", user.getUid());
+                                b.putString("name", "");
+                                b.putBoolean("new", true);
+
+                                Intent i = new Intent(getApplicationContext(), EditUserProfileActivity.class);
+                                i.putExtras(b);
+                                startActivity(i);
+                                finish();
+                            }
+                        });
+                        return;
+                    }
+
+                    if (myPosition.latitude == 45.06455 && myPosition.longitude == 7.65833) {
+                        // non è cambiata dalla posizione di dafault quindi è necessario
+                        // settare l'università come default. Al max si rileva poi la nuova posizione e si aggiorna
+                        setUniversityPosition(user.getUid());
+                    }
+                }
+            }.start();
         }
     }
 
     private void setUniversityPosition(final String id) {
-        new Thread() {
-            public void run() {
+        //new Thread() {
+            //public void run() {
 
                 String university;
                 FirebaseGetClientSingleInformation clientSingleInformation = new FirebaseGetClientSingleInformation();
@@ -179,8 +279,8 @@ public class MainActivity extends BaseActivity implements LocationListener {
                         });
                     }
                 }
-            }
-        }.start();
+           // }
+        //}.start();
     }
 
     private void checkNetPermission() {

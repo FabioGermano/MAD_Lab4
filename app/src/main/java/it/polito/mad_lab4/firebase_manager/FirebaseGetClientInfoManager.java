@@ -42,7 +42,7 @@ public class FirebaseGetClientInfoManager implements ValueEventListener {
                         timeout();
                     }
                 },
-                10000
+                30000
         );
     }
 

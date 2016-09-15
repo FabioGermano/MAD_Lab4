@@ -103,9 +103,6 @@ public class Register extends BaseActivity {
         } catch (Exception e){
             System.out.println(e.getMessage());
         }
-
-
-
     }
 
     public void nuovaRegistrazioneClient(View view) {
