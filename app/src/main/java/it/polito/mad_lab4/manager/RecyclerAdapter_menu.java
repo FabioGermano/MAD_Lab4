@@ -26,10 +26,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Transaction;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.bl.RestaurantBL;
+import it.polito.mad_lab4.common.Helper;
 import it.polito.mad_lab4.firebase_manager.FirebaseRemoveDishManager;
 import it.polito.mad_lab4.newData.restaurant.Dish;
 import it.polito.mad_lab4.data.restaurant.DishType;
@@ -114,7 +116,9 @@ public class RecyclerAdapter_menu extends RecyclerView.Adapter<RecyclerAdapter_m
             if(dish_name != null)
                 this.dish_name.setText(currentObj.getDishName());
             if(dish_price != null) {
-                String tmp = String.valueOf(currentObj.getPrice()) + " " + context.getResources().getString(R.string.money_value);
+                BigDecimal result;
+                result= Helper.round(currentObj.getPrice(),2);
+                String tmp = String.valueOf(result) + " " + context.getResources().getString(R.string.money_value);
                 this.dish_price.setText(tmp);
             }
 

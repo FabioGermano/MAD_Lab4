@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import it.polito.mad_lab4.R;
@@ -100,7 +101,9 @@ public class MenuListPrevFragment extends Fragment {
                 ((TextView)viewToAdd.findViewById(R.id.dishNameTV)).setText(d.getDishName());
                 ((RatingBar)viewToAdd.findViewById(R.id.ratingBar)).setRating(d.getAvgRank());
                 ((TextView)viewToAdd.findViewById(R.id.numRanksTV)).setText("(" + String.valueOf(d.getNumRanks()) + ")");
-                ((TextView)viewToAdd.findViewById(R.id.dishPriceTV)).setText(String.valueOf(d.getPrice())+"€");
+            BigDecimal result;
+            result= Helper.round(d.getPrice(),2);
+            ((TextView)viewToAdd.findViewById(R.id.dishPriceTV)).setText(String.valueOf(result)+"€");
 
                 if(d.getThumbDownloadLink() != null){
                     Glide.with(this).load(d.getThumbDownloadLink()).into((ImageView)viewToAdd.findViewById(R.id.dishPhotoIV));

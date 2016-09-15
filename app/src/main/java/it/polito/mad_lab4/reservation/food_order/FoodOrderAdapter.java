@@ -9,9 +9,11 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import it.polito.mad_lab4.R;
+import it.polito.mad_lab4.common.Helper;
 import it.polito.mad_lab4.newData.reservation.ReservedDish;
 
 /**
@@ -93,7 +95,9 @@ public class FoodOrderAdapter extends ArrayAdapter<ReservedDish>{
         }
         // Populate the data into the template view using the data object
         viewHolder.name.setText(dish.getName());
-        viewHolder.price.setText(String.valueOf(dish.getPrice())+" €");
+        BigDecimal result;
+        result= Helper.round(dish.getPrice(),2);
+        viewHolder.price.setText(String.valueOf(result)+" €");
         viewHolder.quantity.setText(String.valueOf(dish.getQuantity()));
         viewHolder.counter=dish.getQuantity();
 

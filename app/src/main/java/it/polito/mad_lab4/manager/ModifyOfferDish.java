@@ -24,10 +24,13 @@ import android.widget.ToggleButton;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.bl.RestaurantBL;
+import it.polito.mad_lab4.common.Helper;
 import it.polito.mad_lab4.data.user.User;
 import it.polito.mad_lab4.firebase_manager.FirebaseSaveDishManager;
 import it.polito.mad_lab4.firebase_manager.FirebaseSaveOfferManager;
@@ -173,7 +176,9 @@ public class ModifyOfferDish extends EditableBaseActivity {
         }
 
         if (editPrice != null) {
-            editPrice.setText(String.valueOf(offer.getPrice()));
+            BigDecimal result;
+            result= Helper.round(offer.getPrice(),2);
+            editPrice.setText(String.valueOf(result));
         }
 
         if (editNotes != null){
@@ -228,6 +233,7 @@ public class ModifyOfferDish extends EditableBaseActivity {
                 String price =  editPrice.getText().toString();
                 if (price.compareTo("") != 0) {
                     priceO = Float.parseFloat(price);
+
                 }
                 else {
                     //campo vuoto

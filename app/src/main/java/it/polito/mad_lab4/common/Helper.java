@@ -12,6 +12,7 @@ import android.widget.RatingBar;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
@@ -43,6 +44,11 @@ public class Helper {
             return context.getResources().getString(R.string.yes);
         else
             return context.getResources().getString(R.string.no);
+    }
+    public static BigDecimal round(float d, int decimalPlace) {
+        BigDecimal bd = new BigDecimal(Float.toString(d));
+        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
+        return bd;
     }
 
     public static void dialNumber (Context context, String number){

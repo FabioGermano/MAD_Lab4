@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import it.polito.mad_lab4.R;
@@ -74,7 +75,9 @@ public class OfferItemPrevFragment extends Fragment {
         TextView offerDetails = (TextView)rootView.findViewById(R.id.offerDetails);
 
         offerName.setText(offers.get(this.sectionNumber).getOfferName());
-        offerPrice.setText(offers.get(this.sectionNumber).getPrice()+"€");
+        BigDecimal result;
+        result= Helper.round(offers.get(this.sectionNumber).getPrice(),2);
+        offerPrice.setText(String.valueOf(result)+"€");
         offerRatingProgress.setRating(offers.get(this.sectionNumber).getAvgRank());
         offerNumRatings.setText("("+offers.get(this.sectionNumber).getNumRanks()+")");
         offerDetails.setText(offers.get(this.sectionNumber).getDetails());

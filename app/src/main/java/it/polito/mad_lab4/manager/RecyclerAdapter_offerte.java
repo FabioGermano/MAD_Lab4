@@ -23,10 +23,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.bl.RestaurantBL;
+import it.polito.mad_lab4.common.Helper;
 import it.polito.mad_lab4.firebase_manager.FirebaseRemoveOfferManager;
 import it.polito.mad_lab4.newData.restaurant.Offer;
 
@@ -105,8 +107,10 @@ public class RecyclerAdapter_offerte extends RecyclerView.Adapter<RecyclerAdapte
             if(dish_name != null)
                 this.dish_name.setText(currentObj.getOfferName());
             if(dish_price != null) {
-                String tmp = String.valueOf(currentObj.getPrice()) + " " + context.getResources().getString(R.string.money_value);
-                this.dish_price.setText(tmp);
+                BigDecimal result;
+                result= Helper.round(currentObj.getPrice(),2);
+                String tmp = String.valueOf(result) + " " + context.getResources().getString(R.string.money_value);
+                 this.dish_price.setText(tmp);
             }
             if(availability_mode){
                 if(dish_availability != null){

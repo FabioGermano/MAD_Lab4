@@ -7,6 +7,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.math.BigDecimal;
+
 import it.polito.mad_lab4.BaseActivity;
 import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.common.Helper;
@@ -49,7 +51,9 @@ public class MenuPhotoViewActivity extends BaseActivity {
 
         dishNameText.setText(dish.getDishName());
         ratingBar.setRating(dish.getAvgRank());
-        priceTV.setText(dish.getPrice()+"€");
+        BigDecimal result;
+        result= Helper.round(dish.getPrice(),2);
+        priceTV.setText(String.valueOf(result)+"€");
 
         Helper.setRatingBarColor(getApplicationContext(),
                 ratingBar,

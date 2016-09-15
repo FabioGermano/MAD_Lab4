@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.google.firebase.database.ServerValue;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -198,7 +199,9 @@ public class CheckoutOrderActivity extends BaseActivity {
                 TextView quantity = (TextView) child.findViewById(R.id.food_quantity);
                 quantity.setText(d.getQuantity() + " x ");
                 TextView price = (TextView) child.findViewById(R.id.food_price);
-                price.setText(String.valueOf(d.getPrice()) + " €");
+                BigDecimal result;
+                result= Helper.round(d.getPrice(),2);
+                price.setText(String.valueOf(result) + " €");
                 this.total+=d.getQuantity() * d.getPrice();
                 this.orderLayout.addView(child);
             }

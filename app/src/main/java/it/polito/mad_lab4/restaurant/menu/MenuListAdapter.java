@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import it.polito.mad_lab4.R;
@@ -79,7 +80,9 @@ public class MenuListAdapter extends ArrayAdapter<Dish>  {
             viewHolder.notAvailableTextView.setVisibility(View.VISIBLE);
         }
         viewHolder.numRanksTV.setText("("+String.valueOf(this.dishes.get(position).getNumRanks())+")");
-        viewHolder.dishPriceTV.setText(String.valueOf(this.dishes.get(position).getPrice())+"€");
+        BigDecimal result;
+        result= Helper.round(this.dishes.get(position).getPrice(),2);
+        viewHolder.dishPriceTV.setText(String.valueOf(result)+"€");
 
         Helper.setRatingBarColor(getContext(),
                 viewHolder.ratingBar,

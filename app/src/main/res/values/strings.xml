@@ -29,7 +29,7 @@
     <string name="offer_image">Offer image</string>
     <string name="offerName">Name of the offer</string>
     <string name="notesOffer">Notes</string>
-    <string name="money_value" translatable="false">euro</string>
+    <string name="money_value" translatable="false">€</string>
     <string name="offerPrice">Price</string>
     <string name="weeklyreapeted">Apply on</string>
 
@@ -332,4 +332,7 @@
 
     <string name="avvisoMappa">Finding your position...</string>
     <string name="newNotification">NEW!</string>
+    <string name="promo_main">Tap here to create a new offer. Offers are a good way to promote your restaurant to existent and potential customers.</string>
+    <string name="new_offer">Create a new offer</string>
+    <string name="your_restaurant_reviews">Your restaurant reviews</string>
 </resources>

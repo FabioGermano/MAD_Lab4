@@ -29,7 +29,10 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.math.BigDecimal;
+
 import it.polito.mad_lab4.R;
+import it.polito.mad_lab4.common.Helper;
 import it.polito.mad_lab4.data.user.User;
 import it.polito.mad_lab4.firebase_manager.FirebaseGetDishManager;
 import it.polito.mad_lab4.firebase_manager.FirebaseSaveDishManager;
@@ -468,7 +471,9 @@ public class ModifyMenuDish extends EditableBaseActivity {
             }
 
             if (editPrice != null) {
-                editPrice.setText(String.valueOf(dish.getPrice()));
+                BigDecimal result;
+                result= Helper.round(dish.getPrice(),2);
+                editPrice.setText(String.valueOf(result));
             }
 
             //imposto lo spinner al valore corretto del piatto

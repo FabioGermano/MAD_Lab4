@@ -8,6 +8,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -65,7 +66,9 @@ public class ShowOfferActivity extends BaseActivity{
         setActivityTitle(offer.getOfferName());
         nameTextView.setText(offer.getOfferName());
         detailsTextView.setText(offer.getDetails());
-        priceTextView.setText(String.valueOf(offer.getPrice())+" €");
+        BigDecimal result;
+        result= Helper.round(offer.getPrice(),2);
+        priceTextView.setText(String.valueOf(result)+" €");
         ratingsNumberTextView.setText(String.valueOf("("+offer.getNumRanks())+")");
         rb.setRating(offer.getAvgRank());
 
