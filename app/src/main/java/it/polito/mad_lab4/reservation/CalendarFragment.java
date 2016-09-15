@@ -40,7 +40,7 @@ public class CalendarFragment extends Fragment {
 
     public interface OnDateSelectedListener {
 
-        public void onDateSelected(String date, boolean b);
+        public void onDateSelected(String date, boolean b, boolean transaction);
 
     }
 
@@ -130,7 +130,7 @@ public class CalendarFragment extends Fragment {
             public void onValueChange(NumberPicker picker, int oldVal, int newVal){
                 //pass  to the activity the date in the db format + day of the week
                 boolean b = (newVal==0);
-                mCallback.onDateSelected(datesInDBFormat.get(newVal), b);
+                mCallback.onDateSelected(datesInDBFormat.get(newVal), b, true);
 
             }
         });

@@ -84,12 +84,13 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
             week_day = c.get(Calendar.DAY_OF_WEEK);
             String wd = String.valueOf(week_day);
             String first_date = wd + year + "-" + month + "-" + day;
-            onDateSelected(first_date, true);
+            onDateSelected(first_date, true, false);
         }
+
     }
 
     @Override
-    public void onDateSelected(String date, boolean b) {
+    public void onDateSelected(String date, boolean b, boolean updateFragment) {
 
         //TODO update the right view of time according to the day of the week and show the next step
         //extract the day of the week
@@ -99,27 +100,28 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
         //extract and set the reservation date
         this.reservationDate = date.substring(1,date.length());
 
-        timeFragment= new TimeFragment();
+        if(timeFragment != null){
+            getSupportFragmentManager().beginTransaction().remove(timeFragment).commit();
+        }
 
+        timeFragment= new TimeFragment();
         Bundle args = new Bundle();
         args.putBoolean("isToday", b);
         args.putString("timeRange", timeTable.get(Helper.fromCalendarOrderToMyOrder(dayOfTheweek)));
         timeFragment.setArguments(args);
 
-        getSupportFragmentManager().beginTransaction().setCustomAnimations(0, 0).replace(R.id.time_fragment_container, timeFragment).commit();
-        View t = (View) (findViewById(R.id.time_fragment_container));
-        //t.requestFocus();
-
         if(choiceFragment != null) {
             this.choice_made=false;
             getSupportFragmentManager().beginTransaction().remove(choiceFragment).commit();
-
-        }
-        if(reservationTime!=null) {
-            this.reservationTime = null;
         }
 
-        scrollToEnd();
+        if(timeFragment != null) {
+            if (updateFragment) {
+                this.reservationTime = null;
+                getSupportFragmentManager().beginTransaction().replace(R.id.time_fragment_container, timeFragment).commit();
+            }
+        }
+        //scrollToEnd();
 
     }
 
@@ -181,7 +183,7 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
             View cc = (View) (findViewById(R.id.choice_fragment_container));
         }
 
-        scrollToEnd();
+        //scrollToEnd();
     }
 
 

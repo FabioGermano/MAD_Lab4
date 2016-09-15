@@ -44,6 +44,8 @@ public class TimeFragment extends Fragment implements DatesAdapter.AdapterInterf
 
     public void onCreate( Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         if(savedInstanceState == null){
             time_position=-1;
         }
@@ -79,6 +81,7 @@ public class TimeFragment extends Fragment implements DatesAdapter.AdapterInterf
         Boolean isToday = getArguments().getBoolean("isToday", false);
 
         TextView closed = (TextView) rootView.findViewById(R.id.closed);
+        TextView title = (TextView) rootView.findViewById(R.id.title_pickTime);
         gridView = (ExpandableHeightGridView) rootView.findViewById(R.id.gridView);
 
         //extract slots from time range
@@ -100,7 +103,6 @@ public class TimeFragment extends Fragment implements DatesAdapter.AdapterInterf
         gridView.setAdapter(datesAdapter);
         gridView.setChoiceMode(GridView.CHOICE_MODE_SINGLE);
 
-        gridView.requestFocus(View.FOCUS_FORWARD);
         return rootView;
     }
 

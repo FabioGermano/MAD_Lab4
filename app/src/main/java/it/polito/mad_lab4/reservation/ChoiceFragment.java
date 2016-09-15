@@ -33,7 +33,7 @@ public class ChoiceFragment extends Fragment {
     //private Button eatin, takeaway;
     private ImageButton eatin, takeaway;
     //private NumberPicker numberPicker;
-    private LinearLayout seats_layout;
+    private LinearLayout seats_layout, choice_layout;
     private boolean confirmed= false;
     private int seats;
     private ImageButton plus, minus;
@@ -41,6 +41,7 @@ public class ChoiceFragment extends Fragment {
     private TextView counter;
     private int cnt;
     private boolean onlyTakeaway, onlySeats;
+
 
     public interface OnChoiceSelectedListener {
 
@@ -76,11 +77,13 @@ public class ChoiceFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView =  inflater.inflate(R.layout.choice_fragment, container, false);
 
-        LinearLayout choice_layout = (LinearLayout) rootView.findViewById(R.id.choice_layout);
+        choice_layout = (LinearLayout) rootView.findViewById(R.id.choice_layout);
         //eatin = (Button) rootView.findViewById(R.id.eat_in);
         eatin = (ImageButton) rootView.findViewById(R.id.eat_in);
         //takeaway = (Button) rootView.findViewById(R.id.takeaway);
         takeaway = (ImageButton) rootView.findViewById(R.id.takeaway);
+
+        TextView title = (TextView) rootView.findViewById(R.id.title_Choice);
 
 
         seats_layout = (LinearLayout) rootView.findViewById(R.id.seats);
@@ -102,7 +105,6 @@ public class ChoiceFragment extends Fragment {
             }
 
         }
-
 
         else {
             seats_layout.setVisibility(View.GONE);
@@ -127,8 +129,6 @@ public class ChoiceFragment extends Fragment {
 
         //plus.setColorFilter(getResources().getColor(R.color.themeColorLighter));
         //minus.setColorFilter(getResources().getColor(R.color.themeColorLighter));
-
-
 
         plus.setOnClickListener(new OnClickListener() {
             @Override
@@ -201,7 +201,8 @@ public class ChoiceFragment extends Fragment {
             }
         });
 
-
+        if(choice_layout != null)
+            choice_layout.requestFocus(View.FOCUS_FORWARD);
         return rootView;
 
     }
