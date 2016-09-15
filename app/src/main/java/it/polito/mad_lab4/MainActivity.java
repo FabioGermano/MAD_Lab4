@@ -149,6 +149,8 @@ public class MainActivity extends BaseActivity implements LocationListener {
     @Override
     protected void isLogin(final FirebaseUser user) {
         super.isLogin(user);
+        if(isRedirect())
+            return;
         //controllo se l'utente ha correttamente fornito i propri dati personali
         if(isNetworkAvailable()) {
             new Thread() {

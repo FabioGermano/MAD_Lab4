@@ -53,7 +53,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     String activityTitle =  "Titolo App";
     private View toolbarShadow;
     private boolean useToolbar=true;
-
+    private boolean redirect = false;
     private ProgressDialog pd;
 
     public int getAlertCount() {
@@ -144,7 +144,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                             id = user.getUid();
                             email = user.getEmail();
                             configureBarraLaterale(view, user);
-                            isLogin(user);
 
                         } else{
                             if(alert_visibility){
@@ -253,13 +252,17 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         UserAlert.init(getApplicationContext(), user.getUid(), alertCountView);
     }
 
+    protected boolean isRedirect(){
+        return this.redirect;
+    }
+
     private void caricaUtenteDefault(final NavigationView navigationView) {
         navigationView.getMenu().clear();
         navigationView.inflateMenu(R.menu.activity_drawer_no_login);
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-    private void caricaUtenteLoggato(FirebaseUser user, final NavigationView navigationView) {
+    private void caricaUtenteLoggato(final FirebaseUser user, final NavigationView navigationView) {
         // scarico info dal server e imposto evento per riempire la schermata con i dati utente
         final String userId = user.getUid();
         new Thread()        {
@@ -284,13 +287,16 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                             if(homePageClient){
                                 if(infoUser.getUserType()!= null && infoUser.getUserType().compareTo("M") == 0){
                                     Intent i= new Intent(getApplicationContext(), MainActivityManager.class);
+                                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                                     startActivity(i);
                                     dismissProgressDialog();
+                                    redirect = true;
                                     finish();
                                     return;
                                 }
                             }
                             riempiBarraLaterale(navigationView);
+                            isLogin(user);
                         }
                         else {
                             //errore caricamento dati utente dal server
