@@ -51,14 +51,7 @@ public class MenuListFragment extends Fragment {
                 FirebaseGetMenuByTypeManager firebaseGetMenuByTypeManager = new FirebaseGetMenuByTypeManager();
                 firebaseGetMenuByTypeManager.getMenu(restaurantId, dishType, null);
                 if (firebaseGetMenuByTypeManager.waitForResult()){
-                    if (getActivity() == null)
-                        return;
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(getContext(), getResources().getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
-                        }
-                    });
+
                     return;
                 }
                 dishesOfType.addAll(firebaseGetMenuByTypeManager.getResult());

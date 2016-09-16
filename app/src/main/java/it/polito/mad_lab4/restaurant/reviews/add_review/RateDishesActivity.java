@@ -244,7 +244,7 @@ public class RateDishesActivity extends BaseActivity{
                 ArrayList<ReviewFood> saveData = new ArrayList<ReviewFood>();
                 for(ArrayList<ReviewFood> list : lists){
                     for(ReviewFood rev : list){
-                        if(rev.getRating()>0){
+                        if(rev.getRating()> 0){
                             saveData.add(rev);
                         }
                     }

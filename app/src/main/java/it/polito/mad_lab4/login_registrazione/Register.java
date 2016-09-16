@@ -34,7 +34,7 @@ public class Register extends BaseActivity {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
-    private ProgressDialog progressDialog = null;
+    private ProgressDialog pd;
 
     private String username = null;
     private boolean alreadyNotified;
@@ -77,23 +77,20 @@ public class Register extends BaseActivity {
                     if (user != null && !alreadyNotified) {
                         // User is signed in
                         alreadyNotified = true;
-                        if (progressDialog != null) {
-                            progressDialog.dismiss();
-                            progressDialog = null;
-                        }
+                        dismissProgressDialog();
 
-                            //arrivo qua dalla fase di registrazione
-                            insertClientInfo(user.getUid());
-                            String email = user.getEmail();
-                            Bundle b = new Bundle();
-                            b.putString("email", email);
-                            b.putString("userId", user.getUid());
-                            b.putString("name", username);
-                            b.putBoolean("new", true);
+                        //arrivo qua dalla fase di registrazione
+                        insertClientInfo(user.getUid());
+                        String email = user.getEmail();
+                        Bundle b = new Bundle();
+                        b.putString("email", email);
+                        b.putString("userId", user.getUid());
+                        b.putString("name", username);
+                        b.putBoolean("new", true);
 
-                            Intent i = new Intent(getApplicationContext(), EditUserProfileActivity.class);
-                            i.putExtras(b);
-                            startActivity(i);
+                        Intent i = new Intent(getApplicationContext(), EditUserProfileActivity.class);
+                        i.putExtras(b);
+                        startActivity(i);
                     }
                 }
             };
@@ -159,10 +156,7 @@ public class Register extends BaseActivity {
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
-                            if(progressDialog != null){
-                                progressDialog.dismiss();
-                                progressDialog = null;
-                            }
+                            dismissProgressDialog();
                             nameField.setText("");
                             emailField.setText("");
                             pwdField.setText("");
@@ -173,11 +167,7 @@ public class Register extends BaseActivity {
                 });
 
         // Attendo l'esito dell'operazione
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setMessage("Loading...");
-        progressDialog.setCancelable(false);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.show();
+        showProgressBar();
     }
 
     public static boolean isEmailValid(String email) {
@@ -224,8 +214,21 @@ public class Register extends BaseActivity {
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
-        if(progressDialog != null){
-            progressDialog.dismiss();
+    }
+
+    public void showProgressBar(){
+        dismissProgressDialog();
+        pd = new ProgressDialog(this);
+        pd.setMessage("Loading...");
+        pd.setCancelable(false);
+        pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        pd.show();
+    }
+
+    public void dismissProgressDialog() {
+        if (pd != null ){
+            pd.dismiss();
+            pd = null;
         }
     }
 }
