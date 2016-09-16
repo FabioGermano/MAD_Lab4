@@ -95,7 +95,6 @@ public class ModifyOfferDish extends EditableBaseActivity {
                     if (!isEditing){
                         //setTitleTextView(getResources().getString(R.string.title_activity_new_offer));
                         newOffer = true;
-                        extras.clear();
                         return true;
                     }
                     else{
@@ -103,6 +102,7 @@ public class ModifyOfferDish extends EditableBaseActivity {
 
                         getOfferOnFirebase();
                     }
+            extras.clear();
 
         } catch (Exception e){
             System.out.print("Eccezione: " + e.getMessage());

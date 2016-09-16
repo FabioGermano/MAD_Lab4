@@ -24,6 +24,7 @@ public class FirebaseUpdateAvgDishesAndOffers implements DatabaseReference.Compl
 
     private boolean firebaseReturnedResult = false;
     private DatabaseError databaseError;
+    private boolean failed = false;
 
     public boolean updateAvgDishesAndOffers(String idRestaurant, float price, float oldPrice, boolean isNew){
 
@@ -35,7 +36,12 @@ public class FirebaseUpdateAvgDishesAndOffers implements DatabaseReference.Compl
         restaurantInfoManager = new FirebaseGetRestaurantInfoManager();
         restaurantInfoManager.getRestaurantInfo(idRestaurant, "totDishesAndOffers");
         restaurantInfoManager.waitForResult();
-        totPrezzo = Float.parseFloat(restaurantInfoManager.getResult());
+
+
+        if (restaurantInfoManager.getResult() != null && !restaurantInfoManager.getResult().equals("null"))
+            totPrezzo = Float.parseFloat(restaurantInfoManager.getResult());
+        else
+            failed = true;
 
         Map updateAvg = new HashMap();
 
@@ -43,7 +49,12 @@ public class FirebaseUpdateAvgDishesAndOffers implements DatabaseReference.Compl
             restaurantInfoManager = new FirebaseGetRestaurantInfoManager();
             restaurantInfoManager.getRestaurantInfo(idRestaurant, "numDishesAndOffers");
             restaurantInfoManager.waitForResult();
-            numPiatti = Integer.parseInt(restaurantInfoManager.getResult());
+
+            if (restaurantInfoManager.getResult() != null && !restaurantInfoManager.getResult().equals("null"))
+                numPiatti = Integer.parseInt(restaurantInfoManager.getResult());
+            else
+                failed = true;
+
             if (numPiatti != -1)
                 numPiatti++;
 
@@ -53,6 +64,7 @@ public class FirebaseUpdateAvgDishesAndOffers implements DatabaseReference.Compl
 
             updateAvg.put("numDishesAndOffers", numPiatti);
             updateAvg.put("totDishesAndOffers", Math.round(totPrezzo));
+
 
         } else {
             //se è una modifica
@@ -65,13 +77,18 @@ public class FirebaseUpdateAvgDishesAndOffers implements DatabaseReference.Compl
                     return false;
                 }
             }
+            else
+                failed = true;
+
         }
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef1 = database.getReference("restaurants/" + idRestaurant);
-        myRef1.updateChildren(updateAvg, this);
-
-        return true;
+        if (!failed) {
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference myRef1 = database.getReference("restaurants/" + idRestaurant);
+            myRef1.updateChildren(updateAvg, this);
+            return true;
+        }
+        return false;
 
     }
 

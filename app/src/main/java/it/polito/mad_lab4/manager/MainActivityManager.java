@@ -22,6 +22,8 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.io.Console;
+
 import it.polito.mad_lab4.*;
 import it.polito.mad_lab4.firebase_manager.FirebaseGetAuthInformation;
 import it.polito.mad_lab4.firebase_manager.FirebaseGetRestaurantProfileManager;
@@ -41,7 +43,7 @@ public class MainActivityManager extends it.polito.mad_lab4.BaseActivity{
     private Bitmap logo;
     private Button showAllReviewsButton;
     private ReviewsPrevFragment reviewsPrevFragment;
-    private String restaurantId = "5QLyzE18mNe434WBhs1KtnYPAWw2"; //TODO hardcode
+    private String restaurantId = null; //TODO hardcode
     private Restaurant restaurant;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,10 +69,19 @@ public class MainActivityManager extends it.polito.mad_lab4.BaseActivity{
         cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                System.out.println("------------> LEGGI QUESTA!!! " + restaurantId);
+
                 if (isNetworkAvailable()) {
-                    Intent i = new Intent(getApplicationContext(), ModifyOfferDish.class);
-                    i.putExtra("isEditing", false);
-                    startActivity(i);
+                    if (restaurantId != null) {
+                        Intent i = new Intent(getApplicationContext(), ModifyOfferDish.class);
+                        Bundle b = new Bundle();
+                        b.putString("restaurantId", restaurantId);
+                        b.putBoolean("isEditing", false);
+                        i.putExtras(b);
+                        startActivity(i);
+                    }
+                    else
+                        Toast.makeText(MainActivityManager.this, getResources().getString(R.string.error), Toast.LENGTH_SHORT).show();
                 }
                 else
                     Toast.makeText(MainActivityManager.this, getResources().getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
@@ -103,9 +114,12 @@ public class MainActivityManager extends it.polito.mad_lab4.BaseActivity{
         //showProgressBar();
         new Thread() {
             public void run() {
+
+
                 FirebaseGetAuthInformation firebaseGetAuthInformation = new FirebaseGetAuthInformation();
                 firebaseGetAuthInformation.waitForResult();
                 currentUser = firebaseGetAuthInformation.getUser();
+
 
                 if (currentUser == null) {
                     runOnUiThread(new Runnable() {
@@ -122,6 +136,8 @@ public class MainActivityManager extends it.polito.mad_lab4.BaseActivity{
                     userInfoManager.waitForResult();
                     final User infoUser = userInfoManager.getUserInfo();
 
+                    restaurantId = currentUser.getUid();
+
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -130,10 +146,15 @@ public class MainActivityManager extends it.polito.mad_lab4.BaseActivity{
 
                                 if (navigationView != null) {
                                     View header = navigationView.getHeaderView(0);
+
                                     if (header != null) {
-                                        final ImageView user_logo = (ImageView) header.findViewById(R.id.nav_drawer_logo);
+                                        ImageView user_logo = (ImageView) header.findViewById(R.id.nav_drawer_logo);
+                                        TextView user_name = (TextView) header.findViewById(R.id.nav_drawer_name);
+
                                         if (user_logo != null && infoUser.getAvatarDownloadLink() != null)
                                             Glide.with(getApplicationContext()).load(infoUser.getAvatarDownloadLink()).centerCrop().into(user_logo);
+                                        if (user_name != null && infoUser.getName()!= null)
+                                            user_name.setText(infoUser.getName());
                                     }
                                 }
                             }
