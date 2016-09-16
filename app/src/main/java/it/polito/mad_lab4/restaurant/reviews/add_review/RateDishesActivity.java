@@ -249,6 +249,10 @@ public class RateDishesActivity extends BaseActivity{
                         }
                     }
                 }
+                if (saveData.size() == 0){
+                    Toast.makeText(RateDishesActivity.this, "No dishes evaluated", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 saveReview(restaurantId, r, saveData);
 
             }

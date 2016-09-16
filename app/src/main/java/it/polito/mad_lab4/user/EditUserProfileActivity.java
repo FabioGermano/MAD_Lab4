@@ -48,7 +48,7 @@ public class EditUserProfileActivity extends BaseActivity implements UniversityP
         setContentView(R.layout.activity_edit_user_profile);
 
         newClient = false;
-
+        setVisibilityAlert(false);
         Bundle extras = getIntent().getExtras();
 
         if (extras != null) {

@@ -30,6 +30,8 @@ import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.io.Console;
+
 import it.polito.mad_lab4.alert.UserAlert;
 import it.polito.mad_lab4.firebase_manager.FirebaseGetAuthInformation;
 import it.polito.mad_lab4.firebase_manager.FirebaseGetUserInfoManager;
@@ -55,6 +57,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     private boolean useToolbar=true;
     private boolean redirect = false;
     private ProgressDialog pd;
+    private boolean onFavourites = false;
 
     public int getAlertCount() {
         return alertCount;
@@ -161,7 +164,10 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                             }
                             configureBarraLaterale(view, null);
                         }
-                        dismissProgressDialog();
+
+                        if (!onFavourites)
+                            dismissProgressDialog();
+
                     }
                 });
             }
@@ -265,6 +271,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     private void caricaUtenteLoggato(final FirebaseUser user, final NavigationView navigationView) {
         // scarico info dal server e imposto evento per riempire la schermata con i dati utente
         final String userId = user.getUid();
+
         new Thread()        {
             public void run() {
                 runOnUiThread(new Runnable() {
@@ -302,7 +309,9 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                             //errore caricamento dati utente dal server
                             caricaUtenteDefault(navigationView);
                         }
-                        dismissProgressDialog();
+
+                        if (!onFavourites)
+                            dismissProgressDialog();
                     }
                 });
             }
@@ -726,5 +735,9 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    protected void setOnFavourites(){
+        this.onFavourites = true;
     }
 }
