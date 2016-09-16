@@ -69,6 +69,9 @@ public class ReviewsActivity extends BaseActivity {
         numRanking = bundle.getInt("numRanking");
         ranking = bundle.getFloat("ranking");
 
+        if (bundle.getBoolean("noAlertButton"))
+            setVisibilityAlert(false);
+        
         //((RatingBar)findViewById(R.id.restaurantAvgRank)).setRating(this.restaurant.getAvgReview());
         String strNumReviews = getResources().getString(R.string.numReviewsText);
         strNumReviews = strNumReviews.replace("%", String.valueOf(numRanking));

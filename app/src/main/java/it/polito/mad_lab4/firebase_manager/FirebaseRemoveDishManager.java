@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public class FirebaseRemoveDishManager {
     public void removeDish(final String RestaurantId, final String dishId,  final float price){
-        
+
         int numPiatti = -1;
         float totPrezzo = -1;
         boolean failed = false;

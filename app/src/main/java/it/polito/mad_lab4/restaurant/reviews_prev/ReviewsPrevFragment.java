@@ -55,14 +55,15 @@ public class ReviewsPrevFragment extends Fragment {
 
         return rootView;
     }
-
+/*
     @Override
     public void onResume() {
         super.onResume();
+        updateData();
+    }*/
 
-
+    public void updateData(){
         final ArrayList<Review> reviews = new ArrayList<>();
-
         containerLayout.removeAllViews();
 
         Thread t = new Thread()
@@ -88,7 +89,6 @@ public class ReviewsPrevFragment extends Fragment {
 
             }
         };
-
         t.start();
     }
 
@@ -112,6 +112,8 @@ public class ReviewsPrevFragment extends Fragment {
             }
         });
 
+
+        System.out.println("-----------------> DIMENSIONI REVIEWS: " + reviews.size() );
         for(int i = 0; i<reviews.size(); i++){
 
                 View viewToAdd = LayoutInflater.from(getContext()).inflate(R.layout.review_view, null);
@@ -133,7 +135,7 @@ public class ReviewsPrevFragment extends Fragment {
                 containerLayout.addView(viewToAdd);
             }
 
-        if(numRanking <3){
+        if(numRanking < 3){
             showAllButton.setVisibility(View.GONE);
         }
         else

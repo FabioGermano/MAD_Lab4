@@ -31,6 +31,7 @@ import it.polito.mad_lab4.firebase_manager.FirebaseGetUserInfoManager;
 import it.polito.mad_lab4.manager.reservation.ReservationsActivity;
 import it.polito.mad_lab4.newData.restaurant.Restaurant;
 import it.polito.mad_lab4.newData.user.User;
+import it.polito.mad_lab4.restaurant.reviews.ReviewsActivity;
 import it.polito.mad_lab4.restaurant.reviews_prev.ReviewsPrevFragment;
 
 public class MainActivityManager extends it.polito.mad_lab4.BaseActivity{
@@ -82,20 +83,33 @@ public class MainActivityManager extends it.polito.mad_lab4.BaseActivity{
                         Toast.makeText(MainActivityManager.this, getResources().getString(R.string.error), Toast.LENGTH_SHORT).show();
                 }
                 else
-                    Toast.makeText(MainActivityManager.this, getResources().getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
+                    Snackbar.make(findViewById(android.R.id.content), getResources().getString(R.string.connection_error), Snackbar.LENGTH_LONG).show();
             }
         });
 
-        reviewsPrevFragment = (ReviewsPrevFragment)getSupportFragmentManager().findFragmentById(R.id.reviewsPrevFragment);
-        reviewsPrevFragment.setRestaurantId(this.restaurantId);
 
-        /*showAllReviewsButton = (Button)findViewById(R.id.showAllReviewsButton);
+
+        showAllReviewsButton = (Button)findViewById(R.id.showAllReviewsButton);
         showAllReviewsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showAllReviewsButtonPressed();
             }
-        });*/
+        });
+    }
+
+    private void showAllReviewsButtonPressed() {
+        if (!isNetworkAvailable()){
+            Snackbar.make(findViewById(android.R.id.content), getResources().getString(R.string.connection_error), Snackbar.LENGTH_LONG).show();
+            return;
+        }
+
+        Intent i = new Intent(getApplicationContext(), ReviewsActivity.class);
+        i.putExtra("restaurantId", this.restaurantId);
+        i.putExtra("ranking",restaurant.getTotRanking());
+        i.putExtra("numRanking", restaurant.getNumReviews());
+        i.putExtra("noAlertButton", true);
+        startActivity(i);
     }
 
 
@@ -135,6 +149,8 @@ public class MainActivityManager extends it.polito.mad_lab4.BaseActivity{
                     final User infoUser = userInfoManager.getUserInfo();
 
                     restaurantId = currentUser.getUid();
+                    reviewsPrevFragment = (ReviewsPrevFragment)getSupportFragmentManager().findFragmentById(R.id.reviewsPrevFragment);
+                    reviewsPrevFragment.setRestaurantId(restaurantId);
 
                     runOnUiThread(new Runnable() {
                         @Override
@@ -176,14 +192,13 @@ public class MainActivityManager extends it.polito.mad_lab4.BaseActivity{
                     @Override
                     public void run() {
                         if (timeout) {
-                            Snackbar.make(findViewById(android.R.id.content), "Connection error", Snackbar.LENGTH_LONG)
-                                    .show();
+                            Snackbar.make(findViewById(android.R.id.content), getResources().getString(R.string.connection_error), Snackbar.LENGTH_LONG).show();
                         }
                         dismissProgressDialog();
                         if (restaurant != null)
                             initSection();
                         else {
-                            Toast.makeText(MainActivityManager.this, "Connection error", Toast.LENGTH_SHORT).show();
+                            Snackbar.make(findViewById(android.R.id.content), getResources().getString(R.string.connection_error), Snackbar.LENGTH_LONG).show();
                             return;
                         }
                     }
@@ -197,7 +212,9 @@ public class MainActivityManager extends it.polito.mad_lab4.BaseActivity{
        if(restaurant.getNumReviews()>0){
             ((LinearLayout)findViewById(R.id.reviewsFragmentContainer)).setVisibility(View.VISIBLE);
             reviewsPrevFragment.setRanking(restaurant.getTotRanking(), restaurant.getNumReviews());
-        }
+            reviewsPrevFragment.updateData();
+
+       }
     }
 
     @Override
