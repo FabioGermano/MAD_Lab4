@@ -112,8 +112,6 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
 
         Bundle extras = getIntent().getExtras();
         restaurantId = extras.getString("restaurantId");
-        //this.restaurantId = "gAFr9RplBOdXm0O7jmUhJH4m98l1";
-
 
         menuPrevFragment = (MenuPrevFragment)getSupportFragmentManager().findFragmentById(R.id.menuPrevFragment);
         menuPrevFragment.setRestaurantId(restaurantId);
@@ -148,9 +146,6 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
         appbar.addOnOffsetChangedListener(this);
 
         showProgressBar();
-
-        reviewsPrevFragment.updateData();
-
 
         new Thread() {
             public void run() {
@@ -245,6 +240,7 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
             add_reservation.setVisibility(View.GONE);
 
         setCoverImage();
+        reviewsPrevFragment.updateData();
 
     }
     /*

@@ -117,7 +117,6 @@ showProgressBar();
             public void onGlobalLayout() {
                 //At this point the layout is complete and the
                 //dimensions of recyclerView and any child views are known.
-                System.out.println("------> in callback!!!");
                 dismissProgressDialog();
             }
         });
