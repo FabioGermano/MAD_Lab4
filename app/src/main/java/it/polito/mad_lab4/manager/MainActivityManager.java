@@ -19,13 +19,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseUser;
 
 import it.polito.mad_lab4.*;
 import it.polito.mad_lab4.firebase_manager.FirebaseGetAuthInformation;
 import it.polito.mad_lab4.firebase_manager.FirebaseGetRestaurantProfileManager;
+import it.polito.mad_lab4.firebase_manager.FirebaseGetUserInfoManager;
 import it.polito.mad_lab4.manager.reservation.ReservationsActivity;
 import it.polito.mad_lab4.newData.restaurant.Restaurant;
+import it.polito.mad_lab4.newData.user.User;
 import it.polito.mad_lab4.restaurant.reviews_prev.ReviewsPrevFragment;
 
 public class MainActivityManager extends it.polito.mad_lab4.BaseActivity{
@@ -60,22 +63,22 @@ public class MainActivityManager extends it.polito.mad_lab4.BaseActivity{
         invalidateOptionsMenu();
         setIconaToolbar(true);
 
-        View header = null;
-
-
         CardView cv = (CardView) findViewById(R.id.add_new_offer);
         cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), ModifyOfferDish.class);
-                i.putExtra("isEditing", false );
-                startActivity(i);
+                if (isNetworkAvailable()) {
+                    Intent i = new Intent(getApplicationContext(), ModifyOfferDish.class);
+                    i.putExtra("isEditing", false);
+                    startActivity(i);
+                }
+                else
+                    Toast.makeText(MainActivityManager.this, getResources().getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
             }
         });
 
         reviewsPrevFragment = (ReviewsPrevFragment)getSupportFragmentManager().findFragmentById(R.id.reviewsPrevFragment);
         reviewsPrevFragment.setRestaurantId(this.restaurantId);
-        //provaGson();
 
         /*showAllReviewsButton = (Button)findViewById(R.id.showAllReviewsButton);
         showAllReviewsButton.setOnClickListener(new View.OnClickListener() {
@@ -86,11 +89,6 @@ public class MainActivityManager extends it.polito.mad_lab4.BaseActivity{
         });*/
     }
 
-    /*private void provaGson() {
-        GestioneDB db = new GestioneDB();
-
-        ReservationEntity res = db.getAllReservations(getApplicationContext());
-    }*/
 
     @Override
     public void onBackPressed() {
@@ -102,31 +100,50 @@ public class MainActivityManager extends it.polito.mad_lab4.BaseActivity{
     protected void onResume() {
         super.onResume();
 
-        showProgressBar();
+        //showProgressBar();
         new Thread() {
             public void run() {
                 FirebaseGetAuthInformation firebaseGetAuthInformation = new FirebaseGetAuthInformation();
                 firebaseGetAuthInformation.waitForResult();
                 currentUser = firebaseGetAuthInformation.getUser();
 
-                if(currentUser == null) {
-
+                if (currentUser == null) {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-
                             setVisibilityAlert(false);
                             invalidateOptionsMenu();
 
                         }
                     });
-                }
+                } else {
+                    FirebaseGetUserInfoManager userInfoManager = new FirebaseGetUserInfoManager();
+                    userInfoManager.getClientInfo(currentUser.getUid());
+                    userInfoManager.waitForResult();
+                    final User infoUser = userInfoManager.getUserInfo();
 
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (infoUser != null) {
+                                final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+
+                                if (navigationView != null) {
+                                    View header = navigationView.getHeaderView(0);
+                                    if (header != null) {
+                                        final ImageView user_logo = (ImageView) header.findViewById(R.id.nav_drawer_logo);
+                                        if (user_logo != null && infoUser.getAvatarDownloadLink() != null)
+                                            Glide.with(getApplicationContext()).load(infoUser.getAvatarDownloadLink()).centerCrop().into(user_logo);
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
             }
         }.start();
 
         showProgressBar();
-
 
         new Thread() {
             public void run() {
@@ -148,7 +165,7 @@ public class MainActivityManager extends it.polito.mad_lab4.BaseActivity{
                             initSection();
                         else {
                             Toast.makeText(MainActivityManager.this, "Connection error", Toast.LENGTH_SHORT).show();
-                            finish();
+                            return;
                         }
 
                     }

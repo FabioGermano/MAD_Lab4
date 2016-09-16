@@ -479,48 +479,68 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
 
 
     protected void ModificaProfiloManager() {
-        Bundle b = new Bundle();
-        b.putString("restaurantId", id); // userid == restaurantid, nel caso manager
-        Intent i = new Intent(getApplicationContext(), it.polito.mad_lab4.manager.EditRestaurantProfile.class);
-        i.putExtras(b);
-        startActivity(i);
+        if (isNetworkAvailable()) {
+            Bundle b = new Bundle();
+            b.putString("restaurantId", id); // userid == restaurantid, nel caso manager
+            Intent i = new Intent(getApplicationContext(), it.polito.mad_lab4.manager.EditRestaurantProfile.class);
+            i.putExtras(b);
+            startActivity(i);
+        }
+        else
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
     }
 
 
     protected void ModificaMenu() {
-
-        Bundle b = new Bundle();
-        b.putString("restaurantId", id); // userid == restaurantid, nel caso manager
-        Intent i = new Intent(getApplicationContext(), it.polito.mad_lab4.manager.GestioneMenu.class);
-        i.putExtras(b);
-        startActivity(i);
+        if (isNetworkAvailable()) {
+            Bundle b = new Bundle();
+            b.putString("restaurantId", id); // userid == restaurantid, nel caso manager
+            Intent i = new Intent(getApplicationContext(), it.polito.mad_lab4.manager.GestioneMenu.class);
+            i.putExtras(b);
+            startActivity(i);
+        }
+        else
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
     }
 
 
     protected void ModificaOfferte() {
-        Bundle b = new Bundle();
-        b.putString("restaurantId", id); // userid == restaurantid, nel caso manager
-        Intent i = new Intent(getApplicationContext(), it.polito.mad_lab4.manager.GestioneOfferte.class);
-        i.putExtras(b);
-        startActivity(i);
+        if (isNetworkAvailable()) {
+            Bundle b = new Bundle();
+            b.putString("restaurantId", id); // userid == restaurantid, nel caso manager
+            Intent i = new Intent(getApplicationContext(), it.polito.mad_lab4.manager.GestioneOfferte.class);
+            i.putExtras(b);
+            startActivity(i);
+        }
+        else
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
+
     }
 
 
     protected void ModificaDisponibilità() {
-        Bundle b = new Bundle();
-        b.putString("restaurantId", id); // userid == restaurantid, nel caso manager
-        Intent i = new Intent(getApplicationContext(), it.polito.mad_lab4.manager.EditAvailability.class);
-        i.putExtras(b);
-        startActivity(i);
+        if (isNetworkAvailable()) {
+            Bundle b = new Bundle();
+            b.putString("restaurantId", id); // userid == restaurantid, nel caso manager
+            Intent i = new Intent(getApplicationContext(), it.polito.mad_lab4.manager.EditAvailability.class);
+            i.putExtras(b);
+            startActivity(i);
+        }
+        else
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
     }
 
 
     protected void VisualizzaPrenotazioni() {
-        Bundle b = new Bundle();
-        b.putString("restaurantId", id); // userid == restaurantid, nel caso manager
-        Intent i = new Intent(getApplicationContext(), ReservationsActivity.class);
-        i.putExtras(b);
-        startActivity(i);
+        if (isNetworkAvailable()) {
+            Bundle b = new Bundle();
+            b.putString("restaurantId", id); // userid == restaurantid, nel caso manager
+            Intent i = new Intent(getApplicationContext(), ReservationsActivity.class);
+            i.putExtras(b);
+            startActivity(i);
+        }
+        else
+            Toast.makeText(getApplicationContext(), getResources().getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
     }
 
 

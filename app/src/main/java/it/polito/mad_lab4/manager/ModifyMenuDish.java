@@ -280,6 +280,11 @@ public class ModifyMenuDish extends EditableBaseActivity {
 
         // aggiorno l'oggetto piatto con tutte le nuove informazioni e passo indietro, all'activity di modifica menu principale, l'intere tabelle
         try {
+            if (!isNetworkAvailable()){
+                Toast.makeText(ModifyMenuDish.this, getResources().getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
+                return false;
+            }
+
             /*
                 piccola modifica per integrità codice, l'oggetto lo modifico solo se ho letto
                 correttamente tutti i campi, senza nessun errore.

@@ -35,6 +35,7 @@ public class FirebaseSaveDishManager implements DatabaseReference.CompletionList
     private String downloadLinkThumb, downloadLinkLarge;
     private boolean firebaseReturnedResult = false;
     private DatabaseError databaseError;
+    private boolean timeout;
 
     public void saveDish(final String restaurantId,
                          final boolean isNewDish,
@@ -42,6 +43,17 @@ public class FirebaseSaveDishManager implements DatabaseReference.CompletionList
                          boolean isImageSetted,
                          final Bitmap thumb,
                          final Bitmap large) {
+
+        /*new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        timeout();
+                    }
+                },
+                10000
+        );*/
+
 
         this.restaurantId = restaurantId;
         if(isNewDish){
@@ -86,6 +98,13 @@ public class FirebaseSaveDishManager implements DatabaseReference.CompletionList
 
     }
 
+    private void timeout() {
+        lock.lock();
+        timeout = true;
+        this.cv.signal();
+        lock.unlock();
+    }
+
     @Override
     public void onComplete(final DatabaseError _databaseError, DatabaseReference databaseReference) {
         lock.lock();
@@ -100,13 +119,18 @@ public class FirebaseSaveDishManager implements DatabaseReference.CompletionList
      */
     public boolean waitForResult(){
         lock.lock();
-        if(!firebaseReturnedResult) {
-            try {
+        try {
+            if(!firebaseReturnedResult || timeout)
                 cv.await();
-            } catch (InterruptedException e) {
-                Log.e(e.getMessage(), e.getMessage());
-            }
+        } catch (InterruptedException e) {
+            Log.e(e.getMessage(), e.getMessage());
         }
+        finally {
+            lock.unlock();
+        }
+
+        if (timeout)
+            return false;
 
         return this.databaseError == null;
     }

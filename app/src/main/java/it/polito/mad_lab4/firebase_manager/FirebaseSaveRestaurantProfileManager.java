@@ -14,6 +14,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import it.polito.mad_lab4.newData.restaurant.CoverImage;
 import it.polito.mad_lab4.newData.restaurant.Restaurant;
+import it.polito.mad_lab4.newData.user.User;
 
 /**
  * Created by f.germano on 28/05/2016.
@@ -25,11 +26,22 @@ public class FirebaseSaveRestaurantProfileManager implements DatabaseReference.C
 
     private boolean firebaseReturnedResult = false;
     private DatabaseError databaseError;
+    private boolean timeout;
 
     public void saveRestaurant(final Restaurant restaurant,
                                final Bitmap logoThumb,
                                final Bitmap coversThumb[],
                                final Bitmap coversLarge[]) {
+
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        timeout();
+                    }
+                },
+                15000
+        );
 
         new Thread() {
             public void run() {
@@ -56,8 +68,23 @@ public class FirebaseSaveRestaurantProfileManager implements DatabaseReference.C
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference myRef = database.getReference("restaurants/" + restaurant.getRestaurantId());
                 myRef.setValue(restaurant, FirebaseSaveRestaurantProfileManager.this);
+
+                User u = new User();
+                u.setUserType("M");
+                u.setName(restaurant.getRestaurantName());
+                u.setAvatarDownloadLink(restaurant.getLogoThumbDownloadLink());
+
+                myRef = database.getReference("users/" + restaurant.getRestaurantId());
+                myRef.setValue(u, FirebaseSaveRestaurantProfileManager.this);
             }
         }.start();
+    }
+
+    private void timeout() {
+        lock.lock();
+        timeout = true;
+        this.cv.signal();
+        lock.unlock();
     }
 
     @Override
@@ -74,14 +101,19 @@ public class FirebaseSaveRestaurantProfileManager implements DatabaseReference.C
      */
     public boolean waitForResult(){
         lock.lock();
-        if(!firebaseReturnedResult) {
-            try {
+        try {
+            if(!firebaseReturnedResult || timeout)
                 cv.await();
-            } catch (InterruptedException e) {
-                Log.e(e.getMessage(), e.getMessage());
-            }
+        } catch (InterruptedException e) {
+            Log.e(e.getMessage(), e.getMessage());
+        }
+        finally {
+            lock.unlock();
         }
 
+
+        if (timeout)
+            return false;
         return this.databaseError == null;
     }
 

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -29,6 +31,7 @@ import java.util.ArrayList;
 import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.bl.RestaurantBL;
 import it.polito.mad_lab4.common.Helper;
+import it.polito.mad_lab4.firebase_manager.FirebaseRemoveDishManager;
 import it.polito.mad_lab4.firebase_manager.FirebaseRemoveOfferManager;
 import it.polito.mad_lab4.newData.restaurant.Offer;
 
@@ -155,10 +158,17 @@ public class RecyclerAdapter_offerte extends RecyclerView.Adapter<RecyclerAdapte
 
         //rimuovo offerta
         private void removeItem(){
+            try {
+                if (!isNetworkAvailable()){
+                    Toast.makeText(context.getApplicationContext(), context.getResources().getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                FirebaseRemoveOfferManager firebaseRemoveOfferManager = new FirebaseRemoveOfferManager();
+                firebaseRemoveOfferManager.removeOffer(restaurantId, lista_offerte.get(position).getOfferId());
+            } catch (Exception e){
+                System.out.println("Eccezione: " + e.getMessage());
+            }
 
-            FirebaseRemoveOfferManager firebaseRemoveOfferManager = new FirebaseRemoveOfferManager();
-
-            firebaseRemoveOfferManager.removeOffer(restaurantId, lista_offerte.get(position).getOfferId());
         }
 
         //modifico offerta
@@ -171,6 +181,12 @@ public class RecyclerAdapter_offerte extends RecyclerView.Adapter<RecyclerAdapte
             Intent intent = new Intent(context, ModifyOfferDish.class);
             intent.putExtras(b);
             context.startActivity(intent);
+        }
+
+        private boolean isNetworkAvailable() {
+            ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+            return activeNetworkInfo != null && activeNetworkInfo.isConnected();
         }
     }
 }

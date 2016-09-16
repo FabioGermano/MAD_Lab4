@@ -201,6 +201,11 @@ public class ModifyOfferDish extends EditableBaseActivity {
 
     private boolean saveInfo(){
         try {
+            if (!isNetworkAvailable()){
+                Toast.makeText(ModifyOfferDish.this, getResources().getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
+                return false;
+            }
+
             EditText editName = (EditText) findViewById(R.id.edit_offerName_modifyOffer);
             EditText editPrice = (EditText) findViewById(R.id.edit_offerPrice_modifyOffer);
             EditText editNotes = (EditText) findViewById(R.id.edit_offerNote_modifyOffer);
@@ -340,6 +345,8 @@ public class ModifyOfferDish extends EditableBaseActivity {
                         !imageViewer.isImageTobeSetted(),
                         imageViewer.getThumb(),
                         imageViewer.getLarge());
+
+
 
                 final boolean res = firebaseSaveOfferManager.waitForResult();
 

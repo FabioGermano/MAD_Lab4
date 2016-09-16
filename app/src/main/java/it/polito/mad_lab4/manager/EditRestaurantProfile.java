@@ -176,6 +176,12 @@ public class EditRestaurantProfile extends it.polito.mad_lab4.BaseActivity {
 
     private void saveRestaurant(final Restaurant restaurant){
 
+
+        if (!isNetworkAvailable()){
+            Toast.makeText(EditRestaurantProfile.this, getResources().getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         if(!validateData()){
             return;
         }

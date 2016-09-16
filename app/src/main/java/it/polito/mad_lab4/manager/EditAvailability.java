@@ -184,6 +184,11 @@ public class EditAvailability extends EditableBaseActivity {
     }
 
     void saveInfo() {
+        if (!isNetworkAvailable()){
+            Toast.makeText(EditAvailability.this, getResources().getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         new Thread()
         {
             public void run() {

@@ -31,6 +31,7 @@ public class FirebaseSaveOfferManager implements DatabaseReference.CompletionLis
     private String downloadLinkThumb, downloadLinkLarge;
     private boolean firebaseReturnedResult = false;
     private DatabaseError databaseError;
+    private boolean timeout;
 
     public void saveOffer(final String restaurantId,
                          final boolean isNewOffer,
@@ -38,6 +39,16 @@ public class FirebaseSaveOfferManager implements DatabaseReference.CompletionLis
                          boolean isImageSetted,
                          final Bitmap thumb,
                          final Bitmap large) {
+
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        timeout();
+                    }
+                },
+                10000
+        );
 
         this.restaurantId = restaurantId;
         if(isNewOffer){
@@ -93,6 +104,14 @@ public class FirebaseSaveOfferManager implements DatabaseReference.CompletionLis
         }
     }
 
+
+    private void timeout() {
+        lock.lock();
+        timeout = true;
+        this.cv.signal();
+        lock.unlock();
+    }
+
     @Override
     public void onComplete(final DatabaseError _databaseError, DatabaseReference databaseReference) {
         lock.lock();
@@ -107,13 +126,18 @@ public class FirebaseSaveOfferManager implements DatabaseReference.CompletionLis
      */
     public boolean waitForResult(){
         lock.lock();
-        if(!firebaseReturnedResult) {
-            try {
+        try {
+            if(!firebaseReturnedResult || timeout)
                 cv.await();
-            } catch (InterruptedException e) {
-                Log.e(e.getMessage(), e.getMessage());
-            }
+        } catch (InterruptedException e) {
+            Log.e(e.getMessage(), e.getMessage());
         }
+        finally {
+            lock.unlock();
+        }
+
+        if (timeout)
+            return false;
 
         return this.databaseError == null;
     }
@@ -121,4 +145,5 @@ public class FirebaseSaveOfferManager implements DatabaseReference.CompletionLis
     public void terminate() {
 
     }
+
 }

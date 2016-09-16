@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -17,6 +19,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.database.DataSnapshot;
@@ -175,6 +178,10 @@ public class RecyclerAdapter_menu extends RecyclerView.Adapter<RecyclerAdapter_m
         //rimuovo piatto
         private void removeItem(){
             try {
+                if (!isNetworkAvailable()){
+                    Toast.makeText(context.getApplicationContext(), context.getResources().getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 FirebaseRemoveDishManager firebaseRemoveDishManager = new FirebaseRemoveDishManager();
                 firebaseRemoveDishManager.removeDish(restaurantId, current_list.get(position).getDishId());
             } catch (Exception e){
@@ -192,6 +199,12 @@ public class RecyclerAdapter_menu extends RecyclerView.Adapter<RecyclerAdapter_m
             Intent intent = new Intent(context, ModifyMenuDish.class);
             intent.putExtras(b);
             context.startActivity(intent);
+        }
+
+        private boolean isNetworkAvailable() {
+            ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+            return activeNetworkInfo != null && activeNetworkInfo.isConnected();
         }
     }
 }
