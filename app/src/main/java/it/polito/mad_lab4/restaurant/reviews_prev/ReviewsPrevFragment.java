@@ -154,6 +154,8 @@ public class ReviewsPrevFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        firebaseGetReviewsListManager.terminate();
+
+        if (firebaseGetReviewsListManager != null)
+            firebaseGetReviewsListManager.terminate();
     }
 }

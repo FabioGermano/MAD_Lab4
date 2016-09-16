@@ -149,6 +149,8 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
 
         showProgressBar();
 
+        reviewsPrevFragment.updateData();
+
 
         new Thread() {
             public void run() {
