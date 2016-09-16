@@ -442,7 +442,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
             RelativeLayout notificationLayout = (RelativeLayout) notify.getActionView();
             alertButton = (ImageButton) notificationLayout.findViewById(R.id.alertButton);
             alertCountView = (TextView) notificationLayout.findViewById(R.id.alertCountView);
-            //alertCountView.setText(String.valueOf(alertCount));
+            alertCountView.setText(String.valueOf(alertCount));
 
             View.OnClickListener listener = new View.OnClickListener() {
                 @Override
@@ -626,10 +626,9 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         startActivity(i);
     }
     private void Contattaci(){
-        Toast toast = Toast.makeText(getApplicationContext(), "Contattaci pressed", Toast.LENGTH_SHORT);
-        toast.show();
-        /*Intent i = new Intent(getBaseContext(), Contattaci.class);
-        startActivity(i);*/
+
+        Intent i = new Intent(getBaseContext(), ContactUsActivity.class);
+        startActivity(i);
     }
 
     private void SegnalaBug(){

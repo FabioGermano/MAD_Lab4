@@ -256,5 +256,8 @@
     <string name="go_to_photos">Cosa fotografano</string>
     <string name="connection_error">Errore di connessione</string>
     <string name="completa_registrazione">Le informazioni personali sono obbligatorie </string>
+    <string name="enabled_reservations">Tipi di prenotazioni offerte:</string>
+    <string name="eat_in">Sul posto</string>
+    <string name="wrong_email_format">Formato email errato</string>
 
 </resources>

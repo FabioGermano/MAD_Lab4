@@ -60,7 +60,7 @@ public class MainActivityManager extends it.polito.mad_lab4.BaseActivity{
 
         setContentView(R.layout.activity_main_manager);
         setToolbarColor();
-        setActivityTitle("Gestione Ristorante");
+        setActivityTitle(getResources().getString(R.string.titolo_main_manager));
         setBackButtonVisibility(false);
         setVisibilityAlert(false);
         invalidateOptionsMenu();

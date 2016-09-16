@@ -340,4 +340,11 @@
     <string name="go_to_reviews_v2">What people say</string>
     <string name="go_to_photos">What people snap</string>
     <string name="photos_main">Tap here to see the photos uploaded by your customers. Read their comments on your courses.</string>
+    <string name="titolo_main_manager">FERG buisiness</string>
+    <string name="your_name">Your name</string>
+    <string name="your_email">Your email address</string>
+    <string name="subject">Subject</string>
+    <string name="message">Message</string>
+    <string name="send">Send</string>
+    <string name="contactus_activity_title">Contact us</string>
 </resources>
