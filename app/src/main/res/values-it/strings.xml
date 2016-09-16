@@ -246,5 +246,15 @@
     <string name="search_byplace">Cerca per indirizzo</string>
     <string name="search_byrestaurant">Cerca per nome</string>
     <string name="permission_denied_message">Negando i permessi l\'app non funzionerà correttamente</string>
+    <string name="new_offer">Crea una nuova offerta</string>
+    <string name="notes_by_restaurant">Note dal ristorante:</string>
+    <string name="photos_main">Clicca qui per vedere le foto caricate dai tuoi clienti. Leggi i loro commenti sui tuoi piatti.</string>
+    <string name="promo_main">Clicca qui per creare una nuova offerta. Le offerte sono un buon modo per promuovere il tuo ristorante a vecchi e nuovi clienti.</string>
+    <string name="pwd_too_short">Password troppo corta! Utilizza almeno 6 caratteri.</string>
+    <string name="reviews_main">Clicca qui per vedere che cosa dice la gente sul tuo ristorante. Le recensioni possono essere utili per offrire sempre il meglio ai tuoi clienti.</string>
+    <string name="go_to_reviews_v2">Cosa ne pensano</string>
+    <string name="go_to_photos">Cosa fotografano</string>
+    <string name="connection_error">Errore di connessione</string>
+    <string name="completa_registrazione">Le informazioni personali sono obbligatorie </string>
 
 </resources>

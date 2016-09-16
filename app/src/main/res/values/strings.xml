@@ -335,4 +335,9 @@
     <string name="promo_main">Tap here to create a new offer. Offers are a good way to promote your restaurant to existent and potential customers.</string>
     <string name="new_offer">Create a new offer</string>
     <string name="your_restaurant_reviews">Your restaurant reviews</string>
+    <string name="go_to_reviews">See what people think about your restaurant</string>
+    <string name="reviews_main">Tap here to see what people say about your restaurant. Reviews can be very useful in order to offer always the best to your customers.</string>
+    <string name="go_to_reviews_v2">What people say</string>
+    <string name="go_to_photos">What people snap</string>
+    <string name="photos_main">Tap here to see the photos uploaded by your customers. Read their comments on your courses.</string>
 </resources>

@@ -66,8 +66,8 @@ public class MainActivityManager extends it.polito.mad_lab4.BaseActivity{
         invalidateOptionsMenu();
         setIconaToolbar(true);
 
-        CardView cv = (CardView) findViewById(R.id.add_new_offer);
-        cv.setOnClickListener(new View.OnClickListener() {
+        //CardView cv = (CardView) findViewById(R.id.add_new_offer);
+        /*cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isNetworkAvailable()) {
@@ -95,7 +95,7 @@ public class MainActivityManager extends it.polito.mad_lab4.BaseActivity{
             public void onClick(View v) {
                 showAllReviewsButtonPressed();
             }
-        });
+        });*/
     }
 
     private void showAllReviewsButtonPressed() {
@@ -149,8 +149,8 @@ public class MainActivityManager extends it.polito.mad_lab4.BaseActivity{
                     final User infoUser = userInfoManager.getUserInfo();
 
                     restaurantId = currentUser.getUid();
-                    reviewsPrevFragment = (ReviewsPrevFragment)getSupportFragmentManager().findFragmentById(R.id.reviewsPrevFragment);
-                    reviewsPrevFragment.setRestaurantId(restaurantId);
+                    //reviewsPrevFragment = (ReviewsPrevFragment)getSupportFragmentManager().findFragmentById(R.id.reviewsPrevFragment);
+                    //reviewsPrevFragment.setRestaurantId(restaurantId);
 
                     runOnUiThread(new Runnable() {
                         @Override
@@ -195,8 +195,9 @@ public class MainActivityManager extends it.polito.mad_lab4.BaseActivity{
                             Snackbar.make(findViewById(android.R.id.content), getResources().getString(R.string.connection_error), Snackbar.LENGTH_LONG).show();
                         }
                         dismissProgressDialog();
-                        if (restaurant != null)
-                            initSection();
+                        if (restaurant != null){
+                            //initSection();
+                            }
                         else {
                             Snackbar.make(findViewById(android.R.id.content), getResources().getString(R.string.connection_error), Snackbar.LENGTH_LONG).show();
                             return;
