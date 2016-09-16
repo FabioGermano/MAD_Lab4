@@ -182,8 +182,12 @@ public class RecyclerAdapter_menu extends RecyclerView.Adapter<RecyclerAdapter_m
                     Toast.makeText(context.getApplicationContext(), context.getResources().getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
                     return;
                 }
-                FirebaseRemoveDishManager firebaseRemoveDishManager = new FirebaseRemoveDishManager();
-                firebaseRemoveDishManager.removeDish(restaurantId, current_list.get(position).getDishId());
+                new Thread() {
+                    public void run() {
+                        FirebaseRemoveDishManager firebaseRemoveDishManager = new FirebaseRemoveDishManager();
+                        firebaseRemoveDishManager.removeDish(restaurantId, current_list.get(position).getDishId(), current_list.get(position).getPrice());
+                    }
+                }.start();
             } catch (Exception e){
                 System.out.println("Eccezione: " + e.getMessage());
             }

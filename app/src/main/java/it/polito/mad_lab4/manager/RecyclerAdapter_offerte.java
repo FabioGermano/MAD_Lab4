@@ -163,8 +163,13 @@ public class RecyclerAdapter_offerte extends RecyclerView.Adapter<RecyclerAdapte
                     Toast.makeText(context.getApplicationContext(), context.getResources().getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
                     return;
                 }
-                FirebaseRemoveOfferManager firebaseRemoveOfferManager = new FirebaseRemoveOfferManager();
-                firebaseRemoveOfferManager.removeOffer(restaurantId, lista_offerte.get(position).getOfferId());
+                new Thread() {
+                    public void run() {
+                        FirebaseRemoveOfferManager firebaseRemoveOfferManager = new FirebaseRemoveOfferManager();
+                        firebaseRemoveOfferManager.removeOffer(restaurantId, lista_offerte.get(position).getOfferId(),lista_offerte.get(position).getPrice() );
+                    }
+                }.start();
+
             } catch (Exception e){
                 System.out.println("Eccezione: " + e.getMessage());
             }

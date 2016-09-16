@@ -43,7 +43,7 @@ public class MainActivityManager extends it.polito.mad_lab4.BaseActivity{
     private Bitmap logo;
     private Button showAllReviewsButton;
     private ReviewsPrevFragment reviewsPrevFragment;
-    private String restaurantId = null; //TODO hardcode
+    private String restaurantId = null;
     private Restaurant restaurant;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +69,6 @@ public class MainActivityManager extends it.polito.mad_lab4.BaseActivity{
         cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("------------> LEGGI QUESTA!!! " + restaurantId);
-
                 if (isNetworkAvailable()) {
                     if (restaurantId != null) {
                         Intent i = new Intent(getApplicationContext(), ModifyOfferDish.class);
@@ -153,7 +151,7 @@ public class MainActivityManager extends it.polito.mad_lab4.BaseActivity{
 
                                         if (user_logo != null && infoUser.getAvatarDownloadLink() != null)
                                             Glide.with(getApplicationContext()).load(infoUser.getAvatarDownloadLink()).centerCrop().into(user_logo);
-                                        if (user_name != null && infoUser.getName()!= null)
+                                        if (user_name != null && infoUser.getName() != null)
                                             user_name.setText(infoUser.getName());
                                     }
                                 }
@@ -161,13 +159,14 @@ public class MainActivityManager extends it.polito.mad_lab4.BaseActivity{
                         }
                     });
                 }
-            }
-        }.start();
 
-        showProgressBar();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showProgressBar();
+                    }
+                });
 
-        new Thread() {
-            public void run() {
                 FirebaseGetRestaurantProfileManager firebaseGetManProfileManager = new FirebaseGetRestaurantProfileManager();
                 firebaseGetManProfileManager.getRestaurant(restaurantId);
                 final boolean timeout = firebaseGetManProfileManager.waitForResult();
@@ -176,25 +175,24 @@ public class MainActivityManager extends it.polito.mad_lab4.BaseActivity{
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if(timeout){
+                        if (timeout) {
                             Snackbar.make(findViewById(android.R.id.content), "Connection error", Snackbar.LENGTH_LONG)
                                     .show();
                         }
-
                         dismissProgressDialog();
-                        if(restaurant != null)
+                        if (restaurant != null)
                             initSection();
                         else {
                             Toast.makeText(MainActivityManager.this, "Connection error", Toast.LENGTH_SHORT).show();
                             return;
                         }
-
                     }
                 });
             }
         }.start();
-
     }
+
+
     void initSection(){
        if(restaurant.getNumReviews()>0){
             ((LinearLayout)findViewById(R.id.reviewsFragmentContainer)).setVisibility(View.VISIBLE);
