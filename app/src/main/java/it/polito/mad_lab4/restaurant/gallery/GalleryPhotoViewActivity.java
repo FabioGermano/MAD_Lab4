@@ -66,28 +66,29 @@ public class GalleryPhotoViewActivity extends BaseActivity implements ChildEvent
         Glide.with(this).load(userPhoto.getLargeDownloadLink()).into(touchImageView);
 
         likeButton.setVisibility(View.GONE);
+        if(!extras.getBoolean("isManager") ) {
+            new Thread() {
+                public void run() {
+                    FirebaseGetAuthInformation firebaseGetAuthInformation = new FirebaseGetAuthInformation();
+                    firebaseGetAuthInformation.waitForResult();
+                    currentUser = firebaseGetAuthInformation.getUser();
 
-        new Thread() {
-            public void run() {
-                FirebaseGetAuthInformation firebaseGetAuthInformation = new FirebaseGetAuthInformation();
-                firebaseGetAuthInformation.waitForResult();
-                currentUser = firebaseGetAuthInformation.getUser();
+                    if (currentUser != null) {
 
-                if(currentUser != null){
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                likeButton.setVisibility(View.VISIBLE);
+                            }
+                        });
 
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            likeButton.setVisibility(View.VISIBLE);
-                        }
-                    });
-
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    myRef = database.getReference("userphotolikes/"+userPhoto.getUserPhotoId()+"/"+ currentUser.getUid());
-                    myRef.addChildEventListener(GalleryPhotoViewActivity.this);
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        myRef = database.getReference("userphotolikes/" + userPhoto.getUserPhotoId() + "/" + currentUser.getUid());
+                        myRef.addChildEventListener(GalleryPhotoViewActivity.this);
+                    }
                 }
-            }
-        }.start();
+            }.start();
+        }
     }
 
     private void likeButtonPressed() {

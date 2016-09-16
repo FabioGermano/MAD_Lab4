@@ -31,10 +31,11 @@ import it.polito.mad_lab4.firebase_manager.FirebaseGetUserInfoManager;
 import it.polito.mad_lab4.manager.reservation.ReservationsActivity;
 import it.polito.mad_lab4.newData.restaurant.Restaurant;
 import it.polito.mad_lab4.newData.user.User;
+import it.polito.mad_lab4.restaurant.gallery.PhotoGaleryActivity;
 import it.polito.mad_lab4.restaurant.reviews.ReviewsActivity;
 import it.polito.mad_lab4.restaurant.reviews_prev.ReviewsPrevFragment;
 
-public class MainActivityManager extends it.polito.mad_lab4.BaseActivity{
+public class MainActivityManager extends it.polito.mad_lab4.BaseActivity implements View.OnClickListener{
 
     /*private PhotoViewer photoViewer;
     private Bitmap largeBitmap;*/
@@ -66,6 +67,15 @@ public class MainActivityManager extends it.polito.mad_lab4.BaseActivity{
         invalidateOptionsMenu();
         setIconaToolbar(true);
 
+        LinearLayout offer = (LinearLayout) findViewById(R.id.new_offer);
+        offer.setOnClickListener(MainActivityManager.this);
+
+        LinearLayout reviews = (LinearLayout) findViewById(R.id.go_to_reviews);
+        reviews.setOnClickListener(MainActivityManager.this);
+
+
+        LinearLayout photos = (LinearLayout) findViewById(R.id.go_to_photos);
+        photos.setOnClickListener(MainActivityManager.this);
         //CardView cv = (CardView) findViewById(R.id.add_new_offer);
         /*cv.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,6 +99,7 @@ public class MainActivityManager extends it.polito.mad_lab4.BaseActivity{
 
 
 
+
         showAllReviewsButton = (Button)findViewById(R.id.showAllReviewsButton);
         showAllReviewsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,11 +109,51 @@ public class MainActivityManager extends it.polito.mad_lab4.BaseActivity{
         });*/
     }
 
-    private void showAllReviewsButtonPressed() {
+    @Override
+    public void onClick(View v) {
+
         if (!isNetworkAvailable()){
             Snackbar.make(findViewById(android.R.id.content), getResources().getString(R.string.connection_error), Snackbar.LENGTH_LONG).show();
             return;
         }
+        switch (v.getId()){
+            case R.id.new_offer:
+                addNewOffer();
+                break;
+            case R.id.go_to_photos:
+                showGallery();
+                break;
+            case R.id.go_to_reviews:
+                showReviews();
+                break;
+        }
+    }
+
+    private void addNewOffer(){
+
+            if (restaurantId != null) {
+                Intent i = new Intent(getApplicationContext(), ModifyOfferDish.class);
+                Bundle b = new Bundle();
+                b.putString("restaurantId", restaurantId);
+                b.putBoolean("isEditing", false);
+                i.putExtras(b);
+                startActivity(i);
+            }
+
+    }
+
+    private void showGallery (){
+        if (restaurantId != null) {
+            Intent i = new Intent(getApplicationContext(), PhotoGaleryActivity.class);
+            i.putExtra("restaurantId", this.restaurantId);
+            i.putExtra("isManager", true);
+            startActivity(i);
+        }
+    }
+
+
+    private void showReviews() {
+
 
         Intent i = new Intent(getApplicationContext(), ReviewsActivity.class);
         i.putExtra("restaurantId", this.restaurantId);

@@ -167,6 +167,7 @@ public class UserAlert {
                                 }
 
                                 count++;
+                                //TODO errore null object su count
                                 labelAlert.setText(String.valueOf(count));
                                 offersAlert.put(o.getOfferId(), false);
                                 saveMap(offersAlert);

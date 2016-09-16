@@ -259,5 +259,11 @@
     <string name="enabled_reservations">Tipi di prenotazioni offerte:</string>
     <string name="eat_in">Sul posto</string>
     <string name="wrong_email_format">Formato email errato</string>
+    <string name="contactus_activity_title">Contattaci</string>
+    <string name="subject">Oggetto</string>
+    <string name="your_email">La tua email</string>
+    <string name="your_name">Il tuo nome</string>
+    <string name="message">Messaggio</string>
+    <string name="avvisoMappa"></string>
 
 </resources>

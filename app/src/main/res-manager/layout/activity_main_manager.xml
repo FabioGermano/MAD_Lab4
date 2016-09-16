@@ -136,6 +136,8 @@
                 <LinearLayout
                     android:padding="30dp"
                     android:orientation="vertical"
+                    android:id="@+id/new_offer"
+                    android:clickable="true"
                     android:background="@android:drawable/dialog_holo_light_frame"
                     android:layout_width="300dp"
                     android:layout_height="400dp">
@@ -169,6 +171,8 @@
                     android:padding="30dp"
 
                     android:orientation="vertical"
+                    android:clickable="true"
+                    android:id="@+id/go_to_reviews"
                     android:background="@android:drawable/dialog_holo_light_frame"
                     android:layout_width="300dp"
                     android:layout_height="400dp">
@@ -201,7 +205,8 @@
 
                 <LinearLayout
                     android:padding="30dp"
-
+                    android:clickable="true"
+                    android:id="@+id/go_to_photos"
                     android:orientation="vertical"
                     android:background="@android:drawable/dialog_holo_light_frame"
                     android:layout_width="300dp"

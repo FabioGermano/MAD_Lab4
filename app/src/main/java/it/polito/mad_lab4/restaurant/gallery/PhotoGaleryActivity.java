@@ -21,6 +21,7 @@ public class PhotoGaleryActivity extends BaseActivity implements PhotoGalleryLis
     private String restaurantId;
     private ArrayList<UserPhoto> userPhotos = new ArrayList<>();
     private FirebaseGetUserPhotosManager firebaseGetUserPhotosManager;
+    private boolean isManager=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +34,11 @@ public class PhotoGaleryActivity extends BaseActivity implements PhotoGalleryLis
         setActivityTitle(getResources().getString(R.string.gallery_activity_title));
 
         this.restaurantId = getIntent().getExtras().getString("restaurantId");
-
+        this.isManager = getIntent().getExtras().getBoolean("isManager");
+        if(isManager){
+            setVisibilityAlert(false);
+            invalidateOptionsMenu();
+        }
         gridView = (GridView)findViewById(R.id.galleryGridview);
 
         adapter = new PhotoGalleryAdapter(this);
@@ -50,7 +55,7 @@ public class PhotoGaleryActivity extends BaseActivity implements PhotoGalleryLis
         intent.putExtra("isEditable", false);
         intent.putExtra("userPhoto", userPHotoClicked);
         intent.putExtra("restaurantId", restaurantId);
-
+        intent.putExtra("isManager", isManager);
         startActivity(intent);
     }
 
