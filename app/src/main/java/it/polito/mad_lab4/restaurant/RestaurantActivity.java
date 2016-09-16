@@ -84,7 +84,7 @@ public class  RestaurantActivity extends BaseActivity implements AppBarLayout.On
         collapsingToolbarLayout.setCollapsedTitleTextColor(Color.WHITE);
 
         appbar= (AppBarLayout) findViewById(R.id.app_bar_layout);
-        appbar.setExpanded(false);
+        appbar.setExpanded(true);
 
         fab = (android.support.design.widget.FloatingActionButton) findViewById(R.id.fab);
         fab.setVisibility(View.GONE);
