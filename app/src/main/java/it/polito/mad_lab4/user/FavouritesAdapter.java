@@ -3,6 +3,8 @@ package it.polito.mad_lab4.user;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -65,9 +67,22 @@ public class FavouritesAdapter extends RecyclerView.Adapter<FavouritesAdapter.Vi
             //reviews_number.setVisibility(View.GONE);
             float rank=0;
             if(Integer.parseInt(info[5])>0)
-                rank= Float.parseFloat(info[4])/ Integer.parseInt(info[5]);
-            ratingBar.setRating(rank);
-            //ratingBar.setVisibility(View.GONE);
+                rank = Float.parseFloat(info[4])/ Integer.parseInt(info[5]);
+
+            if(ratingBar != null){
+                Drawable stars = ratingBar.getProgressDrawable();
+                if(rank <= 1.5){
+                    DrawableCompat.setTint(stars, context.getResources().getColor(R.color.bad));
+                } else if(rank <= 3.5){
+                    DrawableCompat.setTint(stars, context.getResources().getColor(R.color.medium));
+                } else {
+                    DrawableCompat.setTint(stars, context.getResources().getColor(R.color.good));
+                }
+
+                ratingBar.setRating(rank);
+
+            }
+
             Glide.with(context).load(info[3]).into(logo);
         }
 

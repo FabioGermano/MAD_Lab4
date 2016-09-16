@@ -99,7 +99,7 @@ public class AddReviewActivity extends BaseActivity implements PhotoViewerListen
             @Override
             public void onClick(View v) {
 
-                if(!editText.getText().toString().equals("") && rbValue!=-1) {
+                if(!editText.getText().toString().equals("") && rbValue>0) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setTitle(getResources().getString(R.string.would_you_rate_dishes));
                     builder.setMessage(getResources().getString(R.string.rate_dishes_message));
