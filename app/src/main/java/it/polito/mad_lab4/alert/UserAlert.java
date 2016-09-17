@@ -2,7 +2,7 @@ package it.polito.mad_lab4.alert;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
+import android.media.MediaPlayer;
 import android.widget.TextView;
 
 import com.google.firebase.database.ChildEventListener;
@@ -15,12 +15,11 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
+import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.newData.reservation.Reservation;
 import it.polito.mad_lab4.data.reservation.ReservationType;
 import it.polito.mad_lab4.data.reservation.ReservationTypeConverter;
@@ -39,12 +38,19 @@ public class UserAlert {
     public static int count = 0;
     public static String userId;
 
+    static private MediaPlayer mp;
+
+
     public static void init(Context _context, String _userId, TextView _labelAlert){
         labelAlert = _labelAlert;
+
+
+
 
         if(context == null){
             context = _context;
             prefs = context.getSharedPreferences(_userId, 0);
+            mp = MediaPlayer.create(context, R.raw.notification_sound);
         }
 
         if(prefs != null){
@@ -85,18 +91,21 @@ public class UserAlert {
                 if(reservation.getStatus().equals(ReservationTypeConverter.toString(ReservationType.REJECTED))){
                     count++;
                     labelAlert.setText(String.valueOf(count));
+                    mp.start();
                     save(reservation);
                 }
                 else if(reservation.getStatus().equals(ReservationTypeConverter.toString(ReservationType.ACCEPTED)) &&
                         reservation.getIsVerified() == false){
                     count++;
                     labelAlert.setText(String.valueOf(count));
+                    mp.start();
                     save(reservation);
                 }
                 else if(reservation.getStatus().equals(ReservationTypeConverter.toString(ReservationType.ACCEPTED)) &&
                         reservation.getIsVerified() == true){
                     count++;
                     labelAlert.setText(String.valueOf(count));
+                    mp.start();
                     save(reservation);
                 }
             }
@@ -112,18 +121,21 @@ public class UserAlert {
                 if(reservation.getStatus().equals(ReservationTypeConverter.toString(ReservationType.REJECTED))){
                     count++;
                     labelAlert.setText(String.valueOf(count));
+                    mp.start();
                     save(reservation);
                 }
                 else if(reservation.getStatus().equals(ReservationTypeConverter.toString(ReservationType.ACCEPTED)) &&
                         reservation.getIsVerified() == false){
                     count++;
                     labelAlert.setText(String.valueOf(count));
+                    mp.start();
                     save(reservation);
                 }
                 else if(reservation.getStatus().equals(ReservationTypeConverter.toString(ReservationType.ACCEPTED)) &&
                         reservation.getIsVerified() == true){
                     count++;
                     labelAlert.setText(String.valueOf(count));
+                    mp.start();
                     save(reservation);
                 }
             }
@@ -169,6 +181,7 @@ public class UserAlert {
                                 count++;
                                 //TODO errore null object su count
                                 labelAlert.setText(String.valueOf(count));
+                                mp.start();
                                 offersAlert.put(o.getOfferId(), false);
                                 saveMap(offersAlert);
 
