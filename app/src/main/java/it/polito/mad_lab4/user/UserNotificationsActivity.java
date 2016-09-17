@@ -50,7 +50,7 @@ public class UserNotificationsActivity extends BaseActivity {
         countNew = (int) getIntent().getExtras().getInt("countNew");
 
         UserAlert.resetAlertCount();
-        setAlertCount(0);
+        //setAlertCount(0);
     }
 
     @Override

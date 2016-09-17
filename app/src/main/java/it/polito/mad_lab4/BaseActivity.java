@@ -58,6 +58,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     private boolean redirect = false;
     private ProgressDialog pd;
     private boolean onFavourites = false;
+    public FirebaseUser user;
+
 
     public int getAlertCount() {
         return alertCount;
@@ -136,6 +138,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                 mAuthListener = new FirebaseGetAuthInformation();
                 mAuthListener.waitForResult();
                 final FirebaseUser user = mAuthListener.getUser();
+                BaseActivity.this.user= user;
 
                 runOnUiThread(new Runnable() {
                     @Override
@@ -147,6 +150,8 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                             id = user.getUid();
                             email = user.getEmail();
                             configureBarraLaterale(view, user);
+
+                            isLogin(user);
 
                         } else{
                             if(alert_visibility){
@@ -216,7 +221,9 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     @Override
     protected void onResume() {
         super.onResume();
-        invalidateOptionsMenu();
+        //invalidateOptionsMenu();
+        if(user!= null)
+            isLogin(user);
     }
 
     protected void configureBarraLaterale(View view, FirebaseUser user) {
@@ -442,7 +449,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
             RelativeLayout notificationLayout = (RelativeLayout) notify.getActionView();
             alertButton = (ImageButton) notificationLayout.findViewById(R.id.alertButton);
             alertCountView = (TextView) notificationLayout.findViewById(R.id.alertCountView);
-            alertCountView.setText(String.valueOf(alertCount));
+            //alertCountView.setText(String.valueOf(alertCount));
 
             View.OnClickListener listener = new View.OnClickListener() {
                 @Override

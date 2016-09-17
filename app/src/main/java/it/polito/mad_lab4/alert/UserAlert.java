@@ -273,7 +273,7 @@ public class UserAlert {
         editor.commit();
 
         count = 0;
-        labelAlert.setText("0");
+        //labelAlert.setText("0");
     }
 
     private static void saveMap(Map<String,Boolean> inputMap){
