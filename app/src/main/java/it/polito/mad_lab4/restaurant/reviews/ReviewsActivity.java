@@ -1,6 +1,8 @@
 package it.polito.mad_lab4.restaurant.reviews;
 
 import android.content.DialogInterface;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.LayerDrawable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -77,9 +79,26 @@ public class ReviewsActivity extends BaseActivity {
         strNumReviews = strNumReviews.replace("%", String.valueOf(numRanking));
         ((TextView)findViewById(R.id.numReviews)).setText(strNumReviews);
         ((RatingBar)findViewById(R.id.restaurantAvgRank)).setRating(ranking/numRanking);
+
+        float rank = ranking/numRanking;
+        LayerDrawable stars = (LayerDrawable) ((RatingBar)findViewById(R.id.restaurantAvgRank)).getProgressDrawable();
+        if(rank <= 1.5){
+            stars.getDrawable(2).setColorFilter(getResources().getColor(R.color.bad),
+                    PorterDuff.Mode.SRC_ATOP);
+        } else if(rank <= 3.5){
+            stars.getDrawable(2).setColorFilter(getResources().getColor(R.color.medium),
+                    PorterDuff.Mode.SRC_ATOP);
+        } else {
+            stars.getDrawable(2).setColorFilter(getResources().getColor(R.color.good),
+                    PorterDuff.Mode.SRC_ATOP);
+        }
+
+
+        /*
         Helper.setRatingBarColor(getApplicationContext(),
                 (RatingBar)findViewById(R.id.restaurantAvgRank),
                 ranking/numRanking);
+        */
 
 
     }

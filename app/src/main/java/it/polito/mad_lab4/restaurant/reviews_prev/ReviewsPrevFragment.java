@@ -1,7 +1,11 @@
 package it.polito.mad_lab4.restaurant.reviews_prev;
 
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -94,16 +98,33 @@ public class ReviewsPrevFragment extends Fragment {
 
     private void setData(ArrayList<Review> reviews) {
 
+        float rank = ranking / numRanking;
         //Restaurant restaurant =  RestaurantBL.getRestaurantById(getContext(), restaurantId);
+
         if(!reviews.isEmpty())
-            ratingBarInPrevReviews.setRating(ranking/numRanking);
+            ratingBarInPrevReviews.setRating(ranking / numRanking);
+
         String str = getResources().getString(R.string.reviewsStrPrev);
         str = str.replace("%", String.valueOf(numRanking));
         numReviewsInPrev.setText(str);
 
-        Helper.setRatingBarColor(getContext(),
+        LayerDrawable stars = (LayerDrawable) ratingBarInPrevReviews.getProgressDrawable();
+        if(rank <= 1.5){
+            stars.getDrawable(2).setColorFilter(getResources().getColor(R.color.bad),
+                    PorterDuff.Mode.SRC_ATOP);
+        } else if(rank <= 3.5){
+            stars.getDrawable(2).setColorFilter(getResources().getColor(R.color.medium),
+                    PorterDuff.Mode.SRC_ATOP);
+        } else {
+            stars.getDrawable(2).setColorFilter(getResources().getColor(R.color.good),
+                    PorterDuff.Mode.SRC_ATOP);
+        }
+
+       /*
+       Helper.setRatingBarColor(getContext(),
                 ratingBarInPrevReviews,
                 ranking/numRanking);
+       */
 
         Collections.sort(reviews, new Comparator<Review>() {
             @Override
@@ -117,11 +138,7 @@ public class ReviewsPrevFragment extends Fragment {
         for(int i = 0; i<reviews.size(); i++){
 
                 View viewToAdd = LayoutInflater.from(getContext()).inflate(R.layout.review_view, null);
-
-
                 Review review = reviews.get(i);
-
-
                 Glide.with(getContext()).load(review.getLogoLink()).into((ImageView)viewToAdd.findViewById(R.id.offDetUserPhoto));
                 ((TextView)viewToAdd.findViewById(R.id.offDetDate)).setText(review.getDate());;
                 ((RatingBar)viewToAdd.findViewById(R.id.offDetRatingBar)).setRating(review.getRank());

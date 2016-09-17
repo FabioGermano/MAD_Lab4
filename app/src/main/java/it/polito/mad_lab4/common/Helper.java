@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.RatingBar;
@@ -25,8 +27,8 @@ public class Helper {
 
     public static void setRatingBarColor(Context context, RatingBar ratingBar, float rank){
 
+        /*
         LayerDrawable stars = (LayerDrawable) ratingBar.getProgressDrawable();
-
         if(rank <= 1.5){
             stars.getDrawable(2).setColorFilter(context.getResources().getColor(R.color.bad),
                     PorterDuff.Mode.SRC_ATOP);
@@ -36,7 +38,18 @@ public class Helper {
         } else {
             stars.getDrawable(2).setColorFilter(context.getResources().getColor(R.color.good),
                     PorterDuff.Mode.SRC_ATOP);
+        }*/
+
+        Drawable stars = ratingBar.getProgressDrawable();
+        if(rank <= 1.5){
+            DrawableCompat.setTint(stars, context.getResources().getColor(R.color.bad));
+        } else if(rank <= 3.5){
+            DrawableCompat.setTint(stars, context.getResources().getColor(R.color.medium));
+        } else {
+            DrawableCompat.setTint(stars, context.getResources().getColor(R.color.good));
         }
+
+
     }
 
     public static String fromBoolToString(Context context, boolean b){
