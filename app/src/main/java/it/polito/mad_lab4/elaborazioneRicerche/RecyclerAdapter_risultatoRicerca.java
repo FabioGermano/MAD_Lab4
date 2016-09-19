@@ -135,21 +135,12 @@ public class RecyclerAdapter_risultatoRicerca extends RecyclerView.Adapter<Recyc
                 String path = currentObj.getImage_path();
                 if (path != null){
                     try {
-                        /*bitmap = BitmapFactory.decodeFile(path);
-                        if(bitmap != null)
-                            imgView.setImageBitmap(bitmap);*/
                         Glide.with(context).load(path).into(imgView);
                     } catch (Exception e){
                         System.out.println("Errore creazione bitmap");  //debug
                     }
                 }
             }
-            //debug da cancellare
-            if(position%2 == 0){
-                if( imgView != null)
-                    imgView.setImageResource(R.drawable.img2_logo_prova);
-            }
-            //////
         }
 
         private void cancellaBitmap(){
