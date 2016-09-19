@@ -96,6 +96,19 @@ public class Helper {
         return str;
     }
 
+    public static String formatDateWithYear(Context context, String weekday, String date){
+
+        String str = new String();
+        int yearEnd = date.indexOf("-");
+        int monthEnd = date.indexOf("-", yearEnd+1);
+        String month= date.substring(yearEnd+1, monthEnd);
+        //month = intToMonthString(context, Integer.parseInt(month));
+
+        str= date.substring(monthEnd+1,date.length())+"/"+month+"/"+date.substring(0,yearEnd);
+        //str = weekday+" "+date.substring(monthEnd+1,date.length())+" "+month;
+        return str;
+    }
+
     public static int fromCalendarOrderToMyOrder(int weekday){
         switch (weekday){
             case 1:

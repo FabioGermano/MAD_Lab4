@@ -11,9 +11,11 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import it.polito.mad_lab4.R;
+import it.polito.mad_lab4.common.Helper;
 import it.polito.mad_lab4.newData.reservation.ReservedDish;
 
 /**
@@ -57,7 +59,7 @@ public class ReservationDetailsFragment extends DialogFragment {
         else{
             seatsLL.setVisibility(View.GONE);
         }
-        if(notes != null || !notes.equals("")){
+        if(notes != null && !notes.equals("")){
             notesLL.setVisibility(View.VISIBLE);
             notesTextView.setText(notes);
         }
@@ -66,7 +68,9 @@ public class ReservationDetailsFragment extends DialogFragment {
         }
         if(data != null && !data.isEmpty()){
             fillLayout(getActivity(),ll, data );
-            totalTextView.setText(String.valueOf(total)+" €");
+            BigDecimal result;
+            result= Helper.round(total,2);
+            totalTextView.setText(String.valueOf(result)+" €");
         }
         else {
             ll.setVisibility(View.GONE);
@@ -111,7 +115,9 @@ public class ReservationDetailsFragment extends DialogFragment {
                 TextView quantity = (TextView) child.findViewById(R.id.food_quantity);
                 quantity.setText(d.getQuantity() + " x ");
                 TextView price = (TextView) child.findViewById(R.id.food_price);
-                price.setText(String.valueOf(d.getPrice()) + " €");
+                BigDecimal result;
+                result= Helper.round(d.getPrice(),2);
+                price.setText(String.valueOf(result) + " €");
                 this.total+=d.getQuantity() * d.getPrice();
                 ll.addView(child);
             }

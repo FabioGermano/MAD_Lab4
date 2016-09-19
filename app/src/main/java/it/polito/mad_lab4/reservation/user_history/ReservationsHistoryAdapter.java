@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import it.polito.mad_lab4.R;
+import it.polito.mad_lab4.common.Helper;
 import it.polito.mad_lab4.data.reservation.ReservationType;
 import it.polito.mad_lab4.data.reservation.ReservationTypeConverter;
 import it.polito.mad_lab4.firebase_manager.FirebaseCancelReservationManager;
@@ -48,6 +50,7 @@ public class ReservationsHistoryAdapter extends RecyclerView.Adapter<Reservation
             // each data item is just a string in this case
             TextView restaurantName, date, time, address, status;
             Button info, restaurantPage, cancel;
+            CardView cv ;
             int position;
 
             public ViewHolder(View v){
@@ -58,21 +61,22 @@ public class ReservationsHistoryAdapter extends RecyclerView.Adapter<Reservation
                 time = (TextView)  v.findViewById(R.id.time);
                 date = (TextView)  v.findViewById(R.id.date);
                 status = (TextView)  v.findViewById(R.id.status);
-
+                cv = (CardView) v.findViewById(R.id.restaurant);
                 info = (Button)  v.findViewById(R.id.info);
-                restaurantPage = (Button)  v.findViewById(R.id.restaurant);
+                //restaurantPage = (Button)  v.findViewById(R.id.restaurant);
                 cancel = (Button) v.findViewById(R.id.cancelBtn);
 
 
             }
 
-            public void setData(int position, Reservation r, String restName, String restauarntAddress) {
+            public void setData(int position, Reservation r, String restName, String restaurantAddress) {
 
                 restaurantName.setText(restName);
-                address.setText(restauarntAddress);
-                date.setText(r.getDate());
+                address.setText(restaurantAddress);
+                //date.setText(r.getDate());
+                date.setText(Helper.formatDateWithYear(context,"",r.getDate()));
                 time.setText(r.getTime());
-                status.setText(r.getStatus());
+                status.setText((ReservationTypeConverter.toStringGeneral(context, r.getStatus())).toUpperCase());
                 this.position=position;
 
                 if((r.getStatus().equals(ReservationTypeConverter.toString(ReservationType.ACCEPTED)) && !r.getIsVerified()) || r.getStatus().equals(ReservationTypeConverter.toString(ReservationType.PENDING)))
@@ -85,7 +89,8 @@ public class ReservationsHistoryAdapter extends RecyclerView.Adapter<Reservation
 
             public void setListeners() {
                 cancel.setOnClickListener(ViewHolder.this);
-                restaurantPage.setOnClickListener(ViewHolder.this);
+//                restaurantPage.setOnClickListener(ViewHolder.this);
+                cv.setOnClickListener(ViewHolder.this);
                 info.setOnClickListener(ViewHolder.this);
             }
 
@@ -128,6 +133,7 @@ public class ReservationsHistoryAdapter extends RecyclerView.Adapter<Reservation
                 if(r.getStatus().equals(ReservationTypeConverter.toString(ReservationType.ACCEPTED)))
                 {
                     firebaseCancelReservationManager.cancelReservation(r);
+                    notifyItemRangeChanged(position, data.size());
                 }
                 else if(r.getStatus().equals(ReservationTypeConverter.toString(ReservationType.PENDING))){
                     firebaseCancelReservationManager.cancelReservation(r);

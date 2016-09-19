@@ -4,6 +4,8 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         card_view:cardCornerRadius="4dp"
         android:minHeight="64dp"
+        android:id="@+id/restaurant"
+        android:layout_margin="@dimen/elevation_high"
         card_view:cardUseCompatPadding="true"
         android:layout_width="match_parent"
         android:clickable="true"
@@ -17,14 +19,16 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/black"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textStyle="bold"
         android:text="Alma Latina"
         android:id="@+id/restaurant_name" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Via Germanasca, 32 Torino"
         android:id="@+id/address"
         android:singleLine="false" />
@@ -32,7 +36,15 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="30dp"
+        android:gravity="center">
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView5"
+            android:src="@drawable/ic_event_available_holo_light"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -43,6 +55,12 @@
             android:textStyle="bold|italic"
             android:layout_marginRight="20dp" />
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView6"
+            android:src="@drawable/ic_time"/>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -52,14 +70,29 @@
             android:textStyle="bold|italic" />
     </LinearLayout>
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="stato: terminato"
+        android:text="@string/status_column"
+        android:singleLine="false"
+        android:layout_marginRight="5dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAllCaps="true"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="terminato"
         android:id="@+id/status"
         android:singleLine="false" />
 
+    </LinearLayout>
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -78,7 +111,7 @@
             android:text="Info"
             android:id="@+id/info" />
 
-        <Button
+        <!--<Button
             android:padding="4dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -88,7 +121,7 @@
             android:textColor="@color/white"
             android:background="@drawable/mybutton"
             style="@style/Widget.AppCompat.Button.Colored"
-            android:id="@+id/restaurant" />
+            android:id="@+id/restaurant" />-->
 
         <Button
             android:padding="4dp"

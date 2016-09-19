@@ -84,7 +84,7 @@ public class ReservationActivity extends BaseActivity implements ChoiceFragment.
             week_day = c.get(Calendar.DAY_OF_WEEK);
             String wd = String.valueOf(week_day);
             String first_date = wd + year + "-" + month + "-" + day;
-            onDateSelected(first_date, true, false);
+            onDateSelected(first_date, true, true);
         }
 
     }

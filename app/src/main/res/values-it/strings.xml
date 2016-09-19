@@ -12,6 +12,7 @@
     <string name="restaurant_address">Indirizzo ristorante</string>
     <string name="accept">Accetta</string>
     <string name="accepted">Accettate</string>
+    <string name="accepted_singular">Accettata</string>
     <string name="action_settings">Impostazioni</string>
     <string name="add_dish">Questa sezione è vuota. Clicca sul pulsante più per aggiungere un nuovo piatto.</string>
     <string name="add_offer">Questa sezione è vuota. Clicca sul pulsante più per aggiungere una nuova offerta.</string>
@@ -265,5 +266,10 @@
     <string name="your_name">Il tuo nome</string>
     <string name="message">Messaggio</string>
     <string name="avvisoMappa"></string>
+    <string name="status_column">status: </string>
+    <string name="reservation_added_failed"></string>
+    <string name="pending_singular">Pendente</string>
+    <string name="deleted_singular">Cancellata</string>
+    <string name="rejected_singular">Rifiutata</string>
 
 </resources>

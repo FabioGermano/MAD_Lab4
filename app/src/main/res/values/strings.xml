@@ -347,4 +347,9 @@
     <string name="message">Message</string>
     <string name="send">Send</string>
     <string name="contactus_activity_title">Contact us</string>
+    <string name="status_column">status: </string>
+    <string name="pending_singular">Pending</string>
+    <string name="accepted_singular">Accepted</string>
+    <string name="deleted_singular">Deleted</string>
+    <string name="rejected_singular">Rejected</string>
 </resources>

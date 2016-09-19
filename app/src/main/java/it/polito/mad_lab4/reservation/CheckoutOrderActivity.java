@@ -107,7 +107,10 @@ public class CheckoutOrderActivity extends BaseActivity {
         }
         if(reservedDishes!=null){
             fillLayout(reservedDishes);
-            totalTextView.setText(getResources().getString(R.string.total)+" "+ String.valueOf(total)+" €");
+            BigDecimal result;
+            result= Helper.round(total,2);
+
+            totalTextView.setText(getResources().getString(R.string.total)+" "+ String.valueOf(result)+" €");
         }
         else{
             //a reservation with only the seats specified
