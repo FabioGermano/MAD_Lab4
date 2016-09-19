@@ -71,6 +71,7 @@ public class Register extends BaseActivity {
                         Intent i = new Intent(getApplicationContext(), MainActivity.class);
                         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(i);
+                        return;
                     }
 
 
@@ -91,6 +92,7 @@ public class Register extends BaseActivity {
                         Intent i = new Intent(getApplicationContext(), EditUserProfileActivity.class);
                         i.putExtras(b);
                         startActivity(i);
+                        finish();
                     }
                 }
             };
@@ -146,6 +148,8 @@ public class Register extends BaseActivity {
         }
 
         username = name;
+        // Attendo l'esito dell'operazione
+        showProgressBar();
 
         mAuth.createUserWithEmailAndPassword(email, pwd)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -165,9 +169,6 @@ public class Register extends BaseActivity {
                         }
                     }
                 });
-
-        // Attendo l'esito dell'operazione
-        showProgressBar();
     }
 
     public static boolean isEmailValid(String email) {
@@ -211,7 +212,7 @@ public class Register extends BaseActivity {
     @Override
     public void onStop() {
         super.onStop();
-        if (mAuthListener != null) {
+        if (mAuth != null && mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }

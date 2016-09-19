@@ -151,7 +151,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
                             email = user.getEmail();
                             configureBarraLaterale(view, user);
 
-                            isLogin(user);
+                            UserAlert.init(getApplicationContext(), user.getUid(), alertCountView);
 
                         } else{
                             if(alert_visibility){
@@ -223,7 +223,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
         super.onResume();
         //invalidateOptionsMenu();
         if(user!= null)
-            isLogin(user);
+            UserAlert.init(getApplicationContext(), user.getUid(), alertCountView);
     }
 
     protected void configureBarraLaterale(View view, FirebaseUser user) {
@@ -262,7 +262,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Navigati
     protected void isLogin(FirebaseUser user) {
         // se viene sovrascritto dalle altre classi
         // viene invocato all'avvio quando l'utente è collegato
-        UserAlert.init(getApplicationContext(), user.getUid(), alertCountView);
     }
 
     protected boolean isRedirect(){
