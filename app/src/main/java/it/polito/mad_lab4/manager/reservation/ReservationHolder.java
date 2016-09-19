@@ -127,10 +127,13 @@ public class ReservationHolder extends RecyclerView.ViewHolder implements View.O
             reservedOffers = reservation.getReservedDishesByType(true);
         }
 
-        if (reservation.getPlaces() == null) {
+        if (reservation.getPlaces() == null || reservation.getPlaces() == "") {
             ((TextView) childLayout.findViewById(R.id.seats_number)).setVisibility(View.GONE);
             ((TextView) childLayout.findViewById(R.id.seats)).setVisibility(View.GONE);
         }
+        else
+            ((TextView) childLayout.findViewById(R.id.seats_number)).setText(reservation.getPlaces());
+
         if(reservation.getNoteByOwner() == null){
             yourNotes.setVisibility(View.GONE);
             ((TextView) childLayout.findViewById(R.id.your_notesView)).setVisibility(View.GONE);

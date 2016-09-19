@@ -51,7 +51,7 @@
             android:gravity="end"
             android:textStyle="italic"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="5"
+            android:text="0"
             android:id="@+id/seats_number" />
     </LinearLayout>
 
