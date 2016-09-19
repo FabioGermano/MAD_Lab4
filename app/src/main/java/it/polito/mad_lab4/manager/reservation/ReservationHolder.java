@@ -28,6 +28,7 @@ import junit.framework.Test;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import it.polito.mad_lab4.R;
 import it.polito.mad_lab4.newData.reservation.Reservation;
@@ -51,6 +52,7 @@ public class ReservationHolder extends RecyclerView.ViewHolder implements View.O
     private View containerView;
     private ReservationFragment containerFragment;
     private ArrayList<Reservation> reservations;
+    private HashMap<String, ArrayList<String>> cazzata;
 
     public ReservationHolder(View v, Context context, ReservationFragment containerFragment, ArrayList<Reservation> reservations) {
         super(v);
@@ -58,6 +60,8 @@ public class ReservationHolder extends RecyclerView.ViewHolder implements View.O
         this.context = context;
         this.containerFragment = containerFragment;
         this.reservations = reservations;
+
+        cazzata = new HashMap<>();
 
         containerView = v;
         username = (TextView) v.findViewById(R.id.username);
@@ -106,6 +110,20 @@ public class ReservationHolder extends RecyclerView.ViewHolder implements View.O
     }
 
     public void setData(Reservation reservation) {
+
+        ArrayList<String> listeCazzate = cazzata.get(reservation.getUserId());
+        if(listeCazzate != null && listeCazzate.contains(reservation.getReservationId()))
+            return;
+
+        if(listeCazzate != null) {
+            listeCazzate.add(reservation.getReservationId());
+        }
+        else {
+            listeCazzate = new ArrayList<>();
+            listeCazzate.add(reservation.getReservationId());
+            cazzata.put(reservation.getUserId(), listeCazzate);
+        }
+
         this.reservation = reservation;
         type.setText(reservation.getType());
         username.setText(reservation.getUserName());
